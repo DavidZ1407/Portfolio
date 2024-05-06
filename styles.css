@@ -1,0 +1,26 @@
+@import url('https://www.w3schools.com/w3css/4/w3.css');
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+
+body, h1, h2, h3, h4, h5, h6 {font-family: "Montserrat", sans-serif}
+.w3-row-padding img {margin-bottom: 12px}
+.bgimg {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-image: url('./Bilder/IMG_0505.JPG'); */
+  min-height: 100%;
+}
+.w3-opacity {opacity: 0.6;}
+.w3-hover-opacity:hover {opacity: 1;}
+.w3-medium {font-size: 16px;}
+.w3-padding-24 {padding: 24px;}
+.w3-padding-32 {padding: 32px;}
+.w3-padding-large {padding: 64px;}
+.w3-padding-64 {padding: 64px;}
+.w3-content {max-width: 980px; margin: auto;}
+.w3-justify {text-align: justify;}
+.w3-bg-beige {background-color: #ffecce;}
+.w3-jumbo {font-size: 60px;}
+.w3-hide-large {display: none;}
+.w3-round {border-radius: 4px;}
