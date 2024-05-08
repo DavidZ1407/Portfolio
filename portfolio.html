@@ -2,87 +2,107 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mein Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mein Portfolio</title>
+  <script defer src="./script.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <body>
-    <header class="header">
-        <a href="#home" class="logo">David
-            <span>Zahn</span>
-        </a>
+  <header class="header">
+    <a href="#home" class="logo">David
+      <span>Zahn</span>
+    </a>
 
-        <i class='bx bx-menu' id="menu_icon"></i>
 
-        <nav class="navbar">
-            <a href="#home" class="active">Home</a>
-            <a href="#work">Work</a>
-            <a href="#about_me">About me</a>
-            <a href="#contact">Contact</a>
+    <nav class="navbar">
+      <a href="#home" class="active">Home</a>
+      <a href="#work">Work</a>
+      <a href="#about_me">About me</a>
+      <a href="#contact">Contact</a>
 
-        </nav>
-    </header>
-    <section class="home" id="home">
-        <div class="home_content">
-            <h1>Hallo, It's <span>David</span></h1>
-            <h3>I'm a <span></span></h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet commodi distinctio consequuntur voluptate
-                ipsa earum adipisci atque sapiente ex dicta nemo magnam maiores aliquid aliquam quod, pariatur suscipit
-                eos molestias?</p>
+    </nav>
+  </header>
 
+  <section class="home" id="home">
+    <div class="home_content">
+      <h1>Hallo, It's <span>David</span></h1>
+      <h3>I'm a <span></span></h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet commodi distinctio consequuntur voluptate
+        ipsa earum adipisci atque sapiente ex dicta nemo magnam maiores aliquid aliquam quod, pariatur suscipit
+        eos molestias?</p>
+    </div>
+
+    <div class="home_img">
+      <img src="/Picture/image.jpg" alt="">
+    </div>
+  </section>
+
+  <section class="work" id="work">
+    <div class="container">
+      <h1 class="heading_work">Work</h1>
+      <div class="gallery">
+        <img src="/Picture/image.jpg" alt="" id="image1">
+        <img src="/Picture/2.jpg" alt="">
+        <img src="/Picture/image.jpg" alt="" id="image2">
+        <img src="/Picture/2.jpg" alt="">
+        <img src="/Picture/image.jpg" alt="" id="image3">
+        <img src="/Picture/image.jpg" alt="">
+      </div>
+    </div>
+  </section>
+
+
+  <section class="about_me" id="about_me">
+    <div class="about_content">
+      <h1>About <span>me</span></h1>
+      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt recusandae quisquam ipsam accusamus
+        voluptates, sint eum earum accusantium voluptatibus optio at ducimus. Temporibus laudantium, odit sit eaque
+        nulla ratione doloribus!</p>
+    </div>
+
+    <h2>Timeline</h2>
+    <ul class="timeline">
+      <li>2010 - Abschluss Schule</li>
+      <li>2014 - Bachelor-Abschluss Informatik</li>
+      <li>2016 - Beginn der beruflichen Laufbahn als Softwareentwickler</li>
+
+    </ul>
+
+    <h2>Skills</h2>
+    <ul class="skills">
+      <li>- HTML</li>
+      <li>- CSS</li>
+      <li>- JavaScript</li>
+      <li>- JavaScript</li>
+
+    </ul>
+
+
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="container_contact">
+      <div class="contact_content">
+        <h1 class="heading_contact">Kontakt</h1>
+        <div class="icons">
+          <a href="mailto:David-Zahn@hotmail.com">
+            <i class='bx bx-envelope'></i>
+            <p>David-Zahn@hotmail.com</p>
+          </a>
+          <i class='bx bxs-phone-call'>
+            <p>+49</p>
+          </i>
+          <i class='bx bx-current-location'>
+            <p>78073 Bad Dürrheim, Deutschland</p>
+          </i>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <div class="home_img">
-            <img src="/Picture/image.jpg" alt="">
-        </div>
-    </section>
-
-    <section class="work" id="work">
-        <div class="container">
-            <h1 class="heading_work">Work</h1>
-            <div class="gallery">
-                <img src="/Picture/image.jpg" alt="" id="image1">
-                <img src="/Picture/2.jpg" alt="">
-                <img src="/Picture/image.jpg" alt="" id="image2">
-                <img src="/Picture/2.jpg" alt="">
-                <img src="/Picture/image.jpg" alt="" id="image3">
-                <img src="/Picture/image.jpg" alt="">
-            </div>
-        </div>
-    </section>
-
-
-    <section class="about_me" id="about_me">
-        <div class="about_content"></div>
-        <h1>About <span>me</span></h1>
-        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt recusandae quisquam ipsam accusamus
-            voluptates, sint eum earum accusantium voluptatibus optio at ducimus. Temporibus laudantium, odit sit eaque
-            nulla ratione doloribus!</p>
-    </section>
-
-    <section class="contact" id="contact">
-        <div class="container_contact">
-          <div class="contact_content">
-            <h1 class="heading_contact">Kontakt</h1>
-            <div class="icons">
-              <a href="mailto:David-Zahn@hotmail.com">
-                <i class='bx bx-envelope'></i>
-                <p>David-Zahn@hotmail.com</p>
-              </a>
-              <i class='bx bxs-phone-call'>
-                <p>+49</p>
-              </i>
-              <i class='bx bx-current-location'>
-                <p>78073 Bad Dürrheim, Deutschland</p>
-              </i>
-            </div>
-          </div>
-        </div>
-      </section>
-      
 
 
 
@@ -93,4 +113,4 @@
 </html>
 
 <!-- animation shatten vielleich, 
-mediaquerry, timeline animation? , verlinken email -->
+mediaquerry handy, laptop, desktop groß, timeline animation, kontakt footer? 

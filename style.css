@@ -11,7 +11,6 @@
 
 :root {
   --bg-color: #080808;
-  --secong-bg-color: #131311;
   --text-color: white;
   --main-color: #0051ff;
 
@@ -54,9 +53,6 @@ body {
 }
 
 
-
-
-
 .navbar a {
   font-size: 1.8rem;
   color: var(--text-color);
@@ -70,13 +66,7 @@ body {
 .navbar a.active {
   color: var(--main-color);
   border-bottom: 3px solid var(--main-color);
-
-}
-
-#menu_icon {
-  font-size: 3.6rem;
-  color: var(--main-color);
-  display: none;
+  
 }
 
 section {
@@ -230,15 +220,70 @@ span {
     0 0 100px var(--main-color);
 }
 
+.about_me {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
 
+.about_text {
+  margin-bottom: 2rem;
+  
+}
 
+.skills,
+.timeline {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+  
+}
 
+.skills li,
+.timeline li {
+  margin-bottom: 0.5rem;
+}
 
+.about_me h1 {
+  font-size: 11rem;
+  font-weight: 700;
+  margin-top: 1.0rem;
+  line-height: 2;
+  color: var(--main-color);
+  text-shadow: 0 0 25px var(--main-color);
+}
 
+.about_me h1:hover {
+  text-shadow: 0 0 25px var(--main-color),
+    0 0 50px var(--main-color),
+    0 0 100px var(--main-color);
+}
 
+.about_content p {
+  font-size: 2.0rem;
+  font-weight: 500;
+  line-height: 1.8;
+  max-width: 1000px;
+}
 
+.about_me h2 {
+  font-size: 9rem;
+  font-weight: 300;
+  margin-top: 4.5rem;
+  line-height: 2;
+  color: var(--main-color);
+  text-shadow: 0 0 25px var(--main-color);
+}
 
-
+.skills,
+.timeline {
+  font-size: 2.0rem;
+  font-weight: 500;
+  line-height: 1.5;
+  max-width: 1000px;
+}
 
 
 
@@ -257,16 +302,16 @@ span {
 .contact_content {
   display: flex;
   flex-direction: column;
-  align-items: center; 
+  align-items: center;
   text-align: left;
   justify-content: center;
   margin-top: 3rem;
 }
 
 .contact h1 {
-  font-size: 20rem;
+  font-size: 11rem;
   font-weight: 700;
-  margin-top: 1.0rem;
+  margin-top: 1rem;
   line-height: 2;
   color: var(--main-color);
   text-shadow: 0 0 25px var(--main-color);
@@ -274,30 +319,134 @@ span {
 
 .contact h1:hover {
   text-shadow: 0 0 25px var(--main-color),
-              0 0 50px var(--main-color),
-              0 0 100px var(--main-color);
+    0 0 50px var(--main-color),
+    0 0 100px var(--main-color);
 }
 
 .icons {
   display: flex;
   flex-direction: column;
-  align-items: center; 
-  margin-top: 3rem;
+  align-items: center;
+  margin-top: -5rem;
   font-size: 3rem;
   color: var(--text-color);
   text-align: center;
 }
 
 .icons i {
-  margin-top: 5rem;
+  margin-top: 3rem;
 }
-.icons i:hover,.icons a:hover {
+
+.icons i:hover,
+.icons a:hover {
   text-shadow: 0 0 25px var(--text-color),
-              0 0 50px var(--text-color),
-              0 0 100px var(--text-color);
+    0 0 50px var(--text-color),
+    0 0 100px var(--text-color);
 }
 
 .icons a {
   color: var(--text-color);
-  text-decoration: none; 
+  text-decoration: none;
 }
+
+
+
+ @media (max-width: 1980px)  {
+  html{
+    font-size: 80%;
+  }
+.home{
+margin-top: -10rem;
+}
+.work h1{
+  margin-top: -20rem;
+}
+.contact h1{
+  margin-top: -45rem;
+}
+} 
+
+
+
+
+
+@media (max-width: 1280px)  {
+  html{
+    font-size: 70%;
+  }
+.home{
+margin-top: -25rem;
+}
+.home_content h1{
+  font-size: 5rem;
+}
+.work h1{
+  margin-top: -30rem;
+}
+.about_me h1{
+  margin-top: 9rem;
+}
+.contact h1{
+  margin-top: -45rem;
+}
+} 
+
+
+@media (max-width: 850px)  {
+  html{
+    font-size: 60%;
+  }
+.home{
+margin-top: -25rem;
+}
+.home_content h1{
+  font-size: 5rem;
+}
+.work h1{
+  margin-top: -30rem;
+}
+.about_me h1{
+  margin-top: 12rem;
+}
+.contact h1{
+  margin-top: -45rem;
+}
+} 
+
+@media (max-width: 480px)  {
+  html{
+    font-size: 50%;
+  }
+.home{
+margin-top: -25rem;
+}
+.home_content h1{
+  font-size: 5rem;
+}
+.work h1{
+  margin-top: 0rem;
+  font-size: 16rem;
+}
+.about_me h1{
+  margin-top: 7rem;
+  font-size: 9rem;
+}
+.contact h1{
+  margin-top: -75rem;
+}
+.navbar{
+  font-size: 2.8rem;
+  padding: 1rem;
+}
+} 
+
+
+
+
+
+
+
+
+
+ 
+
