@@ -350,103 +350,24 @@ span {
 }
 
 
-
- @media (max-width: 1980px)  {
-  html{
-    font-size: 80%;
-  }
-.home{
-margin-top: -10rem;
-}
-.work h1{
-  margin-top: -20rem;
-}
-.contact h1{
-  margin-top: -45rem;
-}
-} 
+ 
 
 
+/* 1024
+425
+768 */
 
 
-
-@media (max-width: 1280px)  {
-  html{
-    font-size: 70%;
-  }
-.home{
-margin-top: -25rem;
-}
-.home_content h1{
-  font-size: 5rem;
-}
-.work h1{
-  margin-top: -30rem;
-}
-.about_me h1{
-  margin-top: 9rem;
-}
-.contact h1{
-  margin-top: -45rem;
-}
-} 
-
-
-@media (max-width: 850px)  {
+  @media (max-width: 1024px)  {
   html{
     font-size: 60%;
   }
-.home{
-margin-top: -25rem;
-}
-.home_content h1{
-  font-size: 5rem;
-}
-.work h1{
-  margin-top: -30rem;
-}
-.about_me h1{
-  margin-top: 12rem;
-}
-.contact h1{
-  margin-top: -45rem;
-}
-} 
+}   
 
-@media (max-width: 480px)  {
+@media (max-width: 768px)  {
   html{
-    font-size: 50%;
+    font-size: 60%;
   }
-.home{
-margin-top: -25rem;
-}
-.home_content h1{
-  font-size: 5rem;
-}
-.work h1{
-  margin-top: 0rem;
-  font-size: 16rem;
-}
-.about_me h1{
-  margin-top: 7rem;
-  font-size: 9rem;
-}
-.contact h1{
-  margin-top: -75rem;
-}
-.navbar{
-  font-size: 2.8rem;
-  padding: 1rem;
-}
-} 
+}   
 
-
-
-
-
-
-
-
-
- 
 
