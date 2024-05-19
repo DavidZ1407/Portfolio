@@ -1,13 +1,13 @@
 window.onscroll = () => {
-    const sections = document.querySelectorAll('section'); 
+    const sections = document.querySelectorAll('section');
 
     sections.forEach(sec => {
-        const top = window.scrollY; 
-        const offset = sec.offsetTop - 150; 
-        const height = sec.offsetHeight; 
-        const id = sec.getAttribute('id'); 
+        const top = window.scrollY;
+        const offset = sec.offsetTop - 150;
+        const height = sec.offsetHeight;
+        const id = sec.getAttribute('id');
 
-      
+
     });
 };
 
@@ -41,4 +41,51 @@ window.addEventListener('scroll', () => {
     });
 });
 
+document.addEventListener("DOMContentLoaded", function() {
+    const images = document.querySelectorAll(".col_box img");
+    const lightbox = document.getElementById("lightbox");
+    const videoPlayer = document.getElementById("video-player");
+    const closeBtn = document.getElementById("close-btn");
+    const prevBtn = document.getElementById("prev-btn");
+    const nextBtn = document.getElementById("next-btn");
+    let currentIndex = 0;
+  
+    images.forEach((img, index) => {
+      img.addEventListener("click", function() {
+        currentIndex = index;
+        const videoSrc = this.dataset.video;
+        videoPlayer.src = videoSrc;
+        lightbox.style.display = "block";
+      });
+    });
+  
+    closeBtn.addEventListener("click", function() {
+      lightbox.style.display = "none";
+      videoPlayer.pause(); 
+    });
+  
+    prevBtn.addEventListener("click", function() {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      const videoSrc = images[currentIndex].dataset.video;
+      videoPlayer.src = videoSrc;
+    });
+  
+    nextBtn.addEventListener("click", function() {
+      currentIndex = (currentIndex + 1) % images.length;
+      const videoSrc = images[currentIndex].dataset.video;
+      videoPlayer.src = videoSrc;
+    });
+    
+    // Neue Buttons hinzugefügt
+    nextBtn.addEventListener("click", function() {
+      currentIndex = (currentIndex + 1) % images.length;
+      const videoSrc = images[currentIndex].dataset.video;
+      videoPlayer.src = videoSrc;
+    });
 
+    prevBtn.addEventListener("click", function() {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      const videoSrc = images[currentIndex].dataset.video;
+      videoPlayer.src = videoSrc;
+    });
+  });
