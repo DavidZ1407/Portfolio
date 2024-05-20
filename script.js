@@ -41,51 +41,27 @@ window.addEventListener('scroll', () => {
     });
 });
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const images = document.querySelectorAll(".col_box img");
     const lightbox = document.getElementById("lightbox");
     const videoPlayer = document.getElementById("video-player");
     const closeBtn = document.getElementById("close-btn");
-    const prevBtn = document.getElementById("prev-btn");
-    const nextBtn = document.getElementById("next-btn");
-    let currentIndex = 0;
-  
-    images.forEach((img, index) => {
-      img.addEventListener("click", function() {
-        currentIndex = index;
-        const videoSrc = this.dataset.video;
-        videoPlayer.src = videoSrc;
-        lightbox.style.display = "block";
-      });
-    });
-  
-    closeBtn.addEventListener("click", function() {
-      lightbox.style.display = "none";
-      videoPlayer.pause(); 
-    });
-  
-    prevBtn.addEventListener("click", function() {
-      currentIndex = (currentIndex - 1 + images.length) % images.length;
-      const videoSrc = images[currentIndex].dataset.video;
-      videoPlayer.src = videoSrc;
-    });
-  
-    nextBtn.addEventListener("click", function() {
-      currentIndex = (currentIndex + 1) % images.length;
-      const videoSrc = images[currentIndex].dataset.video;
-      videoPlayer.src = videoSrc;
-    });
-    
-    // Neue Buttons hinzugefügt
-    nextBtn.addEventListener("click", function() {
-      currentIndex = (currentIndex + 1) % images.length;
-      const videoSrc = images[currentIndex].dataset.video;
-      videoPlayer.src = videoSrc;
+    const descriptionText = document.getElementById("description-text");
+
+    images.forEach((img) => {
+        img.addEventListener("click", function () {
+            const videoSrc = this.dataset.video;
+            const description = this.dataset.description;
+
+            videoPlayer.src = videoSrc;
+            descriptionText.textContent = description;
+            lightbox.style.display = "block";
+        });
     });
 
-    prevBtn.addEventListener("click", function() {
-      currentIndex = (currentIndex - 1 + images.length) % images.length;
-      const videoSrc = images[currentIndex].dataset.video;
-      videoPlayer.src = videoSrc;
+    closeBtn.addEventListener("click", function () {
+        lightbox.style.display = "none";
+        videoPlayer.pause();
+        videoPlayer.src = "";
     });
-  });
+});

@@ -163,7 +163,6 @@ span {
   font-size: 20rem;
   font-weight: 700;
   margin-top: 1.5rem;
-  line-height: 1;
   color: var(--main-color);
   text-shadow: 0 0 25px var(--main-color);
 }
@@ -206,7 +205,7 @@ span {
 
 .col {
   position: relative;
-  width: 18%; /* Adjusting the width to fit 5 items in a row */
+  width: 18%; 
   margin: 0.5%;
   border-radius: 1em;
 }
@@ -224,7 +223,34 @@ span {
   display: block;
   cursor: pointer;
 }
+.col_box:hover::before {
+  content: '';
+  position: absolute;
+  top: 0px; 
+  left: 0px; 
+  right: 0px; 
+  bottom: 0px; 
+  border-radius: 1em;
+  pointer-events: none;
+  z-index: -1; 
+  box-sizing: border-box;
+  animation: glowHover 1.5s infinite alternate;
+  background: linear-gradient(45deg, var(--second-color), var(--second-color),var(--second-color), var(--second-color));
+  background-size: 400% 400%;
+  margin: -8px;
+}
 
+@keyframes glowHover {
+  0% {
+      background-position: 0% 50%;
+  }
+  50% {
+      background-position: 100% 50%;
+  }
+  100% {
+      background-position: 0% 50%;
+  }
+}
 
 .col_box::before {
   content: '';
@@ -244,7 +270,6 @@ span {
   margin: -8px;
   
 }
-
 
 @keyframes gradientAnimation {
   0% {
@@ -274,46 +299,59 @@ span {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 1200px;
+  background-color: rgba(0, 0, 0, 0.8); /* More transparent background */
+  padding: 20px;
+  border-radius: 10px;
 }
 
+.lightbox-footer {
+  margin-top: 20px;
+}
+.lightbox-content h3 {
+  font-size: 2.5rem; /* Größe nach Bedarf anpassen */
+  
+  color: var(--main-color); /* Textfarbe anpassen, falls nötig */
+  margin-bottom: 1rem; /* Abstand unterhalb des Titels */
+}
+
+.lightbox-content p {
+  font-size: 1.8rem; 
+  line-height: 1.6; 
+  color: var(--text-color); 
+  margin-top: 0.5rem; 
+}
 
 
 
 #video-player {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  max-width: 90%; /* Maximale Breite des Videos */
-  max-height: 90vh; /* Maximale Höhe des Videos (90% der Bildschirmhöhe) */
+  max-width: 100%;
+  max-height: 70vh;
+  display: block;
+  margin: 0 auto;
 }
 
-.prev-btn i,
-.next-btn i {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 40px; /* Ändere die Größe nach Bedarf */
+.lightbox-footer {
+  margin-top: 20px;
+}
+
+.work-description {
+  text-align: left;
+}
+
+.close-btn {
   position: absolute;
-  bottom: 20px; /* Abstand vom unteren Rand */
-  right: 20px; /* Abstand vom rechten Rand */
+  top: 20px;
+  right: 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--main-color);
 }
 
 .close-btn i {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 40px; /* Ändere die Größe nach Bedarf */
-  position: absolute;
-  top: 20px; /* Abstand vom oberen Rand */
-  right: 20px; /* Abstand vom rechten Rand */
-}
-
-#prev-btn, #next-btn, #close-btn {
-  border: none; 
-  background: none; 
-  cursor: pointer;
-  color: var(--main-color);
+  font-size: 40px;
 }
 
 .about_me {
@@ -333,13 +371,14 @@ span {
 .timeline {
   list-style: none;
   padding: 0;
-  text-align: left;
+  text-align: center;
 
 }
 
 .skills li,
 .timeline li {
   margin-bottom: 0.5rem;
+  margin-left: 0.5rem;
 }
 
 .about_me h1 {
@@ -354,7 +393,7 @@ span {
 
 
 .about_content p {
-  font-size: 2.0rem;
+  font-size: 2.5rem;
   font-weight: 500;
   line-height: 1.8;
   max-width: 1000px;
@@ -371,7 +410,7 @@ span {
 
 .skills,
 .timeline {
-  font-size: 2.0rem;
+  font-size: 2.5rem;
   font-weight: 500;
   line-height: 1.5;
   max-width: 1000px;
