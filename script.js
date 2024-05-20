@@ -65,3 +65,12 @@ document.addEventListener("DOMContentLoaded", function () {
         videoPlayer.src = "";
     });
 });
+
+const videoId = document.querySelector(".col_box img[data-video='rXRbQaq_Z2o']");
+if (videoId) {
+    videoId.addEventListener("click", function () {
+        videoPlayer.src = "https://www.youtube.com/embed/rXRbQaq_Z2o";
+        descriptionText.textContent = "Bearbeitung eines Videos aus verschiedenen Clips mit Ton und Sprache";
+        lightbox.style.display = "block";
+    });
+}
