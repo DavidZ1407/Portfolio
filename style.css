@@ -126,12 +126,7 @@ span {
   transition: 0.4s ease-in-out;
 }
 
-.home_img:hover {
-  box-shadow: 0 0 25px var(--main-color),
-    0 0 50px var(--main-color),
-    0 0 100px var(--main-color);
 
-}
 
 .home_content p {
   font-size: 1.5rem;
@@ -185,78 +180,83 @@ span {
   margin-bottom: 2rem;
 }
 
-
-.work h1:hover {
-  text-shadow: 0 0 25px var(--main-color),
-    0 0 50px var(--main-color),
-    0 0 100px var(--main-color);
+.row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  position: relative;
 }
 
 .container_work {
-  width: 1200px;
-  height: 800px;
-  border-radius: 1em;
-  padding: 2em;
-  display: flex;
-  gap: 1em;
-}
-
-.row_1,
-.row_2,
-.row_3 {
-  flex: 2;
   display: flex;
   flex-direction: column;
+  gap: 40px;
+  align-items: center;
+  width: 100%;
+}
 
+.row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
   position: relative;
-  overflow: hidden;
-}
-
-div .row_1::before,
-.row_2::before,
-.row_3::before {
-  content: '';
-  position: absolute;
-  top: -1em;
-  left: -1em;
-  right: -1em;
-  bottom: -1em;
-  border-radius: 1em;
-  pointer-events: none;
-  z-index: -1;
-  animation: gradientAnimation 10s ease infinite;
-  background: linear-gradient(45deg, var(--main-color), var(--second-color), var(--main-color), #ff2d7544);
-  background-size: 400% 400%;
-}
-
-@keyframes gradientAnimation {
-  0% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-
-  100% {
-    background-position: 0% 50%;
-  }
 }
 
 .col {
-  border: 2px solid transparent;
-  flex: 1;
-  border-radius: 1em;
   position: relative;
-  padding: 1em;
-  overflow: hidden;
+  width: 18%; /* Adjusting the width to fit 5 items in a row */
+  margin: 0.5%;
+  border-radius: 1em;
 }
 
-.col.col-2 {
-  flex: 1;
-  gap: 2em;
+.col_box {
+  position: relative;
+  border: 2px solid transparent;
+  border-radius: 1em;
+  
 }
 
+.col_box img {
+  width: 100%;
+  height: auto;
+  display: block;
+  cursor: pointer;
+}
+
+
+.col_box::before {
+  content: '';
+  position: absolute;
+  top: 0px; 
+  left: 0px; 
+  right: 0px; 
+  bottom: 0px; 
+  border-radius: 1em;
+  pointer-events: none;
+  z-index: 1; 
+  box-sizing: border-box;
+  animation: gradientAnimation 10s ease infinite;
+  background: linear-gradient(45deg, var(--main-color), var(--second-color), var(--main-color), #ff2d7544);
+  background-size: 400% 400%;
+  z-index: -1;
+  margin: -8px;
+  
+}
+
+
+@keyframes gradientAnimation {
+  0% {
+      background-position: 0% 50%;
+  }
+  50% {
+      background-position: 100% 50%;
+  }
+  100% {
+      background-position: 0% 50%;
+  }
+}
 
 .lightbox {
   display: none;
@@ -277,13 +277,36 @@ div .row_1::before,
 }
 
 
+
+
+#video-player {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 90%; /* Maximale Breite des Videos */
+  max-height: 90vh; /* Maximale Höhe des Videos (90% der Bildschirmhöhe) */
+}
+
 .prev-btn i,
-.next-btn i,
+.next-btn i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px; /* Ändere die Größe nach Bedarf */
+  position: absolute;
+  bottom: 20px; /* Abstand vom unteren Rand */
+  right: 20px; /* Abstand vom rechten Rand */
+}
+
 .close-btn i {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 60px;
+  font-size: 40px; /* Ändere die Größe nach Bedarf */
+  position: absolute;
+  top: 20px; /* Abstand vom oberen Rand */
+  right: 20px; /* Abstand vom rechten Rand */
 }
 
 #prev-btn, #next-btn, #close-btn {
@@ -292,10 +315,6 @@ div .row_1::before,
   cursor: pointer;
   color: var(--main-color);
 }
-
-
-
-
 
 .about_me {
   display: flex;
@@ -332,11 +351,7 @@ div .row_1::before,
   text-shadow: 0 0 25px var(--main-color);
 }
 
-.about_me h1:hover {
-  text-shadow: 0 0 25px var(--main-color),
-    0 0 50px var(--main-color),
-    0 0 100px var(--main-color);
-}
+
 
 .about_content p {
   font-size: 2.0rem;
@@ -361,8 +376,6 @@ div .row_1::before,
   line-height: 1.5;
   max-width: 1000px;
 }
-
-
 
 .contact {
   display: flex;
@@ -394,11 +407,7 @@ div .row_1::before,
   text-shadow: 0 0 25px var(--main-color);
 }
 
-.contact h1:hover {
-  text-shadow: 0 0 25px var(--main-color),
-    0 0 50px var(--main-color),
-    0 0 100px var(--main-color);
-}
+
 
 .icons {
   display: flex;
@@ -471,11 +480,6 @@ div .row_1::before,
     transform: translateY(-10vh) scale(1);
   }
 }
-
-
-
-
-
 
 
 
