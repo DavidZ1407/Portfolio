@@ -658,15 +658,9 @@ span {
   .bubbles span {
     width: 20px;
     height: 20px;
-    box-shadow: 0 0 0 5px #1e8fff67, 0 0 25px var(--main-color), 0 0 50px var(--main-color);
+    border-radius: 50%;
+    margin: 0 2px;
   }
-
-  .bubbles span:nth-child(even) {
-    box-shadow: 0 0 0 5px #ff2d7544,
-      0 0 50px var(--second-color),
-      0 0 100px var(--second-color);
-  }
-
 }
 
 
@@ -695,13 +689,8 @@ span {
   .bubbles span {
     width: 15px;
     height: 15px;
-    box-shadow: 0 0 0 5px #1e8fff67, 0 0 20px var(--main-color), 0 0 40px var(--main-color);
-  }
-
-  .bubbles span:nth-child(even) {
-    box-shadow: 0 0 0 5px #ff2d7544,
-      0 0 50px var(--second-color),
-      0 0 100px var(--second-color);
+    border-radius: 50%;
+    margin: 0 2px;
   }
 }
 
@@ -719,33 +708,40 @@ span {
   }
 
   .bubbles span {
-    width: 10px;
-    height: 10px;
-    box-shadow: 0 0 0 5px #1e8fff67, 0 0 15px var(--main-color), 0 0 30px var(--main-color);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin: 0 1px;
+  } 
   }
-
-  .bubbles span:nth-child(even) {
-    box-shadow: 0 0 0 5px #ff2d7544,
-      0 0 50px var(--second-color),
-      0 0 100px var(--second-color);
-  }
-
-}
 
 @media (max-width: 425px) {
   html {
     font-size: 40%;
   }
 
+  .header {
+    padding: 1rem 5%;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .header .child-element {
+    flex: 1;
+    margin: 0 0.5rem;
+  }
+
   .home_content {
     flex-direction: column;
     align-items: flex-start;
+    margin-left: -20rem;
+    margin-top: -10rem;
   }
 
   .home_img img {
     width: 30vw;
-    margin-left: 0;
-    margin-top: 2rem;
+    margin-left: -15rem;
+    margin-top: -20rem;
   }
 
   .navbar a {
@@ -755,7 +751,6 @@ span {
 
   .home {
     margin-left: 16rem;
-
   }
 
   .home_content h1 {
@@ -788,15 +783,9 @@ span {
   }
 
   .bubbles span {
-    width: 3px;
-    height: 3px;
-    box-shadow: 0 0 0 3px #1e8fff67, 0 0 10px var(--main-color), 0 0 15px var(--main-color);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin: 0 0.2px;
   }
-
-  .bubbles span:nth-child(even) {
-    box-shadow: 0 0 0 3px #ff2d7544,
-      0 0 10px var(--second-color),
-      0 0 15px var(--second-color);
-  }
-
 }
