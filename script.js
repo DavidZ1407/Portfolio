@@ -1,23 +1,55 @@
-window.onscroll = () => {
-    const sections = document.querySelectorAll('section');
-
-    sections.forEach(sec => {
-        const top = window.scrollY;
-        const offset = sec.offsetTop - 150;
-        const height = sec.offsetHeight;
-        const id = sec.getAttribute('id');
-
-
+function updateActiveNavLink(currentSection) {
+    const navLinks = document.querySelectorAll('.navbar a');
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').slice(1) === currentSection) {
+            link.classList.add('active');
+        }
     });
-};
+}
 
-const navLinks = document.querySelectorAll('.navbar a');
+function showLightboxVideo(videoSrc, description) {
+    const lightbox = document.getElementById("lightbox");
+    const videoPlayer = document.getElementById("video-player");
+    const descriptionText = document.getElementById("description-text");
 
-navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        navLinks.forEach(item => item.classList.remove('active'));
-        link.classList.add('active');
+    videoPlayer.src = videoSrc;
+    descriptionText.textContent = description;
+    lightbox.style.display = "block";
+}
+
+function closeLightbox() {
+    const lightbox = document.getElementById("lightbox");
+    const videoPlayer = document.getElementById("video-player");
+
+    lightbox.style.display = "none";
+    videoPlayer.pause();
+    videoPlayer.src = "";
+}
+
+function handleImageClick() {
+    const videoSrc = this.dataset.video;
+    const description = this.dataset.description;
+    showLightboxVideo(videoSrc, description);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const navLinks = document.querySelectorAll('.navbar a');
+    const images = document.querySelectorAll(".col_box img");
+    const closeBtn = document.getElementById("close-btn");
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.forEach(item => item.classList.remove('active'));
+            link.classList.add('active');
+        });
     });
+
+    images.forEach(img => {
+        img.addEventListener("click", handleImageClick);
+    });
+
+    closeBtn.addEventListener("click", closeLightbox);
 });
 
 window.addEventListener('scroll', () => {
@@ -32,45 +64,5 @@ window.addEventListener('scroll', () => {
         }
     });
 
-    const navLinks = document.querySelectorAll('.navbar a');
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href').slice(1) === currentSection) {
-            link.classList.add('active');
-        }
-    });
+    updateActiveNavLink(currentSection);
 });
-
-document.addEventListener("DOMContentLoaded", function () {
-    const images = document.querySelectorAll(".col_box img");
-    const lightbox = document.getElementById("lightbox");
-    const videoPlayer = document.getElementById("video-player");
-    const closeBtn = document.getElementById("close-btn");
-    const descriptionText = document.getElementById("description-text");
-
-    images.forEach((img) => {
-        img.addEventListener("click", function () {
-            const videoSrc = this.dataset.video;
-            const description = this.dataset.description;
-
-            videoPlayer.src = videoSrc;
-            descriptionText.textContent = description;
-            lightbox.style.display = "block";
-        });
-    });
-
-    closeBtn.addEventListener("click", function () {
-        lightbox.style.display = "none";
-        videoPlayer.pause();
-        videoPlayer.src = "";
-    });
-});
-
-const videoId = document.querySelector(".col_box img[data-video='rXRbQaq_Z2o']");
-if (videoId) {
-    videoId.addEventListener("click", function () {
-        videoPlayer.src = "https://www.youtube.com/embed/rXRbQaq_Z2o";
-        descriptionText.textContent = "Bearbeitung eines Videos aus verschiedenen Clips mit Ton und Sprache";
-        lightbox.style.display = "block";
-    });
-}

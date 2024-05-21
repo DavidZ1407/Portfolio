@@ -101,7 +101,7 @@ span {
 .home_content h3 {
   margin-bottom: 2rem;
   margin-top: 1rem;
-  font-size: 3.5rem;
+  font-size: 2.5rem;
 }
 
 .home_content h1 {
@@ -119,7 +119,7 @@ span {
   position: relative;
   border-radius: 50%;
   top: 3rem;
-  width: 32vw;
+  width: 20vw;
   box-shadow: 0 0 25px var(--main-color);
   cursor: pointer;
   transition: 0.4s ease-in-out;
@@ -130,6 +130,97 @@ span {
   font-weight: 500;
   line-height: 1.8;
   max-width: 1000px;
+}
+
+
+.text-animation {
+  position: relative;
+  display: inline-block;
+}
+
+.text-animation span::before {
+  content: "3D-Modellierung";
+  color: var(--main-color);
+  animation: words 20s infinite;
+}
+
+.text-animation span::after {
+  content: "";
+  background-color: var(--bg-color);
+  position: absolute;
+  width: calc(100% + 8px);
+  height: 100%;
+  border-left: 3px solid var(--main-color);
+  right: -8px;
+  animation: cursor-blink 0.7s steps(1) infinite, typing 20s steps(14) infinite;
+}
+
+@keyframes cursor-blink {
+
+  0%,
+  100% {
+    border-left-color: var(--main-color);
+  }
+
+  50% {
+    border-left-color: transparent;
+  }
+}
+
+@keyframes words {
+
+  0%,
+  20% {
+    content: "3D-Modellierung";
+  }
+
+  21%,
+  40% {
+    content: "Video Bearbeitung";
+  }
+
+  41%,
+  60% {
+    content: "Webseitendesign";
+  }
+
+  61%,
+  80% {
+    content: "Game Design";
+  }
+
+  81%,
+  100% {
+    content: "Animation";
+  }
+}
+
+@keyframes typing {
+
+  10%,
+  15%,
+  30%,
+  35%,
+  50%,
+  55%,
+  70%,
+  75%,
+  90%,
+  95% {
+    width: 0;
+  }
+
+  5%,
+  20%,
+  25%,
+  40%,
+  45%,
+  60%,
+  65%,
+  80%,
+  85% {
+    width: calc(100% + 8px);
+  }
 }
 
 .work {
@@ -199,7 +290,7 @@ span {
 
 .col {
   position: relative;
-  width: 18%; 
+  width: 18%;
   margin: 0.5%;
   border-radius: 1em;
 }
@@ -208,7 +299,7 @@ span {
   position: relative;
   border: 2px solid transparent;
   border-radius: 1em;
-  
+
 }
 
 .col_box img {
@@ -217,63 +308,72 @@ span {
   display: block;
   cursor: pointer;
 }
+
+.col_box:hover {
+  transform: scale(1.1);
+}
+
 .col_box:hover::before {
   content: '';
   position: absolute;
-  top: 0px; 
-  left: 0px; 
-  right: 0px; 
-  bottom: 0px; 
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
   border-radius: 1em;
   pointer-events: none;
-  z-index: -1; 
+  z-index: -1;
   box-sizing: border-box;
   animation: glowHover 1.5s infinite alternate;
-  background: linear-gradient(45deg, var(--second-color), var(--second-color),var(--second-color), var(--second-color));
+  background: linear-gradient(45deg, var(--second-color), var(--second-color), var(--second-color), var(--second-color));
   background-size: 400% 400%;
   margin: -8px;
 }
 
 @keyframes glowHover {
   0% {
-      background-position: 0% 50%;
+    background-position: 0% 50%;
   }
+
   50% {
-      background-position: 100% 50%;
+    background-position: 100% 50%;
   }
+
   100% {
-      background-position: 0% 50%;
+    background-position: 0% 50%;
   }
 }
 
 .col_box::before {
   content: '';
   position: absolute;
-  top: 0px; 
-  left: 0px; 
-  right: 0px; 
-  bottom: 0px; 
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
   border-radius: 1em;
   pointer-events: none;
-  z-index: 1; 
+  z-index: 1;
   box-sizing: border-box;
   animation: gradientAnimation 10s ease infinite;
   background: linear-gradient(45deg, var(--main-color), var(--second-color), var(--main-color), #ff2d7544);
   background-size: 400% 400%;
   z-index: -1;
   margin: -8px;
-  
+
 }
 
 @keyframes gradientAnimation {
   0% {
-      background-position: 0% 50%;
+    background-position: 0% 50%;
   }
+
   50% {
-      background-position: 100% 50%;
+    background-position: 100% 50%;
   }
+
   100% {
-      background-position: 0% 50%;
+    background-position: 0% 50%;
   }
 }
 
@@ -295,7 +395,7 @@ span {
   transform: translate(-50%, -50%);
   width: 90%;
   max-width: 1200px;
-  background-color: rgba(0, 0, 0, 0.8); 
+  background-color: rgba(0, 0, 0, 0.8);
   padding: 20px;
   border-radius: 10px;
 }
@@ -303,18 +403,19 @@ span {
 .lightbox-footer {
   margin-top: 20px;
 }
+
 .lightbox-content h3 {
-  font-size: 2.5rem; 
-  
-  color: var(--main-color); 
-  margin-bottom: 1rem; 
+  font-size: 2.5rem;
+
+  color: var(--main-color);
+  margin-bottom: 1rem;
 }
 
 .lightbox-content p {
-  font-size: 1.8rem; 
-  line-height: 1.6; 
-  color: var(--text-color); 
-  margin-top: 0.5rem; 
+  font-size: 1.8rem;
+  line-height: 1.6;
+  color: var(--text-color);
+  margin-top: 0.5rem;
 }
 
 #video-player {
@@ -323,19 +424,6 @@ span {
   display: block;
   margin: 0 auto;
 }
-
-#project-image-container {
-  max-width: 100%; /* Maximale Breite des Containers */
-  max-height: 300px; /* Maximale Höhe des Containers */
-  overflow: hidden; /* Überlauf ausblenden, falls das Bild zu groß ist */
-}
-
-
-
-
-
-
-
 
 .lightbox-footer {
   margin-top: 20px;
@@ -476,7 +564,7 @@ span {
 }
 
 .background_bubbles {
-  position: fixed; 
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -486,7 +574,7 @@ span {
 
 .bubbles {
   display: flex;
-  position: absolute; 
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -508,34 +596,200 @@ span {
 .bubbles span:nth-child(even) {
   background: var(--second-color);
   box-shadow: 0 0 0 10px #ff2d7544,
-  0 0 50px var(--second-color),
-  0 0 100px var(--second-color);
+    0 0 50px var(--second-color),
+    0 0 100px var(--second-color);
 }
 
 @keyframes animate {
   0% {
     transform: translateY(100vh) scale(0);
   }
+
   100% {
     transform: translateY(-10vh) scale(1);
   }
 }
 
 
+@media (min-width: 2560px) {
+  html {
+    font-size: 100%;
+  }
 
-/* 1024
-425
-768 */
+  .home_img img {
+    width: 19vw;
+  }
+
+  .container_work {
+    width: 40vw;
+  }
+}
+
+@media (max-width: 1920px) {
+  .lightbox-content {
+    width: 50%;
+  }
+  
+}
+
+@media (max-width: 1560px) {
+  html {
+    font-size: 50%;
+  }
+}
+
+@media (max-width: 1440px) {
+  html {
+    font-size: 55%;
+  }
+
+  .home_content h3 {
+    font-size: 2.0rem;
+  }
+
+  .home_img img {
+    width: 20vw;
+  }
+
+  .home_content h1 {
+    font-size: 5rem;
+  }
+ 
+  .bubbles span {
+    width: 20px;
+    height: 20px;
+    box-shadow: 0 0 0 5px #1e8fff67, 0 0 25px var(--main-color), 0 0 50px var(--main-color);
+  }
+  .bubbles span:nth-child(even) {
+    box-shadow: 0 0 0 5px #ff2d7544,
+      0 0 50px var(--second-color),
+      0 0 100px var(--second-color);
+  }
+
+}
+
 
 
 @media (max-width: 1024px) {
   html {
-    font-size: 60%;
+    font-size: 45%;
+  }
+
+  .home_img img {
+    width: 20vw;
+  }
+
+  .col {
+    width: 17%;
+  }
+
+  .home_content h3 {
+    font-size: 3rem;
+  }
+
+  .timeline {
+    font-size: 2rem;
+  }
+  .bubbles span {
+    width: 15px;
+    height: 15px;
+    box-shadow: 0 0 0 5px #1e8fff67, 0 0 20px var(--main-color), 0 0 40px var(--main-color);
+  }
+
+  .bubbles span:nth-child(even) {
+    box-shadow: 0 0 0 5px #ff2d7544,
+      0 0 50px var(--second-color),
+      0 0 100px var(--second-color);
   }
 }
 
 @media (max-width: 768px) {
   html {
-    font-size: 60%;
+    font-size: 50%;
   }
+
+  .container_work {
+    width: 110%;
+  }
+
+  .home_img img {
+    width: 25vw;
+  }
+  .bubbles span {
+    width: 10px;
+    height: 10px;
+    box-shadow: 0 0 0 5px #1e8fff67, 0 0 15px var(--main-color), 0 0 30px var(--main-color);
+  }
+  .bubbles span:nth-child(even) {
+    box-shadow: 0 0 0 5px #ff2d7544,
+      0 0 50px var(--second-color),
+      0 0 100px var(--second-color);
+  }
+
+}
+
+@media (max-width: 425px) {
+  html {
+    font-size: 40%;
+  }
+  .home_content {
+    flex-direction: column; 
+    align-items: flex-start; 
+  }
+  .home_img img {
+    width: 30vw;
+    margin-left: 0;
+    margin-top: 2rem;
+  }
+
+  .navbar a {
+    margin-left: 1rem;
+    border-bottom: 2px solid transparent;
+  }
+
+  .home {
+    margin-left: 16rem;
+
+  }
+
+  .home_content h1 {
+    font-size: 4rem;
+    margin-right: 0;
+  }
+
+  .home_content h3 {
+    font-size: 2rem;
+  }
+
+  .work h1 {
+    font-size: 15rem;
+  }
+
+  .col {
+    width: 15%;
+  }
+
+  .about_me h1 {
+    font-size: 10rem;
+  }
+
+  .container_work {
+    width: 120%;
+  }
+
+  .lightbox-content {
+    width: 80%;
+  }
+  .bubbles span {
+    width: 3px;
+    height: 3px;
+    box-shadow: 0 0 0 3px #1e8fff67, 0 0 10px var(--main-color), 0 0 15px var(--main-color);
+  }
+
+  .bubbles span:nth-child(even) {
+    box-shadow: 0 0 0 3px #ff2d7544,
+      0 0 10px var(--second-color),
+      0 0 15px var(--second-color);
+  }
+
 }
