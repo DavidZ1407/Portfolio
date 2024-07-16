@@ -581,7 +581,7 @@ span {
   height: 100%;
 }
 
-/* .bubbles span {
+.bubbles span {
   position: relative;
   width: 30px;
   height: 30px;
@@ -598,7 +598,7 @@ span {
   box-shadow: 0 0 0 10px #ff2d7544,
     0 0 50px var(--second-color),
     0 0 100px var(--second-color);
-} */
+}
 
 @keyframes animate {
   0% {
