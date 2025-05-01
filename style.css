@@ -171,22 +171,22 @@ span {
 
   0%,
   20% {
-    content: "3D-Modellierung";
+    content: "Game Design";
   }
 
   21%,
   40% {
-    content: "Video Bearbeitung";
+    content: "Audio Design";
   }
 
   41%,
   60% {
-    content: "Webseitendesign";
+    content: "Storytelling";
   }
 
   61%,
   80% {
-    content: "Game Design";
+    content: "3D-Modellierung";
   }
 
   81%,
