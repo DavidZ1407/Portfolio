@@ -1,0 +1,224 @@
+.work {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.container {
+    margin-top: 5rem;
+
+}
+
+.work_content {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    text-align: left;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+.work h1 {
+    font-size: 20rem;
+    font-weight: 700;
+    margin-top: 40rem;
+    color: var(--main-color);
+    text-shadow: 0 0 25px var(--main-color);
+}
+
+.heading {
+    font-size: 8rem;
+    text-align: center;
+    margin: 5rem 0;
+  } 
+  
+   .heading_work {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+  } 
+  
+   .row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    position: relative;
+  } 
+  
+   .container_work {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+    width: 100%;
+  } 
+  
+   .row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    position: relative;
+  } 
+  
+   .col {
+    position: relative;
+    width: 18%;
+    margin: 0.5%;
+    border-radius: 1em;
+  } 
+  
+   .col_box {
+    position: relative;
+    border: 2px solid transparent;
+    border-radius: 1em;
+  
+  } 
+  
+   .col_box img {
+    width: 100%;
+    height: auto;
+    display: block;
+    cursor: pointer;
+  } 
+  
+  .col_box:hover {
+    transform: scale(1.1);
+  } 
+  
+   .col_box:hover::before {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    border-radius: 1em;
+    pointer-events: none;
+    z-index: -1;
+    box-sizing: border-box;
+    animation: glowHover 1.5s infinite alternate;
+    background: linear-gradient(45deg, var(--second-color), var(--second-color), var(--second-color), var(--second-color));
+    background-size: 400% 400%;
+    margin: -8px;
+  } 
+  
+   @keyframes glowHover {
+    0% {
+      background-position: 0% 50%;
+    }
+  
+    50% {
+      background-position: 100% 50%;
+    }
+  
+    100% {
+      background-position: 0% 50%;
+    }
+  } 
+  
+   .col_box::before {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    border-radius: 1em;
+    pointer-events: none;
+    z-index: 1;
+    box-sizing: border-box;
+    animation: gradientAnimation 10s ease infinite;
+    background: linear-gradient(45deg, var(--main-color), var(--second-color), var(--main-color), #ff2d7544);
+    background-size: 400% 400%;
+    z-index: -1;
+    margin: -8px;
+  
+  } 
+  
+   @keyframes gradientAnimation {
+    0% {
+      background-position: 0% 50%;
+    }
+  
+    50% {
+      background-position: 100% 50%;
+    }
+  
+    100% {
+      background-position: 0% 50%;
+    }
+  } 
+  
+   .lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 999;
+  } 
+  
+  .lightbox-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 1200px;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+  } 
+  
+   .lightbox-footer {
+    margin-top: 20px;
+  }
+  
+  .lightbox-content h3 {
+    font-size: 2.5rem;
+  
+    color: var(--main-color);
+    margin-bottom: 1rem;
+  }
+  
+  .lightbox-content p {
+    font-size: 1.8rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    margin-top: 0.5rem;
+  }
+  
+  #video-player {
+    max-width: 100%;
+    max-height: 70vh;
+    display: block;
+    margin: 0 auto;
+  }
+  
+  .lightbox-footer {
+    margin-top: 20px;
+  }
+  
+  .work-description {
+    text-align: left;
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--main-color);
+  }
+  
+  .close-btn i {
+    font-size: 40px;
+  } 
+  
