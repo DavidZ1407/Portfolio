@@ -126,3 +126,20 @@ section.project-section video:hover {
     user-select: none;
   }
   
+  .content_click {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 2rem;
+    justify-items: center;
+    margin: 4rem 0;
+}
+
+.section_role{
+    color: var(--main-color);
+}
+
+#h1_project2 {
+    
+    margin-left: 34rem;
+   
+  }
