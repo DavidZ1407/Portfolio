@@ -13,9 +13,7 @@
 }
 
 @media (max-width: 1920px) {
-    .lightbox-content {
-        width: 50%;
-    }
+   
 
 }
 
@@ -165,9 +163,6 @@
         width: 120%;
     }
 
-    .lightbox-content {
-        width: 80%;
-    }
 
     .bubbles span {
         width: 10px;

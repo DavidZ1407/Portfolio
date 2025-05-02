@@ -77,60 +77,52 @@ section.project-section video:hover {
 
 }
 
-.lightboxsection {
+.back-link {
+    display: inline-block;
+    font-size: 4rem;
+    margin-left: 140rem;
+    color: var(--main-color);
+    margin-bottom: 2rem;
+    transition: text-shadow 0.3s ease, color 0.3s ease;
+  }
+  
+  .back-link:hover {
+    color: var(--second-color);
+    text-shadow: 0 0 10px var(--second-color);
+    cursor: pointer;
+  }
+
+  #image-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: none;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
-}
-
-.lightbox-content {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.lightbox video {
-    width: 80%;
-    max-height: 80%;
-    margin: 1rem;
-}
-
-.nav-btn {
-    background: none;
-    border: none;
-    font-size: 2rem;
+    z-index: 999;
+  }
+  
+  #image-overlay img {
+    max-width: 90%;
+    max-height: 90%;
+    border: 5px solid white;
+    border-radius: 8px;
+  }
+  
+  #image-overlay.hidden {
+    display: none;
+  }
+  
+  #overlay-close {
+    position: absolute;
+    top: 30px;
+    right: 50px;
+    font-size: 40px;
     color: white;
     cursor: pointer;
-    position: absolute;
-    top: 50%;
-    z-index: 10;
-}
-
-#prev-btn {
-    left: 10px;
-    transform: translateY(-50%);
-}
-
-#next-btn {
-    right: 10px;
-    transform: translateY(-50%);
-}
-
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
-}
+    user-select: none;
+  }
+  

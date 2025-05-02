@@ -25,7 +25,7 @@
     border-radius: 50%;
     box-shadow: 0 0 0 10px #1e8fff67, 0 0 50px var(--main-color), 0 0 100px var(--main-color);
     animation: animate 15s linear infinite;
-    animation-duration: calc(100s / var(--i));
+    animation-duration: calc(150s / var(--i));
   }
   
   .bubbles span:nth-child(even) {
