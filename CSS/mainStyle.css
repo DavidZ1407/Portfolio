@@ -83,3 +83,18 @@ section {
 }
 
 
+.language-switch {
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: var(--main-color);
+  border-bottom: 3px solid var(--main-color);
+  padding-bottom: 2px;
+  margin-left: 2rem;
+  cursor: pointer;
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.language-switch:hover {
+  color: var(--second-color);
+  border-color: var(--second-color);
+}

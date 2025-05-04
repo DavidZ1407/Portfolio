@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 
 <head>
   <meta charset="UTF-8">
@@ -19,32 +19,43 @@
 
 <body>
 
-
   <header class="header">
-    <a href="#home" class="logo">David
-      <span>Zahn</span>
+    <a href="#home" class="logo" data-de="David <span>Zahn</span>" data-en="David <span>Zahn</span>">
+      David <span>Zahn</span>
     </a>
 
     <nav class="navbar">
-      <a href="#home" class="active">Home</a>
-      <a href="#work">Projekte</a>
-      <a href="#about_me">Über mich</a>
-      <a href="#contact">Kontakt</a>
-
-    </nav>
-
-
-
+      <a href="#home" class="active" ...>Home</a>
+      <a href="#work" data-de="Projekte" data-en="Projects">Projekte</a>
+      <a href="#about_me" data-de="Über mich" data-en="About me">Über mich</a>
+      <a href="#contact" data-de="Kontakt" data-en="Contact">Kontakt</a>
+  </nav>
+    <a href="javascript:void(0);" 
+    id="language-toggle" 
+    class="language-switch" 
+    data-de="Deutsch" 
+    data-en="English">
+    Deutsch
+ </a>
   </header>
-
 
   <section class="home" id="home">
     <div class="home_content">
-      <h1>Herzlich <span>Wilkommen</span> <br>auf meiner Seite</h1>
-      <h3><br>Ich bin <span>David</span> und Studiere <span> Games & Immersive Media </span> <br> an der HFU Furtwangen.
+      <h1 data-de="Herzlich <span>Wilkommen</span> <br>auf meiner Seite" data-en="Welcome <span>to my site</span>">
+        Herzlich <span>Wilkommen</span> <br>auf meiner Seite
+      </h1>
+      <h3 data-de="Ich bin <span>David</span> und Studiere <span>Games & Immersive Media</span><br>an der HFU Furtwangen."
+          data-en="I am <span>David</span>, studying <span>Games & Immersive Media</span> at HFU Furtwangen.">
+        Ich bin <span>David</span> und Studiere <span>Games & Immersive Media</span><br>an der HFU Furtwangen.
       </h3>
-      <h3>Meine Interessen liegen im Bereich <span class="text-animation"><span></span></span></h3>
+      <h3
+        data-de="Meine Interessen liegen im Bereich:"
+          data-en="My intrest lies in:">
+          Meine Interessen liegen im Bereich:</h3>
+        <h3><span class="text-animation"><span></span></span></h3></h3>
     </div>
+    
+  
 
     <div class="home_img" id="homeImageContainer">
       <img src="Assets/Picture/Picture_Main/11 Home.jpg" alt="">
@@ -58,77 +69,112 @@
     <div class="container_work">
 
       <div class="col">
-        <div class="col_box" data-title="Average Goblin Game">
+        <div class="col_box">
           <a href="Html_Project/project1.html">
             <img src="Assets/Picture/Picture_Main/1 Average Goblin Game.jpg" alt="Average Goblin Game" />
           </a>
+          <div class="col_overlay">
+            <div class="overlay_title">Average Goblin Game</div>
+            <div class="overlay_subtext">3 Person Third-Person Tower Defense Game</div>
+          </div>
         </div>
       </div>
 
       <div class="col">
-        <div class="col_box" data-title="Kampf um die Sterne">
+        <div class="col_box">
           <a href="Html_Project/project3.html">
             <img src="Assets/Picture/Picture_Main/3 Kampf um die Sterne.png" alt="Kampf um die Sterne" />
           </a>
+          <div class="col_overlay">
+            <div class="overlay_title">Kampf um die Sterne</div>
+            <div class="overlay_subtext">Animationsfilm über eine Verfolgungsjagd im Weltraum</div>
+          </div>
         </div>
       </div>
 
       <div class="col">
-        <div class="col_box" data-title="Sir Aric's Soul">
+        <div class="col_box">
           <a href="Html_Project/project2.html">
             <img src="Assets/Picture/Picture_Main/2 Sir Aric's Soul.png" alt="Sir Aric's Soul" />
           </a>
+          <div class="col_overlay">
+            <div class="overlay_title">Sir Aric's Soul</div>
+            <div class="overlay_subtext">Jump and Run-Spiel mit einer Geschichte über Schwarz-Weiß-Denken</div>
+          </div>
         </div>
       </div>
 
       <div class="col">
-        <div class="col_box" data-title="Jump Game">
+        <div class="col_box">
           <a href="Html_Project/project4.html">
             <img src="Assets/Picture/Picture_Main/4 Jump Game.JPG" alt="Jump Game" />
           </a>
+          <div class="col_overlay">
+            <div class="overlay_title">Jump Game</div>
+            <div class="overlay_subtext">Jump Game – Der Google Chrome Dino in einem neuen Gewand</div>
+          </div>
         </div>
       </div>
 
       <div class="col">
-        <div class="col_box" data-title="3D modeling">
+        <div class="col_box">
           <a href="Html_Project/project5.html">
             <img src="Assets/Picture/Picture_Main/5 3D modeling.JPG" alt="3D modeling" />
           </a>
+          <div class="col_overlay">
+            <div class="overlay_title">3D Modeling</div>
+            <div class="overlay_subtext">Modellierung von Charakteren, Objekten und Umgebungen in Blender</div>
+          </div>
         </div>
       </div>
 
       <div class="col">
-        <div class="col_box" data-title="Coding">
+        <div class="col_box">
           <a href="Html_Project/project6.html">
             <img src="Assets/Picture/Picture_Main/6 Coding.png" alt="Coding" />
           </a>
+          <div class="col_overlay">
+            <div class="overlay_title">Coding</div>
+            <div class="overlay_subtext">Verschiedene Programmierprojekte in HTML, CSS, JavaScript & TypeScript</div>
+          </div>
         </div>
       </div>
 
       <div class="col">
-        <div class="col_box" data-title="Lifted">
+        <div class="col_box">
           <a href="Html_Project/project7.html">
             <img src="Assets/Picture/Picture_Main/7 Lifted.png" alt="Lifted" />
           </a>
+          <div class="col_overlay">
+            <div class="overlay_title">Lifted</div>
+            <div class="overlay_subtext">Selbstvertönte Szene aus Lifted</div>
+          </div>
         </div>
       </div>
+
       <div class="col">
-        <div class="col_box" data-title="Pepe's Journey">
+        <div class="col_box">
           <a href="Html_Project/project8.html">
             <img src="Assets/Picture/Picture_Main/8 Pepe's Journey.JPG" alt="Pepe's Journey" />
           </a>
+          <div class="col_overlay">
+            <div class="overlay_title">Pepe's Journey</div>
+            <div class="overlay_subtext">Wie ein Meme in verschiedenen Kontexten unterschiedliche Bedeutungen bekommt</div>
+          </div>
         </div>
       </div>
 
       <div class="col">
-        <div class="col_box" data-title="Digitale Art">
+        <div class="col_box">
           <a href="Html_Project/project9.html">
             <img src="Assets/Picture/Picture_Main/9 Digitale Art.png" alt="Digitale Art" />
           </a>
+          <div class="col_overlay">
+            <div class="overlay_title">Digitale Art</div>
+            <div class="overlay_subtext">Konzeptkunst, Illustrationen & Texturen in Photoshop</div>
+          </div>
         </div>
       </div>
-
-
 
   </section>
 
@@ -275,6 +321,7 @@
       <span style="--i:28;"></span>
     </div>
   </div>
+
 </body>
 
 </html>

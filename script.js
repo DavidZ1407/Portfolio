@@ -17,15 +17,17 @@ function highlightNavLinkOnLoad() {
     const navLinks = document.querySelectorAll('.navbar a');
     const currentHash = window.location.hash.replace('#', '');
     const currentPath = window.location.pathname;
-    const currentFile = currentPath.split('/').pop(); 
+    const currentFile = currentPath.split('/').pop();
+
+    const sectionToHighlight = currentHash || 'home';
 
     navLinks.forEach(link => {
         const href = link.getAttribute('href');
         const [targetFileRaw, targetHash] = href.split('#');
-        const targetFile = targetFileRaw.split('/').pop(); 
+        const targetFile = targetFileRaw.split('/').pop();
 
         const fileMatch = currentFile === targetFile || (!targetFile && currentFile === "portfolio.html");
-        const hashMatch = currentHash === targetHash || (!currentHash && targetHash === "home");
+        const hashMatch = sectionToHighlight === targetHash || (!sectionToHighlight && targetHash === "home");
 
         if (fileMatch && hashMatch) {
             link.classList.add('active');
@@ -54,61 +56,24 @@ function scrollToHashOnLoad() {
         if (target) {
             setTimeout(() => {
                 target.scrollIntoView({ behavior: "smooth" });
-            }, 100); 
+            }, 100);
         }
     }
 }
 
 // =====================
-// Overlay-Galerie
-// =====================
-function setupImageOverlay() {
-    const overlay = document.getElementById("image-overlay");
-    if (!overlay) return;
-
-    const overlayImage = document.getElementById("overlay-image");
-    const overlayClose = document.getElementById("overlay-close");
-    const images = document.querySelectorAll(".content_click img");
-    let currentIndex = 0;
-
-    images.forEach((img, index) => {
-        img.addEventListener("click", () => {
-            currentIndex = index;
-            overlayImage.src = img.src;
-            overlay.classList.remove("hidden");
-        });
-    });
-
-    overlayImage.addEventListener("click", () => {
-        currentIndex = (currentIndex + 1) % images.length;
-        overlayImage.src = images[currentIndex].src;
-    });
-
-    overlayClose.addEventListener("click", () => {
-        overlay.classList.add("hidden");
-        overlayImage.src = "";
-    });
-
-    overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) {
-            overlay.classList.add("hidden");
-            overlayImage.src = "";
-        }
-    });
-}
-
-// =====================
-// Sichtbare Sektion erkennen (für Scroll-Navigation)
+// Sichtbare Sektion erkennen (verbessert)
 // =====================
 function detectVisibleSectionOnScroll() {
     const sections = document.querySelectorAll('section');
     let currentSection = '';
+    const scrollY = window.scrollY + 150; 
 
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
+        const sectionHeight = section.offsetHeight;
 
-        if (window.pageYOffset >= sectionTop - sectionHeight / 3) {
+        if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
             currentSection = section.getAttribute('id');
         }
     });
@@ -119,13 +84,37 @@ function detectVisibleSectionOnScroll() {
 }
 
 // =====================
+// Sprachumschalter
+// =====================
+document.addEventListener('DOMContentLoaded', function () {
+    const languageToggle = document.getElementById('language-toggle');
+    const elementsToTranslate = document.querySelectorAll('[data-de], [data-en]');
+    let isGerman = true;
+
+    function switchLanguage() {
+        isGerman = !isGerman;
+        elementsToTranslate.forEach(el => {
+            el.innerHTML = isGerman ? el.getAttribute('data-de') : el.getAttribute('data-en');
+        });
+        languageToggle.innerHTML = isGerman ? languageToggle.getAttribute('data-de') : languageToggle.getAttribute('data-en');
+    }
+
+    languageToggle?.addEventListener('click', switchLanguage);
+});
+
+// =====================
 // Initialisierung
 // =====================
 window.addEventListener("DOMContentLoaded", () => {
     highlightNavLinkOnLoad();
     setupNavLinkClickListeners();
-    setupImageOverlay();
 });
 
 window.addEventListener("load", scrollToHashOnLoad);
-window.addEventListener("scroll", detectVisibleSectionOnScroll);
+
+
+let scrollTimeout;
+window.addEventListener("scroll", () => {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(detectVisibleSectionOnScroll, 100);
+});

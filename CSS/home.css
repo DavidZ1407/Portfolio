@@ -61,11 +61,14 @@
     position: relative;
     display: inline-block;
   }
-  
+
+
   .text-animation span::before {
     content: "3D-Modellierung";
     color: var(--main-color);
     animation: words 20s infinite;
+  
+  
   }
   
   .text-animation span::after {
@@ -77,6 +80,7 @@
     border-left: 3px solid var(--main-color);
     right: -8px;
     animation: cursor-blink 0.7s steps(1) infinite, typing 20s steps(14) infinite;
+   
   }
   
   @keyframes cursor-blink {
@@ -110,7 +114,7 @@
   
     61%,
     80% {
-      content: "3D-Modellierung";
+      content: "3D Modeling";
     }
   
     81%,
