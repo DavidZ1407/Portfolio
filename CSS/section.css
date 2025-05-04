@@ -39,8 +39,7 @@ section.project-section video {
 }
 
 section.project-section img:hover,
-section.project-section video:hover 
-{
+section.project-section video:hover {
   transform: scale(1.03);
 }
 
@@ -143,8 +142,6 @@ section.project-section video:hover
 
 .github_link {
   display: inline-block;
-
-
   color: var(--main-color);
   transition: text-shadow 0.3s ease, color 0.3s ease;
 }
@@ -154,6 +151,13 @@ section.project-section video:hover
   text-shadow: 0 0 10px var(--second-color);
   cursor: pointer;
 }
+
+#h1_project1 {
+
+  margin-left: 20rem;
+
+}
+
 
 #h1_project2 {
 
