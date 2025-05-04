@@ -44,12 +44,16 @@
   
   .icons i:hover,
   .icons a:hover {
-    text-shadow: 0 0 25px var(--text-color),
-      0 0 50px var(--text-color),
-      0 0 100px var(--text-color);
+    color: var(--second-color);
+    text-shadow: 0 0 10px var(--second-color);
+    cursor: pointer;
   }
   
   .icons a {
     color: var(--text-color);
     text-decoration: none;
+  }
+
+  .github_link_main{
+    margin-top: 3rem;
   }

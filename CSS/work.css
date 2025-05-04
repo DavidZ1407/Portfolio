@@ -50,7 +50,7 @@
   }
   
   .col {
-    width: 100%;
+    width: 400px;
     position: relative;
     border-radius: 1em;
   }
@@ -63,8 +63,8 @@
   }
   
   .col_box img {
-    width: 100%;
-    height: auto;
+    width: 400px;
+    height: 400px;
     display: block;
     cursor: pointer;
     object-fit: cover;
