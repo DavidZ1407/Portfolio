@@ -213,5 +213,8 @@ section.project-section video:hover {
 #video-section-1{
 margin-left: -10rem;
 margin-top: -10rem;
-
+}
+#video-section-1:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
 }
