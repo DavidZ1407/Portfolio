@@ -30,15 +30,22 @@
     </div>
 
 
-
     <header class="header">
         <a href="../portfolio.html" class="logo">David <span>Zahn</span></a>
-        <nav class="navbar">
-            <a href="../portfolio.html#home">Home</a>
-            <a href="../portfolio.html#work" class="active">Projekte</a>
-            <a href="../portfolio.html#about_me">Über mich</a>
-            <a href="../portfolio.html#contact">Kontakt</a>
-        </nav>
+
+        <div class="nav-wrapper">
+            <nav class="navbar">
+                <a href="../portfolio.html#home">Home</a>
+                <a href="../portfolio.html#work" class="active" data-de="Projekte" data-en="Projects">Projekte</a>
+                <a href="../portfolio.html#about_me" data-de="Über mich" data-en="About me">Über mich</a>
+                <a href="../portfolio.html#contact" data-de="Kontakt" data-en="Contact">Kontakt</a>
+            </nav>
+
+            <a href="javascript:void(0);" id="language-toggle" class="language-switch" data-de="Deutsch"
+                data-en="English">
+                Deutsch
+            </a>
+        </div>
     </header>
 
 
@@ -60,31 +67,40 @@
             <img src="..//Assets/Picture/Picture_Project_2/Project2_10.jpg" alt="Project2_10" width="400">
         </div>
 
-        <h2>Beschreibung</h2>
-        <p>
-            In einem siebenwöchigen UX-Projekt entwickelten wir im Team ein hybrides
-            <br>
-            Jump-and-Run-Spiel zum Thema
-            <strong>Kontrast</strong>.
-            <br>
-            <br>
-            Ziel war es, ein digitales sowie ein analoges Spielerlebnis zu gestalten,
-            <br>
-            bei dem Schwarz-Weiß als zentrales Gestaltungselement diente.
-            <br>
-            <br>
-            Die digitale Umsetzung erfolgte in <strong>Figma</strong>, während der analoge Prototyp mit Pape und
-            physischen Bedienelementen – Kugel und einer Spielkonsole – realisiert wurde.
-            Die Konsole projizierte das Spielbild auf eine Wand, wodurch ein interaktives und immersives Spielerlebnis
-            entstand.
+        <h2 data-de="Beschreibung" data-en="Description">Beschreibung</h2>
 
+        <p data-de="In einem siebenwöchigen UX-Projekt entwickelten wir im Team ein hybrides Jump-and-Run-Spiel zum Thema <strong>Kontrast</strong>."
+            data-en="In a seven-week UX project, our team developed a hybrid jump-and-run game on the theme of <strong>contrast</strong>">
+            In einem siebenwöchigen UX-Projekt entwickelten wir im Team ein hybrides Jump-and-Run-Spiel zum Thema
+            <strong>Kontrast</strong>.
+        </p>
+        <br><br>
+        <p data-de="Ziel war es, ein digitales sowie ein analoges Spielerlebnis zu gestalten, bei dem Schwarz-Weiß als zentrales Gestaltungselement diente."
+            data-en="The goal was to create both a digital and analog game experience using black and white as the central design element.">
+            Ziel war es, ein digitales sowie ein analoges Spielerlebnis zu gestalten, bei dem Schwarz-Weiß als zentrales
+            Gestaltungselement diente.
+        </p>
+        <br><br>
+        <p data-de="Die digitale Umsetzung erfolgte in <strong>Figma</strong>, während der analoge Prototyp mit Papier und physischen Bedienelementen – Kugel und einer Spielkonsole – realisiert wurde. Die Konsole projizierte das Spielbild auf eine Wand, wodurch ein interaktives und immersives Spielerlebnis entstand."
+            data-en="The digital version was created in <strong>Figma</strong>, while the analog prototype was built with paper and physical controls – a ball and a console. The console projected the game image onto a wall, creating an interactive and immersive experience.">
+            Die digitale Umsetzung erfolgte in <strong>Figma</strong>, während der analoge Prototyp mit Papier und
+            physischen Bedienelementen – Kugel und einer Spielkonsole – realisiert wurde. Die Konsole projizierte das
+            Spielbild auf eine Wand, wodurch ein interaktives und immersives Spielerlebnis entstand.
         </p>
 
 
-        <p><br><strong class="section_role">Mein Beitrag:</strong> Digitale Umsetzung mit Figma, Zeichnung des
-            Hauptcharakters, Entwicklung des physischen Prototyps, Story-Konzept, Game-Mechanik</p>
 
-        <h2>Technologien</h2>
+        <p>
+            <br>
+            <strong class="section_role" data-de="Mein Beitrag:" data-en="My Contribution:">Mein Beitrag:</strong>
+        <p data-de=" Digitale Umsetzung, Zeichnung des Hauptcharakters, Entwicklung des physischen Prototyps, Story & Konzept, Game-Mechanik"
+            data-en="Digital implementation, Character design, Development of the physical prototype, Story & concept, Game mechanics">
+            Digitale Umsetzung, Zeichnung des Hauptcharakters, Entwicklung des physischen Prototyps,
+            Story & Konzept, Game-Mechanik
+        </p>
+        
+
+        <h2 data-de="Technologien" data-en="Technologies">Technologien</h2>
         <ul>
             <li>Figma</li>
             <li>DaVinci Resolve</li>
@@ -92,20 +108,22 @@
             <li>Photoshop</li>
         </ul>
 
-        <h2>Duration & Team Size</h2>
+        <h2 data-de="Dauer & Team Größe" data-en="Duration & Team Size">Dauer & Team Größe</h2>
         <ul>
-            <li>7 weeks</li>
-            <li>5 people</li>
+            <li data-de="7 Wochen" data-en="7 weeks">7 Wochen</li>
+            <li data-de="5 Mitglieder" data-en="5 members">5 Mitglieder</li>
         </ul>
+
 
     </section>
 
-    <a href="../portfolio.html#work" class="back-link">Zurück zu den Projekten</a>
+    <a href="../portfolio.html#work" class="back-link" data-de="Zurück zu den Projekten"
+        data-en="Back to Projects">Zurück zu den Projekten</a>
 
     <div id="image-overlay" class="hidden">
         <span id="overlay-close">&times;</span>
         <img id="overlay-image" src="" alt="Großansicht">
-        <div class="overlay_subtext_section">Click for next Picture</div>
+        <div class="overlay_subtext_section">Klicke auf das Bild für das nächste</div>
     </div>
 
 </body>

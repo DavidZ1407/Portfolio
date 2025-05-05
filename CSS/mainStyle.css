@@ -49,6 +49,8 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 5;
 }
 
+
+
 .logo {
   font-size: 3rem;
   color: var(--text-color);
@@ -61,6 +63,15 @@ h1, h2, h3, h4, h5, h6 {
   transform: scale(1.1);
 }
 
+.nav-container {
+  flex: 1; 
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+}
+
 .navbar a {
   font-size: 1.8rem;
   color: var(--text-color);
@@ -68,6 +79,13 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 500;
   transition: 0.3s ease;
   border-bottom: 3px solid transparent;
+  
+}
+
+.nav-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
 }
 
 .navbar a:hover,

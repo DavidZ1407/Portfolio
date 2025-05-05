@@ -33,19 +33,32 @@
 
     <header class="header">
         <a href="../portfolio.html" class="logo">David <span>Zahn</span></a>
-        <nav class="navbar">
-            <a href="../portfolio.html#home">Home</a>
-            <a href="../portfolio.html#work" class="active">Projekte</a>
-            <a href="../portfolio.html#about_me">Über mich</a>
-            <a href="../portfolio.html#contact">Kontakt</a>
-        </nav>
+
+        <div class="nav-wrapper">
+            <nav class="navbar">
+                <a href="../portfolio.html#home">Home</a>
+                <a href="../portfolio.html#work" class="active" data-de="Projekte" data-en="Projects">Projekte</a>
+                <a href="../portfolio.html#about_me" data-de="Über mich" data-en="About me">Über mich</a>
+                <a href="../portfolio.html#contact" data-de="Kontakt" data-en="Contact">Kontakt</a>
+            </nav>
+
+            <a href="javascript:void(0);" id="language-toggle" class="language-switch" data-de="Deutsch"
+                data-en="English">
+                Deutsch
+            </a>
+        </div>
     </header>
 
 
     <section class="project-section">
         <h1 id="h1_project1">Average Goblin Game</h1>
 
-        <video id="video_play" src="..//Assets/Video_Project/1 Average Goblin Game.mp4" controls width="1000"></video>
+        <section id="video-section">
+            <iframe width="1076" height="605" src="https://www.youtube.com/embed/eomk8vSr40o" title="AVG Front Page"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </section>
 
         <div class="content_click">
             <img src="..//Assets/Picture/Picture_Project_1/Project1_1.png" alt="Project2_1" width="400">
@@ -60,43 +73,59 @@
             <img src="..//Assets/Picture/Picture_Project_1/Project1_10.JPG" alt="Project2_10" width="400">
         </div>
 
-        <h2>Beschreibung</h2>
-        <p>
+        <h2 data-de="Beschreibung" data-en="Description">Beschreibung</h2>
+
+        <p data-de="In einem vierwöchigen Projekt entwickelten wir ein Third-Person-Tower-Defense-Spiel mit Unreal Engine 5."
+            data-en="In a four-week project, we developed a third-person tower defense game using Unreal Engine 5.">
             In einem vierwöchigen Projekt entwickelten wir ein Third-Person-Tower-Defense-Spiel mit Unreal Engine 5.
-            Nach zwei Wochen Einarbeitung in die Engine folgte die Konzeption und Umsetzung.
-            <br>
-            <br>
-            Ziel war ein ausgewogenes Zusammenspiel aus Action-Gameplay und strategischen
-            <br>Tower-Defense-Elementen. Grundlage war ein eigens erstelltes Game Design Dokument.
         </p>
 
+        <p data-de="Nach zwei Wochen Einarbeitung in die Engine folgte die Konzeption und Umsetzung."
+            data-en="After two weeks of getting familiar with the engine, we proceeded with concept and implementation.">
+            Nach zwei Wochen Einarbeitung in die Engine folgte die Konzeption und Umsetzung.
+        </p>
+        <br><br>
+        <p data-de="Ziel war ein ausgewogenes Zusammenspiel aus Action-Gameplay und strategischen Tower-Defense-Elementen. Grundlage war ein eigens erstelltes Game Design Dokument."
+            data-en="The goal was a balanced mix of action gameplay and strategic tower defense elements, based on a self-created game design document.">
+            Ziel war ein ausgewogenes Zusammenspiel aus Action-Gameplay und strategischen Tower-Defense-Elementen.
+            Grundlage war ein eigens erstelltes Game Design Dokument.
+        </p>
 
         <p>
             <br>
-            <strong class="section_role">Mein Beitrag:</strong>
+            <strong class="section_role" data-de="Mein Beitrag:" data-en="My Contribution:">Mein Beitrag:</strong>
+        <p data-de="Konzeption, Enemy AI & Animation, Tower-Mechanik, Game-Mechanics & Spielbalance, Sound"
+            data-en="Concept, Enemy AI & Animation, Tower Mechanics, Game Mechanics & Balancing, Sound">
             Konzeption, Enemy AI & Animation, Tower-Mechanik, Game-Mechanics & Spielbalance, Sound
         </p>
+        </p>
 
-        <h2>Technologien</h2>
+        <h2 data-de="Technologien" data-en="Technologies">Technologien</h2>
         <ul>
             <li>Unreal Engine 5</li>
         </ul>
 
-        <h2>Duration & Team Size</h2>
+        <h2 data-de="Dauer & Team Größe" data-en="Duration & Team Size">Dauer & Team Größe</h2>
         <ul>
-            <li>4 weeks</li>
-            <li>5 People</li>
+            <li data-de="4 Wochen" data-en="4 weeks">4 Wochen</li>
+            <li data-de="5 Mitglieder" data-en="5 members">5 Mitglieder</li>
         </ul>
 
     </section>
 
-    <a href="../portfolio.html#work" class="back-link">Zurück zu den Projekten</a>
+    <a href="../portfolio.html#work" class="back-link" data-de="Zurück zu den Projekten" data-en="Back to Projects">
+        Zurück zu den Projekten
+    </a>
 
     <div id="image-overlay" class="hidden">
         <span id="overlay-close">&times;</span>
         <img id="overlay-image" src="" alt="Großansicht">
-        <div class="overlay_subtext_section">Click for next Picture</div>
+        <div class="overlay_subtext_section" data-de="Für das nächste Bild klicke auf das Bild"
+            data-en="Click the image to view the next one">
+            Für das nächste Bild klicke auf das Bild
+        </div>
     </div>
+
 
 </body>
 

@@ -25,12 +25,20 @@
 
     <header class="header">
         <a href="../portfolio.html" class="logo">David <span>Zahn</span></a>
-        <nav class="navbar">
-            <a href="../portfolio.html#home">Home</a>
-            <a href="../portfolio.html#work" class="active">Projekte</a>
-            <a href="../portfolio.html#about_me">Über mich</a>
-            <a href="../portfolio.html#contact">Kontakt</a>
-        </nav>
+
+        <div class="nav-wrapper">
+            <nav class="navbar">
+                <a href="../portfolio.html#home">Home</a>
+                <a href="../portfolio.html#work" class="active" data-de="Projekte" data-en="Projects">Projekte</a>
+                <a href="../portfolio.html#about_me" data-de="Über mich" data-en="About me">Über mich</a>
+                <a href="../portfolio.html#contact" data-de="Kontakt" data-en="Contact">Kontakt</a>
+            </nav>
+
+            <a href="javascript:void(0);" id="language-toggle" class="language-switch" data-de="Deutsch"
+                data-en="English">
+                Deutsch
+            </a>
+        </div>
     </header>
 
 
@@ -52,14 +60,17 @@
             <img src="..//Assets/Picture/Picture_Project_9/Project9_10.png" alt="Project9_10" width="400">
         </div>
 
-        <h2>Beschreibung</h2>
-        <p>
-            Die auf der Seite gezeigten Bilder wurden von mir mit Krita, Figma und Photoshop erstellt.
-        </p>
+        <h2 data-de="Beschreibung" data-en="Description">Beschreibung</h2>
+      
+        <p
+        data-de="Die auf der Seite gezeigten Bilder wurden von mir mit Krita, Figma und Photoshop erstellt."
+        data-en="The images displayed on the page were created by me using Krita, Figma, and Photoshop.">
+        Die auf der Seite gezeigten Bilder wurden von mir mit Krita, Figma und Photoshop erstellt..
+      </p>
+  
 
 
-
-        <h2>Technologien</h2>
+        <h2 data-de="Technologien" data-en="Technologies">Technologien</h2>
         <ul>
             <li>Figma</li>
             <li>Photoshop</li>
@@ -68,13 +79,14 @@
 
     </section>
 
-    <a href="../portfolio.html#work" class="back-link">Zurück zu den Projekten</a>
+    <a href="../portfolio.html#work" class="back-link" data-de="Zurück zu den Projekten"
+    data-en="Back to Projects">Zurück zu den Projekten</a>
 
-    <div id="image-overlay" class="hidden">
-        <span id="overlay-close">&times;</span>
-        <img id="overlay-image" src="" alt="Großansicht">
-        <div class="overlay_subtext_section">Click for next Picture</div>
-    </div>
+<div id="image-overlay" class="hidden">
+    <span id="overlay-close">&times;</span>
+    <img id="overlay-image" src="" alt="Großansicht">
+    <div class="overlay_subtext_section">Klicke auf das Bild für das nächste</div>
+</div>
 
     <div class="background_bubbles">
         <div class="bubbles">

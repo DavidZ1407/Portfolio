@@ -67,7 +67,7 @@ function scrollToHashOnLoad() {
 function detectVisibleSectionOnScroll() {
     const sections = document.querySelectorAll('section');
     let currentSection = '';
-    const scrollY = window.scrollY + 150; 
+    const scrollY = window.scrollY + 150;
 
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
@@ -84,22 +84,34 @@ function detectVisibleSectionOnScroll() {
 }
 
 // =====================
-// Sprachumschalter
+// Sprachumschalter mit localStorage
 // =====================
 document.addEventListener('DOMContentLoaded', function () {
     const languageToggle = document.getElementById('language-toggle');
     const elementsToTranslate = document.querySelectorAll('[data-de], [data-en]');
-    let isGerman = true;
 
-    function switchLanguage() {
-        isGerman = !isGerman;
+
+    let isGerman = localStorage.getItem('preferredLanguage') !== 'en';
+
+    function applyLanguage() {
         elementsToTranslate.forEach(el => {
             el.innerHTML = isGerman ? el.getAttribute('data-de') : el.getAttribute('data-en');
         });
-        languageToggle.innerHTML = isGerman ? languageToggle.getAttribute('data-de') : languageToggle.getAttribute('data-en');
+        if (languageToggle) {
+            languageToggle.innerHTML = isGerman ? languageToggle.getAttribute('data-de') : languageToggle.getAttribute('data-en');
+        }
+    }
+
+    function switchLanguage() {
+        isGerman = !isGerman;
+        localStorage.setItem('preferredLanguage', isGerman ? 'de' : 'en');
+        applyLanguage();
     }
 
     languageToggle?.addEventListener('click', switchLanguage);
+
+
+    applyLanguage();
 });
 
 // =====================
@@ -111,7 +123,6 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 window.addEventListener("load", scrollToHashOnLoad);
-
 
 let scrollTimeout;
 window.addEventListener("scroll", () => {

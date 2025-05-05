@@ -1,152 +1,152 @@
 .home {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 13rem;
-  }
-  
-  .home_content {
-    display: flex;
-    flex-direction: column;
-    align-items: baseline;
-    text-align: left;
-    justify-content: center;
-    margin-top: 3rem;
-  }
-  
-  span {
-    color: var(--main-color);
-  }
-  
-  .logo span {
-    color: var(--main-color);
-  }
-  
-  .home_content h3 {
-    margin-bottom: 2rem;
-    margin-top: 1rem;
-    font-size: 2.5rem;
-  }
-  
-  .home_content h1 {
-    font-size: 7rem;
-    font-weight: 700;
-    margin-top: 1.5rem;
-    line-height: 1;
-  }
-  
-  .home_img {
-    border-radius: 50%;
-  }
-  
-  .home_img img {
-    position: relative;
-    border-radius: 50%;
-    top: 3rem;
-    width: 20vw;
-    box-shadow: 0 0 25px var(--main-color);
-    cursor: pointer;
-    transition: 0.4s ease-in-out;
-  }
-  
-  .home_content p {
-    font-size: 1.5rem;
-    font-weight: 500;
-    line-height: 1.8;
-    max-width: 1000px;
-  }
-  
-  
-  .text-animation {
-    position: relative;
-    display: inline-block;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13rem;
+}
+
+.home_content {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  text-align: left;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+span {
+  color: var(--main-color);
+}
+
+.logo span {
+  color: var(--main-color);
+}
+
+.home_content h3 {
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+  font-size: 2.5rem;
+}
+
+.home_content h1 {
+  font-size: 7rem;
+  font-weight: 700;
+  margin-top: 1.5rem;
+  line-height: 1;
+}
+
+.home_img {
+  border-radius: 50%;
+}
+
+.home_img img {
+  position: relative;
+  border-radius: 50%;
+  top: 3rem;
+  width: 20vw;
+  box-shadow: 0 0 25px var(--main-color);
+  cursor: pointer;
+  transition: 0.4s ease-in-out;
+}
+
+.home_content p {
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.8;
+  max-width: 1000px;
+}
 
 
-  .text-animation span::before {
-    content: "3D-Modellierung";
-    color: var(--main-color);
-    animation: words 20s infinite;
-  
-  
+.text-animation {
+  position: relative;
+  display: inline-block;
+}
+
+
+.text-animation span::before {
+  content: "3D-Modellierung";
+  color: var(--main-color);
+  animation: words 20s infinite;
+
+
+}
+
+.text-animation span::after {
+  content: "";
+  background-color: var(--bg-color);
+  position: absolute;
+  width: calc(100% + 8px);
+  height: 100%;
+  border-left: 3px solid var(--main-color);
+  right: -8px;
+  animation: cursor-blink 0.7s steps(1) infinite, typing 20s steps(14) infinite;
+ 
+}
+
+@keyframes cursor-blink {
+
+  0%,
+  100% {
+    border-left-color: var(--main-color);
   }
-  
-  .text-animation span::after {
-    content: "";
-    background-color: var(--bg-color);
-    position: absolute;
+
+  50% {
+    border-left-color: transparent;
+  }
+}
+
+@keyframes words {
+
+  0%,
+  20% {
+    content: "Game Design";
+  }
+
+  21%,
+  40% {
+    content: "Audio Design";
+  }
+
+  41%,
+  60% {
+    content: "Storytelling";
+  }
+
+  61%,
+  80% {
+    content: "3D Modeling";
+  }
+
+  81%,
+  100% {
+    content: "Animation";
+  }
+}
+
+@keyframes typing {
+
+  10%,
+  15%,
+  30%,
+  35%,
+  50%,
+  55%,
+  70%,
+  75%,
+  90%,
+  95% {
+    width: 0;
+  }
+
+  5%,
+  20%,
+  25%,
+  40%,
+  45%,
+  60%,
+  65%,
+  80%,
+  85% {
     width: calc(100% + 8px);
-    height: 100%;
-    border-left: 3px solid var(--main-color);
-    right: -8px;
-    animation: cursor-blink 0.7s steps(1) infinite, typing 20s steps(14) infinite;
-   
   }
-  
-  @keyframes cursor-blink {
-  
-    0%,
-    100% {
-      border-left-color: var(--main-color);
-    }
-  
-    50% {
-      border-left-color: transparent;
-    }
-  }
-  
-  @keyframes words {
-  
-    0%,
-    20% {
-      content: "Game Design";
-    }
-  
-    21%,
-    40% {
-      content: "Audio Design";
-    }
-  
-    41%,
-    60% {
-      content: "Storytelling";
-    }
-  
-    61%,
-    80% {
-      content: "3D Modeling";
-    }
-  
-    81%,
-    100% {
-      content: "Animation";
-    }
-  }
-  
-  @keyframes typing {
-  
-    10%,
-    15%,
-    30%,
-    35%,
-    50%,
-    55%,
-    70%,
-    75%,
-    90%,
-    95% {
-      width: 0;
-    }
-  
-    5%,
-    20%,
-    25%,
-    40%,
-    45%,
-    60%,
-    65%,
-    80%,
-    85% {
-      width: calc(100% + 8px);
-    }
-  }
+}

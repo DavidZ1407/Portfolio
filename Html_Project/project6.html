@@ -24,12 +24,20 @@
 
     <header class="header">
         <a href="../portfolio.html" class="logo">David <span>Zahn</span></a>
-        <nav class="navbar">
-            <a href="../portfolio.html#home">Home</a>
-            <a href="../portfolio.html#work" class="active">Projekte</a>
-            <a href="../portfolio.html#about_me">Über mich</a>
-            <a href="../portfolio.html#contact">Kontakt</a>
-        </nav>
+
+        <div class="nav-wrapper">
+            <nav class="navbar">
+                <a href="../portfolio.html#home">Home</a>
+                <a href="../portfolio.html#work" class="active" data-de="Projekte" data-en="Projects">Projekte</a>
+                <a href="../portfolio.html#about_me" data-de="Über mich" data-en="About me">Über mich</a>
+                <a href="../portfolio.html#contact" data-de="Kontakt" data-en="Contact">Kontakt</a>
+            </nav>
+
+            <a href="javascript:void(0);" id="language-toggle" class="language-switch" data-de="Deutsch"
+                data-en="English">
+                Deutsch
+            </a>
+        </div>
     </header>
 
 
@@ -51,7 +59,7 @@
             <img src="..//Assets/Picture/Picture_Project_6/Project6_10.png" alt="Project6_10" width="400">
         </div>
 
-        <h2>Beschreibung</h2>
+        <h2 data-de="Beschreibung" data-en="Description">Beschreibung</h2>
         <p>
             Die abgebildeten Screenshots zeigen die von mir gestaltete Benutzeroberfläche sowie ergänzend erstellte
             Aktivitäts-
@@ -68,7 +76,7 @@
         <p>Generative Art <br><a class="github_link"
                 href="https://davidz1407.github.io/EIA_2_So24/A08.1_GenerativeKunst/main.html"
                 target="_blank">https://davidz1407.github.io/EIA_2_So24/A08.1_GenerativeKunst/main.html</a></p>
-        <p>Einkaufliste <br><a class="github_link"
+        <p>Shopping List <br><a class="github_link"
                 href="https://davidz1407.github.io/EIA_2_So24/A04_Einkaufsliste/main.html"
                 target="_blank">https://davidz1407.github.io/EIA_2_So24/A04_Einkaufsliste/main.html</a></p>
         <p>Responsive Design <br><a class="github_link" href="https://davidz1407.github.io/EIA1_-SEMESTER-/L05/"
@@ -79,7 +87,7 @@
 
 
 
-        <h2>Technologien</h2>
+                <h2 data-de="Technologien" data-en="Technologies">Technologien</h2>
         <ul>
             <li>Vscode</li>
             <li>HTML</li>
@@ -90,13 +98,15 @@
 
     </section>
 
-    <a href="../portfolio.html#work" class="back-link">Zurück zu den Projekten</a>
+    <a href="../portfolio.html#work" class="back-link" data-de="Zurück zu den Projekten"
+    data-en="Back to Projects">Zurück zu den Projekten</a>
 
-    <div id="image-overlay" class="hidden">
-        <span id="overlay-close">&times;</span>
-        <img id="overlay-image" src="" alt="Großansicht">
-        <div class="overlay_subtext_section">Click for next Picture</div>
-    </div>
+<div id="image-overlay" class="hidden">
+    <span id="overlay-close">&times;</span>
+    <img id="overlay-image" src="" alt="Großansicht">
+    <div class="overlay_subtext_section">Klicke auf das Bild für das nächste</div>
+</div>
+
     <div class="background_bubbles">
         <div class="bubbles">
             <span style="--i:11;"></span>
