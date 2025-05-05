@@ -60,6 +60,7 @@ span {
 .text-animation {
   position: relative;
   display: inline-block;
+  margin-top: -20rem;
 }
 
 
