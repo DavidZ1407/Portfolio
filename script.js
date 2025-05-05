@@ -61,6 +61,45 @@ function scrollToHashOnLoad() {
     }
 }
 
+
+// =====================
+// Overlay-Galerie
+// =====================
+function setupImageOverlay() {
+    const overlay = document.getElementById("image-overlay");
+    if (!overlay) return;
+    const overlayImage = document.getElementById("overlay-image");
+    const overlayClose = document.getElementById("overlay-close");
+    const images = document.querySelectorAll(".content_click img");
+    let currentIndex = 0;
+
+
+    images.forEach((img, index) => {
+        img.addEventListener("click", () => {
+            currentIndex = index;
+            overlayImage.src = img.src;
+            overlay.classList.remove("hidden");
+        });
+    });
+
+    overlayImage.addEventListener("click", () => {
+        currentIndex = (currentIndex + 1) % images.length;
+        overlayImage.src = images[currentIndex].src;
+    });
+
+    overlayClose.addEventListener("click", () => {
+        overlay.classList.add("hidden");
+        overlayImage.src = "";
+    });
+
+    overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) {
+            overlay.classList.add("hidden");
+            overlayImage.src = "";
+        }
+    });
+}
+
 // =====================
 // Sichtbare Sektion erkennen (verbessert)
 // =====================

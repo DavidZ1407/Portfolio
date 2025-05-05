@@ -201,11 +201,17 @@ section.project-section video:hover {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  color: var(--second-color);
+  color: var(--main-color);
   font-size: 2rem;
   background-color: rgba(0, 0, 0, 0.6);
   padding: 1rem 2rem;
   border-radius: 0.5rem 0.5rem 0 0;
   pointer-events: none;
   white-space: nowrap;
+}
+
+#video-section-1{
+margin-left: -10rem;
+margin-top: -10rem;
+
 }
