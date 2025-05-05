@@ -61,45 +61,6 @@ function scrollToHashOnLoad() {
     }
 }
 
-
-// =====================
-// Overlay-Galerie
-// =====================
-function setupImageOverlay() {
-    const overlay = document.getElementById("image-overlay");
-    if (!overlay) return;
-    const overlayImage = document.getElementById("overlay-image");
-    const overlayClose = document.getElementById("overlay-close");
-    const images = document.querySelectorAll(".content_click img");
-    let currentIndex = 0;
-
-
-    images.forEach((img, index) => {
-        img.addEventListener("click", () => {
-            currentIndex = index;
-            overlayImage.src = img.src;
-            overlay.classList.remove("hidden");
-        });
-    });
-
-    overlayImage.addEventListener("click", () => {
-        currentIndex = (currentIndex + 1) % images.length;
-        overlayImage.src = images[currentIndex].src;
-    });
-
-    overlayClose.addEventListener("click", () => {
-        overlay.classList.add("hidden");
-        overlayImage.src = "";
-    });
-
-    overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) {
-            overlay.classList.add("hidden");
-            overlayImage.src = "";
-        }
-    });
-}
-
 // =====================
 // Sichtbare Sektion erkennen (verbessert)
 // =====================
@@ -129,7 +90,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const languageToggle = document.getElementById('language-toggle');
     const elementsToTranslate = document.querySelectorAll('[data-de], [data-en]');
 
-
     let isGerman = localStorage.getItem('preferredLanguage') !== 'en';
 
     function applyLanguage() {
@@ -149,8 +109,57 @@ document.addEventListener('DOMContentLoaded', function () {
 
     languageToggle?.addEventListener('click', switchLanguage);
 
-
     applyLanguage();
+});
+
+// =====================
+// Bildvergrößerung und Overlay mit Navigation
+// =====================
+document.addEventListener('DOMContentLoaded', function () {
+    const images = document.querySelectorAll('.content_click img');
+    const overlay = document.getElementById('image-overlay');
+    const overlayImage = document.getElementById('overlay-image');
+    const overlayClose = document.getElementById('overlay-close');
+    let currentIndex = 0;  
+    const imageArray = Array.from(images);  
+
+    images.forEach((img, index) => {
+        img.addEventListener('click', function () {
+            currentIndex = index;  
+            overlayImage.src = img.src; 
+            overlay.classList.remove('hidden'); 
+        });
+    });
+
+    overlayClose.addEventListener('click', function () {
+        overlay.classList.add('hidden');
+    });
+
+    overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) {
+            overlay.classList.add('hidden');
+        }
+    });
+
+    function showNextImage() {
+        currentIndex = (currentIndex + 1) % imageArray.length; 
+        overlayImage.src = imageArray[currentIndex].src;
+    }
+
+    function showPreviousImage() {
+        currentIndex = (currentIndex - 1 + imageArray.length) % imageArray.length; 
+        overlayImage.src = imageArray[currentIndex].src;
+    }
+
+    overlayImage.addEventListener('click', showNextImage);
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight') {
+            showNextImage();  
+        } else if (e.key === 'ArrowLeft') {
+            showPreviousImage();  
+        }
+    });
 });
 
 // =====================
