@@ -10,11 +10,12 @@
     .container_work {
         width: 50vw;
     }
+
     .about_content {
-        font-size: 2.2rem; 
-        max-width: 80vw;    
-        margin: 0 auto;     
-        line-height: 1.8;   
+        font-size: 2.2rem;
+        max-width: 80vw;
+        margin: 0 auto;
+        line-height: 1.8;
     }
 
     .about_content h1 {
@@ -30,7 +31,19 @@
         font-size: 1.8rem;
     }
 
+    #video-section-1 iframe {
+        margin-left: 20rem;
+        max-width: 300vw;
+    }
+
+    #video_play {
+        width: 80vw;
+        max-width: 1500px;
+        display: block;
+        margin: 0 auto;
+    }
 }
+
 
 @media (max-width: 1920px) {
     html {
@@ -61,10 +74,21 @@
     .home_content h1 {
         font-size: 6rem;
     }
+
     .about_content p {
         font-size: 3rem;
-    
+
     }
+
+    .overlay_title {
+        font-size: 1.5rem;/
+    }
+
+    .overlay_subtext {
+        font-size: 1rem;
+    }
+
+
 
     .bubbles span {
         width: 20px;
@@ -97,9 +121,17 @@
     .home_content h3 {
         font-size: 2rem;
     }
- 
+
     .timeline {
         font-size: 2rem;
+    }
+
+    .overlay_title {
+        font-size: 1.5rem;/
+    }
+
+    .overlay_subtext {
+        font-size: 1rem;
     }
 
     .bubbles span {
@@ -114,36 +146,116 @@
     html {
         font-size: 50%;
     }
+
     .navbar a {
         margin-left: 1rem;
         border-bottom: 2px solid transparent;
     }
-    
+
     #language-toggle {
         font-size: 1.8rem;
         margin-left: 1rem;
     }
 
 
-    .home_content h1{
+    .home_content h1 {
         font-size: 3rem;
     }
+
     .container_work {
         width: 110%;
     }
-    
+
     .home_img img {
         width: 25vw;
     }
+
     .about_content h1 {
         font-size: 6rem;
     }
-   
+
     .about_content p {
         font-size: 2rem;
-    
+
     }
 
+    .overlay_title {
+        font-size: 1.5rem;/
+    }
+
+    .overlay_subtext {
+        font-size: 1rem;
+    }
+
+    #h1_project1 {
+        font-size: 3rem;
+        margin-right: 1rem;
+    }
+
+    #video-section-1 iframe {
+        margin-left: 10rem;
+        max-width: 100%;
+        margin-top: 20rem;
+    }
+
+    a.back-link {
+        margin-left: 60rem;
+    }
+
+
+    .Project_Body {
+        transform-origin: top left;
+        width: 80%;
+        overflow-x: hidden;
+    }
+
+    .content_click {
+        width: 110%;
+        margin-top: 20rem;
+    }
+
+    section.project-section h2 {
+        font-size: 3rem;
+        margin-top: 4rem;
+        margin-bottom: 1rem;
+    }
+
+   
+    
+    #overlay-close {
+        position: absolute;
+        top: 20px;
+        right: 25px;
+        font-size: 40px;
+      }
+
+    #image-overlay img {
+        max-width: 70%;
+        max-height: 70%;
+        border: 5px solid white;
+        border-radius: 8px;
+      }
+
+      #h1_project2 {
+        margin-left: 18rem !important;
+    }
+
+    section.project-section h2 {
+        font-size: 5rem !important;
+      }
+
+      #video_play {
+        width: 90%;
+      }
+
+      section.project-section h1{
+        margin-left: 10rem !important;
+    }
+    
+    .overlay_subtext_section {
+        
+        bottom: 150px !important;}
+    
     .bubbles span {
         width: 12px;
         height: 12px;
@@ -191,7 +303,7 @@
     }
 
     .home_content h1 {
-        font-size: 3rem;
+        font-size: 1.5rem;
         margin-right: 0;
     }
 
@@ -199,7 +311,7 @@
         font-size: 2rem;
     }
 
-    
+
     .work h1 {
         font-size: 10rem;
     }
@@ -212,9 +324,13 @@
         font-size: 10rem;
     }
 
+    .overlay_title {
+        font-size: 1.5rem;/
+    }
 
-    
-
+    .overlay_subtext {
+        font-size: 1rem;
+    }
 
     .bubbles span {
         width: 10px;

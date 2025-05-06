@@ -120,6 +120,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const overlay = document.getElementById('image-overlay');
     const overlayImage = document.getElementById('overlay-image');
     const overlayClose = document.getElementById('overlay-close');
+
+    if (!overlay || !overlayImage || !overlayClose || images.length === 0) {
+        // Elemente existieren auf dieser Seite nicht → Script hier abbrechen
+        return;
+    }
+
     let currentIndex = 0;  
     const imageArray = Array.from(images);  
 
