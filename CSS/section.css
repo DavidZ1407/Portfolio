@@ -218,3 +218,7 @@ margin-top: -10rem;
   transform: scale(1.1);
   transition: transform 0.3s ease;
 }
+
+.skills_padding{
+  padding-top: 2rem;
+}
