@@ -6,13 +6,13 @@ section.project-section {
 
 section.project-section h1 {
   font-size: 7rem;
-  margin-left: 20rem;
+  margin-left: 40rem;
   margin-bottom: 2rem;
   color: var(--main-color);
 }
 
 section.project-section h2 {
-  font-size: 5rem;
+  font-size: 2.5rem;
   margin-top: 9rem;
   margin-bottom: 1rem;
 }
@@ -23,7 +23,7 @@ section.project-section p {
 }
 
 section.project-section ul {
-  font-size: 2rem;
+  font-size: 2.5rem;
   padding-left: 2rem;
   list-style: disc;
 }
@@ -38,8 +38,7 @@ section.project-section video {
   transition: transform 0.3s ease;
 }
 
-section.project-section img:hover,
-section.project-section video:hover {
+section.project-section img:hover {
   transform: scale(1.1);
 }
 
@@ -77,20 +76,6 @@ section.project-section video:hover {
 
 }
 
-.back-link {
-  display: inline-block;
-  font-size: 4rem;
-  margin-left: 140rem;
-  color: var(--main-color);
-  margin-bottom: 2rem;
-  transition: text-shadow 0.3s ease, color 0.3s ease;
-}
-
-.back-link:hover {
-  color: var(--second-color);
-  text-shadow: 0 0 10px var(--second-color);
-  cursor: pointer;
-}
 
 #image-overlay {
   position: fixed;
@@ -121,7 +106,7 @@ section.project-section video:hover {
   top: 30px;
   right: 50px;
   font-size: 40px;
-  color:var(--text-color);
+  color: var(--text-color);
   cursor: pointer;
   user-select: none;
 }
@@ -154,45 +139,45 @@ section.project-section video:hover {
 
 #h1_project1 {
 
-  margin-left: 20rem;
+  margin-left: 40rem;
 
 }
 
 
 #h1_project2 {
 
-  margin-left: 34rem;
+  margin-left: 47rem;
 
 }
 
 #h1_project4 {
 
-  margin-left: 45rem;
+  margin-left: 55rem;
 
 }
 
 #h1_project5 {
 
-  margin-left: 45rem;
+  margin-left: 64rem;
 
 }
 
 #h1_project7 {
 
-  margin-left: 58rem;
+  margin-left: 60rem;
 
 }
 
 #h1_project8 {
 
-  margin-left: 39rem;
+  margin-left: 46rem;
 
 }
 
 
 #h1_project9 {
 
-  margin-left: 46rem;
+  margin-left: 55rem;
 
 }
 
@@ -210,12 +195,48 @@ section.project-section video:hover {
   white-space: nowrap;
 }
 
-#video-section-1{
-margin-left: -10rem;
-margin-top: -10rem;
-}
-#video-section-1:hover {
-  transform: scale(1.1);
-  transition: transform 0.3s ease;
+#video-section-1 {
+  margin-left: -10rem;
+  margin-top: -10rem;
 }
 
+@keyframes pulse-back {
+  0% {
+    transform: scale(1);
+    text-shadow: 0 0 0px var(--main-color);
+  }
+
+  70% {
+    transform: scale(1.05);
+    text-shadow:
+      0 0 12px var(--main-color),
+      0 0 24px var(--main-color),
+      0 0 36px var(--main-color),
+      0 0 48px var(--main-color);
+  }
+
+  100% {
+    transform: scale(1);
+    text-shadow: 0 0 0px var(--main-color);
+  }
+}
+
+.back-link {
+  display: inline-block;
+  font-size: 4rem;
+  margin-left: 23rem;
+  color: var(--main-color);
+  margin-bottom: 2rem;
+  cursor: pointer;
+  animation: pulse-back 1.8s infinite ease-in-out;
+  transition: text-shadow 0.3s ease, color 0.3s ease;
+}
+
+.back-link:hover {
+  color: var(--second-color);
+  text-shadow:
+    0 0 12px var(--second-color),
+    0 0 24px var(--second-color),
+    0 0 36px var(--second-color),
+    0 0 48px var(--second-color);
+}
