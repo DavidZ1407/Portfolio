@@ -20,10 +20,11 @@
   }
   
   .contact h1 {
-    font-size: 11rem;
+    font-size: 7rem;
     font-weight: 700;
-    margin-top: 1rem;
-    line-height: 2;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    line-height: 3;
     color: var(--main-color);
     text-shadow: 0 0 25px var(--main-color);
   }

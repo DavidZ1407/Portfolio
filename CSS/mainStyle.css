@@ -1,4 +1,3 @@
-
 * {
   margin: 0;
   padding: 0;
@@ -28,8 +27,13 @@ body {
   color: var(--text-color);
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-size: 2.4rem;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 2.5rem;
   margin: 1rem 0;
   font-weight: 700;
   line-height: 1.3;
@@ -64,7 +68,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .nav-container {
-  flex: 1; 
+  flex: 1;
 }
 
 .navbar {
@@ -74,13 +78,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .navbar a {
-  font-size: 1.8rem;
+  font-size: 2rem;
   color: var(--text-color);
   margin-left: 4rem;
   font-weight: 500;
   transition: 0.3s ease;
   border-bottom: 3px solid transparent;
-  
+
 }
 
 .nav-wrapper {
@@ -101,19 +105,49 @@ section {
   padding: 10rem 12% 10rem;
 }
 
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    text-shadow: 0 0 0px var(--main-color);
+
+  }
+
+  70% {
+    transform: scale(1.05);
+    text-shadow:
+      0 0 12px var(--main-color),
+      0 0 24px var(--main-color),
+      0 0 36px var(--main-color),
+      0 0 48px var(--main-color);
+
+  }
+
+  100% {
+    transform: scale(1);
+    text-shadow: 0 0 0px var(--main-color);
+
+  }
+}
 
 .language-switch {
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 500;
   color: var(--main-color);
   border-bottom: 3px solid var(--main-color);
   padding-bottom: 2px;
   margin-left: 2rem;
   cursor: pointer;
-  transition: color 0.3s, border-color 0.3s;
+  display: inline-block;
+  animation: pulse 1.8s infinite ease-in-out;
+  transition: color 0.3s, border-color 0.3s, text-shadow 0.3s;
 }
 
 .language-switch:hover {
   color: var(--second-color);
   border-color: var(--second-color);
+  text-shadow:
+    0 0 12px var(--second-color),
+    0 0 24px var(--second-color),
+    0 0 36px var(--second-color),
+    0 0 48px var(--second-color);
 }
