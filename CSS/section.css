@@ -22,7 +22,7 @@ section.project-section p {
   line-height: 1.6;
 }
 
-section.project-section ul {
+section.project-section ul li {
   font-size: 2.5rem;
   padding-left: 2rem;
   list-style: disc;
