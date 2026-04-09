@@ -1,0 +1,74 @@
+/* --- CONTACT SECTION STYLE --- */
+
+.contact {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 120px 10%;
+    background: #0a0a0a; /* Dunkler Hintergrund für den Glow-Effekt */
+}
+
+.contact_content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Die leuchtende Überschrift aus deinem Screenshot */
+.contact h1 {
+    font-size: 7rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--main-blue); /* Nutzt die Variable aus deiner style.css */
+    text-shadow: 0 0 25px var(--main-blue);
+    margin-bottom: 4rem;
+}
+
+.icons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3.5rem; /* Sauberer Abstand zwischen den Items */
+}
+
+/* Styling für die Links (Email, GitHub) und Info-Items */
+.icons a, .contact_item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.icons i {
+    font-size: 4rem;
+    margin-bottom: 0.8rem;
+}
+
+.icons p {
+    font-size: 2.2rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+/* Hover-Effekt: Wechselt die Farbe und glüht */
+.icons a:hover, .contact_item:hover {
+    color: var(--water-light);
+    text-shadow: 0 0 15px var(--water-light);
+    transform: translateY(-5px);
+    cursor: pointer;
+}
+
+/* Responsive Anpassung für mobile Geräte */
+@media (max-width: 768px) {
+    .contact h1 {
+        font-size: 4rem;
+    }
+    .icons p {
+        font-size: 1.4rem;
+    }
+}
