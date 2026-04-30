@@ -1,10 +1,42 @@
+// =====================
+// Navigation: Active Link Logik
+// =====================
+function updateActiveNavLink(currentSection) {
+    const navLinks = document.querySelectorAll('.navbar a');
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        const hrefSection = link.getAttribute('href').split('#')[1];
+        if (hrefSection === currentSection) {
+            link.classList.add('active');
+        }
+    });
+}
+
+function detectVisibleSectionOnScroll() {
+    const sections = document.querySelectorAll('section');
+    let currentSection = '';
+    const scrollY = window.scrollY + 200;
+
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+            currentSection = section.getAttribute('id');
+        }
+    });
+    if (currentSection) updateActiveNavLink(currentSection);
+}
+
+// =====================
+// Portfolio Rendering
+// =====================
 function renderPortfolio() {
     // Projekte
     const projectGrid = document.getElementById('project-grid');
-    if (projectGrid) {
+    if (projectGrid && typeof projects !== 'undefined') {
         projectGrid.innerHTML = projects.map(p => `
             <div class="col_box">
-                <a href="${p.link}">
+                <a href="project-detail.html?id=${p.id}">
                     <img src="${p.image}" alt="${p.name}">
                     <div class="col_overlay">
                         <div class="overlay_title">${p.name}</div>
@@ -40,13 +72,18 @@ function renderPortfolio() {
     if (contactContainer && typeof contactData !== 'undefined') {
         contactContainer.innerHTML = contactData.map(c => {
             const content = `<i class='bx ${c.icon}'></i><p>${c.text}</p>`;
-            return c.isLink ? `<a href="${c.link}">${content}</a>` : `<div class="contact_item">${content}</div>`;
+            return c.isLink ? `<a href="${c.link}" target="_blank">${content}</a>` : `<div class="contact_item">${content}</div>`;
         }).join('');
     }
 }
 
+// =====================
+// Initialisierung
+// =====================
 document.addEventListener("DOMContentLoaded", () => {
     renderPortfolio();
+
+    // Scroll Animation Observer
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) entry.target.classList.add('show');
@@ -54,4 +91,19 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }, { threshold: 0.1 });
     document.querySelectorAll('.timeline_item').forEach(item => observer.observe(item));
+
+    // Nav-Click Feedback
+    const navLinks = document.querySelectorAll('.navbar a');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.forEach(item => item.classList.remove('active'));
+            link.classList.add('active');
+        });
+    });
+});
+
+let scrollTimeout;
+window.addEventListener("scroll", () => {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(detectVisibleSectionOnScroll, 50);
 });
