@@ -1,135 +1,218 @@
-:root {
-    --map-red: #e63946;
-    --parchment: rgba(241, 224, 198, 0.98);
-    --bronze: #cd7f32;
-    --timeline-center-width: 100px; 
+/* --- EXPEDITION CONTAINER (Zweispaltig) --- */
+.expedition_container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    margin-bottom: 100px;
+    padding: 0 50px;
 }
 
-/* --- SEKTION HINTERGRUND --- */
-.about_me { 
-    position: relative; 
-    padding: 150px 0; 
-    /* Das 'fixed' sorgt dafür, dass das Bild stehen bleibt und keine schwarzen Lücken entstehen */
-    background: linear-gradient(rgba(10,10,10,0.95), rgba(10,10,10,0.95)), 
-                url('Assets/Picture/grafik.jpg') center/cover no-repeat fixed; 
-    min-height: 100vh;
+.about_profile_box {
+    background: rgba(5, 13, 14, 0.85);
+    border: 2px solid #142f33;
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile_image {
     width: 100%;
-    overflow: hidden;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 0 30px rgba(73, 146, 154, 0.3);
 }
 
-.water_timeline { 
-    position: relative; 
-    max-width: 1400px; 
-    margin: auto; 
+.about_content_box {
     display: flex;
     flex-direction: column;
+    gap: 20px;
 }
 
-/* --- DIE GESTRICHELTE LINIE --- */
-.map-path-svg {
-    position: absolute; 
-    top: 0; 
-    bottom: 0; /* Erzwingt die Linie bis zum Ende der Sektion */
-    left: 50%; 
-    transform: translateX(-50%);
-    width: var(--timeline-center-width); 
-    height: 100%; 
-    z-index: 1; 
-    pointer-events: none;
-    overflow: visible; /* Wichtig, damit der Pfad nicht abgeschnitten wird */
+.about_text {
+    color: #cdcfd0;
+    font-size: 0.9rem;
+    line-height: 1.8;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
-/* --- DAS EINZELNE ITEM --- */
-.timeline_item {
-    position: relative; 
-    width: 100%; 
-    display: flex; 
-    align-items: center; 
-    margin-bottom: 180px; /* Großer Abstand zwischen den Stationen */
-    opacity: 0; 
-    transform: scale(0.9) translateY(30px);
-    transition: all 0.8s ease-out;
-    z-index: 2;
+.skills_title {
+    color: #c9a861;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 30px;
+    margin-bottom: 5px;
 }
 
-.timeline_item.show { opacity: 1; transform: scale(1) translateY(0); }
-
-/* --- DAS KREUZ (X) - FEST AN DER LINIE --- */
-.water_dot {
-    position: absolute; 
-    left: 50%; 
-    top: 50%;
-    /* Das Kreuz orientiert sich NUR an der Mitte der Sektion (50%) */
-    transform: translate(-50%, -50%) rotate(45deg) scale(0);
-    width: 28px; 
-    height: 28px; 
-    z-index: 10; 
+.skills_subtitle {
+    color: #8b7542;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
 }
 
-.water_dot::before, .water_dot::after { 
-    content: ''; 
-    position: absolute; 
-    background: var(--map-red); 
-}
-.water_dot::before { top: 0; left: 12px; width: 4px; height: 28px; }
-.water_dot::after { top: 12px; left: 0; width: 28px; height: 4px; }
-
-.timeline_item.show .water_dot { 
-    transform: translate(-50%, -50%) rotate(45deg) scale(1); 
+.skills_grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
 }
 
-/* --- DER ABSTANDHALTER --- */
-.timeline_content_wrapper {
-    width: 50%; 
+.skill_item_box {
+    background: rgba(3, 8, 9, 0.6);
+    border: 1px solid #142f33;
+    padding: 20px;
+    text-align: center;
+    transition: 0.3s;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
 
-/* Schiebt die Items nach links oder rechts */
-.timeline_item.left { justify-content: flex-start; }
-.timeline_item.right { justify-content: flex-end; }
-
-/* FIXER ABSTAND: Hier stellst du ein, wie weit die Box vom X weg ist */
-.timeline_item.left .timeline_content_wrapper { 
-    justify-content: flex-end; 
-    padding-right: 120px; 
+.skill_item_box i {
+    font-size: 1.8rem;
+    color: #49929a;
 }
 
-.timeline_item.right .timeline_content_wrapper { 
-    justify-content: flex-start; 
-    padding-left: 120px; 
+.skill_item_box span {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #cdcfd0;
 }
 
-/* --- DIE BOXEN (PERGAMENT) --- */
+.skill_item_box:hover {
+    border-color: #49929a;
+    background: rgba(73, 146, 154, 0.1);
+    transform: translateY(-3px);
+}
+
+/* --- SELECTED PROJECTS --- */
+.selected_projects {
+    text-align: center;
+    padding: 50px 50px 0;
+}
+
+.projects_label {
+    color: #8b7542;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+}
+
+.projects_row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.project_item {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #142f33;
+}
+
+.project_item img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    transition: 0.3s;
+}
+
+.project_item h4 {
+    background: rgba(5, 13, 14, 0.95);
+    color: #cdcfd0;
+    padding: 15px;
+    text-align: center;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+}
+
+.project_item:hover img {
+    transform: scale(1.05);
+}
+
+/* --- TIMELINE --- */
+.water_timeline {
+    position: relative;
+    max-width: 1000px;
+    margin: auto;
+    padding: 50px;
+}
+
+.timeline_item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 100px;
+    opacity: 0;
+    transition: 0.8s;
+    position: relative;
+}
+
+.timeline_item.show {
+    opacity: 1;
+}
+
+.timeline_item::before {
+    content: '';
+    position: absolute;
+    left: -60px;
+    width: 20px;
+    height: 20px;
+    background: #49929a;
+    border-radius: 50%;
+    box-shadow: 0 0 20px #49929a;
+    z-index: 10;
+}
+
+.timeline_item::after {
+    content: '';
+    position: absolute;
+    left: -50px;
+    top: 50px;
+    width: 2px;
+    height: 100px;
+    background: #142f33;
+}
+
+.timeline_item:last-child::after {
+    display: none;
+}
+
 .timeline_content {
-    background: var(--parchment); 
-    color: #1a1a1a; 
+    background: rgba(5, 13, 14, 0.85);
+    border: 1px solid #142f33;
     padding: 30px;
-    border: 3px solid var(--bronze); 
-    border-radius: 12px;
-    box-shadow: 15px 15px 0px rgba(0,0,0,0.4);
-    width: fit-content; 
-    min-width: 280px; 
-    max-width: 450px;
-    overflow-wrap: break-word; /* Verhindert, dass Text aus der Box schaut */
+    margin-left: 40px;
+    flex: 1;
 }
 
-.year { 
-    color: var(--map-red); 
-    font-weight: bold; 
-    font-size: 1.4rem; 
-    display: block; 
-    margin-bottom: 8px; 
+.timeline_year {
+    color: #49929a;
+    font-family: monospace;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
 }
 
-.timeline_content h4 { 
-    font-size: 2rem; 
-    color: #4a2c10; 
-    margin-bottom: 10px; 
-    line-height: 1.1;
+.timeline_title {
+    color: #cdcfd0;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
 }
 
-.timeline_content p { 
-    font-size: 1.2rem; 
-    color: #333; 
-    line-height: 1.4; 
+.timeline_org {
+    color: #8b7542;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.timeline_icon {
+    font-size: 1.5rem;
 }

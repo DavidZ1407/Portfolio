@@ -2,21 +2,33 @@ const projects = [
     {
         name: "Unreal Tower Defense",
         description: "Action-Gameplay & Strategie in UE5",
-        image: "Assets/Picture/Project1.png",
+        image: "assets/Picture/Project1.png",
         link: "project1.html"
     },
     {
         name: "3D Space Scene",
         description: "Blender Animation & Modeling",
-        image: "Assets/Picture/Project3.png",
+        image: "assets/Picture/Project3.png",
         link: "project3.html"
     },
     {
         name: "Character Design",
         description: "Konzeptkunst in Krita",
-        image: "Assets/Picture/Project2.png",
+        image: "assets/Picture/Project2.png",
         link: "project2.html"
     }
+];
+
+const skills = [
+    { name: "Unreal Engine 5", icon: "bxl-unity" },
+    { name: "Game Systems", icon: "bx-cog" },
+    { name: "Level Design", icon: "bx-layouts" },
+    { name: "Narrative Weaving", icon: "bx-book" },
+    { name: "3D Modeling", icon: "bx-cube" },
+    { name: "VFX Shaders", icon: "bx-star" },
+    { name: "Soundscapes", icon: "bx-volume-full" },
+    { name: "Immersive Audio", icon: "bx-volume" },
+    { name: "Pixel Art", icon: "bx-image" }
 ];
 
 const timelineData = [
