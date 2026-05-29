@@ -1,0 +1,68 @@
+/* ========================================= */
+/* FULL-PAGE UNDERWATER GOTHIC EXPERIENCE */
+/* Immersive scroll through the deep */
+/* ========================================= */
+
+/* ========================================= */
+/* DEPTH FOG OVERLAY - Gets denser as you go */
+/* ========================================= */
+.depth-fog-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 6;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.depth-fog-overlay.active {
+    opacity: 1;
+}
+
+/* ========================================= */
+/* VIGNETTE - Deep water darkness at edges */
+/* ========================================= */
+.depth-vignette {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 6;
+    background: radial-gradient(
+        ellipse at center,
+        transparent 25%,
+        rgba(3, 8, 9, 0.5) 60%,
+        rgba(3, 8, 9, 0.9) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.depth-vignette.active {
+    opacity: 1;
+}
+
+/* ========================================= */
+/* PARTICLE CANVAS - Full viewport */
+/* ========================================= */
+.depth-particles-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 7;
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+/* ========================================= */
+/* RESPONSIVE */
+/* ========================================= */
+@media (prefers-reduced-motion: reduce) {
+    .scroll-ripple {
+        display: none;
+    }
+    .depth-particles-canvas {
+        display: none;
+    }
+}

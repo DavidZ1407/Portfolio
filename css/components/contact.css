@@ -1,0 +1,92 @@
+/* ========================================= */
+/* CONTACT COMPONENT */
+/* ========================================= */
+
+/* Contact Section */
+.contact_section {
+    padding: 150px 50px;
+    background: var(--abyss-deep);
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Contact Icons Container */
+.contact_icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
+    flex-wrap: wrap;
+    margin-top: 60px;
+}
+
+/* Contact Icon Link */
+.contact_icon_link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-light);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.contact_icon_link i {
+    font-size: 3.5rem;
+    color: var(--gold-accent);
+    transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.contact_icon_link span {
+    font-family: monospace;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-light);
+}
+
+.contact_icon_link:hover i {
+    color: var(--cyan-glow);
+    text-shadow: 0 0 20px var(--cyan-glow);
+    transform: scale(1.2);
+}
+
+.contact_icon_link:hover span {
+    color: var(--cyan-glow);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .contact_section {
+        padding: 100px 20px;
+    }
+    
+    .contact_icons {
+        gap: 40px;
+    }
+    
+    .contact_icon_link i {
+        font-size: 2.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact_section {
+        padding: 80px 15px;
+    }
+    
+    .contact_icons {
+        gap: 30px;
+    }
+    
+    .contact_icon_link i {
+        font-size: 2.5rem;
+    }
+    
+    .contact_icon_link span {
+        font-size: 0.6rem;
+    }
+}

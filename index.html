@@ -4,55 +4,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Portfolio von David Zahn - Games & Immersive Media Creator. Fokus auf Atmosphäre, Narrative und Gameplay.">
     <title>David Zahn | Portfolio</title>
 
-    <!-- JS-->
-    <script defer src="script.js"></script>
-    <!-- CSS -->
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="projects.css">
-    <link rel="stylesheet" href="aboutMe.css">
-    <link rel="stylesheet" href="contact.css">
+    <!-- Preload critical assets -->
+    <link rel="preload" href="css/main.css" as="style">
+    <link rel="preload" href="css/components/hero.css" as="style">
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    
+    <!-- Component CSS Files -->
+    <link rel="stylesheet" href="css/components/navbar.css">
+    <link rel="stylesheet" href="css/components/hero.css">
+    <link rel="stylesheet" href="css/components/projects.css">
+    <link rel="stylesheet" href="css/components/about.css">
+    <link rel="stylesheet" href="css/components/journey.css">
+    <link rel="stylesheet" href="css/components/contact.css">
+    <link rel="stylesheet" href="css/components/parallax.css">
+    <link rel="stylesheet" href="css/components/modal.css">
+    <link rel="stylesheet" href="css/components/depth-experience.css">
 
-    <!-- BOXICONS -->
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Main JavaScript (ES Module - imports all modules and constants) -->
+    <script defer type="module" src="js/main.js"></script>
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet' crossorigin="anonymous">
+    
+    <!-- Google Fonts - Gothic Style -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
     <!-- ========================================= -->
+    <!-- PARALLAX CONTAINER -->
+    <!-- ========================================= -->
+    <div class="parallax-container">
+        <div class="parallax-layer parallax-bg">
+            <div class="sky-layer">
+                <div class="castle-silhouette"></div>
+            </div>
+        </div>
+        <div class="parallax-layer parallax-mid">
+            <div class="castle-layer">
+                <div class="castle-wall-left"></div>
+                <div class="castle-wall-right"></div>
+            </div>
+        </div>
+        <div class="parallax-layer parallax-fg">
+            <div class="particles-layer"></div>
+        </div>
+        <div class="underwater-layer"></div>
+        <div class="water-surface"></div>
+    </div>
+
+    <!-- ========================================= -->
     <!-- SIDEBAR -->
     <!-- ========================================= -->
-
     <div class="sidebar_socials">
-
         <a href="mailto:David-Zahn@hotmail.com">
             <i class='bx bx-envelope'></i>
             <span>EMAIL</span>
         </a>
-
         <a href="https://github.com/DavidZ1407" target="_blank">
             <i class='bx bxl-github'></i>
             <span>GITHUB</span>
         </a>
-
-        <a href="#">
+        <a href="https://linkedin.com/in/explorerzahn" target="_blank">
             <i class='bx bxl-linkedin'></i>
             <span>LINKEDIN</span>
         </a>
-
     </div>
 
     <!-- ========================================= -->
     <!-- HEADER -->
     <!-- ========================================= -->
-
     <header class="header">
-
         <a href="#" class="logo">
             DAVID <span>ZAHN</span>
         </a>
-
         <nav class="navbar">
             <a href="#home" class="nav-link active">HOMEPAGE</a>
             <a href="#work" class="nav-link">ARCHIVES</a>
@@ -60,276 +93,196 @@
             <a href="#journey" class="nav-link">JOURNEY</a>
             <a href="#contact" class="nav-link">CONTACT</a>
         </nav>
-
     </header>
 
     <!-- ========================================= -->
     <!-- HERO -->
     <!-- ========================================= -->
-
     <section id="home" class="hero_section">
-
         <div class="hero_scene"></div>
-
         <div class="hero_overlay"></div>
-
-        <!-- LEFT VISUAL -->
         <div class="hero_visual">
-
             <div class="hero_visual_glow"></div>
-
         </div>
-
-        <!-- RIGHT PANEL -->
         <div class="hero_panel">
-
             <div class="hero_content">
-
-                <p class="hero_small">
-                    GAMES & IMMERSIVE MEDIA CREATOR
-                </p>
-
+                <p class="hero_small">GAMES & IMMERSIVE MEDIA CREATOR</p>
                 <h1>DAVID ZAHN</h1>
-
                 <h2>AETHERTTECT</h2>
-
                 <p class="hero_description">
                     Descend into realms of ancient mystery and forgotten lore.
                     Where atmosphere guides, and gameplay binds.
                     A chronicle of suffering, faith, and the untold.
                 </p>
-
-                <a href="#work" class="descend_btn">
-                    DESCEND
-                </a>
-
-                <!-- SKILLS & WORKS CONTAINER -->
+                <a href="#work" class="descend_btn">DESCEND</a>
                 <div class="hero_showcase_container">
-
-                    <!-- WORKS CAROUSEL -->
                     <div class="works_carousel_section">
                         <h3>WORKS IN PROGRESS</h3>
-
                         <div class="carousel_container">
                             <div class="carousel_track">
-
                                 <div class="carousel_slide">
-                                    <img src="assets/Picture/Project1.png" alt="UNREAL TOWER DEFENSE">
+                                    <img src="assets/Picture/Project1.png" alt="UNREAL TOWER DEFENSE" loading="lazy" decoding="async">
                                     <div class="carousel_info">
                                         <h4>UNREAL TOWER DEFENSE</h4>
                                         <p>Action Gameplay & Strategy</p>
                                     </div>
                                 </div>
-
                                 <div class="carousel_slide">
-                                    <img src="assets/Picture/Project2.png" alt="CHARACTER DESIGN">
+                                    <img src="assets/Picture/Project2.png" alt="CHARACTER DESIGN" loading="lazy" decoding="async">
                                     <div class="carousel_info">
                                         <h4>CHARACTER DESIGN</h4>
                                         <p>Dark Fantasy Concept Art</p>
                                     </div>
                                 </div>
-
                                 <div class="carousel_slide">
-                                    <img src="assets/Picture/Project3.png" alt="3D SPACE SCENE">
+                                    <img src="assets/Picture/Project3.png" alt="3D SPACE SCENE" loading="lazy" decoding="async">
                                     <div class="carousel_info">
                                         <h4>3D SPACE SCENE</h4>
                                         <p>Blender Environment</p>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
-
                         <div class="carousel_indicators">
                             <button class="indicator active" data-slide="0"></button>
                             <button class="indicator" data-slide="1"></button>
                             <button class="indicator" data-slide="2"></button>
                         </div>
                     </div>
-
-                    <!-- SKILLS -->
                     <div class="arsenal_section">
-
                         <h3>WEAPONS IN MY ARSENAL</h3>
-
                         <div class="arsenal_grid">
-
-                            <div class="skill_item">
-                                <i class='bx bxl-unity'></i>
-                                <span>UNREAL ENGINE 5</span>
-                            </div>
-
-                            <div class="skill_item">
-                                <i class='bx bx-cog'></i>
-                                <span>GAME SYSTEMS</span>
-                            </div>
-
-                            <div class="skill_item">
-                                <i class='bx bx-layout'></i>
-                                <span>LEVEL DESIGN</span>
-                            </div>
-
-                            <div class="skill_item">
-                                <i class='bx bx-book'></i>
-                                <span>NARRATIVE WEAVING</span>
-                            </div>
-
-                            <div class="skill_item">
-                                <i class='bx bx-cube'></i>
-                                <span>3D MODELING</span>
-                            </div>
-
-                            <div class="skill_item">
-                                <i class='bx bx-star'></i>
-                                <span>VFX SHADERS</span>
-                            </div>
-
-                            <div class="skill_item">
-                                <i class='bx bx-volume-full'></i>
-                                <span>SOUNDSCAPES</span>
-                            </div>
-
-                            <div class="skill_item">
-                                <i class='bx bx-volume'></i>
-                                <span>IMMERSIVE AUDIO</span>
-                            </div>
-
-                            <div class="skill_item">
-                                <i class='bx bx-image'></i>
-                                <span>PIXEL ART</span>
-                            </div>
-
+                            <div class="skill_item"><i class='bx bxl-unity'></i><span>UNREAL ENGINE 5</span></div>
+                            <div class="skill_item"><i class='bx bx-cog'></i><span>GAME SYSTEMS</span></div>
+                            <div class="skill_item"><i class='bx bx-layout'></i><span>LEVEL DESIGN</span></div>
+                            <div class="skill_item"><i class='bx bx-book'></i><span>NARRATIVE WEAVING</span></div>
+                            <div class="skill_item"><i class='bx bx-cube'></i><span>3D MODELING</span></div>
+                            <div class="skill_item"><i class='bx bx-star'></i><span>VFX SHADERS</span></div>
+                            <div class="skill_item"><i class='bx bx-volume-full'></i><span>SOUNDSCAPES</span></div>
+                            <div class="skill_item"><i class='bx bx-volume'></i><span>IMMERSIVE AUDIO</span></div>
+                            <div class="skill_item"><i class='bx bx-image'></i><span>PIXEL ART</span></div>
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
     </section>
 
     <!-- ========================================= -->
-    <!-- ARCHIVES (PROJECTS) -->
+    <!-- ARCHIVES (PROJECTS) - 3D PORTAL CAROUSEL -->
     <!-- ========================================= -->
-
     <section id="work" class="archives_section">
+        <!-- Underwater Atmosphere -->
+        <div class="portal-room-atmosphere">
+            <div class="light-rays-container">
+                <div class="light-ray lr-1"></div>
+                <div class="light-ray lr-2"></div>
+                <div class="light-ray lr-3"></div>
+                <div class="light-ray lr-4"></div>
+                <div class="light-ray lr-5"></div>
+            </div>
+            <div class="underwater-caustics"></div>
+            <canvas class="portal-bubbles-canvas"></canvas>
+        </div>
 
         <h1 class="section_title">SELECTED ARCHIVES</h1>
         <p class="section_subtitle">Journey through the deep, forgotten realms.</p>
 
-        <div class="projects_grid">
-            <div class="project_card">
-                <img src="assets/Picture/Project1.png" alt="">
-                <div class="project_overlay">
+        <!-- 3D Portal Carousel -->
+        <div class="portal-carousel">
+            <!-- Slide 0 -->
+            <div class="portal-slide" data-index="0" data-project="0">
+                <img src="assets/Picture/Project1.png" alt="Unreal Tower Defense" loading="lazy" decoding="async">
+                <div class="slide-glow"></div>
+                <div class="slide-frame">
+                    <span class="fc-tl"></span><span class="fc-tr"></span>
+                    <span class="fc-bl"></span><span class="fc-br"></span>
+                </div>
+                <div class="slide-overlay">
                     <h2>UNREAL TOWER DEFENSE</h2>
                     <p>Action Gameplay & Strategy</p>
                 </div>
             </div>
-
-            <div class="project_card">
-                <img src="assets/Picture/Project2.png" alt="">
-                <div class="project_overlay">
+            <!-- Slide 1 -->
+            <div class="portal-slide" data-index="1" data-project="1">
+                <img src="assets/Picture/Project2.png" alt="Character Design" loading="lazy" decoding="async">
+                <div class="slide-glow"></div>
+                <div class="slide-frame">
+                    <span class="fc-tl"></span><span class="fc-tr"></span>
+                    <span class="fc-bl"></span><span class="fc-br"></span>
+                </div>
+                <div class="slide-overlay">
                     <h2>CHARACTER DESIGN</h2>
                     <p>Dark Fantasy Concept Art</p>
                 </div>
             </div>
-
-            <div class="project_card">
-                <img src="assets/Picture/Project3.png" alt="">
-                <div class="project_overlay">
+            <!-- Slide 2 -->
+            <div class="portal-slide" data-index="2" data-project="2">
+                <img src="assets/Picture/Project3.png" alt="3D Space Scene" loading="lazy" decoding="async">
+                <div class="slide-glow"></div>
+                <div class="slide-frame">
+                    <span class="fc-tl"></span><span class="fc-tr"></span>
+                    <span class="fc-bl"></span><span class="fc-br"></span>
+                </div>
+                <div class="slide-overlay">
                     <h2>3D SPACE SCENE</h2>
                     <p>Blender Environment</p>
                 </div>
             </div>
-        </div>
 
+            <!-- Navigation -->
+            <button class="carousel-arrow carousel-prev" aria-label="Previous">&#8249;</button>
+            <button class="carousel-arrow carousel-next" aria-label="Next">&#8250;</button>
+
+            <div class="carousel-dots">
+                <button class="c-dot active" data-slide="0"></button>
+                <button class="c-dot" data-slide="1"></button>
+                <button class="c-dot" data-slide="2"></button>
+            </div>
+        </div>
     </section>
 
     <!-- ========================================= -->
     <!-- ABOUT (LEXICON) -->
     <!-- ========================================= -->
-
     <section id="about" class="lexicon_section">
-
         <h1 class="section_title">ABOUT ME</h1>
         <p class="section_subtitle">A LITTLE SOMETHING FROM THE SURFACE...</p>
-
         <div class="expedition_container">
-
-            <!-- LEFT: PROFIL -->
             <div class="about_profile_box">
-                <img src="assets/Picture/Profile.png" alt="David Zahn Profile" class="profile_image">
+                <img src="assets/Picture/Profile.png" alt="David Zahn Profile" class="profile_image" loading="lazy" decoding="async">
             </div>
-
-            <!-- RIGHT: BESCHREIBUNG & SKILLS -->
             <div class="about_content_box">
-                <p class="about_text">
-                    I'M A GAME DESIGNER & IMMERSIVE MEDIA STUDENT
-                </p>
-
-                <p class="about_text">
-                    PASSIONATE ABOUT CREATING DARK, MEANINGFUL EXPERIENCES.
-                    I LOVE GAMES THAT CHALLENGE, INSPIRE, AND LEAVE A MARK.
-                </p>
-
+                <p class="about_text">I'M A GAME DESIGNER & IMMERSIVE MEDIA STUDENT</p>
+                <p class="about_text">PASSIONATE ABOUT CREATING DARK, MEANINGFUL EXPERIENCES. I LOVE GAMES THAT CHALLENGE, INSPIRE, AND LEAVE A MARK.</p>
                 <h3 class="skills_title">SKILLS & TOOLS</h3>
                 <p class="skills_subtitle">Weapons in my Arsenal.</p>
-
                 <div class="skills_grid">
-                    <div class="skill_item_box">
-                        <i class='bx bxl-unity'></i>
-                        <span>GAME DESIGN</span>
-                    </div>
-                    <div class="skill_item_box">
-                        <i class='bx bx-layout'></i>
-                        <span>LEVEL DESIGN</span>
-                    </div>
-                    <div class="skill_item_box">
-                        <i class='bx bx-cog'></i>
-                        <span>SYSTEMS DESIGN</span>
-                    </div>
-                    <div class="skill_item_box">
-                        <i class='bx bx-book'></i>
-                        <span>NARRATIVE DESIGN</span>
-                    </div>
-                    <div class="skill_item_box">
-                        <i class='bx bx-image'></i>
-                        <span>UI/UX DESIGN</span>
-                    </div>
-                    <div class="skill_item_box">
-                        <i class='bx bx-palette'></i>
-                        <span>PIXEL ART DIRECTION</span>
-                    </div>
-                    <div class="skill_item_box">
-                        <i class='bx bx-cube'></i>
-                        <span>PROTOTYPING</span>
-                    </div>
-                    <div class="skill_item_box">
-                        <i class='bx bx-file'></i>
-                        <span>DOCUMENTATION</span>
-                    </div>
+                    <div class="skill_item_box"><i class='bx bxl-unity'></i><span>GAME DESIGN</span></div>
+                    <div class="skill_item_box"><i class='bx bx-layout'></i><span>LEVEL DESIGN</span></div>
+                    <div class="skill_item_box"><i class='bx bx-cog'></i><span>SYSTEMS DESIGN</span></div>
+                    <div class="skill_item_box"><i class='bx bx-book'></i><span>NARRATIVE DESIGN</span></div>
+                    <div class="skill_item_box"><i class='bx bx-image'></i><span>UI/UX DESIGN</span></div>
+                    <div class="skill_item_box"><i class='bx bx-palette'></i><span>PIXEL ART DIRECTION</span></div>
+                    <div class="skill_item_box"><i class='bx bx-cube'></i><span>PROTOTYPING</span></div>
+                    <div class="skill_item_box"><i class='bx bx-file'></i><span>DOCUMENTATION</span></div>
                 </div>
             </div>
-
         </div>
-
     </section>
 
     <!-- ========================================= -->
     <!-- JOURNEY (TIMELINE) -->
     <!-- ========================================= -->
-
     <section id="journey" class="journey_section">
-
         <h1 class="section_title">JOURNEY CHRONICLES</h1>
         <p class="section_subtitle">A Record of Expedition and Creation.</p>
-
         <div class="water_timeline">
 
-            <div class="timeline_item show">
+            <!-- Ghost chain SVG will be generated by JS (chain.js) -->
+
+
+            <div class="timeline_item">
                 <div class="timeline_content">
                     <div class="timeline_year">SEPT 2025 - approx. 2028</div>
                     <div class="timeline_title">Games & Immersive Media (B.A.)</div>
@@ -338,7 +291,7 @@
                 </div>
             </div>
 
-            <div class="timeline_item show">
+            <div class="timeline_item">
                 <div class="timeline_content">
                     <div class="timeline_year">MAR 2024 - JUL 2024</div>
                     <div class="timeline_title">Student Assistant</div>
@@ -347,7 +300,7 @@
                 </div>
             </div>
 
-            <div class="timeline_item show">
+            <div class="timeline_item">
                 <div class="timeline_content">
                     <div class="timeline_year">SEPT 2023 - SEPT 2025</div>
                     <div class="timeline_title">Media Conception (B.A.)</div>
@@ -356,7 +309,7 @@
                 </div>
             </div>
 
-            <div class="timeline_item show">
+            <div class="timeline_item">
                 <div class="timeline_content">
                     <div class="timeline_year">AUG 2019 - JUL 2021</div>
                     <div class="timeline_title">Apprentice Office Clerk</div>
@@ -365,7 +318,7 @@
                 </div>
             </div>
 
-            <div class="timeline_item show">
+            <div class="timeline_item">
                 <div class="timeline_content">
                     <div class="timeline_year">AUG 2018 - JUL 2021</div>
                     <div class="timeline_title">Vocational School Donaueschingen</div>
@@ -375,49 +328,37 @@
             </div>
 
         </div>
-
     </section>
 
     <!-- ========================================= -->
     <!-- CONTACT -->
     <!-- ========================================= -->
-
     <section id="contact" class="contact_section">
-
         <h1 class="section_title">ESTABLISH CONNECTION</h1>
         <p class="section_subtitle">Expedition Access Channels</p>
-
         <div class="contact_icons">
-            <a href="mailto:David-Zahn@hotmail.com" class="contact_icon_link" title="Email">
-                <i class='bx bx-envelope'></i>
-                <span>EMAIL</span>
-            </a>
-
-            <a href="https://linkedin.com/in/explorerzahn" target="_blank" class="contact_icon_link" title="LinkedIn">
-                <i class='bx bxl-linkedin'></i>
-                <span>LINKEDIN</span>
-            </a>
-
-            <a href="https://x.com/archivistzahn" target="_blank" class="contact_icon_link" title="Twitter">
-                <i class='bx bxl-twitter'></i>
-                <span>TWITTER</span>
-            </a>
-
-            <a href="https://github.com/DavidZ1407" target="_blank" class="contact_icon_link" title="GitHub">
-                <i class='bx bxl-github'></i>
-                <span>GITHUB</span>
-            </a>
-
-            <a href="https://itch.io/explorer" target="_blank" class="contact_icon_link" title="Itch.io">
-                <i class='bx bxl-itch-io'></i>
-                <span>ITCH.IO</span>
-            </a>
+            <a href="mailto:David-Zahn@hotmail.com" class="contact_icon_link" title="Email"><i class='bx bx-envelope'></i><span>EMAIL</span></a>
+            <a href="https://linkedin.com/in/explorerzahn" target="_blank" class="contact_icon_link" title="LinkedIn"><i class='bx bxl-linkedin'></i><span>LINKEDIN</span></a>
+            <a href="https://x.com/archivistzahn" target="_blank" class="contact_icon_link" title="Twitter"><i class='bx bxl-twitter'></i><span>TWITTER</span></a>
+            <a href="https://github.com/DavidZ1407" target="_blank" class="contact_icon_link" title="GitHub"><i class='bx bxl-github'></i><span>GITHUB</span></a>
+            <a href="https://itch.io/explorer" target="_blank" class="contact_icon_link" title="Itch.io"><i class='bx bxl-itch-io'></i><span>ITCH.IO</span></a>
         </div>
-
     </section>
 
+    <!-- ========================================= -->
+    <!-- FOOTER -->
+    <!-- ========================================= -->
+    <footer class="site_footer">
+        <div class="footer_content">
+            <p class="footer_text">© 2025 DAVID ZAHN — ALL RIGHTS RESERVED</p>
+            <p class="footer_subtext">FORGED IN THE DEPTHS</p>
+            <a href="#home" class="back_to_top" aria-label="Back to top">
+                <i class='bx bx-chevron-up'></i>
+                <span>ASCEND</span>
+            </a>
+        </div>
+    </footer>
+
 </body>
-
-
 
 </html>

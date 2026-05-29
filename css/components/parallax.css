@@ -1,0 +1,393 @@
+/* ========================================= */
+/* PARALLAX COMPONENT */
+/* ========================================= */
+
+/* Parallax Container */
+.parallax-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+/* Ensure body and html have proper stacking */
+html, body {
+    position: relative;
+}
+
+/* Ensure sections are above parallax */
+header, section {
+    position: relative;
+    z-index: 5;
+}
+
+/* Parallax Layers */
+.parallax-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    will-change: transform;
+    transition: transform 0.1s linear;
+}
+
+.parallax-bg {
+    z-index: 0;
+}
+
+.parallax-mid {
+    z-index: 1;
+}
+
+.parallax-fg {
+    z-index: 2;
+}
+
+/* ========================================= */
+/* SKY/CLIFF LAYER (Hero - Above Water) */
+/* ========================================= */
+.sky-layer {
+    background: linear-gradient(
+        to bottom,
+        #0a0e1a 0%,
+        #1a1a2e 30%,
+        #16213e 60%,
+        #0f3460 100%
+    );
+}
+
+/* Cliff Silhouette - Placeholder */
+.cliff-silhouette {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 35%;
+    background: linear-gradient(to top, #0a0e1a, transparent);
+    clip-path: polygon(
+        0% 100%, 
+        5% 85%, 
+        15% 90%, 
+        25% 70%, 
+        35% 80%, 
+        45% 60%, 
+        55% 75%, 
+        65% 55%, 
+        75% 70%, 
+        85% 65%, 
+        95% 80%, 
+        100% 100%
+    );
+}
+
+/* Castle Silhouette - Placeholder (distant) */
+.castle-silhouette {
+    position: absolute;
+    bottom: 25%;
+    right: 10%;
+    width: 200px;
+    height: 150px;
+    background: linear-gradient(to top, #0a0e1a, transparent);
+    clip-path: polygon(
+        20% 100%, 
+        20% 60%, 
+        25% 60%, 
+        25% 40%, 
+        30% 40%, 
+        30% 20%, 
+        35% 20%, 
+        35% 40%, 
+        40% 40%, 
+        40% 50%, 
+        50% 50%, 
+        50% 30%, 
+        55% 30%, 
+        55% 50%, 
+        60% 50%, 
+        60% 40%, 
+        65% 40%, 
+        65% 60%, 
+        70% 60%, 
+        70% 100%
+    );
+    opacity: 0.6;
+}
+
+/* ========================================= */
+/* UNDERWATER LAYER (Transition) */
+/* ========================================= */
+.underwater-layer {
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(10, 22, 40, 0.3) 30%,
+        rgba(13, 33, 55, 0.5) 60%,
+        rgba(26, 58, 92, 0.7) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.underwater-layer.active {
+    opacity: 1;
+}
+
+/* Water Surface Line */
+.water-surface {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, 
+        transparent, 
+        var(--cyan-glow), 
+        transparent
+    );
+    box-shadow: 0 0 20px var(--cyan-glow);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.water-surface.active {
+    opacity: 0.8;
+    animation: surface-wave 3s ease-in-out infinite;
+}
+
+@keyframes surface-wave {
+    0%, 100% { transform: scaleY(1); }
+    50% { transform: scaleY(1.5); }
+}
+
+/* ========================================= */
+/* CASTLE LAYER (Mid-ground) */
+/* ========================================= */
+.castle-layer {
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+.castle-layer.active {
+    opacity: 1;
+}
+
+/* Castle Walls - Placeholder */
+.castle-wall-left {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 15%;
+    height: 60%;
+    background: linear-gradient(to right, #1a1a2e, transparent);
+    clip-path: polygon(0% 100%, 0% 20%, 100% 0%, 100% 100%);
+}
+
+.castle-wall-right {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 15%;
+    height: 60%;
+    background: linear-gradient(to left, #1a1a2e, transparent);
+    clip-path: polygon(0% 0%, 100% 20%, 100% 100%, 0% 100%);
+}
+
+/* Castle Pillars */
+.pillar {
+    position: absolute;
+    bottom: 0;
+    width: 30px;
+    height: 200px;
+    background: linear-gradient(to bottom, #2a2a3e, #1a1a2e);
+    border: 1px solid rgba(201, 168, 97, 0.2);
+}
+
+.pillar::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -5px;
+    width: 40px;
+    height: 20px;
+    background: linear-gradient(to bottom, #3a3a4e, #2a2a3e);
+    clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
+}
+
+/* ========================================= */
+/* FOREGROUND PARTICLES LAYER */
+/* ========================================= */
+.particles-layer {
+    z-index: 3;
+    pointer-events: none;
+}
+
+/* Individual Particle */
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--cyan-glow);
+    opacity: 0;
+    animation: particle-float 6s ease-in-out infinite;
+}
+
+.particle:nth-child(odd) {
+    background: var(--gold-accent);
+}
+
+.particle:nth-child(3n) {
+    background: var(--blood-glow);
+    border-radius: 2px;
+}
+
+@keyframes particle-float {
+    0%, 100% {
+        opacity: 0;
+        transform: translateY(0) translateX(0);
+    }
+    10% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 0.3;
+        transform: translateY(-30px) translateX(15px);
+    }
+    90% {
+        opacity: 0.1;
+    }
+}
+
+/* Bubbles */
+.bubble {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(73, 146, 154, 0.3);
+    background: rgba(73, 146, 154, 0.05);
+    animation: bubble-rise 8s ease-in infinite;
+}
+
+@keyframes bubble-rise {
+    0% {
+        transform: translateY(100vh) scale(1);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.4;
+    }
+    90% {
+        opacity: 0.2;
+    }
+    100% {
+        transform: translateY(-50px) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* Fish Silhouettes - Placeholder */
+.fish {
+    position: absolute;
+    width: 30px;
+    height: 15px;
+    background: linear-gradient(to right, #1a1a2e, #2a2a3e);
+    clip-path: polygon(
+        0% 50%, 
+        20% 20%, 
+        80% 0%, 
+        100% 50%, 
+        80% 100%, 
+        20% 80%
+    );
+    opacity: 0.3;
+    animation: fish-swim 12s linear infinite;
+}
+
+.fish:nth-child(even) {
+    animation-direction: reverse;
+    animation-duration: 15s;
+}
+
+@keyframes fish-swim {
+    0% {
+        transform: translateX(-100px) translateY(0);
+    }
+    25% {
+        transform: translateX(25vw) translateY(-20px);
+    }
+    50% {
+        transform: translateX(50vw) translateY(10px);
+    }
+    75% {
+        transform: translateX(75vw) translateY(-10px);
+    }
+    100% {
+        transform: translateX(calc(100vw + 100px)) translateY(0);
+    }
+}
+
+/* Light Rays */
+.light-ray {
+    position: absolute;
+    top: -10%;
+    width: 2px;
+    height: 120%;
+    background: linear-gradient(
+        to bottom,
+        rgba(73, 146, 154, 0.4),
+        transparent
+    );
+    transform-origin: top center;
+    opacity: 0;
+    animation: light-ray-shine 8s ease-in-out infinite;
+}
+
+@keyframes light-ray-shine {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 0.3; }
+}
+
+/* ========================================= */
+/* TRANSITION ZONES */
+/* ========================================= */
+.transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(10, 22, 40, 0.5) 50%,
+        rgba(3, 8, 9, 0.9) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* ========================================= */
+/* RESPONSIVE */
+/* ========================================= */
+@media (max-width: 768px) {
+    .castle-silhouette {
+        width: 100px;
+        height: 80px;
+        bottom: 30%;
+        right: 5%;
+    }
+    
+    .castle-wall-left,
+    .castle-wall-right {
+        width: 10%;
+    }
+    
+    .pillar {
+        width: 20px;
+        height: 150px;
+    }
+}

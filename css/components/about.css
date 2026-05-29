@@ -1,0 +1,142 @@
+/* ========================================= */
+/* ABOUT COMPONENT */
+/* ========================================= */
+
+/* Expedition Container (Two Column Layout) */
+.expedition_container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    margin-bottom: 100px;
+    padding: 0 50px;
+}
+
+/* About Profile Box */
+.about_profile_box {
+    background: rgba(5, 13, 14, 0.85);
+    border: 2px solid var(--stone-border);
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about_profile_box:hover {
+    border-color: var(--gold-accent);
+    box-shadow: 0 0 20px rgba(201, 168, 97, 0.2);
+}
+
+.profile_image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 0 30px rgba(73, 146, 154, 0.3);
+}
+
+/* About Content Box */
+.about_content_box {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.about_text {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    line-height: 1.8;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Skills Section */
+.skills_title {
+    color: var(--gold-accent);
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 30px;
+    margin-bottom: 5px;
+}
+
+.skills_subtitle {
+    color: var(--gold-dark);
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+.skills_grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+}
+
+/* Skill Item Box */
+.skill_item_box {
+    background: rgba(3, 8, 9, 0.6);
+    border: 1px solid var(--stone-border);
+    padding: 20px;
+    text-align: center;
+    transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.skill_item_box i {
+    font-size: 1.8rem;
+    color: var(--cyan-glow);
+}
+
+.skill_item_box span {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-light);
+}
+
+.skill_item_box:hover {
+    border-color: var(--cyan-glow);
+    background: rgba(73, 146, 154, 0.1);
+    transform: translateY(-3px);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .expedition_container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        padding: 0;
+    }
+
+    .about_profile_box {
+        padding: 20px;
+    }
+
+    .skills_grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .skills_grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .skill_item_box {
+        padding: 15px;
+    }
+
+    .skill_item_box i {
+        font-size: 1.5rem;
+    }
+
+    .skill_item_box span {
+        font-size: 0.65rem;
+    }
+}
