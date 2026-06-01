@@ -11,11 +11,15 @@ import { initUnderwater } from './modules/underwater.js';
 import { initFlood } from './modules/flood.js';
 import { initContactRain } from './modules/contact-rain.js';
 import { initDepthExperience } from './modules/depth-experience.js';
+import { initLanguage, getCurrentLang } from './modules/language.js';
 import { projects } from './constants/projects.js';
 import { skills } from './constants/skills.js';
-import { timelineData } from './constants/timeline.js';
+import { translations } from './constants/translations.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Language must be first (sets up data-i18n)
+    initLanguage();
+    
     // Core navigation & layout
     initNavigation();
     initCarousel();
@@ -31,8 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // Dynamic content rendering
+    // Dynamic content rendering (language-aware)
     renderHeroSkills();
+    renderAboutSkills();
     
     // Atmospheric effects
     initUnderwater();
@@ -45,23 +50,28 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Expose data for potential debugging
     if (typeof window !== 'undefined') {
-        window.portfolioData = { projects, skills, timelineData };
+        window.portfolioData = { projects, skills };
     }
 });
 
 /**
  * Render skills grid in hero section
- * Uses DocumentFragment for batch DOM insertion
+ * Uses data-i18n keys for language switching
  */
 function renderHeroSkills() {
     const arsenalGrid = document.querySelector('.arsenal_grid');
     if (!arsenalGrid) return;
-    
+
+    const lang = getCurrentLang();
+    const texts = translations[lang];
+
     const fragment = document.createDocumentFragment();
-    skills.forEach(skill => {
+    skills.forEach((skill, index) => {
         const div = document.createElement('div');
         div.className = 'skill_item';
-        div.innerHTML = `<i class='bx ${skill.icon}'></i><span>${skill.name}</span>`;
+        const skillKey = skill.i18n || `skill-${skill.name.toLowerCase().replace(/[\s&]+/g, '')}`;
+        const displayName = texts[skillKey] || skill.name;
+        div.innerHTML = `<i class='bx ${skill.icon}'></i><span>${displayName}</span>`;
         fragment.appendChild(div);
     });
     arsenalGrid.innerHTML = '';
@@ -69,8 +79,32 @@ function renderHeroSkills() {
 }
 
 /**
+ * Render skills grid in about section
+ * Uses data-i18n keys for language switching
+ */
+function renderAboutSkills() {
+    const skillsGrid = document.querySelector('.lexicon_section .skills_grid');
+    if (!skillsGrid) return;
+
+    const lang = getCurrentLang();
+    const texts = translations[lang];
+
+    const fragment = document.createDocumentFragment();
+    skills.forEach((skill, index) => {
+        const div = document.createElement('div');
+        div.className = 'skill_item_box';
+        // About skills use different i18n keys (about-skill-1 to 8)
+        const aboutKey = `about-skill-${index + 1}`;
+        const displayName = texts[aboutKey] || skill.name;
+        div.innerHTML = `<i class='bx ${skill.icon}'></i><span>${displayName}</span>`;
+        fragment.appendChild(div);
+    });
+    skillsGrid.innerHTML = '';
+    skillsGrid.appendChild(fragment);
+}
+
+/**
  * Initialize timeline scroll-reveal animation
- * Uses IntersectionObserver for efficient scroll detection
  */
 function initTimelineAnimation() {
     const timelineItems = document.querySelectorAll('.timeline_item');

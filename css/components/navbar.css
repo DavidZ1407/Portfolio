@@ -23,6 +23,8 @@
     text-decoration: none;
     color: var(--text-light);
     transition: color 0.3s ease;
+    position: relative;
+    overflow: visible;
 }
 
 .sidebar_socials a:hover {
@@ -34,11 +36,110 @@
     color: var(--gold-accent);
     margin-bottom: 8px;
     transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
+    position: relative;
+    z-index: 2;
 }
 
 .sidebar_socials a:hover i {
     text-shadow: 0 0 15px var(--gold-accent);
     transform: scale(1.2);
+}
+
+/* ========================================= */
+/* RIPPLE RING - Expands on hover */
+/* ========================================= */
+.sidebar_socials a::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(201, 168, 97, 0.5);
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+    transition: none;
+}
+
+.sidebar_socials a:hover::before {
+    animation: rippleRing 0.8s ease-out forwards;
+}
+
+@keyframes rippleRing {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 0.6;
+        border-width: 2px;
+        border-color: rgba(201, 168, 97, 0.6);
+    }
+    50% {
+        opacity: 0.3;
+        border-color: rgba(73, 146, 154, 0.3);
+    }
+    100% {
+        width: 60px;
+        height: 60px;
+        opacity: 0;
+        border-width: 0.5px;
+        border-color: rgba(73, 146, 154, 0.1);
+    }
+}
+
+/* ========================================= */
+/* BUBBLE RISE - Bubbles appear on hover */
+/* ========================================= */
+.sidebar_socials a::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--gold-accent);
+    transform: translateX(-50%);
+    opacity: 0;
+    pointer-events: none;
+    box-shadow:
+        0 -10px 0 -1px rgba(201, 168, 97, 0.4),
+        0 -22px 0 -2px rgba(73, 146, 154, 0.3),
+        0 -36px 0 -3px rgba(201, 168, 97, 0.15);
+    transition: none;
+}
+
+.sidebar_socials a:hover::after {
+    animation: bubbleRise 1.2s ease-out infinite;
+}
+
+@keyframes bubbleRise {
+    0% {
+        opacity: 0.6;
+        transform: translateX(-50%) scale(1);
+        box-shadow:
+            0 -10px 0 -1px rgba(201, 168, 97, 0.5),
+            0 -22px 0 -2px rgba(73, 146, 154, 0.4),
+            0 -36px 0 -3px rgba(201, 168, 97, 0.2);
+    }
+    50% {
+        opacity: 0.3;
+        transform: translateX(-50%) scale(1.2);
+        box-shadow:
+            0 -14px 0 0px rgba(201, 168, 97, 0.3),
+            0 -28px 0 -1px rgba(73, 146, 154, 0.2),
+            0 -44px 0 -2px rgba(201, 168, 97, 0.1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+        box-shadow:
+            0 -20px 0 0px rgba(201, 168, 97, 0),
+            0 -38px 0 -1px rgba(73, 146, 154, 0),
+            0 -56px 0 -2px rgba(201, 168, 97, 0);
+    }
 }
 
 .sidebar_socials a span {
@@ -79,6 +180,28 @@
     display: flex;
     gap: 40px;
     margin-left: auto;
+    align-items: center;
+}
+
+/* Language Toggle Button */
+.lang-toggle-btn {
+    margin-left: 20px;
+    padding: 4px 12px;
+    background: transparent;
+    border: 1px solid rgba(201, 168, 97, 0.4);
+    color: var(--gold-accent);
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.lang-toggle-btn:hover {
+    background: rgba(201, 168, 97, 0.15);
+    border-color: var(--gold-accent);
+    box-shadow: 0 0 15px rgba(201, 168, 97, 0.2);
 }
 
 .nav-link {
@@ -89,27 +212,95 @@
     transition: color 0.3s ease;
     position: relative;
     font-weight: 600;
+    padding: 5px 0;
 }
 
-.nav-link:hover,
+.nav-link:hover {
+    color: var(--cyan-glow);
+}
+
 .nav-link.active {
     color: var(--gold-accent);
 }
 
+/* ========================================= */
+/* UNDERLINE - Hover=cyan | Active=gold wave */
+/* ========================================= */
+
 .nav-link::after {
     content: '';
     position: absolute;
-    bottom: -5px;
+    bottom: -3px;
     left: 0;
-    width: 0;
+    width: 100%;
     height: 2px;
     background: var(--gold-accent);
-    transition: width 0.3s ease;
+    border-radius: 1px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, box-shadow 0.3s ease, height 0.3s ease, background 0.3s ease;
 }
 
-.nav-link:hover::after,
+/* HOVER: cyan glow (name + line) */
+.nav-link:hover::after {
+    opacity: 1;
+    height: 2.5px;
+    background: var(--cyan-glow);
+    box-shadow: 
+        0 0 8px rgba(73, 146, 154, 0.6),
+        0 0 20px rgba(73, 146, 154, 0.25);
+    animation: none;
+}
+
+/* ACTIVE: gold wave (different from hover) */
 .nav-link.active::after {
-    width: 100%;
+    opacity: 0.8;
+    background: var(--gold-accent);
+    animation: activePulse 4s ease-in-out infinite;
+}
+
+/* Active + Hover: cyan overrides */
+.nav-link.active:hover::after {
+    opacity: 1;
+    height: 2.5px;
+    background: var(--cyan-glow);
+    box-shadow: 
+        0 0 8px rgba(73, 146, 154, 0.6),
+        0 0 20px rgba(73, 146, 154, 0.25);
+    animation: none;
+}
+
+@keyframes activePulse {
+    0%, 100% {
+        height: 2px;
+        transform: translateY(0) scaleX(1);
+        box-shadow: 0 0 8px rgba(201, 168, 97, 0.3);
+        filter: blur(0px) brightness(1);
+    }
+    20% {
+        height: 2.5px;
+        transform: translateY(-1.5px) scaleX(1.02);
+        box-shadow: 0 0 14px rgba(201, 168, 97, 0.5), 0 0 28px rgba(201, 168, 97, 0.15);
+        filter: blur(0.3px) brightness(1.08);
+    }
+    40% {
+        height: 2.2px;
+        transform: translateY(0.5px) scaleX(0.98);
+        box-shadow: 0 0 10px rgba(201, 168, 97, 0.4), 0 0 20px rgba(73, 146, 154, 0.12);
+        filter: blur(0px) brightness(0.95);
+    }
+    60% {
+        height: 2.5px;
+        transform: translateY(-1px) scaleX(1.01);
+        box-shadow: 0 0 16px rgba(201, 168, 97, 0.5), 0 0 32px rgba(201, 168, 97, 0.18);
+        filter: blur(0.2px) brightness(1.05);
+    }
+    80% {
+        height: 2px;
+        transform: translateY(-0.3px) scaleX(0.99);
+        box-shadow: 0 0 10px rgba(201, 168, 97, 0.35), 0 0 22px rgba(73, 146, 154, 0.1);
+        filter: blur(0px) brightness(1);
+    }
 }
 
 /* RESPONSIVE FIXES */
@@ -125,6 +316,14 @@
 
     .navbar {
         gap: 15px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    .lang-toggle-btn {
+        margin-left: 0;
+        padding: 3px 10px;
+        font-size: 0.65rem;
     }
 
     .sidebar_socials {
@@ -148,5 +347,10 @@
 
     .nav-link {
         font-size: 0.7rem;
+    }
+
+    .lang-toggle-btn {
+        padding: 2px 8px;
+        font-size: 0.6rem;
     }
 }
