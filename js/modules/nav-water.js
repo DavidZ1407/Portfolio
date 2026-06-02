@@ -3,6 +3,9 @@
 /* Like flood.js wave but under nav links */
 /* ========================================= */
 
+import { debounce, cleanupRegistry } from '../utils/helpers.js';
+import { smoothLerp } from '../utils/smooth.js';
+
 export function initNavWater() {
     const header = document.querySelector('.header');
     const navLinks = document.querySelectorAll('.nav-link');
@@ -28,8 +31,10 @@ export function initNavWater() {
     const ctx = canvas.getContext('2d');
     let time = 0;
     let activeLinkIndex = 0;
+    let smoothCenterX = 0; // Smoothed wave center X position
     let animFrame = null;
     let width, height = 20;
+    let isActive = true;
 
     function resize() {
         width = canvas.width = canvas.offsetWidth || header.offsetWidth;
@@ -37,14 +42,16 @@ export function initNavWater() {
     }
 
     resize();
-    window.addEventListener('resize', resize);
+
+    const debouncedResize = debounce(resize, 100);
+    window.addEventListener('resize', debouncedResize);
 
     // Track which link is active
     function updateActiveLink() {
         const scrollY = window.scrollY;
         const sections = document.querySelectorAll('section[id]');
 
-        sections.forEach((section, index) => {
+        sections.forEach((section) => {
             const sectionTop = section.offsetTop - 200;
             const sectionHeight = section.clientHeight;
 
@@ -86,7 +93,9 @@ export function initNavWater() {
         ctx.clearRect(0, 0, w, h);
 
         const link = getLinkPosition(activeLinkIndex);
-        const waveCenter = link.x;
+        // Smooth wave center transition (lusion-style: no jump, just glide)
+        smoothCenterX = smoothLerp(smoothCenterX, link.x, 0.08);
+        const waveCenter = smoothCenterX;
         const waveWidth = link.width + 40;
 
         // Draw main wave line
@@ -152,7 +161,6 @@ export function initNavWater() {
         ctx.fill();
 
         // Emit a few bubbles near the active link
-        // Simple: draw 3 small circles that drift up
         for (let i = 0; i < 3; i++) {
             const bubbleX = waveCenter + Math.sin(time + i * 2) * 20;
             const bubbleY = h - 5 - (time * 20 + i * 15) % 25;
@@ -167,18 +175,23 @@ export function initNavWater() {
     }
 
     function animate() {
+        if (!isActive) return;
         time += 0.016;
         drawWave();
         animFrame = requestAnimationFrame(animate);
     }
 
-    window.addEventListener('scroll', updateActiveLink, { passive: true });
+    const onScroll = () => updateActiveLink();
+    window.addEventListener('scroll', onScroll, { passive: true });
     updateActiveLink();
     animate();
 
-    return () => {
+    // Register cleanup
+    cleanupRegistry.register(() => {
+        isActive = false;
         if (animFrame) cancelAnimationFrame(animFrame);
-        window.removeEventListener('scroll', updateActiveLink);
+        window.removeEventListener('scroll', onScroll);
+        window.removeEventListener('resize', debouncedResize);
         canvas.remove();
-    };
+    });
 }

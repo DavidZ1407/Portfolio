@@ -12,6 +12,8 @@ import { initUnderwater } from './modules/underwater.js';
 import { initFlood } from './modules/flood.js';
 import { initContactRain } from './modules/contact-rain.js';
 import { initDepthExperience } from './modules/depth-experience.js';
+import { initFishSwarm } from './modules/fish-swarm.js';
+import { initBioluminescentSwarm } from './modules/bioluminescent-swarm.js';
 import { initLanguage, getCurrentLang } from './modules/language.js';
 import { projects } from './constants/projects.js';
 import { skills } from './constants/skills.js';
@@ -49,6 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
     initContactRain();
     initDepthExperience();
     
+    // Fish swarm transition (scroll-triggered, all sections)
+    initFishSwarm();
+    
+    // Bioluminescent creature shadows (persistent, timeline section)
+    initBioluminescentSwarm();
+
     // Timeline scroll animation
     initTimelineAnimation();
     

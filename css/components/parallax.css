@@ -370,24 +370,4 @@ header, section {
     transition: opacity 0.3s ease;
 }
 
-/* ========================================= */
-/* RESPONSIVE */
-/* ========================================= */
-@media (max-width: 768px) {
-    .castle-silhouette {
-        width: 100px;
-        height: 80px;
-        bottom: 30%;
-        right: 5%;
-    }
-    
-    .castle-wall-left,
-    .castle-wall-right {
-        width: 10%;
-    }
-    
-    .pillar {
-        width: 20px;
-        height: 150px;
-    }
-}
+/* Responsive layout moved to css/responsive.css */

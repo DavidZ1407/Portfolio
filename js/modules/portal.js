@@ -3,12 +3,14 @@
 /* Auto-rotate + click + bubbles */
 /* ========================================= */
 
+import { cleanupRegistry, debounce } from '../utils/helpers.js';
+
 let modalOpenCallback = null;
 let currentCenter = 0;
 let autoTimer = null;
 let isAutoCycling = false;
 let isPaused = false;
-let TOTAL_SLIDES = 0;  // Will be set dynamically
+let TOTAL_SLIDES = 0;
 const AUTO_INTERVAL = 3500;
 
 /**
@@ -34,44 +36,63 @@ function initCarousel() {
 
     if (slides.length === 0) return;
 
+    // Set ARIA labels on navigation buttons
+    if (prevBtn) prevBtn.setAttribute('aria-label', 'Previous slide');
+    if (nextBtn) nextBtn.setAttribute('aria-label', 'Next slide');
+
     // Set TOTAL_SLIDES dynamically
     TOTAL_SLIDES = slides.length;
+
+    // Set ARIA labels on slides
+    slides.forEach((slide, i) => {
+        slide.setAttribute('role', 'button');
+        slide.setAttribute('tabindex', '0');
+        slide.setAttribute('aria-label', `Project ${i + 1} of ${TOTAL_SLIDES}`);
+    });
 
     // Set initial positions
     updatePositions(slides, dots);
 
+    let cleanupListeners = [];
+
     // Navigation buttons
     if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
+        const onPrev = () => {
             pauseAuto();
             currentCenter = (currentCenter - 1 + TOTAL_SLIDES) % TOTAL_SLIDES;
             updatePositions(slides, dots);
             resumeAutoAfterDelay();
-        });
+        };
+        prevBtn.addEventListener('click', onPrev);
+        cleanupListeners.push(() => prevBtn.removeEventListener('click', onPrev));
     }
 
     if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
+        const onNext = () => {
             pauseAuto();
             currentCenter = (currentCenter + 1) % TOTAL_SLIDES;
             updatePositions(slides, dots);
             resumeAutoAfterDelay();
-        });
+        };
+        nextBtn.addEventListener('click', onNext);
+        cleanupListeners.push(() => nextBtn.removeEventListener('click', onNext));
     }
 
     // Dot clicks
     dots.forEach((dot, i) => {
-        dot.addEventListener('click', () => {
+        const onDotClick = () => {
             pauseAuto();
             currentCenter = i;
             updatePositions(slides, dots);
             resumeAutoAfterDelay();
-        });
+        };
+        dot.addEventListener('click', onDotClick);
+        cleanupListeners.push(() => dot.removeEventListener('click', onDotClick));
     });
 
     // Click on side slides → bring to center
     slides.forEach((slide) => {
-        slide.addEventListener('click', (e) => {
+        const onSlideClick = (e) => {
             const idx = parseInt(slide.dataset.index);
 
             if (idx === currentCenter) {
@@ -92,12 +113,27 @@ function initCarousel() {
             currentCenter = idx;
             updatePositions(slides, dots);
             resumeAutoAfterDelay();
-        });
+        };
+        slide.addEventListener('click', onSlideClick);
+        cleanupListeners.push(() => slide.removeEventListener('click', onSlideClick));
+    });
+
+    // Keyboard navigation for slides
+    slides.forEach((slide) => {
+        const onKeydown = (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                slide.click();
+            }
+        };
+        slide.addEventListener('keydown', onKeydown);
+        cleanupListeners.push(() => slide.removeEventListener('keydown', onKeydown));
     });
 
     // Start auto-cycle when visible
+    let sectionObserver = null;
     if (section) {
-        const observer = new IntersectionObserver((entries) => {
+        sectionObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting && !isPaused) {
                     startAuto(slides, dots);
@@ -106,7 +142,7 @@ function initCarousel() {
                 }
             });
         }, { threshold: 0.15 });
-        observer.observe(section);
+        sectionObserver.observe(section);
     }
 
     // Resume auto-cycle when modal closes
@@ -118,27 +154,34 @@ function initCarousel() {
     }
 
     // ESC key
-    document.addEventListener('keydown', (e) => {
+    const onEscKey = (e) => {
         if (e.key === 'Escape') onModalClose();
-    });
+    };
+    document.addEventListener('keydown', onEscKey);
+    cleanupListeners.push(() => document.removeEventListener('keydown', onEscKey));
 
-    // Overlay click
+    // Modal overlay click for close
     const overlay = document.querySelector('.project-modal-overlay');
     if (overlay) {
-        overlay.addEventListener('click', (e) => {
+        const onOverlayClick = (e) => {
             if (e.target === overlay) onModalClose();
-        });
+        };
+        overlay.addEventListener('click', onOverlayClick);
+        cleanupListeners.push(() => overlay.removeEventListener('click', onOverlayClick));
     }
 
     // Close button
     const closeBtn = document.querySelector('.modal-close-btn');
     if (closeBtn) {
-        closeBtn.addEventListener('click', () => onModalClose());
+        const onCloseClick = () => onModalClose();
+        closeBtn.addEventListener('click', onCloseClick);
+        cleanupListeners.push(() => closeBtn.removeEventListener('click', onCloseClick));
     }
 
     // MutationObserver fallback
+    let mutObs = null;
     if (overlay) {
-        const mutObs = new MutationObserver((mutations) => {
+        mutObs = new MutationObserver((mutations) => {
             mutations.forEach((m) => {
                 if (m.attributeName === 'style' && overlay.style.display === 'none') {
                     onModalClose();
@@ -147,32 +190,59 @@ function initCarousel() {
         });
         mutObs.observe(overlay, { attributes: true, attributeFilter: ['style'] });
     }
+
+    // Register cleanup
+    cleanupRegistry.register(() => {
+        stopAuto();
+        cleanupListeners.forEach(fn => { try { fn(); } catch(e) {} });
+        cleanupListeners = [];
+        if (sectionObserver) sectionObserver.disconnect();
+        if (mutObs) mutObs.disconnect();
+    });
 }
 
 function updatePositions(slides, dots) {
     slides.forEach((slide, i) => {
-        // Remove all position classes
-        slide.classList.remove('pos-center', 'pos-left', 'pos-right', 'pos-hidden');
-
         // Calculate relative position
         let rel = i - currentCenter;
         if (rel < -1) rel += TOTAL_SLIDES;
         if (rel > 1) rel -= TOTAL_SLIDES;
 
+        // Clear ALL position classes first, then add the right one
+        // This ensures no "leftover" classes cause visual glitches
+        slide.classList.remove('pos-center', 'pos-left', 'pos-right', 'pos-hidden');
+
+        // Force reflow so the transition starts from the current computed position
+        // (prevents the "step" effect where hidden→left→center feels like 2 jumps)
+        void slide.offsetWidth;
+
         if (rel === 0) {
             slide.classList.add('pos-center');
+            slide.setAttribute('aria-current', 'true');
         } else if (rel === -1) {
             slide.classList.add('pos-left');
+            slide.removeAttribute('aria-current');
         } else if (rel === 1) {
             slide.classList.add('pos-right');
+            slide.removeAttribute('aria-current');
         } else {
             slide.classList.add('pos-hidden');
+            slide.removeAttribute('aria-current');
         }
+
+        // Second reflow ensures CSS transition picks up the new class
+        void slide.offsetWidth;
     });
 
     // Update dots
     dots.forEach((dot, i) => {
         dot.classList.toggle('active', i === currentCenter);
+        dot.setAttribute('aria-label', `Go to project ${i + 1}`);
+        if (i === currentCenter) {
+            dot.setAttribute('aria-current', 'true');
+        } else {
+            dot.removeAttribute('aria-current');
+        }
     });
 }
 
@@ -259,7 +329,8 @@ function initBubbles() {
         canvas.height = rect.height;
     }
 
-    window.addEventListener('resize', resize);
+    const debouncedResize = debounce(resize, 150);
+    window.addEventListener('resize', debouncedResize);
     setTimeout(resize, 100);
 
     function initParticles() {
@@ -323,7 +394,7 @@ function initBubbles() {
             p.opacity = Math.min(p.maxOpacity, p.opacity + 0.008);
             const floatY = p.y + Math.sin(time * p.floatSpeed + p.phase) * p.floatAmp;
             const alpha = p.opacity * (0.5 + 0.5 * Math.sin(time * 0.3 + p.phase));
-            // Glow halo (no shadowBlur)
+            // Glow halo
             ctx.fillStyle = `rgba(${p.color}, ${alpha * 0.1})`;
             ctx.beginPath();
             ctx.arc(p.x, floatY, p.r + 5, 0, 6.2832);
@@ -338,5 +409,12 @@ function initBubbles() {
         animFrame = requestAnimationFrame(animate);
     }
 
-    window.addEventListener('beforeunload', () => { if (animFrame) cancelAnimationFrame(animFrame); });
+    // Register cleanup for bubbles
+    cleanupRegistry.register(() => {
+        isActive = false;
+        if (animFrame) cancelAnimationFrame(animFrame);
+        animFrame = null;
+        window.removeEventListener('resize', debouncedResize);
+        observer.disconnect();
+    });
 }

@@ -3,6 +3,9 @@
 /* Anglerfish lure that travels along timeline */
 /* ========================================= */
 
+import { debounce, cleanupRegistry } from '../utils/helpers.js';
+import { smoothLerp, Easing } from '../utils/smooth.js';
+
 export function initUnderwater() {
     const section = document.querySelector('.journey_section');
     const container = document.querySelector('.water_timeline');
@@ -57,10 +60,12 @@ export function initUnderwater() {
                 }
             } else {
                 canvas.style.opacity = '0';
-                isActive = false;
-                if (animFrame) {
-                    cancelAnimationFrame(animFrame);
-                    animFrame = null;
+                if (isActive) {
+                    isActive = false;
+                    if (animFrame) {
+                        cancelAnimationFrame(animFrame);
+                        animFrame = null;
+                    }
                 }
             }
         });
@@ -74,18 +79,22 @@ export function initUnderwater() {
         canvas.height = rect.height;
     }
 
-    window.addEventListener('resize', resize);
+    const debouncedResize = debounce(resize, 150);
+    window.addEventListener('resize', debouncedResize);
+    // Initial resize with delay to ensure layout is ready
     setTimeout(resize, 50);
 
     function initParticles() {
         particles = [];
         bubbles = [];
 
+        const w = canvas.width || 200;
+
         // Floating bioluminescent particles
         for (let i = 0; i < 20; i++) {
             const isGold = Math.random() > 0.5;
             particles.push({
-                x: 30 + Math.random() * (canvas.width - 60),
+                x: 30 + Math.random() * (w - 60),
                 y: Math.random() * canvas.height,
                 r: 0.5 + Math.random() * 1.5,
                 color: isGold ? '201, 168, 97' : '73, 146, 154',
@@ -223,8 +232,8 @@ export function initUnderwater() {
             }
         }
 
-        // Smooth interpolation
-        lureY += (lureTargetY - lureY) * 0.03;
+        // Smooth interpolation (lusion-style eased lerp)
+        lureY = smoothLerp(lureY, lureTargetY, 0.04);
 
         // Decay glow
         if (lureGlow > 0) {
@@ -385,7 +394,7 @@ export function initUnderwater() {
             const floatY = p.y + Math.sin(time * p.floatSpeed + p.phase) * p.floatAmp;
             const alpha = p.opacity * (0.5 + 0.5 * Math.sin(time * 0.5 + p.phase));
 
-            // Glow halo (no shadowBlur - use large transparent circle)
+            // Glow halo
             ctx.fillStyle = `rgba(${p.color}, ${alpha * 0.1})`;
             ctx.beginPath();
             ctx.arc(p.x, floatY, p.r + 6, 0, 6.2832);
@@ -420,8 +429,13 @@ export function initUnderwater() {
         });
     }
 
-    // Cleanup on page unload
-    window.addEventListener('beforeunload', () => {
+    // Register cleanup with centralized registry (replaces beforeunload)
+    cleanupRegistry.register(() => {
+        isActive = false;
         if (animFrame) cancelAnimationFrame(animFrame);
+        animFrame = null;
+        window.removeEventListener('resize', debouncedResize);
+        observer.disconnect();
+        canvas.remove();
     });
 }

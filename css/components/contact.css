@@ -58,35 +58,4 @@
     color: var(--cyan-glow);
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-    .contact_section {
-        padding: 100px 20px;
-    }
-    
-    .contact_icons {
-        gap: 40px;
-    }
-    
-    .contact_icon_link i {
-        font-size: 2.8rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .contact_section {
-        padding: 80px 15px;
-    }
-    
-    .contact_icons {
-        gap: 30px;
-    }
-    
-    .contact_icon_link i {
-        font-size: 2.5rem;
-    }
-    
-    .contact_icon_link span {
-        font-size: 0.6rem;
-    }
-}
+/* Responsive layout moved to css/responsive.css */

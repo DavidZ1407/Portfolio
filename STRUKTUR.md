@@ -23,6 +23,7 @@ Portfolio/
 │
 ├── css/
 │   ├── main.css                        # Root-Variablen + Globals + Footer
+│   ├── responsive.css                  # Zentrales Responsive-System (alle Breakpoints)
 │   │
 │   └── components/
 │       ├── navbar.css                  # Header + Sidebar Socials + Lang-Button
@@ -47,14 +48,20 @@ Portfolio/
     └── modules/
         ├── navigation.js               # Aktiver Nav-Link (scroll-basiert, rAF-getthrottelt)
         ├── carousel.js                 # Hero Carousel (Indikatoren-Klick)
+        ├── generate-carousel-dots.js   # Auto-Generiert Carousel-Dots & Indicators
         ├── parallax.js                 # Parallax Layers + CSS-Partikel (Fische/Blasen)
         ├── modal.js                    # Popup-Modal (ESC/Overlay-Klick schließen)
         ├── portal.js                   # 3D Portal Carousel (Auto-Rotate + Bubbles Canvas)
+        ├── nav-water.js                # Wasser-Animation für Nav-Link Splash-Effekte
         ├── underwater.js               # Anglerfisch-Leuchtköder (Timeline)
         ├── flood.js                    # Wasserflut-Effekt (Journey Section)
         ├── contact-rain.js             # Wassertropfen (Contact Section)
         ├── depth-experience.js         # Fullpage-Depth-Fog + Vignette + Bubbles Canvas
         └── language.js                 # EN/DE Sprachumschaltung (localStorage)
+│
+    └── utils/
+        ├── helpers.js                  # Hilfsfunktionen (throttle, lerp, etc.)
+        └── smooth.js                   # Smooth Scroll Utilities
 ```
 
 ---
@@ -341,8 +348,9 @@ Die Animationen nutzen:
 - **Avoid**: `shadowBlur` (GPU-intensive), häufige DOM-Manipulationen
 
 ### Responsive Design
-- **Breakpoints**: 768px (Tablet), 480px (Mobile)
-- **Navbar**: Responsive bei `@media (max-width: 768px)` in `navbar.css`
+- **Zentrale Datei**: `css/responsive.css` – alle Breakpoints an einem Ort
+- **Breakpoints**: 1400px (Laptop), 1200px (Small Laptop), 1024px (Tablet), 768px (Mobile), 480px (Small Mobile), 550px (Portal)
+- **Komponenten**: Responsive-Regeln leben in `responsive.css`, nicht in den Komponenten-Dateien
 - **z-index**: Responsive anpassen bei kleineren Screens
 
 ### Barrierefreiheit

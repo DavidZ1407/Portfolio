@@ -3,8 +3,11 @@
 /* ========================================= */
 
 import { translations } from '../constants/translations.js';
+import { cleanupRegistry } from '../utils/helpers.js';
 
 const STORAGE_KEY = 'portfolio-lang';
+const CACHE_KEY = 'portfolio-translations-cache';
+const CACHE_VERSION = '1.0';
 const DEFAULT_LANG = 'en';
 
 let currentLang = DEFAULT_LANG;
@@ -13,6 +16,7 @@ let currentLang = DEFAULT_LANG;
  * Initialize language system
  * - Detects saved language or browser language
  * - Sets up the toggle button
+ * - Caches translations for faster switching
  */
 export function initLanguage() {
     // Try to load saved language
@@ -20,19 +24,38 @@ export function initLanguage() {
     if (saved && translations[saved]) {
         currentLang = saved;
     } else {
-        // Default to English as requested
         currentLang = DEFAULT_LANG;
     }
+
+    // Cache translations for faster language switching
+    cacheTranslations();
 
     // Apply translations
     applyLanguage(currentLang);
 
     // Setup toggle button
     setupToggle();
+}
 
-    // Expose for potential debugging
-    if (typeof window !== 'undefined') {
-        window.__currentLang = currentLang;
+/**
+ * Cache translations in localStorage for instant access
+ */
+function cacheTranslations() {
+    try {
+        const cached = localStorage.getItem(CACHE_KEY);
+        const cachedObj = cached ? JSON.parse(cached) : null;
+        
+        // Only cache if not cached or version mismatch
+        if (!cachedObj || cachedObj.version !== CACHE_VERSION) {
+            const cacheData = {
+                version: CACHE_VERSION,
+                timestamp: Date.now(),
+                data: translations,
+            };
+            localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+        }
+    } catch (e) {
+        // localStorage might be full or disabled; silently ignore
     }
 }
 
@@ -48,7 +71,10 @@ export function getCurrentLang() {
  */
 function applyLanguage(lang) {
     const texts = translations[lang];
-    if (!texts) return;
+    if (!texts) {
+        console.warn(`Language not found: ${lang}`);
+        return;
+    }
 
     // 1. Update all elements with data-i18n attribute
     document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -80,9 +106,13 @@ function applyLanguage(lang) {
         const nextLang = lang === 'en' ? 'de' : 'en';
         langBtn.textContent = texts[`lang-${nextLang}`];
         langBtn.dataset.nextLang = nextLang;
+        langBtn.setAttribute('aria-label', `Switch to ${nextLang === 'en' ? 'English' : 'Deutsch'}`);
     }
 
     currentLang = lang;
+
+    // Dispatch custom event for other modules to react
+    document.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
 }
 
 /**
@@ -91,7 +121,11 @@ function applyLanguage(lang) {
 function toggleLanguage() {
     const nextLang = currentLang === 'en' ? 'de' : 'en';
     currentLang = nextLang;
-    localStorage.setItem(STORAGE_KEY, nextLang);
+    try {
+        localStorage.setItem(STORAGE_KEY, nextLang);
+    } catch (e) {
+        // localStorage might be full/disabled
+    }
     applyLanguage(nextLang);
 }
 
@@ -115,17 +149,26 @@ function setupToggle() {
         } else {
             // Fallback: append to header
             const header = document.querySelector('.header');
-            if (header) header.appendChild(langBtn);
+            if (header) {
+                header.appendChild(langBtn);
+            } else {
+                // Last fallback: append to body
+                document.body.appendChild(langBtn);
+            }
         }
     }
 
     // Set initial text
     const texts = translations[currentLang];
-    const nextLang = currentLang === 'en' ? 'de' : 'en';
-    langBtn.textContent = texts[`lang-${nextLang}`];
-    langBtn.dataset.nextLang = nextLang;
+    if (texts) {
+        const nextLang = currentLang === 'en' ? 'de' : 'en';
+        langBtn.textContent = texts[`lang-${nextLang}`];
+        langBtn.dataset.nextLang = nextLang;
+        langBtn.setAttribute('aria-label', `Switch to ${nextLang === 'en' ? 'English' : 'Deutsch'}`);
+    }
 
-    // Remove old listener, add new one
-    langBtn.removeEventListener('click', toggleLanguage);
-    langBtn.addEventListener('click', toggleLanguage);
+    // Remove old listener to prevent duplicates, add new one
+    const newBtn = langBtn.cloneNode(true);
+    langBtn.parentNode.replaceChild(newBtn, langBtn);
+    newBtn.addEventListener('click', toggleLanguage);
 }

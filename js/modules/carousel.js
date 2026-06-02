@@ -2,17 +2,33 @@
 /* MODULE - CAROUSEL */
 /* ========================================= */
 
-let currentProjectIndex = 0;
+import { cleanupRegistry } from '../utils/helpers.js';
 
-// Exportiere die Funktion, damit main.js sie importieren kann
+let currentProjectIndex = 0;
+let cleanupFunctions = [];
+
+/**
+ * Initialize the hero carousel
+ */
 export function initCarousel() {
     const indicators = document.querySelectorAll('.indicator');
     
-    indicators.forEach(indicator => {
-        indicator.addEventListener('click', () => {
+    // Apply ARIA labels to indicators
+    indicators.forEach((indicator, i) => {
+        indicator.setAttribute('aria-label', `Go to project ${i + 1}`);
+        
+        const onClick = () => {
             const slideIndex = parseInt(indicator.getAttribute('data-slide'));
             goToSlide(slideIndex);
-        });
+        };
+        indicator.addEventListener('click', onClick);
+        cleanupFunctions.push(() => indicator.removeEventListener('click', onClick));
+    });
+
+    // Register cleanup
+    cleanupRegistry.register(() => {
+        cleanupFunctions.forEach(fn => { try { fn(); } catch(e) {} });
+        cleanupFunctions = [];
     });
 }
 
@@ -27,15 +43,25 @@ function goToSlide(index) {
     
     indicators.forEach((indicator, i) => {
         indicator.classList.toggle('active', i === index);
+        if (i === index) {
+            indicator.setAttribute('aria-current', 'true');
+        } else {
+            indicator.removeAttribute('aria-current');
+        }
     });
 }
 
-// Optional: Falls du automatische Slideshows oder Buttons außerhalb willst
+/**
+ * Go to next slide
+ */
 export function nextSlide() {
     const totalSlides = document.querySelectorAll('.carousel_slide').length;
     goToSlide((currentProjectIndex + 1) % totalSlides);
 }
 
+/**
+ * Go to previous slide
+ */
 export function prevSlide() {
     const totalSlides = document.querySelectorAll('.carousel_slide').length;
     goToSlide((currentProjectIndex - 1 + totalSlides) % totalSlides);

@@ -283,10 +283,6 @@
     animation: waterSplashCyan 5.5s ease-in-out infinite;
 }
 
-.nav-link:hover {
-    color: var(--cyan-glow);
-}
-
 /* ACTIVE: water splash effect */
 .nav-link.active::after {
     opacity: 1;
@@ -577,54 +573,4 @@
     }
 }
 
-/* RESPONSIVE FIXES */
-@media (max-width: 768px) {
-    .header {
-        padding: 15px 5%;
-        flex-direction: column;
-        gap: 15px;
-        align-items: flex-end;
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-    }
-
-    .navbar {
-        gap: 15px;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-    }
-
-    .lang-toggle-btn {
-        margin-left: 0;
-        padding: 3px 10px;
-        font-size: 0.65rem;
-    }
-
-    .sidebar_socials {
-        padding: 10px 5px;
-        gap: 15px;
-    }
-
-    .sidebar_socials a span {
-        display: none;
-    }
-}
-
-@media (max-width: 480px) {
-    .header {
-        align-items: flex-end;
-    }
-
-    .logo {
-        font-size: 1rem;
-    }
-
-    .nav-link {
-        font-size: 0.7rem;
-    }
-
-    .lang-toggle-btn {
-        padding: 2px 8px;
-        font-size: 0.6rem;
-    }
-}
+/* Responsive layout moved to css/responsive.css */
