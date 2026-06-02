@@ -11,9 +11,9 @@
     flex-direction: column;
     background: linear-gradient(to left, rgba(5, 13, 14, 0.95), transparent);
     border-left: 2px solid var(--gold-accent);
-    padding: 30px 15px;
+    padding: 20px 12px;
     z-index: 150;
-    gap: 35px;
+    gap: 25px;
 }
 
 .sidebar_socials a {
@@ -32,9 +32,9 @@
 }
 
 .sidebar_socials a i {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     color: var(--gold-accent);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
     position: relative;
     z-index: 2;
@@ -42,7 +42,7 @@
 
 .sidebar_socials a:hover i {
     text-shadow: 0 0 15px var(--gold-accent);
-    transform: scale(1.2);
+    transform: scale(1.15);
 }
 
 /* ========================================= */
@@ -73,7 +73,7 @@
         width: 0;
         height: 0;
         opacity: 0.6;
-        border-width: 2px;
+        border-width: 1.5px;
         border-color: rgba(201, 168, 97, 0.6);
     }
     50% {
@@ -81,8 +81,8 @@
         border-color: rgba(73, 146, 154, 0.3);
     }
     100% {
-        width: 60px;
-        height: 60px;
+        width: 45px;
+        height: 45px;
         opacity: 0;
         border-width: 0.5px;
         border-color: rgba(73, 146, 154, 0.1);
@@ -144,10 +144,11 @@
 
 .sidebar_socials a span {
     font-family: monospace;
-    font-size: 0.65rem;
-    letter-spacing: 2px;
+    font-size: 0.55rem;
+    letter-spacing: 1.5px;
     font-weight: bold;
     text-transform: uppercase;
+    opacity: 0.8;
 }
 
 .header {
@@ -198,6 +199,26 @@
     position: relative;
 }
 
+.lang-toggle-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    border: 1.5px solid rgba(73, 146, 154, 0.5);
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+    transition: none;
+}
+
+.lang-toggle-btn:hover::before {
+    animation: navRippleRing 0.8s ease-out forwards;
+}
+
 .lang-toggle-btn:hover {
     background: rgba(201, 168, 97, 0.15);
     border-color: var(--gold-accent);
@@ -224,7 +245,7 @@
 }
 
 /* ========================================= */
-/* UNDERLINE - Hover=cyan | Active=gold wave */
+/* UNDERLINE - Active=gold splash */
 /* ========================================= */
 
 .nav-link::after {
@@ -241,65 +262,318 @@
     transition: opacity 0.3s ease, box-shadow 0.3s ease, height 0.3s ease, background 0.3s ease;
 }
 
-/* HOVER: cyan glow (name + line) */
-.nav-link:hover::after {
-    opacity: 1;
-    height: 2.5px;
-    background: var(--cyan-glow);
-    box-shadow: 
-        0 0 8px rgba(73, 146, 154, 0.6),
-        0 0 20px rgba(73, 146, 154, 0.25);
-    animation: none;
+/* HOVER: ripple ring effect + splash animation */
+.nav-link::before {
+    content: '';
+    position: absolute;
+    top: auto;
+    bottom: -12px;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+    transition: none;
 }
 
-/* ACTIVE: gold wave (different from hover) */
+.nav-link:hover::before {
+    animation: waterSplashCyan 5.5s ease-in-out infinite;
+}
+
+.nav-link:hover {
+    color: var(--cyan-glow);
+}
+
+/* ACTIVE: water splash effect */
 .nav-link.active::after {
-    opacity: 0.8;
-    background: var(--gold-accent);
-    animation: activePulse 4s ease-in-out infinite;
-}
-
-/* Active + Hover: cyan overrides */
-.nav-link.active:hover::after {
     opacity: 1;
-    height: 2.5px;
-    background: var(--cyan-glow);
-    box-shadow: 
-        0 0 8px rgba(73, 146, 154, 0.6),
-        0 0 20px rgba(73, 146, 154, 0.25);
-    animation: none;
+    background: transparent;
+    height: 0;
+    animation: waterDrops 5.5s ease-in-out infinite;
+    bottom: 0;
 }
 
-@keyframes activePulse {
+/* Active splash - hidden by default, shown by ::before splash */
+.nav-link.active::before {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    width: 0;
+    height: 0;
+    transform: translateX(-50%);
+    pointer-events: none;
+    animation: waterSplash 5.5s ease-in-out infinite;
+    z-index: 3;
+    border: none;
+    top: auto;
+}
+
+/* Active + Hover: keep water splash animation */
+.nav-link.active:hover::before {
+    animation: waterSplash 5.5s ease-in-out infinite !important;
+}
+
+@keyframes navRippleRing {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 0.6;
+        border-width: 1.5px;
+        border-color: rgba(73, 146, 154, 0.6);
+        transform: translate(-50%, -50%);
+    }
+    50% {
+        opacity: 0.3;
+        border-color: rgba(73, 146, 154, 0.3);
+    }
+    100% {
+        width: 50px;
+        height: 50px;
+        opacity: 0;
+        border-width: 0.5px;
+        border-color: rgba(73, 146, 154, 0.1);
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes waterDrops {
+    0% {
+        opacity: 0;
+        box-shadow: none;
+        transform: translateY(0);
+        height: 0;
+    }
+    
+    100% {
+        opacity: 0;
+        box-shadow: none;
+        transform: translateY(0);
+        height: 0;
+    }
+}
+
+@keyframes waterSplash {
     0%, 100% {
-        height: 2px;
-        transform: translateY(0) scaleX(1);
-        box-shadow: 0 0 8px rgba(201, 168, 97, 0.3);
-        filter: blur(0px) brightness(1);
+        opacity: 0;
+        width: 0;
+        height: 0;
+        box-shadow: none;
     }
-    20% {
+    
+    /* Wait for drop to fall */
+    50% {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    
+    /* First splash - slow start */
+    54% {
+        opacity: 0.85;
+        width: 16px;
         height: 2.5px;
-        transform: translateY(-1.5px) scaleX(1.02);
-        box-shadow: 0 0 14px rgba(201, 168, 97, 0.5), 0 0 28px rgba(201, 168, 97, 0.15);
-        filter: blur(0.3px) brightness(1.08);
+        background: radial-gradient(ellipse at center, rgba(201, 168, 97, 0.65) 0%, rgba(201, 168, 97, 0.15) 70%, transparent 100%);
+        box-shadow: 
+            -9px -1.5px 2px 0 rgba(201, 168, 97, 0.5),
+            9px -1.5px 2px 0 rgba(201, 168, 97, 0.5),
+            -4px -3px 1px 0 rgba(201, 168, 97, 0.35),
+            4px -3px 1px 0 rgba(201, 168, 97, 0.35);
     }
+    
+    /* Splash expands - smooth transition */
+    62% {
+        opacity: 0.6;
+        width: 26px;
+        height: 1.8px;
+        background: radial-gradient(ellipse at center, rgba(201, 168, 97, 0.3) 0%, rgba(201, 168, 97, 0.05) 70%, transparent 100%);
+        box-shadow: 
+            -13px -1px 1.5px 0 rgba(201, 168, 97, 0.3),
+            13px -1px 1.5px 0 rgba(201, 168, 97, 0.3),
+            -6.5px -2.5px 1px 0 rgba(201, 168, 97, 0.2),
+            6.5px -2.5px 1px 0 rgba(201, 168, 97, 0.2);
+    }
+    
+    /* Splash fades slowly */
+    72% {
+        opacity: 0.2;
+        width: 32px;
+        height: 1px;
+        background: radial-gradient(ellipse at center, rgba(201, 168, 97, 0.1) 0%, transparent 70%);
+        box-shadow: 
+            -16px -0.5px 1px 0 rgba(201, 168, 97, 0.1),
+            16px -0.5px 1px 0 rgba(201, 168, 97, 0.1),
+            -8px -2px 0.5px 0 rgba(201, 168, 97, 0.08),
+            8px -2px 0.5px 0 rgba(201, 168, 97, 0.08);
+    }
+    
+    85% {
+        opacity: 0;
+        width: 35px;
+        height: 0;
+    }
+}
+
+@keyframes hoverRippleWithSplash {
+    0%, 100% {
+        width: 0;
+        height: 0;
+        opacity: 0;
+        border-width: 1.5px;
+        border-color: rgba(73, 146, 154, 0.5);
+        transform: translate(-50%, -50%);
+        box-shadow: none;
+    }
+    
+    /* Ripple ring expands */
+    8% {
+        width: 15px;
+        height: 15px;
+        opacity: 0.6;
+        border-width: 1.5px;
+        border-color: rgba(73, 146, 154, 0.6);
+        transform: translate(-50%, -50%);
+        box-shadow: none;
+    }
+    
+    15% {
+        width: 35px;
+        height: 35px;
+        opacity: 0.3;
+        border-width: 1px;
+        border-color: rgba(73, 146, 154, 0.3);
+        transform: translate(-50%, -50%);
+        box-shadow: none;
+    }
+    
+    /* Ripple fades, splash starts forming */
     40% {
-        height: 2.2px;
-        transform: translateY(0.5px) scaleX(0.98);
-        box-shadow: 0 0 10px rgba(201, 168, 97, 0.4), 0 0 20px rgba(73, 146, 154, 0.12);
-        filter: blur(0px) brightness(0.95);
+        width: 50px;
+        height: 50px;
+        opacity: 0;
+        border-width: 0.5px;
+        border-color: rgba(73, 146, 154, 0.1);
+        transform: translate(-50%, -50%);
+        box-shadow: none;
     }
-    60% {
+    
+    /* Splash forms - cyan color */
+    50% {
+        width: 0;
         height: 2.5px;
-        transform: translateY(-1px) scaleX(1.01);
-        box-shadow: 0 0 16px rgba(201, 168, 97, 0.5), 0 0 32px rgba(201, 168, 97, 0.18);
-        filter: blur(0.2px) brightness(1.05);
+        opacity: 0.85;
+        border: none;
+        border-color: transparent;
+        transform: translateX(-50%);
+        box-shadow: 
+            -9px -1.5px 2px 0 rgba(73, 146, 154, 0.5),
+            9px -1.5px 2px 0 rgba(73, 146, 154, 0.5),
+            -4px -3px 1px 0 rgba(73, 146, 154, 0.35),
+            4px -3px 1px 0 rgba(73, 146, 154, 0.35);
+        background: radial-gradient(ellipse at center, rgba(73, 146, 154, 0.65) 0%, rgba(73, 146, 154, 0.15) 70%, transparent 100%);
     }
-    80% {
-        height: 2px;
-        transform: translateY(-0.3px) scaleX(0.99);
-        box-shadow: 0 0 10px rgba(201, 168, 97, 0.35), 0 0 22px rgba(73, 146, 154, 0.1);
-        filter: blur(0px) brightness(1);
+    
+    /* Splash expands */
+    62% {
+        width: 26px;
+        height: 1.8px;
+        opacity: 0.6;
+        border: none;
+        transform: translateX(-50%);
+        box-shadow: 
+            -13px -1px 1.5px 0 rgba(73, 146, 154, 0.3),
+            13px -1px 1.5px 0 rgba(73, 146, 154, 0.3),
+            -6.5px -2.5px 1px 0 rgba(73, 146, 154, 0.2),
+            6.5px -2.5px 1px 0 rgba(73, 146, 154, 0.2);
+        background: radial-gradient(ellipse at center, rgba(73, 146, 154, 0.3) 0%, rgba(73, 146, 154, 0.05) 70%, transparent 100%);
+    }
+    
+    /* Splash fades */
+    72% {
+        width: 32px;
+        height: 1px;
+        opacity: 0.2;
+        border: none;
+        transform: translateX(-50%);
+        box-shadow: 
+            -16px -0.5px 1px 0 rgba(73, 146, 154, 0.1),
+            16px -0.5px 1px 0 rgba(73, 146, 154, 0.1),
+            -8px -2px 0.5px 0 rgba(73, 146, 154, 0.08),
+            8px -2px 0.5px 0 rgba(73, 146, 154, 0.08);
+        background: radial-gradient(ellipse at center, rgba(73, 146, 154, 0.1) 0%, transparent 70%);
+    }
+    
+    85% {
+        width: 35px;
+        height: 0;
+        opacity: 0;
+        border: none;
+        transform: translateX(-50%);
+        box-shadow: none;
+    }
+}
+
+@keyframes waterSplashCyan {
+    0%, 100% {
+        opacity: 0;
+        width: 0;
+        height: 0;
+        box-shadow: none;
+    }
+    
+    /* Wait for drop to fall */
+    50% {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    
+    /* First splash - slow start */
+    54% {
+        opacity: 0.85;
+        width: 16px;
+        height: 2.5px;
+        background: radial-gradient(ellipse at center, rgba(73, 146, 154, 0.65) 0%, rgba(73, 146, 154, 0.15) 70%, transparent 100%);
+        box-shadow: 
+            -9px -1.5px 2px 0 rgba(73, 146, 154, 0.5),
+            9px -1.5px 2px 0 rgba(73, 146, 154, 0.5),
+            -4px -3px 1px 0 rgba(73, 146, 154, 0.35),
+            4px -3px 1px 0 rgba(73, 146, 154, 0.35);
+    }
+    
+    /* Splash expands - smooth transition */
+    62% {
+        opacity: 0.6;
+        width: 26px;
+        height: 1.8px;
+        background: radial-gradient(ellipse at center, rgba(73, 146, 154, 0.3) 0%, rgba(73, 146, 154, 0.05) 70%, transparent 100%);
+        box-shadow: 
+            -13px -1px 1.5px 0 rgba(73, 146, 154, 0.3),
+            13px -1px 1.5px 0 rgba(73, 146, 154, 0.3),
+            -6.5px -2.5px 1px 0 rgba(73, 146, 154, 0.2),
+            6.5px -2.5px 1px 0 rgba(73, 146, 154, 0.2);
+    }
+    
+    /* Splash fades slowly */
+    72% {
+        opacity: 0.2;
+        width: 32px;
+        height: 1px;
+        background: radial-gradient(ellipse at center, rgba(73, 146, 154, 0.1) 0%, transparent 70%);
+        box-shadow: 
+            -16px -0.5px 1px 0 rgba(73, 146, 154, 0.1),
+            16px -0.5px 1px 0 rgba(73, 146, 154, 0.1),
+            -8px -2px 0.5px 0 rgba(73, 146, 154, 0.08),
+            8px -2px 0.5px 0 rgba(73, 146, 154, 0.08);
+    }
+    
+    85% {
+        opacity: 0;
+        width: 35px;
+        height: 0;
     }
 }
 

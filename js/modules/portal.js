@@ -8,7 +8,7 @@ let currentCenter = 0;
 let autoTimer = null;
 let isAutoCycling = false;
 let isPaused = false;
-const TOTAL_SLIDES = 3;
+let TOTAL_SLIDES = 0;  // Will be set dynamically
 const AUTO_INTERVAL = 3500;
 
 /**
@@ -33,6 +33,9 @@ function initCarousel() {
     const section = document.querySelector('.archives_section');
 
     if (slides.length === 0) return;
+
+    // Set TOTAL_SLIDES dynamically
+    TOTAL_SLIDES = slides.length;
 
     // Set initial positions
     updatePositions(slides, dots);

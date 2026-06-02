@@ -4,6 +4,7 @@
 
 import { initNavigation } from './modules/navigation.js';
 import { initCarousel } from './modules/carousel.js';
+import { generateCarouselDots } from './modules/generate-carousel-dots.js';
 import { initParallax, updateParallaxHeight } from './modules/parallax.js';
 import { initModal, showPopupAtCard } from './modules/modal.js';
 import { initPortal } from './modules/portal.js';
@@ -19,6 +20,9 @@ import { translations } from './constants/translations.js';
 document.addEventListener('DOMContentLoaded', () => {
     // Language must be first (sets up data-i18n)
     initLanguage();
+    
+    // Generate carousel dots BEFORE initializing carousels
+    generateCarouselDots();
     
     // Core navigation & layout
     initNavigation();

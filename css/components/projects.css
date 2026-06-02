@@ -364,11 +364,11 @@
 }
 
 .carousel-prev {
-    left: 0;
+    left: 40px;
 }
 
 .carousel-next {
-    right: 0;
+    right: 40px;
 }
 
 /* Dots */
@@ -494,6 +494,14 @@
         font-size: 2rem;
     }
 
+    .carousel-prev {
+        left: 30px;
+    }
+
+    .carousel-next {
+        right: 30px;
+    }
+
     .light-ray { display: none; }
 }
 
@@ -512,6 +520,14 @@
         width: 36px;
         height: 36px;
         font-size: 1.6rem;
+    }
+
+    .carousel-prev {
+        left: 20px;
+    }
+
+    .carousel-next {
+        right: 20px;
     }
 
     .slide-overlay h2 { font-size: 1rem; }

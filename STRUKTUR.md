@@ -115,20 +115,21 @@ Portfolio/
 
 ```javascript
 DOMContentLoaded → {
-  1.  initLanguage()        // EN/DE Umschaltung (MUSS ERSTER SEIN!)
-  2.  initNavigation()      // Scroll-basierte Nav
-  3.  initCarousel()        // Hero Indikatoren
-  4.  initParallax()        // Hintergrund-Bewegung
-  5.  updateParallaxHeight()
-  6.  initModal(projects)   // Popup-System
-  7.  initPortal(callback)  // 3D Carousel + Bubbles
-  8.  renderHeroSkills()    // Skills (übersetzt) generieren
-  9.  renderAboutSkills()   // About Skills (übersetzt) generieren
-  10. initUnderwater()      // Anglerfisch in Timeline
-  11. initFlood()           // Wasser in Journey
-  12. initContactRain()     // Tropfen in Contact
-  13. initDepthExperience() // Fog + Vignette + Bubbles (ganze Seite)
-  14. initTimelineAnimation() // Scroll-Reveal
+  1.  initLanguage()              // EN/DE Umschaltung (MUSS ERSTER SEIN!)
+  2.  generateCarouselDots()      // Dots AUTOMATISCH generieren (NEW!)
+  3.  initNavigation()            // Scroll-basierte Nav
+  4.  initCarousel()              // Hero Indikatoren
+  5.  initParallax()              // Hintergrund-Bewegung
+  6.  updateParallaxHeight()
+  7.  initModal(projects)         // Popup-System
+  8.  initPortal(callback)        // 3D Carousel + Bubbles
+  9.  renderHeroSkills()          // Skills (übersetzt) generieren
+  10. renderAboutSkills()         // About Skills (übersetzt) generieren
+  11. initUnderwater()            // Anglerfisch in Timeline
+  12. initFlood()                 // Wasser in Journey
+  13. initContactRain()           // Tropfen in Contact
+  14. initDepthExperience()       // Fog + Vignette + Bubbles (ganze Seite)
+  15. initTimelineAnimation()     // Scroll-Reveal
 }
 ```
 
@@ -184,9 +185,13 @@ Alle Canvas-Module vermeiden `shadowBlur` (teuer!) und verwenden stattdessen:
 Dann in `index.html`:
 1. Neues `<div class="portal-slide" data-index="X" data-project="X">` im `.portal-carousel`
 2. Neues `<div class="carousel_slide">` im `.carousel_track` (Hero)
-3. Carousel-Dots + Indicators aktualisieren
 
-> ⚠️ `TOTAL_SLIDES` in `portal.js` (Zeile 12) muss erhöht werden!
+✅ **Carousel-Dots & Indicators werden AUTOMATISCH generiert!**
+- Das `generate-carousel-dots.js` Modul läuft beim Seitenload
+- Buttons werden basierend auf der Anzahl der Projekte in `projects.js` generiert
+- **Kein manuelles Hinzufügen von Buttons mehr nötig!**
+
+> ⚠️ Wenn du die Anzahl der Slides erhöhst, muss `data-index` und `data-project` aktualisiert werden!
 
 ### Neue Skills
 
@@ -267,14 +272,107 @@ Dann in `index.html` neuen `.timeline_item`-Block im `.water_timeline`-Container
 
 ---
 
+## ✨ Navbar-Animationen (NEW)
+
+### Navigation Links – Active & Hover Effekte
+
+**Active State (aktueller Seite)**
+- 💧 **Goldengelb Splash-Animation** – kontinuierliche Wasser-Platsch-Effekte unterhalb des Links
+- Animationsdauer: **5.5s** smooth ease-in-out
+- Farbe: `--gold-accent` (#c9a861)
+
+**Hover State (über Link fahren)**
+- 💧 **Cyan Splash-Animation** – Wasser-Platsch-Effekt in Cyan-Farbe
+- Gleiche Animationsdauer und Sanftheit wie Active
+- Farbe: `--cyan-glow` (#49929a)
+
+### Language Toggle Button – Ripple Ring Effekt
+
+- **Ripple Ring**: Expandierender Kreis beim Hovern (Cyan-Farbe)
+- Simuliert einen Glow-Effekt wie die Social-Media Icons rechts
+- Animationsdauer: **0.8s** ease-out
+
+### Technische Details (navbar.css)
+
+Die Animationen nutzen:
+- **`::before` Pseudo-Element** für Splash-Effekte (bei non-active Links)
+- **`::before` Pseudo-Element** für Splash bei Active Links
+- **SVG-ähnliche Gradienten** mit `radial-gradient` für realistisches Wasser
+- **Box-shadow** Techniken für Spritzwasser-Partikel
+
+**Keyframe-Animationen:**
+- `waterSplash` (Gold) – Active Links
+- `waterSplashCyan` (Cyan) – Hover Links
+- `navRippleRing` – Language Button & Sidebar Socials
+
+**Modifizieren:**
+- Splash-Größe: `width` / `height` Werte in den Keyframes ändern
+- Farben: `rgba(201, 168, 97, ...)` → Gold / `rgba(73, 146, 154, ...)` → Cyan
+- Geschwindigkeit: Animation-Dauer in `navbar.css` bei `.nav-link.active::after` und `.nav-link:hover::before` anpassen
+
+---
+
 ## 🔧 Bekannte Issues / Todos
 
 - [ ] **Bild-Assets fehlen**: `assets/Picture/` existiert nicht im Repo → 404 beim Laden
-- [ ] HTML-Carousel-Dots + Indicators müssen manuell aktualisiert werden bei neuen Projekten
-- [ ] Linkedin-Link in Contact + Sidebar jetzt korrekt
-- [ ] Footer hinzugefügt mit "ASCEND"-Button
+- [x] **HTML-Carousel-Dots + Indicators werden automatisch generiert** ✨
+  - Neues Modul: `generate-carousel-dots.js`
+  - Läuft automatisch beim Seitenload
+  - Basiert auf der Länge der `projects.js` Array
+  - **Jetzt einfach:** Nur Projekte zu `projects.js` hinzufügen → Dots werden automatisch generiert!
+- [x] Linkedin-Link in Contact + Sidebar korrekt
+- [x] Footer hinzugefügt mit "ASCEND"-Button
 - [x] Sprachumschaltung EN/DE implementiert (Button im Header)
 - [x] `translations.js` + `language.js` Modul
 - [x] Skills werden sprachbewusst gerendert (Hero + About)
 - [x] Hero hat leeres `.arsenal_grid` → Skills per JS
 - [x] About hat leeres `.skills_grid` → Skills per JS
+- [x] Navbar-Animationen (Splash + Ripple Effekte) implementiert
+- [x] Language Toggle Button mit Ripple-Effekt
+
+---
+
+## 📝 Best Practices für Änderungen
+
+### Animations-Performance
+- **Canvas-Operationen**: Nur mit `requestAnimationFrame` durchführen
+- **IntersectionObserver**: Nutzen, um Canvas zu pausieren wenn off-screen
+- **CSS-Animationen**: Bevorzugen für einfache Transforms/Opacity
+- **Avoid**: `shadowBlur` (GPU-intensive), häufige DOM-Manipulationen
+
+### Responsive Design
+- **Breakpoints**: 768px (Tablet), 480px (Mobile)
+- **Navbar**: Responsive bei `@media (max-width: 768px)` in `navbar.css`
+- **z-index**: Responsive anpassen bei kleineren Screens
+
+### Barrierefreiheit
+- **Alle interaktiven Elemente** müssen `:focus-visible` haben
+- **`aria-labels`** auf Buttons (Language Toggle, Modal Close)
+- **`prefers-reduced-motion`** wird beachtet – keine Animationen
+- **Color Contrast**: Text muss genug Kontrast haben (WCAG AA)
+
+### Internationalisierung (i18n)
+- Alle sichtbaren Texte müssen `data-i18n="key"` haben
+- Key-Namen: kebab-case (z.B. `hero-title`, `about-description`)
+- Neue Keys IMMER in beide Sprachen (EN + DE) in `translations.js` eintragen
+
+---
+
+## 🎨 Farb-Palette Referenz
+
+```css
+--abyss-deep: #030809      /* Haupt-Hintergrund (dunkelste) */
+--depth-bg: #051214        /* Hover-Dunkel im Portal */
+--cyan-glow: #49929a       /* Unterwasser-Leucht (Cyan) */
+--gold-accent: #c9a861     /* Gold-Highlight */
+--text-light: #cdcfd0      /* Primärer Text */
+```
+
+Alle Farben sind als CSS-Custom-Properties in `css/main.css` definiert.
+
+---
+
+## 📞 Kontakt & Wartung
+
+**Fragen zur Struktur?** → Siehe `STRUKTUR.md` (diese Datei)  
+**Bugs melden?** → Überprüfe die Issues/Todos (oben)

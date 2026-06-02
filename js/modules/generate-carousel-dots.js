@@ -1,0 +1,52 @@
+/* ========================================= */
+/* MODULE - GENERATE CAROUSEL DOTS */
+/* Automatically generates indicator dots based on projects.length */
+/* ========================================= */
+
+import { projects } from '../constants/projects.js';
+
+export function generateCarouselDots() {
+    const projectCount = projects.length;
+
+    // Generate Hero Carousel Indicators
+    generateHeroIndicators(projectCount);
+
+    // Generate Portal Carousel Dots
+    generatePortalDots(projectCount);
+}
+
+function generateHeroIndicators(count) {
+    const indicatorsContainer = document.querySelector('.carousel_indicators');
+    
+    if (!indicatorsContainer) return;
+
+    // Clear existing indicators
+    indicatorsContainer.innerHTML = '';
+
+    // Generate new indicators
+    for (let i = 0; i < count; i++) {
+        const button = document.createElement('button');
+        button.className = 'indicator';
+        button.setAttribute('data-slide', i);
+        if (i === 0) button.classList.add('active');
+        indicatorsContainer.appendChild(button);
+    }
+}
+
+function generatePortalDots(count) {
+    const dotsContainer = document.querySelector('.carousel-dots');
+    
+    if (!dotsContainer) return;
+
+    // Clear existing dots
+    dotsContainer.innerHTML = '';
+
+    // Generate new dots
+    for (let i = 0; i < count; i++) {
+        const button = document.createElement('button');
+        button.className = 'c-dot';
+        button.setAttribute('data-slide', i);
+        if (i === 0) button.classList.add('active');
+        dotsContainer.appendChild(button);
+    }
+}
