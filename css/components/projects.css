@@ -169,6 +169,66 @@
     filter: grayscale(10%) brightness(0.9) saturate(1.1);
 }
 
+/* ========================================= */
+/* 3D MOUSE TILT EFFECT (on center slide) */
+/* ========================================= */
+
+/* Tilt container - allows child image to tilt independently */
+.portal-slide .tilt-inner {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transition: transform 0.25s cubic-bezier(0.03, 0.98, 0.52, 0.99);
+    will-change: transform;
+}
+
+/* Smooth return when mouse leaves */
+.portal-slide .tilt-inner.tilt-snap-back {
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Image inside tilt inner for independent transforms */
+.portal-slide .tilt-inner img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: filter 0.3s ease;
+}
+
+/* Shine overlay that follows the mouse */
+.portal-slide .tilt-shine {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.portal-slide.pos-center .tilt-shine {
+    opacity: 0;
+}
+
+.portal-slide.pos-center .tilt-shine.tilt-active {
+    opacity: 1;
+}
+
+/* Slightly brighten image on active tilt */
+.portal-slide.pos-center .tilt-inner.tilt-active img {
+    filter: grayscale(5%) brightness(1.05) saturate(1.15);
+}
+
+/* Lift shadow when tilting */
+.portal-slide.pos-center.tilt-lift {
+    box-shadow:
+        0 0 60px rgba(201, 168, 97, 0.25),
+        0 0 100px rgba(73, 146, 154, 0.12),
+        0 0 150px rgba(201, 168, 97, 0.08),
+        inset 0 0 30px rgba(201, 168, 97, 0.06);
+}
+
 /* ---- LEFT POSITION ---- */
 .portal-slide.pos-left {
     transform: translateX(-520px) translateZ(-80px) rotateY(25deg) scale(0.78);

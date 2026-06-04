@@ -399,7 +399,7 @@ export function initUnderwater() {
             ctx.beginPath();
             ctx.arc(p.x, floatY, p.r + 6, 0, 6.2832);
             ctx.fill();
-            
+
             // Main particle
             ctx.fillStyle = `rgba(${p.color}, ${alpha})`;
             ctx.beginPath();

@@ -1,6 +1,6 @@
 /* ========================================= */
 /* MODULE - 3D PORTAL CAROUSEL */
-/* Auto-rotate + click + bubbles */
+/* Auto-rotate + click + bubbles + 3D Tilt */
 /* ========================================= */
 
 import { cleanupRegistry, debounce } from '../utils/helpers.js';
@@ -13,6 +13,14 @@ let isPaused = false;
 let TOTAL_SLIDES = 0;
 const AUTO_INTERVAL = 3500;
 
+/* ---- 3D Tilt state ---- */
+let tiltActive = false;
+let tiltSlide = null;
+let tiltInner = null;
+let tiltShine = null;
+let tiltAnimFrame = null;
+const TILT_MAX_ANGLE = 14; // max degrees of tilt
+
 /**
  * Initialize the portal carousel
  * @param {Function} onOpenModal - callback(card) to open modal
@@ -21,6 +29,167 @@ export function initPortal(onOpenModal) {
     modalOpenCallback = onOpenModal;
     initBubbles();
     initCarousel();
+    setupTiltStructure();
+}
+
+/* ========================================= */
+/* 3D MOUSE TILT SETUP */
+/* ========================================= */
+
+/**
+ * Add .tilt-inner and .tilt-shine elements to each slide
+ */
+function setupTiltStructure() {
+    const slides = document.querySelectorAll('.portal-slide');
+    slides.forEach(slide => {
+        // Only add if not already present
+        if (slide.querySelector('.tilt-inner')) return;
+
+        // Find the image
+        const img = slide.querySelector('img');
+        if (!img) return;
+
+        // Create tilt-inner wrapper
+        const tiltInner = document.createElement('div');
+        tiltInner.className = 'tilt-inner';
+
+        // Move image into tilt-inner
+        img.parentNode.insertBefore(tiltInner, img);
+        tiltInner.appendChild(img);
+
+        // Create shine overlay
+        const shine = document.createElement('div');
+        shine.className = 'tilt-shine';
+        tiltInner.appendChild(shine);
+    });
+}
+
+/**
+ * Attach 3D tilt to the current center slide
+ */
+function attachTilt() {
+    detachTilt(); // remove any existing tilt first
+
+    const centerSlide = document.querySelector('.portal-slide.pos-center');
+    if (!centerSlide) return;
+
+    tiltSlide = centerSlide;
+    tiltInner = centerSlide.querySelector('.tilt-inner');
+    tiltShine = centerSlide.querySelector('.tilt-shine');
+
+    if (!tiltInner || !tiltShine) return;
+
+    tiltSlide.addEventListener('mousemove', onTiltMove, { passive: true });
+    tiltSlide.addEventListener('mouseleave', onTiltLeave, { passive: true });
+    tiltSlide.addEventListener('mouseenter', onTiltEnter, { passive: true });
+}
+
+/**
+ * Remove 3D tilt listeners and reset state
+ */
+function detachTilt() {
+    if (tiltSlide) {
+        tiltSlide.removeEventListener('mousemove', onTiltMove);
+        tiltSlide.removeEventListener('mouseleave', onTiltLeave);
+        tiltSlide.removeEventListener('mouseenter', onTiltEnter);
+    }
+
+    // Reset visual state
+    if (tiltInner) {
+        tiltInner.style.transform = '';
+        tiltInner.classList.remove('tilt-active', 'tilt-snap-back');
+    }
+    if (tiltShine) {
+        tiltShine.style.background = '';
+        tiltShine.classList.remove('tilt-active');
+    }
+    if (tiltSlide) {
+        tiltSlide.classList.remove('tilt-lift');
+    }
+
+    if (tiltAnimFrame) {
+        cancelAnimationFrame(tiltAnimFrame);
+        tiltAnimFrame = null;
+    }
+
+    tiltActive = false;
+    tiltSlide = null;
+    tiltInner = null;
+    tiltShine = null;
+}
+
+function onTiltEnter() {
+    if (!tiltInner || !tiltShine) return;
+    tiltActive = true;
+    tiltInner.classList.remove('tilt-snap-back');
+    tiltInner.classList.add('tilt-active');
+    tiltShine.classList.add('tilt-active');
+    if (tiltSlide) tiltSlide.classList.add('tilt-lift');
+}
+
+function onTiltMove(e) {
+    if (!tiltActive || !tiltSlide || !tiltInner || !tiltShine) return;
+
+    // Batch updates via rAF to avoid layout thrashing
+    if (tiltAnimFrame) cancelAnimationFrame(tiltAnimFrame);
+    tiltAnimFrame = requestAnimationFrame(() => {
+        updateTilt(e);
+    });
+}
+
+function updateTilt(e) {
+    if (!tiltSlide || !tiltInner || !tiltShine) return;
+
+    const rect = tiltSlide.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    // Normalize mouse position to [-1, 1] range
+    let normX = (e.clientX - centerX) / (rect.width / 2);
+    let normY = (e.clientY - centerY) / (rect.height / 2);
+
+    // Clamp to [-1, 1]
+    normX = Math.max(-1, Math.min(1, normX));
+    normY = Math.max(-1, Math.min(1, normY));
+
+    // Calculate rotation: X axis tilts "away" (inverted for natural feel)
+    const rotY = normX * TILT_MAX_ANGLE;
+    const rotX = -normY * TILT_MAX_ANGLE;
+
+    // Apply transform on tilt-inner (preserving the base translateZ from pos-center)
+    tiltInner.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+
+    // Update shine position: radial gradient follows mouse
+    const px = ((normX + 1) / 2) * 100; // 0% to 100%
+    const py = ((normY + 1) / 2) * 100; // 0% to 100%
+    tiltShine.style.background = `radial-gradient(
+        circle 150px at ${px}% ${py}%,
+        rgba(201, 168, 97, 0.18) 0%,
+        rgba(73, 146, 154, 0.08) 40%,
+        transparent 70%
+    )`;
+}
+
+function onTiltLeave() {
+    tiltActive = false;
+
+    if (tiltAnimFrame) {
+        cancelAnimationFrame(tiltAnimFrame);
+        tiltAnimFrame = null;
+    }
+
+    if (tiltInner) {
+        tiltInner.classList.add('tilt-snap-back');
+        tiltInner.classList.remove('tilt-active');
+        tiltInner.style.transform = '';
+    }
+    if (tiltShine) {
+        tiltShine.classList.remove('tilt-active');
+        tiltShine.style.background = '';
+    }
+    if (tiltSlide) {
+        tiltSlide.classList.remove('tilt-lift');
+    }
 }
 
 /* ========================================= */
@@ -59,6 +228,7 @@ function initCarousel() {
     if (prevBtn) {
         const onPrev = () => {
             pauseAuto();
+            detachTilt();
             currentCenter = (currentCenter - 1 + TOTAL_SLIDES) % TOTAL_SLIDES;
             updatePositions(slides, dots);
             resumeAutoAfterDelay();
@@ -70,6 +240,7 @@ function initCarousel() {
     if (nextBtn) {
         const onNext = () => {
             pauseAuto();
+            detachTilt();
             currentCenter = (currentCenter + 1) % TOTAL_SLIDES;
             updatePositions(slides, dots);
             resumeAutoAfterDelay();
@@ -82,6 +253,7 @@ function initCarousel() {
     dots.forEach((dot, i) => {
         const onDotClick = () => {
             pauseAuto();
+            detachTilt();
             currentCenter = i;
             updatePositions(slides, dots);
             resumeAutoAfterDelay();
@@ -110,6 +282,7 @@ function initCarousel() {
             e.preventDefault();
             e.stopPropagation();
             pauseAuto();
+            detachTilt();
             currentCenter = idx;
             updatePositions(slides, dots);
             resumeAutoAfterDelay();
@@ -194,6 +367,7 @@ function initCarousel() {
     // Register cleanup
     cleanupRegistry.register(() => {
         stopAuto();
+        detachTilt();
         cleanupListeners.forEach(fn => { try { fn(); } catch(e) {} });
         cleanupListeners = [];
         if (sectionObserver) sectionObserver.disconnect();
@@ -244,6 +418,14 @@ function updatePositions(slides, dots) {
             dot.removeAttribute('aria-current');
         }
     });
+
+    // Attach tilt to the new center slide (after positions are set)
+    // Use rAF to wait for CSS transitions to settle
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            attachTilt();
+        });
+    });
 }
 
 /* ---- Auto-cycle ---- */
@@ -266,6 +448,7 @@ function scheduleNext(slides, dots) {
     if (!isAutoCycling) return;
     autoTimer = setTimeout(() => {
         if (!isAutoCycling) return;
+        detachTilt();
         currentCenter = (currentCenter + 1) % TOTAL_SLIDES;
         updatePositions(slides, dots);
         scheduleNext(slides, dots);
