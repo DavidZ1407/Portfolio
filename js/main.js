@@ -14,6 +14,8 @@ import { initContactRain } from './modules/contact-rain.js';
 import { initDepthExperience } from './modules/depth-experience.js';
 import { initFishSwarm } from './modules/fish-swarm.js';
 import { initBioluminescentSwarm } from './modules/bioluminescent-swarm.js';
+import { initHeroShader } from './modules/hero-shader.js';
+import { initWaterLogo } from './modules/water-logo.js';
 import { initLanguage, getCurrentLang } from './modules/language.js';
 import { projects } from './constants/projects.js';
 import { skills } from './constants/skills.js';
@@ -31,6 +33,12 @@ document.addEventListener('DOMContentLoaded', () => {
     initCarousel();
     initParallax();
     updateParallaxHeight();
+    
+    // Hero Three.js Shader Parallax
+    initHeroShader();
+    
+    // Water Logo Shader Effect
+    initWaterLogo();
     
     // Modal & Portal carousel
     initModal(projects);

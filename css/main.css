@@ -91,18 +91,41 @@ section {
     display: flex;
     flex-direction: column;
     position: relative;
-    contain: layout style;
 }
 
 section:not(#home):not(.archives_section) {
-    background: linear-gradient(to bottom, rgba(10, 26, 28, 0.5), rgba(3, 8, 9, 0.9));
+    background: 
+        linear-gradient(to bottom, 
+            transparent 0%,
+            rgba(10, 22, 40, 0.4) 20%,
+            rgba(10, 22, 40, 0.5) 50%,
+            rgba(10, 22, 40, 0.4) 80%,
+            transparent 100%
+        );
+}
+
+/* Smooth section transitions – each section gets a subtle top/bottom fade */
+/* Fades via box-shadow – funktioniert auch wenn ::before/::after von Components belegt sind */
+section:not(#home) {
+    box-shadow: 
+        inset 0 80px 60px -40px var(--abyss-deep),
+        inset 0 -80px 60px -40px var(--abyss-deep);
+}
+
+/* Hero bottom fade – weicher Übergang zum Archives */
+.hero_section {
+    box-shadow: inset 0 -80px 60px -40px var(--abyss-deep);
+}
+
+/* Footer top fade – weicher Übergang vom Contact */
+.site_footer {
+    box-shadow: inset 0 60px 40px -30px var(--abyss-deep);
 }
 
 /* Section Title & Subtitle */
 .section_title {
     font-size: 2.5rem;
     margin-bottom: 20px;
-    border-bottom: 2px solid rgba(201, 168, 97, 0.4);
     color: var(--gold-accent);
     text-transform: uppercase;
     letter-spacing: 3px;

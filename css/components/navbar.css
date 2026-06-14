@@ -22,13 +22,18 @@
     align-items: center;
     text-decoration: none;
     color: var(--text-light);
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
     position: relative;
     overflow: visible;
+    padding: 6px;
+    border-radius: 4px;
 }
 
 .sidebar_socials a:hover {
-    color: var(--gold-accent);
+    color: var(--cyan-glow);
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
+    border-color: rgba(73, 146, 154, 0.4);
 }
 
 .sidebar_socials a i {
@@ -41,105 +46,11 @@
 }
 
 .sidebar_socials a:hover i {
-    text-shadow: 0 0 15px var(--gold-accent);
-    transform: scale(1.15);
-}
-
-/* ========================================= */
-/* RIPPLE RING - Expands on hover */
-/* ========================================= */
-.sidebar_socials a::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    border: 1px solid rgba(201, 168, 97, 0.5);
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    pointer-events: none;
-    z-index: 1;
-    transition: none;
-}
-
-.sidebar_socials a:hover::before {
-    animation: rippleRing 0.8s ease-out forwards;
-}
-
-@keyframes rippleRing {
-    0% {
-        width: 0;
-        height: 0;
-        opacity: 0.6;
-        border-width: 1.5px;
-        border-color: rgba(201, 168, 97, 0.6);
-    }
-    50% {
-        opacity: 0.3;
-        border-color: rgba(73, 146, 154, 0.3);
-    }
-    100% {
-        width: 45px;
-        height: 45px;
-        opacity: 0;
-        border-width: 0.5px;
-        border-color: rgba(73, 146, 154, 0.1);
-    }
-}
-
-/* ========================================= */
-/* BUBBLE RISE - Bubbles appear on hover */
-/* ========================================= */
-.sidebar_socials a::after {
-    content: '';
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: var(--gold-accent);
-    transform: translateX(-50%);
-    opacity: 0;
-    pointer-events: none;
-    box-shadow:
-        0 -10px 0 -1px rgba(201, 168, 97, 0.4),
-        0 -22px 0 -2px rgba(73, 146, 154, 0.3),
-        0 -36px 0 -3px rgba(201, 168, 97, 0.15);
-    transition: none;
-}
-
-.sidebar_socials a:hover::after {
-    animation: bubbleRise 1.2s ease-out infinite;
-}
-
-@keyframes bubbleRise {
-    0% {
-        opacity: 0.6;
-        transform: translateX(-50%) scale(1);
-        box-shadow:
-            0 -10px 0 -1px rgba(201, 168, 97, 0.5),
-            0 -22px 0 -2px rgba(73, 146, 154, 0.4),
-            0 -36px 0 -3px rgba(201, 168, 97, 0.2);
-    }
-    50% {
-        opacity: 0.3;
-        transform: translateX(-50%) scale(1.2);
-        box-shadow:
-            0 -14px 0 0px rgba(201, 168, 97, 0.3),
-            0 -28px 0 -1px rgba(73, 146, 154, 0.2),
-            0 -44px 0 -2px rgba(201, 168, 97, 0.1);
-    }
-    100% {
-        opacity: 0;
-        transform: translateX(-50%) scale(0.8);
-        box-shadow:
-            0 -20px 0 0px rgba(201, 168, 97, 0),
-            0 -38px 0 -1px rgba(73, 146, 154, 0),
-            0 -56px 0 -2px rgba(201, 168, 97, 0);
-    }
+    color: var(--cyan-glow);
+    text-shadow: 
+        0 0 15px var(--cyan-glow),
+        0 0 30px rgba(73, 146, 154, 0.4);
+    transform: scale(1.2);
 }
 
 .sidebar_socials a span {
@@ -184,6 +95,23 @@
     align-items: center;
 }
 
+/* Phone Icon in Navbar */
+.nav-phone-icon {
+    color: var(--gold-accent);
+    font-size: 1.3rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 5px;
+    margin-left: 15px;
+}
+
+.nav-phone-icon:hover {
+    color: var(--cyan-glow);
+    text-shadow: 0 0 20px rgba(73, 146, 154, 0.6), 0 0 40px rgba(73, 146, 154, 0.3);
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
+}
+
 /* Language Toggle Button */
 .lang-toggle-btn {
     margin-left: 20px;
@@ -199,30 +127,13 @@
     position: relative;
 }
 
-.lang-toggle-btn::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    border: 1.5px solid rgba(73, 146, 154, 0.5);
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    pointer-events: none;
-    z-index: 0;
-    transition: none;
-}
-
-.lang-toggle-btn:hover::before {
-    animation: navRippleRing 0.8s ease-out forwards;
-}
-
 .lang-toggle-btn:hover {
-    background: rgba(201, 168, 97, 0.15);
-    border-color: var(--gold-accent);
-    box-shadow: 0 0 15px rgba(201, 168, 97, 0.2);
+    color: var(--cyan-glow);
+    background: rgba(73, 146, 154, 0.15);
+    border-color: var(--cyan-glow);
+    box-shadow: 0 0 25px rgba(73, 146, 154, 0.4), 0 0 50px rgba(73, 146, 154, 0.2);
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
 }
 
 .nav-link {
@@ -238,79 +149,21 @@
 
 .nav-link:hover {
     color: var(--cyan-glow);
+    text-shadow: 0 0 20px rgba(73, 146, 154, 0.6), 0 0 40px rgba(73, 146, 154, 0.3);
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
 }
 
 .nav-link.active {
     color: var(--gold-accent);
+    text-shadow: 0 0 15px rgba(201, 168, 97, 0.5), 0 0 30px rgba(201, 168, 97, 0.25);
 }
 
-/* ========================================= */
-/* UNDERLINE - Active=gold splash */
-/* ========================================= */
-
-.nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: -3px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: var(--gold-accent);
-    border-radius: 1px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease, box-shadow 0.3s ease, height 0.3s ease, background 0.3s ease;
-}
-
-/* HOVER: ripple ring effect + splash animation */
-.nav-link::before {
-    content: '';
-    position: absolute;
-    top: auto;
-    bottom: -12px;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    transform: translateX(-50%);
-    opacity: 0;
-    pointer-events: none;
-    z-index: 0;
-    transition: none;
-}
-
-.nav-link:hover::before {
-    animation: waterSplashCyan 5.5s ease-in-out infinite;
-}
-
-/* ACTIVE: water splash effect */
-.nav-link.active::after {
-    opacity: 1;
-    background: transparent;
-    height: 0;
-    animation: waterDrops 5.5s ease-in-out infinite;
-    bottom: 0;
-}
-
-/* Active splash - hidden by default, shown by ::before splash */
-.nav-link.active::before {
-    content: '';
-    position: absolute;
-    bottom: -12px;
-    left: 50%;
-    width: 0;
-    height: 0;
-    transform: translateX(-50%);
-    pointer-events: none;
-    animation: waterSplash 5.5s ease-in-out infinite;
-    z-index: 3;
-    border: none;
-    top: auto;
-}
-
-/* Active + Hover: keep water splash animation */
-.nav-link.active:hover::before {
-    animation: waterSplash 5.5s ease-in-out infinite !important;
+.nav-link.active:hover {
+    color: var(--cyan-glow);
+    text-shadow: 0 0 20px rgba(73, 146, 154, 0.6), 0 0 40px rgba(73, 146, 154, 0.3);
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
 }
 
 @keyframes navRippleRing {

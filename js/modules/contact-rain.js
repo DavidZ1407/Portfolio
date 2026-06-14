@@ -1,6 +1,6 @@
 /* ========================================= */
-/* MODULE - CONTACT SECTION WATER DRIPS */
-/* Water droplets falling when section is visible */
+/* MODULE - CONTACT SECTION LIGHT RAYS */
+/* Dynamische Lichtstrahlen wie Unterwasser */
 /* ========================================= */
 
 export function initContactRain() {
@@ -28,35 +28,16 @@ export function initContactRain() {
     let animFrame = null;
     let isVisible = false;
     let isAnimating = false;
-    let drops = [];
-    let splashes = [];
-    let ripples = [];
+    let time = 0;
 
     function resize() {
         canvas.width = section.offsetWidth;
         canvas.height = section.offsetHeight;
-        initDrops();
-    }
-
-    function initDrops() {
-        drops = [];
-        const count = 30; // Reduced from 40
-        for (let i = 0; i < count; i++) {
-            drops.push({
-                x: Math.random() * canvas.width,
-                y: -Math.random() * canvas.height * 0.5,
-                len: 10 + Math.random() * 25,
-                speed: 2 + Math.random() * 4,
-                thickness: 1 + Math.random() * 2,
-                opacity: 0.15 + Math.random() * 0.4,
-            });
-        }
     }
 
     resize();
     window.addEventListener('resize', resize);
 
-    // IntersectionObserver: only animate when visible
     const observer = new IntersectionObserver((entries) => {
         isVisible = entries[0].isIntersecting;
         if (isVisible && !isAnimating) {
@@ -74,94 +55,147 @@ export function initContactRain() {
     function animate() {
         if (!isVisible) {
             isAnimating = false;
-            return; // Stop the loop entirely
+            return;
         }
 
+        time += 0.008;
         const w = canvas.width;
         const h = canvas.height;
 
         ctx.clearRect(0, 0, w, h);
 
-        // Draw drops
-        drops.forEach(d => {
-            d.y += d.speed;
+        // Dynamische Lichtstrahlen - gemischt: einige breit/stark, einige dünn/schwach
+        const rays = [
+            { x: 0.15, width: 8, length: 0.60, speed: 0.25, color: [73, 146, 154], delay: 0, opacity: 0.25 },
+            { x: 0.30, width: 2, length: 0.40, speed: 0.4, color: [73, 146, 154], delay: 0.8, opacity: 0.08 },
+            { x: 0.45, width: 6, length: 0.55, speed: 0.2, color: [201, 168, 97], delay: 1.5, opacity: 0.08 },
+            { x: 0.55, width: 2, length: 0.40, speed: 0.35, color: [73, 146, 154], delay: 0.4, opacity: 0.06 },
+            { x: 0.70, width: 6, length: 0.55, speed: 0.3, color: [73, 146, 154], delay: 1.2, opacity: 0.18 },
+            { x: 0.85, width: 2, length: 0.35, speed: 0.4, color: [73, 146, 154], delay: 0.2, opacity: 0.07 },
+        ];
 
-            // Drop line
-            const grad = ctx.createLinearGradient(d.x, d.y - d.len, d.x, d.y);
-            grad.addColorStop(0, 'rgba(73, 146, 154, 0)');
-            grad.addColorStop(1, `rgba(73, 146, 154, ${d.opacity})`);
+        rays.forEach(ray => {
+            const baseX = w * ray.x;
+            const length = h * ray.length;
+            
+            // --- STARKES LINKS-RECHTS SCHWANKEN ---
+            const swayX = Math.sin(time * ray.speed * 0.3 + ray.delay) * 80 
+                        + Math.sin(time * ray.speed * 0.1 + ray.delay * 1.5) * 40;
+            const x = baseX + swayX;
 
+            // Vertikales Pulsieren der Länge
+            const lengthPulse = 0.85 + 0.15 * Math.sin(time * ray.speed * 0.3 + ray.delay);
+            const currentLength = length * lengthPulse;
+
+            // Periodisches Ein- und Ausblenden - Strahlen tauchen auf und verschwinden wieder
+            const fadePulse = 0.3 + 0.7 * Math.sin(time * ray.speed * 0.15 + ray.delay * 2);
+            const fade = Math.max(0, Math.min(1, fadePulse));
+            const alpha = ray.opacity * fade;
+
+            const [r, g, b] = ray.color;
+
+            // Strahl von ganz oben (leicht versetzt)
+            const startY = -5 + Math.sin(time * ray.speed * 0.2 + ray.delay) * 15;
+            const endY = startY + currentLength;
+
+            // Wellenförmige horizontale Verzerrung (sinus wellen)
+            ctx.save();
+
+            // Weicher Glow
+            ctx.shadowColor = `rgba(${r}, ${g}, ${b}, ${alpha * 0.6})`;
+            ctx.shadowBlur = 15;
+
+            // Strahl als Pfad mit welligen Seiten
+            const segments = 20;
+            const segH = currentLength / segments;
+            
             ctx.beginPath();
-            ctx.moveTo(d.x, d.y - d.len);
-            ctx.lineTo(d.x, d.y);
-            ctx.strokeStyle = grad;
-            ctx.lineWidth = d.thickness;
-            ctx.lineCap = 'round';
-            ctx.stroke();
+            for (let i = 0; i <= segments; i++) {
+                const t = i / segments;
+                const y = startY + i * segH;
+                // Sinus-Welle auf dem Strahl
+                const waveX = Math.sin(time * ray.speed + t * 3 + ray.delay) * 3;
+                const widthAt = ray.width * (1 - t * 0.7); // Verjüngung
+                
+                if (i === 0) {
+                    ctx.moveTo(x + waveX - widthAt / 2, y);
+                    ctx.lineTo(x + waveX + widthAt / 2, y);
+                } else {
+                    ctx.lineTo(x + waveX + widthAt / 2, y);
+                }
+            }
+            for (let i = segments; i >= 0; i--) {
+                const t = i / segments;
+                const y = startY + i * segH;
+                const waveX = Math.sin(time * ray.speed + t * 3 + ray.delay) * 3;
+                const widthAt = ray.width * (1 - t * 0.7);
+                ctx.lineTo(x + waveX - widthAt / 2, y);
+            }
+            ctx.closePath();
 
-            // Drop shape (small oval at end)
-            ctx.beginPath();
-            ctx.ellipse(d.x, d.y, d.thickness * 0.6, d.len * 0.15, 0, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(150, 220, 220, ${d.opacity * 0.7})`;
+            // Gradient für den Strahl
+            const grad = ctx.createLinearGradient(x, startY, x, endY);
+            grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0)`);
+            grad.addColorStop(0.05, `rgba(${r}, ${g}, ${b}, ${alpha * 0.5})`);
+            grad.addColorStop(0.15, `rgba(${r}, ${g}, ${b}, ${alpha * 1.2})`);
+            grad.addColorStop(0.4, `rgba(${r}, ${g}, ${b}, ${alpha})`);
+            grad.addColorStop(0.65, `rgba(${r}, ${g}, ${b}, ${alpha * 0.6})`);
+            grad.addColorStop(0.85, `rgba(${r}, ${g}, ${b}, ${alpha * 0.2})`);
+            grad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+
+            ctx.fillStyle = grad;
             ctx.fill();
 
-            // At bottom: Splash + Reset
-            if (d.y > h - 30) {
-                splashes.push({
-                    x: d.x,
-                    y: h - 30,
-                    r: 0,
-                    maxR: 6 + Math.random() * 10,
-                    opacity: 0.4 + Math.random() * 0.3,
-                    speed: 0.3 + Math.random() * 0.2,
-                });
-
-                ripples.push({
-                    x: d.x,
-                    y: h - 28,
-                    r: 0,
-                    maxR: 15 + Math.random() * 20,
-                    opacity: 0.3,
-                    speed: 0.4 + Math.random() * 0.3,
-                });
-
-                d.y = -d.len - Math.random() * canvas.height * 0.3;
-                d.x = Math.random() * w;
-                d.speed = 2 + Math.random() * 4;
+            // Hellerer Kern
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = `rgba(${r}, ${g}, ${b}, ${alpha * 0.8})`;
+            ctx.globalAlpha = 0.3;
+            
+            ctx.beginPath();
+            for (let i = 0; i <= segments; i++) {
+                const t = i / segments;
+                const y = startY + i * segH;
+                const waveX = Math.sin(time * ray.speed + t * 3 + ray.delay) * 3;
+                const widthAt = (ray.width * 0.3) * (1 - t * 0.6);
+                if (i === 0) {
+                    ctx.moveTo(x + waveX - widthAt / 2, y);
+                    ctx.lineTo(x + waveX + widthAt / 2, y);
+                } else {
+                    ctx.lineTo(x + waveX + widthAt / 2, y);
+                }
             }
+            for (let i = segments; i >= 0; i--) {
+                const t = i / segments;
+                const y = startY + i * segH;
+                const waveX = Math.sin(time * ray.speed + t * 3 + ray.delay) * 3;
+                const widthAt = (ray.width * 0.3) * (1 - t * 0.6);
+                ctx.lineTo(x + waveX - widthAt / 2, y);
+            }
+            ctx.closePath();
+            ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.5})`;
+            ctx.fill();
+
+            ctx.restore();
         });
 
-        // Draw splashes
-        splashes = splashes.filter(s => {
-            s.r += s.speed;
-            s.opacity -= 0.015;
-
-            if (s.opacity <= 0) return false;
-
+        // --- SANFTE KAUSTIKEN (Lichtbrechung auf dem Boden) ---
+        ctx.save();
+        ctx.globalAlpha = 0.03;
+        for (let i = 0; i < 3; i++) {
+            const cx = w * (0.2 + i * 0.3) + Math.sin(time * 0.1 + i * 1.5) * 50;
+            const cy = h * 0.85 + Math.sin(time * 0.08 + i * 2) * 10;
+            const r = 60 + Math.sin(time * 0.05 + i) * 20;
+            
+            const caustic = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+            caustic.addColorStop(0, 'rgba(73, 146, 154, 0.15)');
+            caustic.addColorStop(0.5, 'rgba(73, 146, 154, 0.05)');
+            caustic.addColorStop(1, 'rgba(73, 146, 154, 0)');
+            ctx.fillStyle = caustic;
             ctx.beginPath();
-            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-            ctx.strokeStyle = `rgba(150, 220, 220, ${s.opacity})`;
-            ctx.lineWidth = 1;
-            ctx.stroke();
-
-            return true;
-        });
-
-        // Draw ripples
-        ripples = ripples.filter(r => {
-            r.r += r.speed;
-            r.opacity -= 0.008;
-
-            if (r.opacity <= 0) return false;
-
-            ctx.beginPath();
-            ctx.arc(r.x, r.y, r.r, 0, Math.PI * 2);
-            ctx.strokeStyle = `rgba(73, 146, 154, ${r.opacity * 0.6})`;
-            ctx.lineWidth = 1;
-            ctx.stroke();
-
-            return true;
-        });
+            ctx.arc(cx, cy, r, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        ctx.restore();
 
         animFrame = requestAnimationFrame(animate);
     }

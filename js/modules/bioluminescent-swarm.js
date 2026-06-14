@@ -13,7 +13,7 @@ import { debounce, cleanupRegistry } from '../utils/helpers.js';
 
 const CREATURE_TYPES = {
     jellyfish: {
-        draw(ctx, x, y, size, glow) {
+        draw(ctx, x, y, size, glow, seed) {
             ctx.save();
             ctx.translate(x, y);
 
@@ -26,16 +26,20 @@ const CREATURE_TYPES = {
             ctx.fillStyle = `rgba(5, 15, 30, ${0.5 + glow * 0.2})`;
             ctx.fill();
 
-            // Tentacles
+            // Tentacles — using pre-computed seed for stable lengths
             for (let i = 0; i < 5; i++) {
                 const tx = -size * 0.3 + (i / 4) * size * 0.6;
-                const tentLen = size * (0.4 + Math.random() * 0.3);
+                const tentSeed = seed ? seed.tentLens[i] : 0.5;
+                const tentLen = size * (0.4 + tentSeed * 0.3);
+                // Smooth sway using continuous sine, not random
+                const sway = Math.sin(glow * 1.5 + i * 1.2 + seed.offset) * size * 0.15;
+                const sway2 = Math.sin(glow * 0.8 + i * 0.9 + seed.offset * 1.3) * size * 0.1;
                 ctx.beginPath();
                 ctx.moveTo(tx, 0);
                 ctx.quadraticCurveTo(
-                    tx + Math.sin(glow * 3 + i) * size * 0.15,
+                    tx + sway,
                     tentLen * 0.5,
-                    tx + Math.sin(glow * 2 + i * 0.7) * size * 0.2,
+                    tx + sway2,
                     tentLen
                 );
                 ctx.strokeStyle = `rgba(5, 15, 30, ${0.3 + glow * 0.1})`;
@@ -53,8 +57,8 @@ const CREATURE_TYPES = {
 
                 // Large glow halo
                 const grad = ctx.createRadialGradient(sx, sy, 0, sx, sy, sr * 8);
-                grad.addColorStop(0, `rgba(201, 168, 97, ${alpha * 0.6})`);
-                grad.addColorStop(0.3, `rgba(201, 168, 97, ${alpha * 0.3})`);
+                grad.addColorStop(0, `rgba(150, 220, 220, ${alpha * 0.6})`);
+                grad.addColorStop(0.3, `rgba(73, 146, 154, ${alpha * 0.3})`);
                 grad.addColorStop(0.6, `rgba(73, 146, 154, ${alpha * 0.1})`);
                 grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
                 ctx.fillStyle = grad;
@@ -63,7 +67,7 @@ const CREATURE_TYPES = {
                 ctx.fill();
 
                 // Bright core
-                ctx.fillStyle = `rgba(201, 168, 97, ${alpha})`;
+                ctx.fillStyle = `rgba(150, 220, 220, ${alpha})`;
                 ctx.beginPath();
                 ctx.arc(sx, sy, sr, 0, Math.PI * 2);
                 ctx.fill();
@@ -76,7 +80,7 @@ const CREATURE_TYPES = {
     },
 
     squid: {
-        draw(ctx, x, y, size, glow) {
+        draw(ctx, x, y, size, glow, seed) {
             ctx.save();
             ctx.translate(x, y);
 
@@ -90,17 +94,20 @@ const CREATURE_TYPES = {
             ctx.fillStyle = `rgba(3, 8, 15, ${0.35 + glow * 0.15})`;
             ctx.fill();
 
-            // Tentacles (8 simplified)
+            // Tentacles — using pre-computed seed for stable lengths
             for (let i = 0; i < 6; i++) {
                 const tx = -size * 0.2 + (i / 5) * size * 0.4;
-                const angle = (i / 5 - 0.5) * 0.4;
-                const tentLen = size * (0.5 + Math.random() * 0.2);
+                const tentSeed = seed ? seed.tentLens[i] : 0.5;
+                const tentLen = size * (0.5 + tentSeed * 0.2);
+                // Smooth organic sway — continuous sine waves, no randomness
+                const sway1 = Math.sin(glow * 1.2 + i * 0.8 + seed.offset) * size * 0.2;
+                const sway2 = Math.sin(glow * 0.7 + i * 1.1 + seed.offset * 1.5) * size * 0.25;
                 ctx.beginPath();
                 ctx.moveTo(tx, 0);
                 ctx.quadraticCurveTo(
-                    tx + Math.sin(glow * 2 + i * 0.8) * size * 0.2,
+                    tx + sway1,
                     tentLen * 0.6,
-                    tx + Math.sin(glow * 1.5 + i) * size * 0.3,
+                    tx + sway2,
                     tentLen
                 );
                 ctx.strokeStyle = `rgba(3, 8, 15, ${0.2 + glow * 0.1})`;
@@ -135,7 +142,7 @@ const CREATURE_TYPES = {
             ctx.beginPath();
             ctx.moveTo(0, -size * 0.7);
             ctx.lineTo(0, -size * 0.1);
-            ctx.strokeStyle = `rgba(201, 168, 97, ${lineAlpha})`;
+            ctx.strokeStyle = `rgba(150, 220, 220, ${lineAlpha})`;
             ctx.lineWidth = 1;
             ctx.stroke();
 
@@ -183,8 +190,8 @@ const CREATURE_TYPES = {
             const lr = size * 0.03;
 
             const grad = ctx.createRadialGradient(lureTipX, lureTipY, 0, lureTipX, lureTipY, lr * 10);
-            grad.addColorStop(0, `rgba(201, 168, 97, ${lureAlpha * 0.6})`);
-            grad.addColorStop(0.3, `rgba(201, 168, 97, ${lureAlpha * 0.2})`);
+            grad.addColorStop(0, `rgba(150, 220, 220, ${lureAlpha * 0.6})`);
+            grad.addColorStop(0.3, `rgba(73, 146, 154, ${lureAlpha * 0.2})`);
             grad.addColorStop(0.7, `rgba(73, 146, 154, ${lureAlpha * 0.05})`);
             grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
             ctx.fillStyle = grad;
@@ -193,7 +200,7 @@ const CREATURE_TYPES = {
             ctx.fill();
 
             // Core
-            ctx.fillStyle = `rgba(255, 255, 200, ${lureAlpha})`;
+            ctx.fillStyle = `rgba(200, 240, 255, ${lureAlpha})`;
             ctx.beginPath();
             ctx.arc(lureTipX, lureTipY, lr, 0, Math.PI * 2);
             ctx.fill();
@@ -303,6 +310,11 @@ export function initBioluminescentSwarm() {
             const type = CREATURE_TYPES[typeKey];
             const size = (isMobile ? 40 : 60) + Math.random() * 40;
 
+            // Pre-compute tentacle seed data for smooth animation
+            const tentLens = [];
+            for (let t = 0; t < 6; t++) {
+                tentLens.push(Math.random());
+            }
             creatures.push({
                 type: typeKey,
                 x: Math.random() * w,
@@ -317,7 +329,11 @@ export function initBioluminescentSwarm() {
                 floatSpeedY: 0.15 + Math.random() * 0.25,
                 opacity: 0,
                 targetOpacity: 0.3 + Math.random() * 0.4,
-                depth: Math.random(), // 0 = far (small, dark), 1 = near (large, brighter)
+                depth: Math.random(),
+                seed: {
+                    tentLens: tentLens,
+                    offset: Math.random() * Math.PI * 2,
+                },
             });
         }
     }
@@ -363,7 +379,17 @@ export function initBioluminescentSwarm() {
             if (finalOpacity < 0.01) return;
 
             ctx.globalAlpha = finalOpacity;
-            type.draw(ctx, drawX, drawY, c.size, time + c.phase);
+
+            // Flip anglerfish horizontally when swimming left (head faces movement direction)
+            if (c.type === 'anglerShadow' && c.speedX < 0) {
+                ctx.save();
+                ctx.translate(drawX, drawY);
+                ctx.scale(-1, 1);
+                type.draw(ctx, 0, 0, c.size, time + c.phase, c.seed);
+                ctx.restore();
+            } else {
+                type.draw(ctx, drawX, drawY, c.size, time + c.phase, c.seed);
+            }
         });
 
         ctx.globalAlpha = 1;
@@ -389,7 +415,7 @@ export function initBioluminescentSwarm() {
                 speed: 0.1 + Math.random() * 0.3,
                 phase: Math.random() * Math.PI * 2,
                 floatAmp: 3 + Math.random() * 8,
-                isGold: Math.random() > 0.4,
+                isGold: false,
             });
         }
     }
@@ -407,7 +433,7 @@ export function initBioluminescentSwarm() {
             const floatY = p.y + Math.sin(time * 0.5 + p.phase) * p.floatAmp;
             const alpha = 0.15 + Math.sin(time * 0.3 + p.phase) * 0.1;
 
-            const color = p.isGold ? '201, 168, 97' : '73, 146, 154';
+            const color = '73, 146, 154';
 
             // Glow
             ctx.fillStyle = `rgba(${color}, ${alpha * 0.15})`;

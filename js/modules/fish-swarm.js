@@ -28,20 +28,16 @@ const CREATURE_DRAW = {
         ctx.lineTo(-s * 0.5 + tw, s * 0.1 + bw);
         ctx.closePath();
         ctx.fill();
-        // Glow spine
-        ctx.strokeStyle = `rgba(201,168,97,${0.25 + glow * 0.15})`;
+        // Spine (kein Gradient – einfacher Stroke)
+        ctx.strokeStyle = `rgba(73,146,154,${0.2 + glow * 0.15})`;
         ctx.lineWidth = 0.6;
         ctx.beginPath();
         ctx.moveTo(s * 0.3, bw);
         ctx.quadraticCurveTo(0, s * 0.05 + bw, -s * 0.3, bw);
         ctx.stroke();
-        // Eye
-        const ex = s * 0.2, ey = -s * 0.01 + bw;
-        const grad = ctx.createRadialGradient(ex, ey, 0, ex, ey, s * 0.04);
-        grad.addColorStop(0, `rgba(201,168,97,${0.5 + glow * 0.3})`);
-        grad.addColorStop(1, 'rgba(0,0,0,0)');
-        ctx.fillStyle = grad;
-        ctx.beginPath(); ctx.arc(ex, ey, s * 0.04, 0, Math.PI * 2); ctx.fill();
+        // Eye (einfacher Punkt statt Gradient)
+        ctx.fillStyle = `rgba(150,220,220,${0.5 + glow * 0.2})`;
+        ctx.beginPath(); ctx.arc(s * 0.2, -s * 0.01 + bw, s * 0.03, 0, Math.PI * 2); ctx.fill();
     },
 
     bigFish(ctx, s, glow, time) {
@@ -69,20 +65,16 @@ const CREATURE_DRAW = {
         ctx.moveTo(s * 0.15, s * 0.05 + bw);
         ctx.quadraticCurveTo(s * 0.05, s * 0.18 + Math.sin(time * 4) * s * 0.04 + bw, -s * 0.05, s * 0.12 + bw);
         ctx.fill();
-        // Spine glow
-        ctx.strokeStyle = `rgba(201,168,97,${0.3 + glow * 0.2})`;
+        // Spine (kein Gradient)
+        ctx.strokeStyle = `rgba(73,146,154,${0.25 + glow * 0.15})`;
         ctx.lineWidth = 1.2;
         ctx.beginPath();
         ctx.moveTo(s * 0.45, bw);
         ctx.quadraticCurveTo(s * 0.15, -s * 0.05 + bw, -s * 0.4, bw);
         ctx.stroke();
-        // Eye
-        const ex2 = s * 0.35, ey2 = -s * 0.02 + bw;
-        const g2 = ctx.createRadialGradient(ex2, ey2, 0, ex2, ey2, s * 0.06);
-        g2.addColorStop(0, `rgba(201,168,97,${0.6 + glow * 0.3})`);
-        g2.addColorStop(1, 'rgba(0,0,0,0)');
-        ctx.fillStyle = g2;
-        ctx.beginPath(); ctx.arc(ex2, ey2, s * 0.06, 0, Math.PI * 2); ctx.fill();
+        // Eye (einfacher Punkt)
+        ctx.fillStyle = `rgba(150,220,220,${0.6 + glow * 0.2})`;
+        ctx.beginPath(); ctx.arc(s * 0.35, -s * 0.02 + bw, s * 0.04, 0, Math.PI * 2); ctx.fill();
     },
 };
 
@@ -103,7 +95,7 @@ function drawCreature(ctx, x, y, size, angle, glow, type, time) {
 /* BUBBLE DRAWING                            */
 /* ----------------------------------------- */
 
-function drawBubble(ctx, x, y, r, opacity, time) {
+function drawBubble(ctx, x, y, r, opacity) {
     // Outer ring
     ctx.strokeStyle = `rgba(73,146,154,${opacity * 0.6})`;
     ctx.lineWidth = 0.8;
@@ -114,14 +106,6 @@ function drawBubble(ctx, x, y, r, opacity, time) {
     ctx.fillStyle = `rgba(150,220,220,${opacity * 0.4})`;
     ctx.beginPath();
     ctx.arc(x - r * 0.25, y - r * 0.25, r * 0.25, 0, Math.PI * 2);
-    ctx.fill();
-    // Inner glow
-    const grad = ctx.createRadialGradient(x, y, 0, x, y, r);
-    grad.addColorStop(0, `rgba(73,146,154,${opacity * 0.05})`);
-    grad.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = grad;
-    ctx.beginPath();
-    ctx.arc(x, y, r, 0, Math.PI * 2);
     ctx.fill();
 }
 
@@ -141,7 +125,7 @@ export function initFishSwarm() {
 
     const canvas = document.createElement('canvas');
     canvas.className = 'fish-swarm-canvas';
-    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;pointer-events:none;opacity:0;transition:opacity 0.8s ease';
+    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:50;pointer-events:none;opacity:0;transition:opacity 0.8s ease';
     document.body.appendChild(canvas);
 
     const ctx = canvas.getContext('2d');
@@ -226,10 +210,10 @@ export function initFishSwarm() {
 
     /* ---- Determine swarm size based on viewport ---- */
     function getSwarmSize() {
-        if (window.innerWidth <= 480) return 15;   // small mobile
-        if (window.innerWidth <= 768) return 25;   // tablet
-        if (window.innerWidth <= 1200) return 35;  // small desktop
-        return 45;                                  // large desktop
+        if (window.innerWidth <= 480) return 8;    // small mobile
+        if (window.innerWidth <= 768) return 12;   // tablet
+        if (window.innerWidth <= 1200) return 18;  // small desktop
+        return 25;                                  // large desktop
     }
 
     /* ---- Spawn fish ---- */
@@ -262,7 +246,7 @@ export function initFishSwarm() {
     function spawnBubbles() {
         bubbles = [];
         const w = canvas.width, h = canvas.height;
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 15; i++) {
             bubbles.push({
                 x: Math.random() * w,
                 y: h + 10 + Math.random() * 100,
@@ -329,11 +313,13 @@ export function initFishSwarm() {
         drawTrail();
 
         // Check if all fish have completed their journey to the top
-        const aliveFish = creatures.filter(c => c.opacity > 0.01).length;
+        let aliveFish = 0;
+        for (let i = 0; i < creatures.length; i++) {
+            if (creatures[i].opacity > 0.01) aliveFish++;
+        }
         if (aliveFish === 0 && time > 1) {
-            // Wait a moment then fade out
             canvas.style.opacity = '0';
-            if (time > 8) { // Safety: max 8 seconds
+            if (time > 8) {
                 isActive = false;
                 if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
                 return;
@@ -360,10 +346,9 @@ export function initFishSwarm() {
             p.age++;
             const a = p.opacity * (1 - p.age / p.life);
             if (a <= 0) return false;
-            const col = p.isGold ? '201,168,97' : '73,146,154';
-            ctx.fillStyle = `rgba(${col},${a * 0.15})`;
+            ctx.fillStyle = `rgba(73,146,154,${a * 0.15})`;
             ctx.beginPath(); ctx.arc(p.x, p.y, p.r + 3, 0, 6.28); ctx.fill();
-            ctx.fillStyle = `rgba(${col},${a})`;
+            ctx.fillStyle = `rgba(73,146,154,${a})`;
             ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.28); ctx.fill();
             return true;
         });

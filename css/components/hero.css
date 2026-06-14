@@ -6,13 +6,14 @@
 .hero_section {
     position: relative;
     min-height: 100vh;
-    padding: 100px 0;
+    padding: 100px 0 180px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
     justify-content: space-between;
-    overflow: hidden;
-    background: var(--abyss-deep);
+    overflow: visible;
+    background: transparent;
+    box-shadow: inset 0 -80px 60px -40px var(--abyss-deep);
 }
 
 .hero_scene,
@@ -30,7 +31,7 @@
 }
 
 .hero_overlay {
-    background: linear-gradient(135deg, rgba(3, 8, 9, 0.9) 0%, rgba(20, 47, 51, 0.6) 50%, rgba(3, 8, 9, 0.95) 100%);
+    background: linear-gradient(135deg, rgba(3, 8, 9, 0.6) 0%, rgba(20, 47, 51, 0.3) 50%, rgba(3, 8, 9, 0.7) 100%);
 }
 
 /* Hero Visual (Left Side) - Removed glowing circle for cleaner look */
@@ -129,6 +130,8 @@
 
 .descend_btn:hover {
     color: var(--abyss-deep);
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
 }
 
 .descend_btn:hover::before {
@@ -195,10 +198,12 @@
 }
 
 .skill_item:hover {
-    border-color: var(--gold-accent);
-    box-shadow: 0 0 20px rgba(201, 168, 97, 0.2);
+    border-color: var(--cyan-glow);
+    box-shadow: 0 0 20px rgba(73, 146, 154, 0.2);
     transform: translateY(-5px);
     will-change: transform, box-shadow;
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
 }
 
 .skill_item i {
@@ -209,7 +214,8 @@
 }
 
 .skill_item:hover i {
-    text-shadow: 0 0 15px rgba(201, 168, 97, 0.5);
+    color: var(--cyan-glow);
+    text-shadow: 0 0 15px rgba(73, 146, 154, 0.5);
     transform: scale(1.2);
 }
 
@@ -322,21 +328,61 @@
 .indicator {
     width: 10px;
     height: 10px;
-    border-radius: 50%;
-    background: rgba(201, 168, 97, 0.3);
-    border: 1px solid var(--gold-accent);
+    border-radius: 60% 40% 55% 45% / 45% 55% 40% 60%;
+    background: transparent;
+    border: 1.5px solid rgba(201, 168, 97, 0.25);
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 0;
+    box-shadow: none;
+    animation: indicator-morph 8s ease-in-out infinite;
+}
+
+@keyframes indicator-morph {
+    0%, 100% { border-radius: 60% 40% 55% 45% / 45% 55% 40% 60%; }
+    25% { border-radius: 45% 55% 40% 60% / 60% 40% 55% 45%; }
+    50% { border-radius: 55% 45% 60% 40% / 40% 60% 45% 55%; }
+    75% { border-radius: 40% 60% 45% 55% / 55% 45% 60% 40%; }
 }
 
 .indicator.active {
-    background: var(--gold-accent);
-    box-shadow: 0 0 15px rgba(201, 168, 97, 0.5);
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(201, 168, 97, 0.7);
+    background: radial-gradient(ellipse at 40% 35%,
+        rgba(255, 215, 140, 0.5) 0%,
+        rgba(201, 168, 97, 0.2) 50%,
+        transparent 100%
+    );
+    box-shadow: 
+        0 0 8px rgba(201, 168, 97, 0.5),
+        0 0 20px rgba(201, 168, 97, 0.3),
+        0 0 40px rgba(201, 168, 97, 0.15);
+    animation: indicator-morph 8s ease-in-out infinite, indicator-breathe 4s ease-in-out infinite;
+}
+
+@keyframes indicator-breathe {
+    0%, 100% {
+        box-shadow: 
+            0 0 8px rgba(201, 168, 97, 0.5),
+            0 0 20px rgba(201, 168, 97, 0.3),
+            0 0 40px rgba(201, 168, 97, 0.15);
+    }
+    50% {
+        box-shadow: 
+            0 0 12px rgba(255, 215, 140, 0.6),
+            0 0 28px rgba(201, 168, 97, 0.35),
+            0 0 50px rgba(201, 168, 97, 0.2);
+    }
 }
 
 .indicator:hover {
-    background: rgba(201, 168, 97, 0.6);
+    border-color: rgba(73, 146, 154, 0.7);
+    background: radial-gradient(ellipse at 40% 35%,
+        rgba(100, 200, 215, 0.2) 0%,
+        transparent 100%
+    );
+    box-shadow: 0 0 6px rgba(73, 146, 154, 0.3);
 }
 
 /* Section base styles moved to main.css */

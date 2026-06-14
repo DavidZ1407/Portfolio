@@ -12,6 +12,9 @@
     pointer-events: none;
     z-index: 0;
     overflow: hidden;
+    /* Isolation: Parallax-Rendering komplett getrennt von Partikeln */
+    contain: strict;
+    isolation: isolate;
 }
 
 /* Ensure body and html have proper stacking */
@@ -32,8 +35,7 @@ header, section {
     left: 0;
     width: 100%;
     height: 100%;
-    will-change: transform;
-    transition: transform 0.1s linear;
+    /* Kein will-change – verursacht Compositing-Druck und Jitter auf Partikeln */
 }
 
 .parallax-bg {
@@ -85,37 +87,9 @@ header, section {
     );
 }
 
-/* Castle Silhouette - Placeholder (distant) */
+/* Castle Silhouette – ausgeblendet, stört den Hintergrund */
 .castle-silhouette {
-    position: absolute;
-    bottom: 25%;
-    right: 10%;
-    width: 200px;
-    height: 150px;
-    background: linear-gradient(to top, #0a0e1a, transparent);
-    clip-path: polygon(
-        20% 100%, 
-        20% 60%, 
-        25% 60%, 
-        25% 40%, 
-        30% 40%, 
-        30% 20%, 
-        35% 20%, 
-        35% 40%, 
-        40% 40%, 
-        40% 50%, 
-        50% 50%, 
-        50% 30%, 
-        55% 30%, 
-        55% 50%, 
-        60% 50%, 
-        60% 40%, 
-        65% 40%, 
-        65% 60%, 
-        70% 60%, 
-        70% 100%
-    );
-    opacity: 0.6;
+    display: none;
 }
 
 /* ========================================= */
@@ -176,46 +150,12 @@ header, section {
     opacity: 1;
 }
 
-/* Castle Walls - Placeholder */
-.castle-wall-left {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 15%;
-    height: 60%;
-    background: linear-gradient(to right, #1a1a2e, transparent);
-    clip-path: polygon(0% 100%, 0% 20%, 100% 0%, 100% 100%);
-}
-
-.castle-wall-right {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 15%;
-    height: 60%;
-    background: linear-gradient(to left, #1a1a2e, transparent);
-    clip-path: polygon(0% 0%, 100% 20%, 100% 100%, 0% 100%);
-}
-
-/* Castle Pillars */
-.pillar {
-    position: absolute;
-    bottom: 0;
-    width: 30px;
-    height: 200px;
-    background: linear-gradient(to bottom, #2a2a3e, #1a1a2e);
-    border: 1px solid rgba(201, 168, 97, 0.2);
-}
-
+/* Castle Walls – ausgeblendet, erzeugen ungewollte Flächen */
+.castle-wall-left,
+.castle-wall-right,
+.pillar,
 .pillar::before {
-    content: '';
-    position: absolute;
-    top: -20px;
-    left: -5px;
-    width: 40px;
-    height: 20px;
-    background: linear-gradient(to bottom, #3a3a4e, #2a2a3e);
-    clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
+    display: none;
 }
 
 /* ========================================= */
@@ -232,7 +172,7 @@ header, section {
     border-radius: 50%;
     background: var(--cyan-glow);
     opacity: 0;
-    animation: particle-float 6s ease-in-out infinite;
+    /* Keine CSS-Animation – wird komplett per JS gesteuert */
 }
 
 .particle:nth-child(odd) {
@@ -247,14 +187,14 @@ header, section {
 @keyframes particle-float {
     0%, 100% {
         opacity: 0;
-        transform: translateY(0) translateX(0);
+        transform: translate3d(0, 0, 0);
     }
     10% {
         opacity: 0.6;
     }
     50% {
         opacity: 0.3;
-        transform: translateY(-30px) translateX(15px);
+        transform: translate3d(15px, -30px, 0);
     }
     90% {
         opacity: 0.1;
@@ -267,12 +207,12 @@ header, section {
     border-radius: 50%;
     border: 1px solid rgba(73, 146, 154, 0.3);
     background: rgba(73, 146, 154, 0.05);
-    animation: bubble-rise 8s ease-in infinite;
+    /* Keine CSS-Animation – wird komplett per JS gesteuert */
 }
 
 @keyframes bubble-rise {
     0% {
-        transform: translateY(100vh) scale(1);
+        transform: translate3d(0, 100vh, 0) scale(1);
         opacity: 0;
     }
     10% {
@@ -282,12 +222,12 @@ header, section {
         opacity: 0.2;
     }
     100% {
-        transform: translateY(-50px) scale(1.5);
+        transform: translate3d(0, -50px, 0) scale(1.5);
         opacity: 0;
     }
 }
 
-/* Fish Silhouettes - Placeholder */
+/* Fish Silhouettes */
 .fish {
     position: absolute;
     width: 30px;
@@ -302,29 +242,24 @@ header, section {
         20% 80%
     );
     opacity: 0.3;
-    animation: fish-swim 12s linear infinite;
-}
-
-.fish:nth-child(even) {
-    animation-direction: reverse;
-    animation-duration: 15s;
+    /* Keine CSS-Animation – wird komplett per JS gesteuert */
 }
 
 @keyframes fish-swim {
     0% {
-        transform: translateX(-100px) translateY(0);
+        transform: translate3d(-100px, 0, 0);
     }
     25% {
-        transform: translateX(25vw) translateY(-20px);
+        transform: translate3d(25vw, -20px, 0);
     }
     50% {
-        transform: translateX(50vw) translateY(10px);
+        transform: translate3d(50vw, 10px, 0);
     }
     75% {
-        transform: translateX(75vw) translateY(-10px);
+        transform: translate3d(75vw, -10px, 0);
     }
     100% {
-        transform: translateX(calc(100vw + 100px)) translateY(0);
+        transform: translate3d(calc(100vw + 100px), 0, 0);
     }
 }
 

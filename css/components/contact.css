@@ -5,12 +5,25 @@
 /* Contact Section */
 .contact_section {
     padding: 150px 50px;
-    background: var(--abyss-deep);
+    background: 
+        linear-gradient(to bottom, 
+            transparent 0%,
+            rgba(10, 22, 40, 0.4) 20%,
+            rgba(10, 22, 40, 0.5) 50%,
+            rgba(10, 22, 40, 0.4) 80%,
+            transparent 100%
+        ),
+        radial-gradient(ellipse at 50% 50%, 
+            rgba(201, 168, 97, 0.04) 0%, 
+            transparent 60%
+        );
     text-align: center;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    position: relative;
+    overflow: hidden;
 }
 
 /* Contact Icons Container */
@@ -21,6 +34,8 @@
     gap: 60px;
     flex-wrap: wrap;
     margin-top: 60px;
+    position: relative;
+    z-index: 2;
 }
 
 /* Contact Icon Link */
@@ -31,7 +46,10 @@
     gap: 12px;
     color: var(--text-light);
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
+    padding: 10px;
+    border-radius: 8px;
+    position: relative;
 }
 
 .contact_icon_link i {
@@ -46,16 +64,80 @@
     letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--text-light);
+    transition: color 0.3s ease;
+}
+
+.contact_icon_link:hover {
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
 }
 
 .contact_icon_link:hover i {
     color: var(--cyan-glow);
-    text-shadow: 0 0 20px var(--cyan-glow);
-    transform: scale(1.2);
+    text-shadow: 
+        0 0 20px var(--cyan-glow),
+        0 0 40px rgba(73, 146, 154, 0.2);
+    transform: scale(1.15);
 }
 
 .contact_icon_link:hover span {
     color: var(--cyan-glow);
+    text-shadow: 0 0 8px rgba(73, 146, 154, 0.2);
+}
+
+/* ASCEND Link */
+.back_to_top {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: var(--gold-accent);
+    text-decoration: none;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 40px;
+    transition: all 0.3s ease;
+    padding: 4px 8px;
+    border-radius: 4px;
+    position: relative;
+    z-index: 2;
+    opacity: 0.6;
+}
+
+.back_to_top i {
+    font-size: 1.4rem;
+    color: var(--gold-accent);
+    transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.back_to_top span {
+    font-family: monospace;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    transition: color 0.3s ease;
+}
+
+.back_to_top:hover {
+    opacity: 1;
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
+}
+
+.back_to_top:hover i {
+    color: var(--cyan-glow);
+    text-shadow: 
+        0 0 20px var(--cyan-glow),
+        0 0 40px rgba(73, 146, 154, 0.4),
+        0 0 60px rgba(73, 146, 154, 0.2);
+    transform: scale(1.2);
+}
+
+.back_to_top:hover span {
+    color: var(--cyan-glow);
+    text-shadow: 0 0 12px rgba(73, 146, 154, 0.4);
 }
 
 /* Responsive layout moved to css/responsive.css */

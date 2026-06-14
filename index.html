@@ -29,6 +29,28 @@
     <!-- Unified Responsive System (overrides component-specific MQs) -->
     <link rel="stylesheet" href="css/responsive.css">
 
+    <!-- SVG Filter für Wasser-Verzerrungseffekte -->
+    <svg style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
+        <filter id="water-distort">
+            <feTurbulence type="fractalNoise" baseFrequency="0.03 0.06" numOctaves="2" result="noise" seed="2">
+                <animate attributeName="baseFrequency" values="0.03 0.06;0.04 0.08;0.03 0.06" dur="3s" repeatCount="indefinite" />
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G">
+                <animate attributeName="scale" values="0;4;0" dur="1.2s" begin="hoverIn" fill="freeze" />
+            </feDisplacementMap>
+        </filter>
+        <filter id="water-distort-hover">
+            <feTurbulence type="fractalNoise" baseFrequency="0.02 0.04" numOctaves="3" result="noise" seed="5">
+                <animate attributeName="baseFrequency" values="0.02 0.04;0.04 0.08;0.02 0.04" dur="3s" repeatCount="indefinite" />
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="7" xChannelSelector="R" yChannelSelector="G" />
+            <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#49929a" flood-opacity="0.5" />
+        </filter>
+    </svg>
+
+    <!-- Three.js MUSS vor main.js geladen werden, sonst ist window.THREE undefined -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous"></script>
+
     <!-- Main JavaScript (ES Module - imports all modules and constants) -->
     <script defer type="module" src="js/main.js"></script>
 
@@ -81,6 +103,10 @@
         <a href="https://linkedin.com/in/explorerzahn" target="_blank">
             <i class='bx bxl-linkedin'></i>
             <span data-i18n="sidebar-linkedin">LINKEDIN</span>
+        </a>
+        <a href="#contact">
+            <i class='bx bx-phone'></i>
+            <span>PHONE</span>
         </a>
     </div>
 
@@ -225,11 +251,12 @@
                 </div>
             </div>
 
-            <button class="carousel-arrow carousel-prev" aria-label="Previous">&#8249;</button>
-            <button class="carousel-arrow carousel-next" aria-label="Next">&#8250;</button>
-
-            <div class="carousel-dots">
-                <!-- Dots werden dynamisch generiert von generate-carousel-dots.js -->
+            <div class="carousel-controls">
+                <button class="carousel-arrow carousel-prev" aria-label="Previous"></button>
+                <div class="carousel-dots">
+                    <!-- Dots werden dynamisch generiert von generate-carousel-dots.js -->
+                </div>
+                <button class="carousel-arrow carousel-next" aria-label="Next"></button>
             </div>
         </div>
     </section>
@@ -323,28 +350,20 @@
                     class='bx bx-envelope'></i><span data-i18n="sidebar-email">EMAIL</span></a>
             <a href="https://linkedin.com/in/explorerzahn" target="_blank" class="contact_icon_link" title="LinkedIn"><i
                     class='bx bxl-linkedin'></i><span data-i18n="sidebar-linkedin">LINKEDIN</span></a>
-            <a href="https://x.com/archivistzahn" target="_blank" class="contact_icon_link" title="Twitter"><i
-                    class='bx bxl-twitter'></i><span>TWITTER</span></a>
             <a href="https://github.com/DavidZ1407" target="_blank" class="contact_icon_link" title="GitHub"><i
                     class='bx bxl-github'></i><span data-i18n="sidebar-github">GITHUB</span></a>
-            <a href="https://itch.io/explorer" target="_blank" class="contact_icon_link" title="Itch.io"><i
-                    class='bx bxl-itch-io'></i><span>ITCH.IO</span></a>
+            <a href="tel:+4915112345678" class="contact_icon_link" title="Phone"><i
+                    class='bx bx-phone'></i><span>PHONE</span></a>
         </div>
+        <a href="#home" class="back_to_top" aria-label="Back to top">
+            <i class='bx bx-chevron-up'></i>
+            <span data-i18n="footer-back">ASCEND</span>
+        </a>
     </section>
 
     <!-- ========================================= -->
     <!-- FOOTER -->
     <!-- ========================================= -->
-    <footer class="site_footer">
-        <div class="footer_content">
-            <p class="footer_text" data-i18n="footer-text">© 2025 DAVID ZAHN — ALL RIGHTS RESERVED</p>
-            <p class="footer_subtext" data-i18n="footer-subtext">FORGED IN THE DEPTHS</p>
-            <a href="#home" class="back_to_top" aria-label="Back to top">
-                <i class='bx bx-chevron-up'></i>
-                <span data-i18n="footer-back">ASCEND</span>
-            </a>
-        </div>
-    </footer>
 
 </body>
 

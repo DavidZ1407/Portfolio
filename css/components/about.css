@@ -19,12 +19,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .about_profile_box:hover {
     border-color: var(--gold-accent);
-    box-shadow: 0 0 20px rgba(201, 168, 97, 0.2);
+    box-shadow: 
+        0 0 30px rgba(201, 168, 97, 0.3),
+        0 0 60px rgba(73, 146, 154, 0.1);
+    transform: scale(1.02);
 }
 
 .profile_image {
@@ -32,6 +35,14 @@
     height: auto;
     border-radius: 8px;
     box-shadow: 0 0 30px rgba(73, 146, 154, 0.3);
+    transition: all 0.5s ease;
+}
+
+.about_profile_box:hover .profile_image {
+    transform: scale(1.04);
+    box-shadow: 
+        0 0 40px rgba(201, 168, 97, 0.3),
+        0 0 80px rgba(73, 146, 154, 0.15);
 }
 
 /* About Content Box */
@@ -88,7 +99,8 @@
 
 .skill_item_box i {
     font-size: 1.8rem;
-    color: var(--cyan-glow);
+    color: var(--gold-accent);
+    transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .skill_item_box span {
@@ -96,12 +108,29 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     color: var(--text-light);
+    transition: color 0.3s ease;
 }
 
 .skill_item_box:hover {
     border-color: var(--cyan-glow);
-    background: rgba(73, 146, 154, 0.1);
+    background: rgba(20, 47, 51, 0.4);
     transform: translateY(-3px);
+    box-shadow: 
+        0 0 25px rgba(73, 146, 154, 0.2),
+        0 0 50px rgba(73, 146, 154, 0.1),
+        inset 0 0 20px rgba(73, 146, 154, 0.05);
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
+}
+
+.skill_item_box:hover i {
+    color: var(--cyan-glow);
+    text-shadow: 0 0 20px rgba(73, 146, 154, 0.5);
+    transform: scale(1.15);
+}
+
+.skill_item_box:hover span {
+    color: var(--cyan-glow);
 }
 
 /* Responsive layout moved to css/responsive.css */

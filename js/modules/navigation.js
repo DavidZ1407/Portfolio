@@ -16,6 +16,8 @@ export function initNavigation() {
     function updateActiveLink() {
         let current = '';
         const scrollY = window.scrollY;
+        const windowHeight = window.innerHeight;
+        const docHeight = document.documentElement.scrollHeight;
 
         sections.forEach(section => {
             const sectionTop = section.offsetTop - 200;
@@ -26,12 +28,20 @@ export function initNavigation() {
             }
         });
 
+        // Special case: if we're near the bottom of the page, activate the last section
+        if (!current && scrollY + windowHeight >= docHeight - 100) {
+            const lastSection = sections[sections.length - 1];
+            if (lastSection) {
+                current = lastSection.getAttribute('id');
+            }
+        }
+
         navLinks.forEach(link => {
             link.classList.remove('active');
         });
 
         if (current) {
-            const activeLink = document.querySelector(`a[href="#${current}"]`);
+            const activeLink = document.querySelector(`.nav-link[href="#${current}"]`);
             if (activeLink) activeLink.classList.add('active');
         }
         

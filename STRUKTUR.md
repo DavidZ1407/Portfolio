@@ -322,20 +322,18 @@ Die Animationen nutzen:
 ## 🔧 Bekannte Issues / Todos
 
 - [ ] **Bild-Assets fehlen**: `assets/Picture/` existiert nicht im Repo → 404 beim Laden
-- [x] **HTML-Carousel-Dots + Indicators werden automatisch generiert** ✨
-  - Neues Modul: `generate-carousel-dots.js`
-  - Läuft automatisch beim Seitenload
-  - Basiert auf der Länge der `projects.js` Array
-  - **Jetzt einfach:** Nur Projekte zu `projects.js` hinzufügen → Dots werden automatisch generiert!
-- [x] Linkedin-Link in Contact + Sidebar korrekt
-- [x] Footer hinzugefügt mit "ASCEND"-Button
-- [x] Sprachumschaltung EN/DE implementiert (Button im Header)
-- [x] `translations.js` + `language.js` Modul
-- [x] Skills werden sprachbewusst gerendert (Hero + About)
-- [x] Hero hat leeres `.arsenal_grid` → Skills per JS
-- [x] About hat leeres `.skills_grid` → Skills per JS
-- [x] Navbar-Animationen (Splash + Ripple Effekte) implementiert
-- [x] Language Toggle Button mit Ripple-Effekt
+-- [ ] **Falco ICON*: 
+-- [ ] **Nav-Bar right**: `change size Vertikal Line
+-- [ ] **Responsive Desktop Size ...**: 
+-- [ ] **Change All file clean Up**: 
+-- [ ] **Hero Page change strukture*: 
+-- [ ] **Hero Page Name Hover effekt*: 
+-- [ ] **Work work on X button and everthing*: 
+-- [ ] **Descent contact change size*: 
+-- [ ] **Change timeline for Font size*: 
+-- [ ] **Optomise Site*: 
+-- [ ] **Bubles moving*: 
+-- [ ] **Add Connten*: 
 
 ---
 
