@@ -80,7 +80,7 @@
     margin-bottom: 80px;
     position: relative;
     opacity: 0;
-    width: 100%;
+    width: fit-content;
 }
 
 .timeline_item:nth-child(odd),
@@ -98,6 +98,7 @@
 
 .timeline_content {
     margin-left: 80px;
+    cursor: pointer;
 }
 
 /* Wave distortion effect on show */
@@ -412,10 +413,10 @@
 .timeline_year {
     color: rgba(73, 146, 154, 0.9);
     font-family: monospace;
-    font-size: 0.75rem;
+    font-size: 1rem;
     letter-spacing: 2px;
     white-space: nowrap;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
 
 .timeline_year::before {
@@ -430,13 +431,13 @@
 /* ========================================= */
 .timeline_title {
     color: var(--text-light);
-    font-size: 1rem;
+    font-size: 1.3rem;
     text-transform: uppercase;
     letter-spacing: 1.5px;
     font-weight: 600;
     text-shadow: 0 0 18px rgba(100, 200, 215, 0.08);
     white-space: nowrap;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
 
 /* ========================================= */
@@ -444,7 +445,7 @@
 /* ========================================= */
 .timeline_org {
     color: rgba(201, 168, 97, 0.6);
-    font-size: 0.8rem;
+    font-size: 1.05rem;
     letter-spacing: 1px;
     white-space: nowrap;
 }
@@ -483,6 +484,23 @@
         transform: translateX(-50%) scale(1.4);
         opacity: 0;
     }
+}
+
+/* ========================================= */
+/* UNDERWATER FLOATING ANIMATIONS - JOURNEY */
+/* ========================================= */
+
+/* Timeline items float with staggered timing */
+.timeline_item:nth-child(1) { animation: journey-float 7s ease-in-out infinite; animation-delay: 0s; }
+.timeline_item:nth-child(2) { animation: journey-float 8s ease-in-out infinite; animation-delay: 0.5s; }
+.timeline_item:nth-child(3) { animation: journey-float 7.5s ease-in-out infinite; animation-delay: 1s; }
+.timeline_item:nth-child(4) { animation: journey-float 8.5s ease-in-out infinite; animation-delay: 0.3s; }
+.timeline_item:nth-child(5) { animation: journey-float 7s ease-in-out infinite; animation-delay: 0.8s; }
+.timeline_item:nth-child(6) { animation: journey-float 9s ease-in-out infinite; animation-delay: 1.2s; }
+
+@keyframes journey-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
 }
 
 /* Responsive layout moved to css/responsive.css */

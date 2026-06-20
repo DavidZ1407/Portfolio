@@ -11,7 +11,7 @@ let autoTimer = null;
 let isAutoCycling = false;
 let isPaused = false;
 let TOTAL_SLIDES = 0;
-const AUTO_INTERVAL = 3500;
+const AUTO_INTERVAL = 9000;
 
 /* ---- 3D Tilt state ---- */
 let tiltActive = false;
@@ -376,19 +376,20 @@ function initCarousel() {
 }
 
 function updatePositions(slides, dots) {
+    // Batch: remove all classes first, then add new ones in a single rAF
+    // This avoids double reflow stutter while still allowing CSS transitions
+    slides.forEach((slide) => {
+        slide.classList.remove('pos-center', 'pos-left', 'pos-right', 'pos-hidden');
+    });
+
+    // Single forced reflow to register the "from" state before transitions
+    void document.body.offsetHeight;
+
     slides.forEach((slide, i) => {
         // Calculate relative position
         let rel = i - currentCenter;
         if (rel < -1) rel += TOTAL_SLIDES;
         if (rel > 1) rel -= TOTAL_SLIDES;
-
-        // Clear ALL position classes first, then add the right one
-        // This ensures no "leftover" classes cause visual glitches
-        slide.classList.remove('pos-center', 'pos-left', 'pos-right', 'pos-hidden');
-
-        // Force reflow so the transition starts from the current computed position
-        // (prevents the "step" effect where hidden→left→center feels like 2 jumps)
-        void slide.offsetWidth;
 
         if (rel === 0) {
             slide.classList.add('pos-center');
@@ -403,9 +404,6 @@ function updatePositions(slides, dots) {
             slide.classList.add('pos-hidden');
             slide.removeAttribute('aria-current');
         }
-
-        // Second reflow ensures CSS transition picks up the new class
-        void slide.offsetWidth;
     });
 
     // Update dots
@@ -419,8 +417,7 @@ function updatePositions(slides, dots) {
         }
     });
 
-    // Attach tilt to the new center slide (after positions are set)
-    // Use rAF to wait for CSS transitions to settle
+    // Attach tilt to the new center slide (after transitions settle)
     requestAnimationFrame(() => {
         requestAnimationFrame(() => {
             attachTilt();

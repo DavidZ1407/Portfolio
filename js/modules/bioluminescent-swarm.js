@@ -379,17 +379,7 @@ export function initBioluminescentSwarm() {
             if (finalOpacity < 0.01) return;
 
             ctx.globalAlpha = finalOpacity;
-
-            // Flip anglerfish horizontally when swimming left (head faces movement direction)
-            if (c.type === 'anglerShadow' && c.speedX < 0) {
-                ctx.save();
-                ctx.translate(drawX, drawY);
-                ctx.scale(-1, 1);
-                type.draw(ctx, 0, 0, c.size, time + c.phase, c.seed);
-                ctx.restore();
-            } else {
-                type.draw(ctx, drawX, drawY, c.size, time + c.phase, c.seed);
-            }
+            type.draw(ctx, drawX, drawY, c.size, time + c.phase, c.seed);
         });
 
         ctx.globalAlpha = 1;

@@ -9,11 +9,11 @@
     transform: translateY(-50%);
     display: flex;
     flex-direction: column;
+    align-items: center;
     background: linear-gradient(to left, rgba(5, 13, 14, 0.95), transparent);
-    border-left: 2px solid var(--gold-accent);
     padding: 20px 12px;
     z-index: 150;
-    gap: 25px;
+    gap: 24px;
 }
 
 .sidebar_socials a {
@@ -27,6 +27,19 @@
     overflow: visible;
     padding: 6px;
     border-radius: 4px;
+    animation: sidebar-float 6s ease-in-out infinite;
+}
+
+.sidebar_socials a:nth-child(1) { animation-delay: 0s; }
+.sidebar_socials a:nth-child(2) { animation-delay: 0.4s; }
+.sidebar_socials a:nth-child(3) { animation-delay: 0.8s; }
+.sidebar_socials a:nth-child(4) { animation-delay: 1.2s; }
+.sidebar_socials a:nth-child(5) { animation-delay: 0.6s; }
+.sidebar_socials a:nth-child(6) { animation-delay: 1s; }
+
+@keyframes sidebar-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
 }
 
 .sidebar_socials a:hover {
@@ -45,6 +58,12 @@
     z-index: 2;
 }
 
+/* Verbindungslinien entfernt */
+.sidebar_socials a::after {
+    display: none;
+}
+
+/* Nur der gehoverte Link leuchtet blau */
 .sidebar_socials a:hover i {
     color: var(--cyan-glow);
     text-shadow: 
@@ -52,6 +71,11 @@
         0 0 30px rgba(73, 146, 154, 0.4);
     transform: scale(1.2);
 }
+
+.sidebar_socials a:hover span {
+    color: var(--cyan-glow);
+}
+
 
 .sidebar_socials a span {
     font-family: monospace;
@@ -82,10 +106,30 @@
     text-decoration: none;
     color: var(--text-light);
     letter-spacing: 2px;
+    transition: all 0.3s ease;
+    position: relative;
+    animation: logo-float 7s ease-in-out infinite;
+}
+
+@keyframes logo-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+
+.logo:hover {
+    color: var(--cyan-glow);
+    text-shadow: 0 0 20px rgba(73, 146, 154, 0.6), 0 0 40px rgba(73, 146, 154, 0.3);
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
 }
 
 .logo span {
     color: var(--gold-accent);
+    transition: color 0.3s ease;
+}
+
+.logo:hover span {
+    color: var(--cyan-glow);
 }
 
 .navbar {
@@ -145,6 +189,17 @@
     position: relative;
     font-weight: 600;
     padding: 5px 0;
+    animation: nav-float 6s ease-in-out infinite;
+}
+
+.nav-link:nth-child(1) { animation-delay: 0s; }
+.nav-link:nth-child(2) { animation-delay: 0.3s; }
+.nav-link:nth-child(3) { animation-delay: 0.6s; }
+.nav-link:nth-child(4) { animation-delay: 0.9s; }
+
+@keyframes nav-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
 }
 
 .nav-link:hover {

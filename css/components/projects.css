@@ -124,6 +124,12 @@
     perspective-origin: 50% 45%;
     z-index: 2;
     margin: 20px auto 0;
+    animation: portal-float 8s ease-in-out infinite;
+}
+
+@keyframes portal-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
 }
 
 /* ========================================= */
@@ -141,8 +147,13 @@
     overflow: hidden;
     cursor: pointer;
     transform-style: preserve-3d;
-    transition: all 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: transform 1.2s cubic-bezier(0.25, 0.1, 0.25, 1),
+                opacity 0.8s cubic-bezier(0.25, 0.1, 0.25, 1),
+                border-color 0.6s ease,
+                box-shadow 0.6s ease,
+                z-index 0s;
     backface-visibility: hidden;
+    will-change: transform, opacity;
     box-shadow:
         0 0 20px rgba(201, 168, 97, 0.08),
         0 0 40px rgba(73, 146, 154, 0.04),
@@ -668,6 +679,7 @@
     display: flex;
     justify-content: center;
     gap: 12px;
+    transition: all 0.4s ease;
 }
 
 .c-dot {
@@ -755,6 +767,119 @@
 @keyframes ambientFloat {
     0%, 100% { transform: translateY(0); opacity: 0.5; }
     50% { transform: translateY(-12px); opacity: 0.8; }
+}
+
+/* ========================================= */
+/* WATER BUBBLES - Different colors */
+/* ========================================= */
+.water-bubble {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    animation: water-bubble-rise var(--bubble-duration, 8s) ease-in-out infinite;
+    animation-delay: var(--bubble-delay, 0s);
+}
+
+/* Cyan bubbles */
+.water-bubble.cyan {
+    background: radial-gradient(circle at 30% 30%, rgba(73, 146, 154, 0.3) 0%, rgba(73, 146, 154, 0.1) 50%, transparent 70%);
+    border: 1px solid rgba(73, 146, 154, 0.15);
+    box-shadow: 0 0 8px rgba(73, 146, 154, 0.1);
+}
+
+/* Gold bubbles */
+.water-bubble.gold {
+    background: radial-gradient(circle at 30% 30%, rgba(201, 168, 97, 0.3) 0%, rgba(201, 168, 97, 0.1) 50%, transparent 70%);
+    border: 1px solid rgba(201, 168, 97, 0.15);
+    box-shadow: 0 0 8px rgba(201, 168, 97, 0.1);
+}
+
+/* Teal bubbles */
+.water-bubble.teal {
+    background: radial-gradient(circle at 30% 30%, rgba(100, 200, 215, 0.25) 0%, rgba(73, 146, 154, 0.08) 50%, transparent 70%);
+    border: 1px solid rgba(100, 200, 215, 0.12);
+    box-shadow: 0 0 6px rgba(100, 200, 215, 0.08);
+}
+
+/* White/silver bubbles */
+.water-bubble.silver {
+    background: radial-gradient(circle at 30% 30%, rgba(200, 220, 230, 0.25) 0%, rgba(200, 220, 230, 0.08) 50%, transparent 70%);
+    border: 1px solid rgba(200, 220, 230, 0.1);
+    box-shadow: 0 0 6px rgba(200, 220, 230, 0.08);
+}
+
+@keyframes water-bubble-rise {
+    0% {
+        transform: translateY(0) translateX(0) scale(0.5);
+        opacity: 0;
+    }
+    10% {
+        opacity: var(--bubble-opacity, 0.6);
+    }
+    50% {
+        transform: translateY(calc(var(--bubble-travel, -200px) * 0.5)) translateX(var(--bubble-drift, 10px)) scale(1);
+        opacity: var(--bubble-opacity, 0.6);
+    }
+    90% {
+        opacity: var(--bubble-opacity, 0.6);
+    }
+    100% {
+        transform: translateY(var(--bubble-travel, -200px)) translateX(calc(var(--bubble-drift, 10px) * -0.5)) scale(0.7);
+        opacity: 0;
+    }
+}
+
+/* Wobble animation for bubbles */
+.water-bubble.wobble {
+    animation: water-bubble-rise var(--bubble-duration, 8s) ease-in-out infinite,
+               water-bubble-wobble 3s ease-in-out infinite;
+    animation-delay: var(--bubble-delay, 0s);
+}
+
+@keyframes water-bubble-wobble {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+}
+
+/* ========================================= */
+/* UNDERWATER FLOATING ANIMATIONS - PROJECTS */
+/* ========================================= */
+
+/* Section title floats */
+.archives_section .section_title {
+    animation: projects-float 7s ease-in-out infinite;
+    animation-delay: 0.2s;
+}
+
+/* Section subtitle floats */
+.archives_section .section_subtitle {
+    animation: projects-float 8s ease-in-out infinite;
+    animation-delay: 0.6s;
+}
+
+/* Portal slides: No float animation - they use 3D transforms from JS */
+
+/* Carousel arrows float */
+.carousel-arrow {
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    animation: projects-float 6s ease-in-out infinite, pearl-morph 10s ease-in-out infinite;
+}
+
+.carousel-prev { animation-delay: 0s; }
+.carousel-next { animation-delay: 0.5s; }
+
+/* Carousel dots float with staggered timing */
+.c-dot:nth-child(1) { animation: projects-float 5s ease-in-out infinite; animation-delay: 0s; }
+.c-dot:nth-child(2) { animation: projects-float 5.5s ease-in-out infinite; animation-delay: 0.3s; }
+.c-dot:nth-child(3) { animation: projects-float 6s ease-in-out infinite; animation-delay: 0.6s; }
+.c-dot:nth-child(4) { animation: projects-float 6.5s ease-in-out infinite; animation-delay: 0.9s; }
+
+@keyframes projects-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
 }
 
 /* Responsive layout moved to css/responsive.css */

@@ -125,6 +125,20 @@ section:not(#home) {
 /* Section Title & Subtitle */
 .section_title {
     font-size: 2.5rem;
+    animation: section-float 7s ease-in-out infinite;
+}
+
+.section_subtitle {
+    animation: section-float 8s ease-in-out infinite;
+    animation-delay: 0.5s;
+}
+
+@keyframes section-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+
+.section_title {
     margin-bottom: 20px;
     color: var(--gold-accent);
     text-transform: uppercase;

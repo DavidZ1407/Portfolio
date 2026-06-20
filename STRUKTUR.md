@@ -322,18 +322,17 @@ Die Animationen nutzen:
 ## 🔧 Bekannte Issues / Todos
 
 - [ ] **Bild-Assets fehlen**: `assets/Picture/` existiert nicht im Repo → 404 beim Laden
--- [ ] **Falco ICON*: 
--- [ ] **Nav-Bar right**: `change size Vertikal Line
 -- [ ] **Responsive Desktop Size ...**: 
 -- [ ] **Change All file clean Up**: 
 -- [ ] **Hero Page change strukture*: 
--- [ ] **Hero Page Name Hover effekt*: 
 -- [ ] **Work work on X button and everthing*: 
--- [ ] **Descent contact change size*: 
--- [ ] **Change timeline for Font size*: 
 -- [ ] **Optomise Site*: 
 -- [ ] **Bubles moving*: 
 -- [ ] **Add Connten*: 
+-- [ ] **Animation hz anpassen*:
+-- [ ] **Scroll not white in work section*: 
+-- [ ] **Animation anklicken und nächste Seite*:  
+-- [ ] **WorkSection Animation Watter background*:  
 
 ---
 
