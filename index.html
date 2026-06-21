@@ -49,6 +49,17 @@
             <feDisplacementMap in="SourceGraphic" in2="noise" scale="7" xChannelSelector="R" yChannelSelector="G" />
             <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#49929a" flood-opacity="0.5" />
         </filter>
+        <filter id="water-emerge" x="-15%" y="-15%" width="130%" height="130%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.03 0.06" numOctaves="3" result="noise" seed="5">
+                <animate attributeName="baseFrequency" values="0.03 0.06;0.06 0.1;0.03 0.06;0.01 0.02" dur="1s" repeatCount="indefinite" />
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="20" xChannelSelector="R" yChannelSelector="G">
+                <animate attributeName="scale" values="20;14;6;0" dur="1s" fill="freeze" calcMode="spline" keySplines="0.3 0 0.5 1;0.4 0 0.5 1;0.45 0 0.2 1" />
+            </feDisplacementMap>
+            <feDropShadow dx="0" dy="3" stdDeviation="10" flood-color="#49929a" flood-opacity="0.6">
+                <animate attributeName="stdDeviation" values="10;5;1;0" dur="1s" fill="freeze" calcMode="spline" keySplines="0.3 0 0.5 1;0.4 0 0.5 1;0.45 0 0.2 1" />
+            </feDropShadow>
+        </filter>
     </svg>
 
     <!-- Three.js MUSS vor main.js geladen werden, sonst ist window.THREE undefined -->

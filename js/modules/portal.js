@@ -266,19 +266,25 @@ function initCarousel() {
     slides.forEach((slide) => {
         const onSlideClick = (e) => {
             const idx = parseInt(slide.dataset.index);
+            console.log('Slide clicked, index:', idx, 'currentCenter:', currentCenter);
 
             if (idx === currentCenter) {
                 // Center clicked → open modal
+                console.log('Opening modal for center slide');
                 e.preventDefault();
                 e.stopPropagation();
                 pauseAuto();
                 if (modalOpenCallback) {
+                    console.log('Calling modalOpenCallback');
                     modalOpenCallback(slide);
+                } else {
+                    console.log('No modalOpenCallback set!');
                 }
                 return;
             }
 
             // Side clicked → bring to center
+            console.log('Rotating slide to center');
             e.preventDefault();
             e.stopPropagation();
             pauseAuto();

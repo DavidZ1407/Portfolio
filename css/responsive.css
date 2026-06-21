@@ -488,6 +488,14 @@ section {
     }
     .modal-project-title { font-size: 1.2rem; }
     .modal-project-description { font-size: 0.85rem; }
+    .modal-prev-btn,
+    .modal-next-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 1.4rem;
+    }
+    .modal-prev-btn { left: -20px; }
+    .modal-next-btn { right: -20px; }
 }
 
 /* ========================================= */

@@ -1,16 +1,20 @@
 /* ========================================= */
 /* PROJECT MODAL MODULE - SIMPLE POPUP */
+/* With SVG water-distort emerge animation   */
 /* ========================================= */
 
 import { getCurrentLang } from './language.js';
 import { getProjectFullDescription, getProjectDescription } from '../constants/projects.js';
+import { initModalParticles } from './modal-particles.js';
 
 /**
- * Simple popup modal that appears at the clicked card position
+ * Modal with SVG filter water emergence (like hover effect)
  */
 
 let modalOverlay = null;
 let modalContainer = null;
+let particleCanvas = null;
+let particleSystem = null;
 let currentProject = null;
 let projectsList = [];
 let currentProjectIndex = 0;
@@ -27,15 +31,16 @@ export function initModal(projects) {
  * Create modal HTML elements
  */
 function createModalElements() {
-    // Create overlay (darker background)
     modalOverlay = document.createElement('div');
     modalOverlay.className = 'project-modal-overlay';
     
-    // Create modal container
     modalContainer = document.createElement('div');
     modalContainer.className = 'project-modal';
     
-    // Create modal content
+    // Create particle canvas
+    particleCanvas = document.createElement('canvas');
+    particleCanvas.className = 'modal-particle-canvas';
+    
     modalContainer.innerHTML = `
         <button class="modal-close-btn" aria-label="Close">✕</button>
         <button class="modal-prev-btn" aria-label="Previous project">‹</button>
@@ -58,130 +63,204 @@ function createModalElements() {
         </div>
     `;
     
-    // Append elements
+    // Insert particle canvas before content
+    modalContainer.insertBefore(particleCanvas, modalContainer.firstChild);
+    
     modalOverlay.appendChild(modalContainer);
     document.body.appendChild(modalOverlay);
+    
+    // Initialize particle system
+    particleSystem = initModalParticles(particleCanvas);
 }
 
 /**
- * Attach event listeners (card clicks handled by portal.js)
+ * Attach event listeners
  */
 function attachEventListeners(projects) {
     projectsList = projects;
     
-    // Close button
     const closeBtn = modalContainer.querySelector('.modal-close-btn');
     closeBtn.addEventListener('click', () => closePopup());
     
-    // Prev/Next buttons
     const prevBtn = modalContainer.querySelector('.modal-prev-btn');
     const nextBtn = modalContainer.querySelector('.modal-next-btn');
     prevBtn.addEventListener('click', () => navigateProject(-1));
     nextBtn.addEventListener('click', () => navigateProject(1));
     
-    // Keyboard navigation
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closePopup();
         if (e.key === 'ArrowLeft') navigateProject(-1);
         if (e.key === 'ArrowRight') navigateProject(1);
     });
     
-    // Click outside to close
     modalOverlay.addEventListener('click', (e) => {
         if (e.target === modalOverlay) closePopup();
     });
 }
 
 /**
- * Navigate to previous/next project
+ * Navigate to previous/next project with water effect
  */
 function navigateProject(direction) {
     if (!projectsList.length) return;
     currentProjectIndex = (currentProjectIndex + direction + projectsList.length) % projectsList.length;
     const project = projectsList[currentProjectIndex];
     currentProject = project;
+    
+    // Trigger water effect on navigation
+    modalContainer.classList.remove('water-emerge', 'fade-complete');
+    void modalContainer.offsetWidth;
+    
+    if (modalContainer._emergeTimer) {
+        clearTimeout(modalContainer._emergeTimer);
+    }
+    modalContainer._emergeTimer = setTimeout(() => {
+        // Remove water-emerge class - SVG filter already at scale=0
+        modalContainer.classList.remove('water-emerge');
+    }, 1000); // after SVG animation completes (0.8s + buffer)
+    
+    // Restart SVG animation
+    const svgFilter = document.getElementById('water-emerge');
+    if (svgFilter) {
+        const animations = svgFilter.querySelectorAll('animate');
+        animations.forEach(anim => {
+            try {
+                anim.beginElement();
+            } catch (e) {
+                const parent = svgFilter.parentNode;
+                const clone = svgFilter.cloneNode(true);
+                parent.replaceChild(clone, svgFilter);
+            }
+        });
+    }
+    
+    modalContainer.classList.add('water-emerge');
     populateModal(project);
 }
 
 /**
- * Show popup at card position
+ * Show popup at card position with water emerge animation
  */
 export function showPopupAtCard(project, card) {
-    // Find project index from projectsList
     currentProjectIndex = projectsList.findIndex(p => p === project);
     if (currentProjectIndex === -1) currentProjectIndex = 0;
     currentProject = project;
     
-    // Get card position and size
-    const cardRect = card.getBoundingClientRect();
-    
     // Set modal size (larger for images)
     const modalWidth = Math.min(900, window.innerWidth - 60);
     const modalHeight = Math.min(800, window.innerHeight - 80);
-    
-    // Calculate position - center on screen (not on card)
     const left = (window.innerWidth - modalWidth) / 2;
     const top = (window.innerHeight - modalHeight) / 2;
     
-    // Position the overlay
-    modalOverlay.style.display = 'block';
-    modalOverlay.style.opacity = '0';
-    
-    // Force reflow
-    modalOverlay.offsetHeight;
-    
-    // Fade in overlay
-    modalOverlay.style.transition = 'opacity 0.3s ease';
-    modalOverlay.style.opacity = '1';
-    
-    // Position and show modal
+    // Position modal
     modalContainer.style.position = 'fixed';
     modalContainer.style.left = `${left}px`;
     modalContainer.style.top = `${top}px`;
     modalContainer.style.width = `${modalWidth}px`;
     modalContainer.style.maxHeight = `${modalHeight}px`;
+    
+    // Remove any previous animation class
+    modalContainer.classList.remove('water-emerge', 'fade-complete');
+    void modalContainer.offsetWidth;
+    
+    // Show overlay
+    modalOverlay.style.display = 'block';
+    modalOverlay.style.opacity = '0';
+    void modalOverlay.offsetHeight;
+    modalOverlay.style.transition = 'opacity 0.3s ease';
+    modalOverlay.style.opacity = '1';
+    
+    // Show modal with water emerge animation (SVG filter)
     modalContainer.style.display = 'block';
-    modalContainer.style.opacity = '0';
-    modalContainer.style.transform = 'scale(0.9)';
-    
-    // Force reflow
-    modalContainer.offsetHeight;
-    
-    // Fade in and scale up modal
-    modalContainer.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
     modalContainer.style.opacity = '1';
     modalContainer.style.transform = 'scale(1)';
+    
+    // Restart SVG animation by triggering all animate elements
+    const svgFilter = document.getElementById('water-emerge');
+    if (svgFilter) {
+        const animations = svgFilter.querySelectorAll('animate');
+        animations.forEach(anim => {
+            try {
+                anim.beginElement();
+            } catch (e) {
+                // Fallback: clone filter if beginElement fails
+                const parent = svgFilter.parentNode;
+                const clone = svgFilter.cloneNode(true);
+                parent.replaceChild(clone, svgFilter);
+            }
+        });
+    }
+    
+    // Trigger the water emerge animation
+    modalContainer.classList.add('water-emerge');
+    
+    if (modalContainer._emergeTimer) {
+        clearTimeout(modalContainer._emergeTimer);
+    }
+    modalContainer._emergeTimer = setTimeout(() => {
+        // Remove water-emerge class - SVG filter already at scale=0
+        modalContainer.classList.remove('water-emerge');
+    }, 1000); // after SVG animation completes (0.8s + buffer)
+    
+    // Start particle system
+    if (particleSystem) {
+        particleSystem.start();
+    }
     
     // Populate content
     populateModal(project);
     
-    // Prevent scrolling
     document.body.style.overflow = 'hidden';
 }
 
 /**
- * Close popup
+ * Close popup with water animation
  */
 function closePopup() {
     if (!currentProject) return;
     
-    // Cleanup skill cycle
+    if (modalContainer._emergeTimer) {
+        clearTimeout(modalContainer._emergeTimer);
+        modalContainer._emergeTimer = null;
+    }
+    
     if (modalContainer._cleanupCycle) {
         modalContainer._cleanupCycle();
         modalContainer._cleanupCycle = null;
     }
     
-    // Fade out
-    modalOverlay.style.opacity = '0';
-    modalContainer.style.opacity = '0';
-    modalContainer.style.transform = 'scale(0.9)';
+    modalContainer.classList.remove('water-emerge', 'fade-complete');
+    const modalContent = modalContainer.querySelector('.modal-content');
+    if (modalContent) {
+        modalContent.style.filter = '';
+        modalContent.style.webkitFilter = '';
+    }
     
+    // Stop particle system
+    if (particleSystem) {
+        particleSystem.stop();
+    }
+    
+    // Add water effect to close button
+    const closeBtn = modalContainer.querySelector('.modal-close-btn');
+    if (closeBtn) {
+        closeBtn.classList.add('water-effect');
+    }
+    
+    // Trigger water close animation
+    modalContainer.classList.add('water-close');
+    
+    // Wait for animation to complete before hiding
     setTimeout(() => {
         modalOverlay.style.display = 'none';
         modalContainer.style.display = 'none';
+        modalContainer.classList.remove('water-close');
+        if (closeBtn) {
+            closeBtn.classList.remove('water-effect');
+        }
         currentProject = null;
         document.body.style.overflow = '';
-    }, 300);
+    }, 1000);
 }
 
 /**
@@ -197,13 +276,19 @@ function populateModal(project) {
     const lang = getCurrentLang();
     const projectIndex = projectsList.findIndex(p => p === project);
     
+    // Apply water-themed background based on project
+    const bgClasses = ['modal-bg-abyss', 'modal-bg-teal', 'modal-bg-ocean', 'modal-bg-bio'];
+    modalContainer.classList.remove(...bgClasses);
+    if (projectIndex >= 0 && projectIndex < bgClasses.length) {
+        modalContainer.classList.add(bgClasses[projectIndex]);
+    }
+    
     titleEl.textContent = project.name;
     subtitleEl.textContent = getProjectDescription(projectIndex, lang) || project.description || '';
     imageEl.src = project.image || '';
     imageEl.alt = project.name;
     descriptionEl.textContent = getProjectFullDescription(projectIndex, lang) || project.fullDescription || '';
     
-    // Set skills
     skillsGridEl.innerHTML = '';
     let skillCycleTimer = null;
     if (project.skills && project.skills.length > 0) {
@@ -218,7 +303,6 @@ function populateModal(project) {
             skillsGridEl.appendChild(skillTag);
         });
 
-        // Cycle through skills: 3s active each, then next
         const tags = skillsGridEl.querySelectorAll('.modal-skill-tag');
         let currentSkillIndex = 0;
 
@@ -232,20 +316,17 @@ function populateModal(project) {
             activateSkill(currentSkillIndex);
         }
 
-        // Start cycle
         if (tags.length > 0) {
             activateSkill(0);
             skillCycleTimer = setInterval(nextSkill, 10000);
         }
     }
 
-    // Cleanup cycle when modal closes
     const cleanupCycle = () => {
         if (skillCycleTimer) {
             clearInterval(skillCycleTimer);
             skillCycleTimer = null;
         }
     };
-    // Store cleanup on modal container so closePopup can call it
     modalContainer._cleanupCycle = cleanupCycle;
 }

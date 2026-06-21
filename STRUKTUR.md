@@ -325,13 +325,10 @@ Die Animationen nutzen:
 -- [ ] **Responsive Desktop Size ...**: 
 -- [ ] **Change All file clean Up**: 
 -- [ ] **Hero Page change strukture*: 
--- [ ] **Work work on X button and everthing*: 
 -- [ ] **Optomise Site*: 
 -- [ ] **Bubles moving*: 
 -- [ ] **Add Connten*: 
 -- [ ] **Animation hz anpassen*:
--- [ ] **Scroll not white in work section*: 
--- [ ] **Animation anklicken und nächste Seite*:  
 -- [ ] **WorkSection Animation Watter background*:  
 
 ---
