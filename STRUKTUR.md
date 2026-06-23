@@ -323,13 +323,14 @@ Die Animationen nutzen:
 
 - [ ] **Bild-Assets fehlen**: `assets/Picture/` existiert nicht im Repo → 404 beim Laden
 -- [ ] **Responsive Desktop Size ...**: 
--- [ ] **Change All file clean Up**: 
+-- [ ] **Change All file clean Up, Magic Number**: 
 -- [ ] **Hero Page change strukture*: 
 -- [ ] **Optomise Site*: 
 -- [ ] **Bubles moving*: 
 -- [ ] **Add Connten*: 
 -- [ ] **Animation hz anpassen*:
--- [ ] **WorkSection Animation Watter background*:  
+-- [ ] **Worksection beim Schliessen unten sieht man Buchstaben*: 
+ 
 
 ---
 

@@ -5,7 +5,7 @@
 
 import { getCurrentLang } from './language.js';
 import { getProjectFullDescription, getProjectDescription } from '../constants/projects.js';
-import { initModalParticles } from './modal-particles.js';
+import { initModalShader } from './modal-shader.js';
 
 /**
  * Modal with SVG filter water emergence (like hover effect)
@@ -13,8 +13,7 @@ import { initModalParticles } from './modal-particles.js';
 
 let modalOverlay = null;
 let modalContainer = null;
-let particleCanvas = null;
-let particleSystem = null;
+let modalShader = null;
 let currentProject = null;
 let projectsList = [];
 let currentProjectIndex = 0;
@@ -36,10 +35,6 @@ function createModalElements() {
     
     modalContainer = document.createElement('div');
     modalContainer.className = 'project-modal';
-    
-    // Create particle canvas
-    particleCanvas = document.createElement('canvas');
-    particleCanvas.className = 'modal-particle-canvas';
     
     modalContainer.innerHTML = `
         <button class="modal-close-btn" aria-label="Close">✕</button>
@@ -63,14 +58,11 @@ function createModalElements() {
         </div>
     `;
     
-    // Insert particle canvas before content
-    modalContainer.insertBefore(particleCanvas, modalContainer.firstChild);
-    
     modalOverlay.appendChild(modalContainer);
     document.body.appendChild(modalOverlay);
     
-    // Initialize particle system
-    particleSystem = initModalParticles(particleCanvas);
+    // Initialize voronoi shader background
+    modalShader = initModalShader(modalContainer);
 }
 
 /**
@@ -132,6 +124,11 @@ function navigateProject(direction) {
                 parent.replaceChild(clone, svgFilter);
             }
         });
+    }
+    
+    // Update shader color scheme for new project
+    if (modalShader) {
+        modalShader.setColorScheme(currentProjectIndex);
     }
     
     modalContainer.classList.add('water-emerge');
@@ -202,9 +199,9 @@ export function showPopupAtCard(project, card) {
         modalContainer.classList.remove('water-emerge');
     }, 1000); // after SVG animation completes (0.8s + buffer)
     
-    // Start particle system
-    if (particleSystem) {
-        particleSystem.start();
+    // Start voronoi shader background with project-specific color scheme
+    if (modalShader) {
+        modalShader.start(currentProjectIndex);
     }
     
     // Populate content
@@ -236,9 +233,24 @@ function closePopup() {
         modalContent.style.webkitFilter = '';
     }
     
-    // Stop particle system
-    if (particleSystem) {
-        particleSystem.stop();
+    // Stop voronoi shader background
+    if (modalShader) {
+        modalShader.stop();
+    }
+    
+    // Trigger water-distort-close SVG animation (same as water-emerge opening)
+    const closeFilter = document.getElementById('water-distort-close');
+    if (closeFilter) {
+        const animations = closeFilter.querySelectorAll('animate');
+        animations.forEach(anim => {
+            try {
+                anim.beginElement();
+            } catch (e) {
+                const parent = closeFilter.parentNode;
+                const clone = closeFilter.cloneNode(true);
+                parent.replaceChild(clone, closeFilter);
+            }
+        });
     }
     
     // Add water effect to close button
