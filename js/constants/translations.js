@@ -10,10 +10,10 @@ export const translations = {
         'sidebar-linkedin': 'LINKEDIN',
 
         // Navbar
-        'nav-home': 'HOMEPAGE',
-        'nav-archives': 'ARCHIVES',
+        'nav-home': 'HOME',
+        'nav-archives': 'WORK',
         'nav-about': 'ABOUT ME',
-        'nav-journey': 'JOURNEY',
+        'nav-journey': 'EDUCATION',
         'nav-contact': 'CONTACT',
 
         // Hero

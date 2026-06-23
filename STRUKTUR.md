@@ -329,7 +329,9 @@ Die Animationen nutzen:
 -- [ ] **Bubles moving*: 
 -- [ ] **Add Connten*: 
 -- [ ] **Animation hz anpassen*:
--- [ ] **Worksection beim Schliessen unten sieht man Buchstaben*: 
+-- [ ] **texte change*:
+
+
  
 
 ---

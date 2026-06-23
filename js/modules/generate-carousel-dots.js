@@ -50,8 +50,15 @@ function generatePortalDots(count) {
         button.className = 'c-dot';
         button.setAttribute('data-slide', i);
         button.setAttribute('aria-label', `Go to project ${i + 1}`);
-        button.setAttribute('aria-current', i === 0 ? 'true' : 'false');
         if (i === 0) button.classList.add('active');
         dotsContainer.appendChild(button);
     }
+}
+
+export function getCurrentSlideIndex() {
+    const activeIndicator = document.querySelector('.carousel_indicators .indicator.active');
+    if (activeIndicator) {
+        return parseInt(activeIndicator.getAttribute('data-slide'));
+    }
+    return 0;
 }

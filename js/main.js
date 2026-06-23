@@ -89,6 +89,7 @@ function renderHeroSkills() {
     skills.forEach((skill, index) => {
         const div = document.createElement('div');
         div.className = 'skill_item';
+        div.setAttribute('data-skill', skill.name);
         const skillKey = skill.i18n || `skill-${skill.name.toLowerCase().replace(/[\s&]+/g, '')}`;
         const displayName = texts[skillKey] || skill.name;
         div.innerHTML = `<i class='bx ${skill.icon}'></i><span>${displayName}</span>`;
@@ -96,6 +97,17 @@ function renderHeroSkills() {
     });
     arsenalGrid.innerHTML = '';
     arsenalGrid.appendChild(fragment);
+    
+    // Highlight skills for initial project
+    setTimeout(() => {
+        const activeSlide = document.querySelector('.carousel_indicators .indicator.active');
+        if (activeSlide) {
+            const initialIndex = parseInt(activeSlide.getAttribute('data-slide'));
+            if (window.highlightHeroSkills) {
+                window.highlightHeroSkills(initialIndex);
+            }
+        }
+    }, 200);
 }
 
 /**

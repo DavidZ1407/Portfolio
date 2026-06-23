@@ -233,11 +233,6 @@ function closePopup() {
         modalContent.style.webkitFilter = '';
     }
     
-    // Stop voronoi shader background
-    if (modalShader) {
-        modalShader.stop();
-    }
-    
     // Trigger water-distort-close SVG animation (same as water-emerge opening)
     const closeFilter = document.getElementById('water-distort-close');
     if (closeFilter) {
@@ -269,6 +264,10 @@ function closePopup() {
         modalContainer.classList.remove('water-close');
         if (closeBtn) {
             closeBtn.classList.remove('water-effect');
+        }
+        // Stop shader only AFTER hiding to prevent text flicker during close
+        if (modalShader) {
+            modalShader.stop();
         }
         currentProject = null;
         document.body.style.overflow = '';

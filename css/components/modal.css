@@ -87,6 +87,12 @@
     animation: modal-close-water 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     filter: url(#water-distort-close);
     -webkit-filter: url(#water-distort-close);
+    overflow: hidden;
+}
+
+/* Hide scroll overflow on content during close to prevent text from peeking through */
+.project-modal.water-close .modal-content {
+    overflow: hidden;
 }
 
 .project-modal.water-emerge .modal-content {

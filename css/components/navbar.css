@@ -137,6 +137,7 @@
     gap: 40px;
     margin-left: auto;
     align-items: center;
+    padding-top: 0;
 }
 
 /* Phone Icon in Navbar */

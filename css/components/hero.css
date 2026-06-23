@@ -2,14 +2,14 @@
 /* HERO COMPONENT */
 /* ========================================= */
 
-/* Hero Section Layout */
+/* Hero Section Layout - compact, alles auf einer Bildschirmhöhe */
 .hero_section {
     position: relative;
     min-height: 100vh;
-    padding: 100px 0 180px;
+    padding: 80px 0 60px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    align-items: center;
+    align-items: start;
     justify-content: space-between;
     overflow: visible;
     background: transparent;
@@ -39,18 +39,17 @@
     display: none;
 }
 
-/* Hero Panel (Right Side) */
+/* Left Column: Name, Title, Description - */
 .hero_panel {
     position: relative;
     z-index: 2;
-    margin-left: auto;
-    width: 50%;
+    padding-top: 40px;
+    padding-left: 125px;
 }
 
 .hero_content {
-    text-align: center;
-    max-width: 550px;
-    width: 100%;
+    text-align: left;
+    max-width: 450px;
     animation: fadeInUp 1s ease-out;
 }
 
@@ -66,50 +65,50 @@
 }
 
 .hero_content h1 {
-    font-size: 3.2rem;
+    font-size: 2.4rem;
     color: var(--gold-accent);
-    margin-bottom: 15px;
+    margin-bottom: 8px;
     text-shadow: 0 0 20px rgba(201, 168, 97, 0.3);
-    letter-spacing: 4px;
+    letter-spacing: 3px;
     font-weight: 900;
 }
 
 .hero_content h2 {
-    font-size: 0.95rem;
+    font-size: 0.8rem;
     color: #92a3a5;
-    margin-bottom: 25px;
-    letter-spacing: 2px;
+    margin-bottom: 12px;
+    letter-spacing: 1.5px;
     font-weight: normal;
     text-transform: uppercase;
 }
 
 .hero_small {
     color: var(--cyan-glow);
-    font-size: 0.9rem;
-    letter-spacing: 2px;
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
 }
 
 .hero_description {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: #92a3a5;
-    margin-bottom: 35px;
-    line-height: 1.7;
-    letter-spacing: 0.5px;
+    margin-bottom: 15px;
+    line-height: 1.5;
+    letter-spacing: 0.3px;
 }
 
-/* Descend Button */
+/* Descend Button - kompakt */
 .descend_btn {
     display: inline-block;
-    padding: 12px 45px;
-    margin-bottom: 50px;
+    padding: 8px 30px;
+    margin-bottom: 0;
     border: 2px solid var(--gold-accent);
     background: transparent;
     color: var(--gold-accent);
     text-decoration: none;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     cursor: pointer;
     transition: 0.4s;
     position: relative;
@@ -141,126 +140,48 @@
     background: var(--cyan-glow);
 }
 
-/* Hero Showcase Container */
+/* ========================================= */
+/* RIGHT COLUMN: Carousel + Skills - */
+/* ========================================= */
 .hero_showcase_container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    margin-top: 60px;
-    margin-left: -100px;
-    align-items: start;
-}
-
-/* Arsenal Section (Skills in Hero) */
-.arsenal_section {
-    margin-top: 50px;
-    padding-top: 50px;
-    border-top: 2px solid rgba(201, 168, 97, 0.3);
-    width: 100%;
-}
-
-.arsenal_section h3 {
-    font-size: 0.85rem;
-    color: var(--gold-accent);
-    margin-bottom: 35px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}
-
-.arsenal_grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
-    max-width: 550px;
-    margin: 0 auto;
-}
-
-.skill_item {
     display: flex;
     flex-direction: column;
+    gap: 15px;
     align-items: center;
-    justify-content: center;
-    padding: 20px 15px;
-    border: 2px solid rgba(201, 168, 97, 0.4);
-    border-radius: 0;
-    background: rgba(20, 47, 51, 0.3);
-    transition: 0.3s;
-    position: relative;
-    min-height: 120px;
+    width: 100%;
+    padding-top: 40px;
 }
 
-.skill_item::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    border: 1px solid rgba(201, 168, 97, 0.1);
-    pointer-events: none;
-}
-
-.skill_item:hover {
-    border-color: var(--cyan-glow);
-    box-shadow: 0 0 20px rgba(73, 146, 154, 0.2);
-    transform: translateY(-5px);
-    will-change: transform, box-shadow;
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
-}
-
-.skill_item i {
-    font-size: 2rem;
-    color: var(--gold-accent);
-    margin-bottom: 12px;
-    transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
-}
-
-.skill_item:hover i {
-    color: var(--cyan-glow);
-    text-shadow: 0 0 15px rgba(73, 146, 154, 0.5);
-    transform: scale(1.2);
-}
-
-.skill_item span {
-    font-size: 0.75rem;
-    color: #92a3a5;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: bold;
-    line-height: 1.3;
-}
-
-/* Works Carousel Section */
+/* Works Carousel Section - klein */
 .works_carousel_section {
-    margin-top: 50px;
-    padding-top: 50px;
-    border-top: 2px solid rgba(201, 168, 97, 0.3);
+    padding-top: 0;
+    width: 100%;
+    max-width: 250px;
 }
 
 .works_carousel_section h3 {
-    font-size: 0.85rem;
+    font-size: 0.65rem;
     color: var(--gold-accent);
-    margin-bottom: 35px;
-    letter-spacing: 2px;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
     text-transform: uppercase;
+    text-align: center;
 }
 
 .carousel_container {
     position: relative;
     overflow: hidden;
-    border: 2px solid rgba(201, 168, 97, 0.3);
+    border: 1.5px solid rgba(201, 168, 97, 0.3);
     background: rgba(20, 47, 51, 0.2);
     aspect-ratio: 1;
     border-radius: 2px;
+    max-height: 250px;
 }
 
 .carousel_track {
     display: flex;
     transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     height: 100%;
-    /* Auto-play handled by JS carousel module */
 }
 
 @keyframes carouselAutoPlay {
@@ -301,21 +222,21 @@
     left: 0;
     right: 0;
     background: linear-gradient(to top, rgba(3, 8, 9, 0.95), transparent);
-    padding: 30px 20px 20px;
+    padding: 20px 15px 15px;
     color: var(--text-light);
     z-index: 10;
 }
 
 .carousel_info h4 {
-    font-size: 1rem;
+    font-size: 0.85rem;
     color: var(--gold-accent);
-    margin-bottom: 8px;
+    margin-bottom: 5px;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 .carousel_info p {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     color: #92a3a5;
     letter-spacing: 0.5px;
 }
@@ -323,14 +244,14 @@
 .carousel_indicators {
     display: flex;
     justify-content: center;
-    gap: 12px;
-    margin-top: 20px;
-    padding: 15px 0;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 5px 0;
 }
 
 .indicator {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     border-radius: 60% 40% 55% 45% / 45% 55% 40% 60%;
     background: transparent;
     border: 1.5px solid rgba(201, 168, 97, 0.25);
@@ -349,8 +270,8 @@
 }
 
 .indicator.active {
-    width: 18px;
-    height: 18px;
+    width: 14px;
+    height: 14px;
     border: 2px solid rgba(201, 168, 97, 0.7);
     background: radial-gradient(ellipse at 40% 35%,
         rgba(255, 215, 140, 0.5) 0%,
@@ -386,6 +307,112 @@
         transparent 100%
     );
     box-shadow: 0 0 6px rgba(73, 146, 154, 0.3);
+}
+
+/* Arsenal Section (Skills) - schmaler damit Sidebar nicht überdeckt wird */
+.arsenal_section {
+    padding-top: 15px;
+    border-top: 2px solid rgba(201, 168, 97, 0.3);
+    width: 100%;
+    max-width: 280px;
+}
+
+.arsenal_section h3 {
+    font-size: 0.8rem;
+    color: var(--gold-accent);
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.arsenal_grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    max-width: 280px;
+    margin: 0 auto;
+}
+
+.skill_item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 8px;
+    border: 2px solid rgba(201, 168, 97, 0.4);
+    border-radius: 0;
+    background: rgba(20, 47, 51, 0.3);
+    transition: 0.3s;
+    position: relative;
+    min-height: 75px;
+}
+
+.skill_item::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border: 1px solid rgba(201, 168, 97, 0.1);
+    pointer-events: none;
+}
+
+.skill_item:hover {
+    border-color: var(--cyan-glow);
+    box-shadow: 
+        0 0 30px rgba(139, 224, 232, 0.5),
+        0 0 60px rgba(73, 146, 154, 0.3),
+        0 0 100px rgba(73, 146, 154, 0.2),
+        inset 0 0 20px rgba(139, 224, 232, 0.15);
+    transform: translateY(-5px);
+    will-change: transform, box-shadow;
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
+    background: rgba(20, 47, 51, 0.5);
+}
+
+.skill_item i {
+    font-size: 1.8rem;
+    color: var(--gold-accent);
+    margin-bottom: 8px;
+    transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.skill_item:hover i {
+    color: var(--cyan-glow);
+    text-shadow: 0 0 15px rgba(73, 146, 154, 0.5);
+    transform: scale(1.2);
+}
+
+/* Aktiver Skill wenn er zum aktuellen Carousel-Slide passt */
+.skill_item.skill-active {
+    border-color: rgba(139, 224, 232, 0.7);
+    box-shadow: 
+        0 0 25px rgba(139, 224, 232, 0.4),
+        0 0 50px rgba(73, 146, 154, 0.25),
+        inset 0 0 15px rgba(139, 224, 232, 0.1);
+    background: rgba(20, 47, 51, 0.5);
+}
+
+.skill_item.skill-active i {
+    color: var(--cyan-glow);
+    text-shadow: 0 0 12px rgba(139, 224, 232, 0.6);
+}
+
+.skill_item.skill-active span {
+    color: #8be0e8;
+}
+
+.skill_item span {
+    font-size: 0.6rem;
+    color: #92a3a5;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: bold;
+    line-height: 1.2;
 }
 
 /* ========================================= */
