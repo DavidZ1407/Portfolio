@@ -177,7 +177,8 @@ export function initUnderwater() {
                     isActive = true;
                     resize();
                     initParticles();
-                    animate();
+                    lastFrameTime = 0;
+                    animate(performance.now());
                 }
             } else {
                 canvas.style.opacity = '0';
@@ -249,9 +250,14 @@ export function initUnderwater() {
         return positions;
     }
 
-    function animate() {
+    let lastFrameTime = 0;
+
+    function animate(now) {
         if (!isActive) return;
-        time += 0.016;
+        if (!lastFrameTime) lastFrameTime = now;
+        const dt = Math.min((now - lastFrameTime) / 1000, 0.05);
+        lastFrameTime = now;
+        time += dt;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         const nodes = getNodePositions();

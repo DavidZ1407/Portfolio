@@ -51,8 +51,7 @@
     height: 100%;
     pointer-events: none;
     z-index: 7;
-    will-change: transform;
-    transform: translateZ(0);
+    /* GPU compositing handled by position:fixed */
 }
 
 /* ========================================= */

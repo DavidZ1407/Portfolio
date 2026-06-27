@@ -16,6 +16,7 @@ import { initFishSwarm } from './modules/fish-swarm.js';
 import { initBioluminescentSwarm } from './modules/bioluminescent-swarm.js';
 import { initHeroShader } from './modules/hero-shader.js';
 import { initWaterLogo } from './modules/water-logo.js';
+import { initWaterSubtitle } from './modules/water-subtitle.js';
 import { initLanguage, getCurrentLang } from './modules/language.js';
 import { projects } from './constants/projects.js';
 import { skills } from './constants/skills.js';
@@ -39,6 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Water Logo Shader Effect
     initWaterLogo();
+    
+    // Water Subtitle Cycling Shader Effect
+    initWaterSubtitle();
     
     // Modal & Portal carousel
     initModal(projects);

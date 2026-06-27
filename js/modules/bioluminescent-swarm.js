@@ -272,7 +272,8 @@ export function initBioluminescentSwarm() {
                     isActive = true;
                     resize();
                     spawnCreatures();
-                    animate();
+                    lastFrameTime = 0;
+                    animate(performance.now());
                 }
             } else {
                 canvas.style.opacity = '0';
@@ -338,13 +339,18 @@ export function initBioluminescentSwarm() {
         }
     }
 
+    let lastFrameTime = 0;
+
     /* ---- Animate ---- */
-    function animate() {
+    function animate(now) {
         if (!isActive) return;
+        if (!lastFrameTime) lastFrameTime = now;
+        const dt = Math.min((now - lastFrameTime) / 1000, 0.05);
+        lastFrameTime = now;
+        time += dt;
 
         const w = canvas.width;
         const h = canvas.height;
-        time += 0.016;
 
         ctx.clearRect(0, 0, w, h);
 

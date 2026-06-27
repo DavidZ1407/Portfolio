@@ -139,9 +139,14 @@ export function initFlood() {
         });
     }
 
-    function animate() {
+    let lastFrameTime = 0;
+
+    function animate(now) {
         if (!isAnimating) return;
-        time += 0.016;
+        if (!lastFrameTime) lastFrameTime = now;
+        const dt = Math.min((now - lastFrameTime) / 1000, 0.05);
+        lastFrameTime = now;
+        time += dt;
         waterLevel += (targetLevel - waterLevel) * 0.12;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         if (waterLevel > 0.005) draw();
@@ -153,7 +158,8 @@ export function initFlood() {
         entries.forEach(entry => {
             if (entry.isIntersecting && !isAnimating) {
                 isAnimating = true;
-                animate();
+                lastFrameTime = 0;
+                animate(performance.now());
             } else if (!entry.isIntersecting) {
                 isAnimating = false;
                 if (animFrame) {

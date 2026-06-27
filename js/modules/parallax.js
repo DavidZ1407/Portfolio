@@ -137,8 +137,25 @@ export function initParallax() {
     window.addEventListener('resize', onResize, { passive: true });
     
     /* ========================================= */
-    /* LOOP 2: Canvas particles (immer)          */
+    /* LOOP 2: Canvas particles (pausable)       */
     /* ========================================= */
+    let particleRunning = false;
+    
+    // Pause when tab hidden for performance
+    function onVisibilityChange() {
+        if (document.hidden) {
+            particleRunning = false;
+            if (particleRafId) cancelAnimationFrame(particleRafId);
+            particleRafId = null;
+        } else {
+            if (!particleRunning) {
+                particleRunning = true;
+                particleRafId = requestAnimationFrame(particleLoop);
+            }
+        }
+    }
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    
     function drawParticles(time) {
         for (let i = 0; i < particles.length; i++) {
             const p = particles[i];
@@ -297,14 +314,17 @@ export function initParallax() {
     initBubbles(bubbles);
     initFishes(fishes);
     
+    particleRunning = true;
     particleLoop(0);
     
     return () => {
         window.removeEventListener('scroll', onScroll);
         window.removeEventListener('resize', onResize);
+        document.removeEventListener('visibilitychange', onVisibilityChange);
         if (parallaxRafId) cancelAnimationFrame(parallaxRafId);
         if (particleRafId) cancelAnimationFrame(particleRafId);
         parallaxRunning = false;
+        particleRunning = false;
         if (canvas) canvas.remove();
     };
 }

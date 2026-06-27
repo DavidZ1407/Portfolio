@@ -52,13 +52,17 @@ export function initContactRain() {
         animate();
     }
 
-    function animate() {
+    let lastFrameTime = 0;
+
+    function animate(now) {
         if (!isVisible) {
             isAnimating = false;
             return;
         }
-
-        time += 0.008;
+        if (!lastFrameTime) lastFrameTime = now;
+        const dt = Math.min((now - lastFrameTime) / 1000, 0.05);
+        lastFrameTime = now;
+        time += dt * 0.5; // scale to maintain original speed (~0.008 per 16ms)
         const w = canvas.width;
         const h = canvas.height;
 

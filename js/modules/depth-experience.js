@@ -27,9 +27,8 @@ function createParticleCanvas() {
     const COLORS_CYAN = [73, 146, 154];
     const TWO_PI = 6.2832;
 
-    let scrollPercent = 0;
-    let lastScrollY = 0;
-    let scrollVelocity = 0;
+    let time = 0;
+    let lastTime = 0;
 
     function resize() {
         width = canvas.width = window.innerWidth;
@@ -54,7 +53,6 @@ function createParticleCanvas() {
                 rgb: rgb,
                 baseOpacity: 0.12 + Math.random() * 0.25,
                 horizontalDrift: (Math.random() - 0.5) * 0.3,
-                parallaxFactor: 0.1 + Math.random() * 0.3,
             });
         }
     }
@@ -76,7 +74,6 @@ function createParticleCanvas() {
                 wobbleAmp: 15 + Math.random() * 30,
                 rgb: rgb,
                 baseOpacity: 0.08 + Math.random() * 0.2,
-                parallaxFactor: 0.2 + Math.random() * 0.4,
                 highlightOffset: 0.25 + Math.random() * 0.15,
             });
         }
@@ -85,28 +82,25 @@ function createParticleCanvas() {
     resize();
     window.addEventListener('resize', resize);
 
-    window.addEventListener('scroll', () => {
-        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-        scrollPercent = maxScroll > 0 ? window.scrollY / maxScroll : 0;
-        const currentScrollY = window.scrollY;
-        scrollVelocity = (currentScrollY - lastScrollY) * 0.5;
-        lastScrollY = currentScrollY;
-    }, { passive: true });
+    // Pause delta-time when tab hidden to prevent time jump
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) lastTime = 0;
+    });
 
-    let time = 0;
+    function animate(now) {
+        if (!lastTime) lastTime = now;
+        const dt = Math.min((now - lastTime) / 1000, 0.05);
+        lastTime = now;
+        time += dt;
 
-    function animate() {
-        time += 0.016;
         ctx.clearRect(0, 0, width, height);
-        scrollVelocity *= 0.92;
 
-        // Particles
+        // Particles - purely organic floating, no scroll displacement
         for (let i = 0, len = particles.length; i < len; i++) {
             const p = particles[i];
             const floatY = p.baseY + Math.sin(time * p.floatSpeed + p.phase) * p.floatAmp;
-            let drawY = floatY - scrollPercent * height * p.parallaxFactor;
-            drawY = ((drawY % height) + height) % height;
-            let drawX = p.x + scrollVelocity * (p.parallaxFactor * 2);
+            let drawY = ((floatY % height) + height) % height;
+            let drawX = p.x;
             p.x += p.horizontalDrift;
             if (drawX < -20) drawX += width + 40;
             else if (drawX > width + 20) drawX -= width + 40;
@@ -117,19 +111,17 @@ function createParticleCanvas() {
             ctx.fill();
         }
 
-        // Bubbles
+        // Bubbles - purely organic floating, no scroll displacement
         for (let i = 0, len = bubbles.length; i < len; i++) {
             const b = bubbles[i];
             b.y -= b.speed;
             if (b.y < -20) { b.y = height + 20; b.x = Math.random() * width; }
             b.wobble += b.wobbleSpeed;
             let wobbleX = Math.sin(b.wobble) * b.wobbleAmp;
-            let drawX = b.x + wobbleX + scrollVelocity * 3;
+            let drawX = b.x + wobbleX;
             let drawY = b.baseY - (time * b.speed * 20) % (height + 40) + b.y;
             if (drawX < -30) drawX += width + 60;
             else if (drawX > width + 30) drawX -= width + 60;
-            drawY = ((drawY % (height + 40)) + height + 40) % (height + 40) - 20;
-            drawY -= scrollPercent * height * b.parallaxFactor;
             drawY = ((drawY % (height + 40)) + height + 40) % (height + 40) - 20;
             const opacity = b.baseOpacity * (0.7 + 0.3 * Math.sin(time * 0.6 + b.wobble));
             // Bubble body
@@ -155,7 +147,7 @@ function createParticleCanvas() {
         requestAnimationFrame(animate);
     }
 
-    animate();
+    requestAnimationFrame(animate);
 }
 
 /* ========================================= */

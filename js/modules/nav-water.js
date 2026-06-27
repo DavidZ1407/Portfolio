@@ -174,9 +174,14 @@ export function initNavWater() {
         }
     }
 
-    function animate() {
+    let lastFrameTime = 0;
+
+    function animate(now) {
         if (!isActive) return;
-        time += 0.016;
+        if (!lastFrameTime) lastFrameTime = now;
+        const dt = Math.min((now - lastFrameTime) / 1000, 0.05);
+        lastFrameTime = now;
+        time += dt;
         drawWave();
         animFrame = requestAnimationFrame(animate);
     }

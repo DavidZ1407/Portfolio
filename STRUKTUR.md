@@ -325,10 +325,9 @@ Die Animationen nutzen:
 -- [ ] **Responsive Desktop Size ...**: 
 -- [ ] **Change All file clean Up, Magic Number**: 
 -- [ ] **Hero Page change strukture*: 
+-- [ ] **PDF Download*: 
 -- [ ] **Optomise Site*: 
--- [ ] **Bubles moving*: 
 -- [ ] **Add Connten*: 
--- [ ] **Animation hz anpassen*:
 -- [ ] **texte change*:
 
 
