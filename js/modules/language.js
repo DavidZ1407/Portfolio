@@ -6,8 +6,6 @@ import { translations } from '../constants/translations.js';
 import { cleanupRegistry } from '../utils/helpers.js';
 
 const STORAGE_KEY = 'portfolio-lang';
-const CACHE_KEY = 'portfolio-translations-cache';
-const CACHE_VERSION = '1.0';
 const DEFAULT_LANG = 'en';
 
 let currentLang = DEFAULT_LANG;
@@ -27,9 +25,6 @@ export function initLanguage() {
         currentLang = DEFAULT_LANG;
     }
 
-    // Cache translations for faster language switching
-    cacheTranslations();
-
     // Apply translations
     applyLanguage(currentLang);
 
@@ -37,27 +32,6 @@ export function initLanguage() {
     setupToggle();
 }
 
-/**
- * Cache translations in localStorage for instant access
- */
-function cacheTranslations() {
-    try {
-        const cached = localStorage.getItem(CACHE_KEY);
-        const cachedObj = cached ? JSON.parse(cached) : null;
-        
-        // Only cache if not cached or version mismatch
-        if (!cachedObj || cachedObj.version !== CACHE_VERSION) {
-            const cacheData = {
-                version: CACHE_VERSION,
-                timestamp: Date.now(),
-                data: translations,
-            };
-            localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
-        }
-    } catch (e) {
-        // localStorage might be full or disabled; silently ignore
-    }
-}
 
 /**
  * Get current language code
@@ -168,7 +142,6 @@ function setupToggle() {
     }
 
     // Remove old listener to prevent duplicates, add new one
-    const newBtn = langBtn.cloneNode(true);
-    langBtn.parentNode.replaceChild(newBtn, langBtn);
-    newBtn.addEventListener('click', toggleLanguage);
+    langBtn.removeEventListener('click', toggleLanguage);
+    langBtn.addEventListener('click', toggleLanguage);
 }

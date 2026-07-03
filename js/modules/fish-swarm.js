@@ -110,11 +110,6 @@ function drawBubble(ctx, x, y, r, opacity) {
 }
 
 /* ----------------------------------------- */
-/* STONE RUINS (static atmospheric overlay)  */
-/* ----------------------------------------- */
-
-
-/* ----------------------------------------- */
 /* MODULE INIT                               */
 /* ----------------------------------------- */
 
@@ -133,6 +128,7 @@ export function initFishSwarm() {
     let creatures = [], bubbles = [], trailParticles = [];
     let swarmHideTimer = null, lastTriggerTime = 0;
     let lastScrollY = window.scrollY, scrollDirection = 'down', lastSectionId = null;
+    let lastFrameTime = 0;
 
     function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     resize();
@@ -169,7 +165,6 @@ export function initFishSwarm() {
     window.addEventListener('hashchange', () => {
         const hash = window.location.hash.replace('#', '');
         if (hash && hash !== lastSectionId) {
-            // Compute direction from target section position vs current scroll
             const targetEl = document.getElementById(hash);
             if (targetEl) {
                 const targetTop = targetEl.getBoundingClientRect().top + window.scrollY;
@@ -178,7 +173,6 @@ export function initFishSwarm() {
                 lastScrollY = currentScroll;
             }
             lastSectionId = hash;
-            // Small delay so the smooth scroll has begun
             setTimeout(() => triggerSwarm(), 50);
         }
     });
@@ -189,31 +183,31 @@ export function initFishSwarm() {
         if (now - lastTriggerTime < COOLDOWN) return;
         lastTriggerTime = now;
 
-        // FULL RESET — clear all old state to prevent fish stacking
         creatures = [];
         bubbles = [];
         trailParticles = [];
         time = 0;
         isActive = true;
+        lastFrameTime = 0;
 
-        // Cancel any pending hide
         clearTimeout(swarmHideTimer);
         if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
 
         spawnCreatures();
         spawnBubbles();
-        animate();
+        animate(performance.now());
 
         canvas.style.opacity = '1';
-        // Don't auto-hide — the animate loop will hide canvas when ALL fish are off-screen
     }
 
     /* ---- Determine swarm size based on viewport ---- */
     function getSwarmSize() {
-        if (window.innerWidth <= 480) return 8;    // small mobile
-        if (window.innerWidth <= 768) return 12;   // tablet
-        if (window.innerWidth <= 1200) return 18;  // small desktop
-        return 25;                                  // large desktop
+        if (window.innerWidth <= 480) return 8;
+        if (window.innerWidth <= 768) return 12;
+        if (window.innerWidth <= 1200) return 18;
+        if (window.innerWidth <= 2560) return 25;
+        if (window.innerWidth <= 3840) return 20;
+        return 15;
     }
 
     /* ---- Spawn fish ---- */
@@ -221,7 +215,6 @@ export function initFishSwarm() {
         creatures = [];
         const w = canvas.width, h = canvas.height;
         const count = getSwarmSize();
-        // ALL fish rise from BOTTOM to TOP (going UP, -Y direction)
         const goDown = false;
         const cols = Math.ceil(count / 5);
         for (let i = 0; i < count; i++) {
@@ -229,7 +222,6 @@ export function initFishSwarm() {
             const size = type === 'smallFish' ? 5 + Math.random() * 8 : 12 + Math.random() * 18;
             const col = Math.floor(i / 5), row = i % 5;
             const sx = w * 0.03 + (col / Math.max(cols - 1, 1)) * w * 0.94 + (Math.random() - 0.5) * w * 0.1;
-            // Always spawn below screen, move upward
             const sy = h + size * 3 + Math.random() * 100 + row * 40;
             const angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.2;
             creatures.push({
@@ -263,9 +255,12 @@ export function initFishSwarm() {
     }
 
     /* ---- Animate ---- */
-    function animate() {
+    function animate(now) {
         if (!isActive) return;
-        const dt = 0.016; time += dt;
+        if (!lastFrameTime) lastFrameTime = now;
+        const dt = Math.min((now - lastFrameTime) / 1000, 0.05);
+        lastFrameTime = now;
+        time += dt;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         // Draw fish with organic swimming
@@ -273,24 +268,18 @@ export function initFishSwarm() {
             if (time < c.delay) return;
             c.opacity = Math.min(1, (time - c.delay) * 2);
 
-            // Organic swimming path: sinusoidal body wave
             const swimPhase = time * c.wobbleSpeed + c.phase;
             const bodyWave = Math.sin(swimPhase) * c.wobbleAmp;
             const sideDrift = Math.cos(swimPhase * 0.6) * c.wobbleAmp * 0.8;
 
-            // Main movement direction
             c.x += Math.cos(c.baseAngle) * c.speed * dt + sideDrift * dt * 3;
             c.y += Math.sin(c.baseAngle) * c.speed * dt + bodyWave * dt * 2;
 
-            // Angle follows actual movement (fish face where they swim)
             const moveAngle = Math.atan2(
                 Math.sin(c.baseAngle) * c.speed + bodyWave * 2,
                 Math.cos(c.baseAngle) * c.speed + sideDrift * 3
             );
             c.angle += (moveAngle - c.angle) * 0.08;
-            // Remove fish only when fully off-screen (no clipping)
-            // Fish body extends ±size*0.6 around center, so wait until fully past edge
-            if (c.goDown && c.y - c.size * 0.5 > canvas.height) { c.opacity = 0; return; }
             if (!c.goDown && c.y + c.size * 0.5 < 0) { c.opacity = 0; return; }
             if (c.opacity > 0.01) {
                 ctx.globalAlpha = c.opacity;
@@ -312,7 +301,6 @@ export function initFishSwarm() {
         ctx.globalAlpha = 1;
         drawTrail();
 
-        // Check if all fish have completed their journey to the top
         let aliveFish = 0;
         for (let i = 0; i < creatures.length; i++) {
             if (creatures[i].opacity > 0.01) aliveFish++;

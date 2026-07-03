@@ -72,10 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Timeline scroll animation
     initTimelineAnimation();
     
-    // Expose data for potential debugging
-    if (typeof window !== 'undefined') {
-        window.portfolioData = { projects, skills };
-    }
+    // Data accessible via module imports
 });
 
 /**

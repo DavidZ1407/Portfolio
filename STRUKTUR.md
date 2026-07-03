@@ -322,12 +322,15 @@ Die Animationen nutzen:
 ## 🔧 Bekannte Issues / Todos
 
 - [ ] **Bild-Assets fehlen**: `assets/Picture/` existiert nicht im Repo → 404 beim Laden
--- [ ] **Responsive Desktop Size ...**: 
--- [ ] **Change All file clean Up, Magic Number**: 
+-- [ ] **4k(alles testen)Responsive test 2056(main page noch großer machen,  frames fixen, fishes scroll fix,),1024,726(navbar rechts fixen) 425(fix main page zu groß, navbar)**: 
+-- [ ] **Clean up**: 
+-- [ ] **Handy shader Work?**: 
+-- [ ] **Magic Number**: 
 -- [ ] **Hero Page change strukture*: 
+-- [ ] **Hero Page change name*: 
 -- [ ] **PDF Download*: 
--- [ ] **Optomise Site*: 
 -- [ ] **Add Connten*: 
+-- [] **Scroll Handy**
 -- [ ] **texte change*:
 
 

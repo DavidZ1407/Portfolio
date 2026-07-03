@@ -105,9 +105,6 @@ export function initContactRain() {
             // Wellenförmige horizontale Verzerrung (sinus wellen)
             ctx.save();
 
-            // Weicher Glow
-            ctx.shadowColor = `rgba(${r}, ${g}, ${b}, ${alpha * 0.6})`;
-            ctx.shadowBlur = 15;
 
             // Strahl als Pfad mit welligen Seiten
             const segments = 20;
@@ -151,8 +148,6 @@ export function initContactRain() {
             ctx.fill();
 
             // Hellerer Kern
-            ctx.shadowBlur = 20;
-            ctx.shadowColor = `rgba(${r}, ${g}, ${b}, ${alpha * 0.8})`;
             ctx.globalAlpha = 0.3;
             
             ctx.beginPath();

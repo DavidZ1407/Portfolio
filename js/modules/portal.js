@@ -31,6 +31,26 @@ export function initPortal(onOpenModal) {
     initCarousel();
     setupTiltStructure();
 }
+/**
+ * Navigate the portal carousel to a specific slide index
+ * @param {number} index - The slide index to navigate to
+ */
+export function goToPortalSlide(index) {
+    if (index < 0 || index >= TOTAL_SLIDES) return;
+    
+    const slides = document.querySelectorAll('.portal-slide');
+    const dots = document.querySelectorAll('.c-dot');
+    if (slides.length === 0 || dots.length === 0) return;
+    
+    pauseAuto();
+    detachTilt();
+    currentCenter = index;
+    updatePositions(slides, dots);
+    resumeAutoAfterDelay();
+}
+window.goToPortalSlide = goToPortalSlide;
+
+
 
 /* ========================================= */
 /* 3D MOUSE TILT SETUP */

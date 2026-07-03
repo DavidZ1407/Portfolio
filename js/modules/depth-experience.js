@@ -2,6 +2,7 @@
 /* MODULE - FULL-PAGE DEPTH EXPERIENCE */
 /* Immersive underwater gothic scroll */
 /* ========================================= */
+import { registerAnimation } from '../utils/animation-manager.js';
 
 export function initDepthExperience() {
     createParticleCanvas();
@@ -86,6 +87,7 @@ function createParticleCanvas() {
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) lastTime = 0;
     });
+    registerAnimation((now, dt) => animate(now));
 
     function animate(now) {
         if (!lastTime) lastTime = now;
@@ -144,10 +146,7 @@ function createParticleCanvas() {
             ctx.fill();
         }
 
-        requestAnimationFrame(animate);
     }
-
-    requestAnimationFrame(animate);
 }
 
 /* ========================================= */

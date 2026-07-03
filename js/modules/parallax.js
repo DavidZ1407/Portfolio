@@ -1,3 +1,4 @@
+import { registerAnimation } from '../utils/animation-manager.js';
 /* ========================================= */
 /* PARALLAX MODULE */
 /* ========================================= */
@@ -13,7 +14,6 @@
  */
 
 let parallaxRafId = null;
-let particleRafId = null;
 let parallaxRunning = false;
 
 export function initParallax() {
@@ -145,13 +145,9 @@ export function initParallax() {
     function onVisibilityChange() {
         if (document.hidden) {
             particleRunning = false;
-            if (particleRafId) cancelAnimationFrame(particleRafId);
-            particleRafId = null;
+            particleRunning = false;
         } else {
-            if (!particleRunning) {
-                particleRunning = true;
-                particleRafId = requestAnimationFrame(particleLoop);
-            }
+            if (!particleRunning) { particleRunning = true; }
         }
     }
     document.addEventListener('visibilitychange', onVisibilityChange);
@@ -297,15 +293,7 @@ export function initParallax() {
         }
     }
     
-    function particleLoop(time) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        drawParticles(time);
-        drawBubbles(time);
-        drawFishes(time);
-        
-        particleRafId = requestAnimationFrame(particleLoop);
-    }
+    function particleLoop(time) { ctx.clearRect(0, 0, canvas.width, canvas.height); drawParticles(time); drawBubbles(time); drawFishes(time); }
     
     /* ========================================= */
     /* INIT                                     */
@@ -314,15 +302,14 @@ export function initParallax() {
     initBubbles(bubbles);
     initFishes(fishes);
     
-    particleRunning = true;
-    particleLoop(0);
+    particleRunning = true; const unregisterParticles = registerAnimation((now) => { if (!particleRunning) return; particleLoop(now); });
     
     return () => {
         window.removeEventListener('scroll', onScroll);
         window.removeEventListener('resize', onResize);
         document.removeEventListener('visibilitychange', onVisibilityChange);
         if (parallaxRafId) cancelAnimationFrame(parallaxRafId);
-        if (particleRafId) cancelAnimationFrame(particleRafId);
+        unregisterParticles();
         parallaxRunning = false;
         particleRunning = false;
         if (canvas) canvas.remove();

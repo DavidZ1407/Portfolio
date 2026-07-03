@@ -106,7 +106,9 @@ function createTextCanvas(text, w, h) {
     const ctx = c.getContext('2d');
     ctx.clearRect(0, 0, w, h);
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 72px Cinzel, serif';
+    // Schrift dynamisch an Canvas-Größe anpassen
+    const fontSize = Math.round(h * 0.55);
+    ctx.font = `bold ${fontSize}px Cinzel, serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(text, w / 2, h / 2);
@@ -135,13 +137,23 @@ export function initWaterLogo() {
 
     const canvas = document.createElement('canvas');
     canvas.className = 'water-text-canvas';
-    const textWidth = 600;
-    const textHeight = 120;
+    // Dynamische Größe: auf kleinen Bildschirmen am Viewport orientiert
+    const vw = window.innerWidth;
+    let textWidth = 600;
+    let textHeight = 120;
+    if (vw <= 480) {
+        textWidth = Math.max(180, Math.round(vw * 0.85));
+        textHeight = Math.round(textWidth * 0.2);
+    } else if (vw <= 768) {
+        textWidth = Math.min(vw * 0.7, 600);
+        textHeight = Math.round(textWidth * 0.2);
+    }
     canvas.width = textWidth;
     canvas.height = textHeight;
     canvas.style.cssText = `
         width: ${textWidth}px;
         height: ${textHeight}px;
+        max-width: 100%;
     `;
 
     container.appendChild(canvas);

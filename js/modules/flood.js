@@ -1,6 +1,7 @@
-﻿/* ========================================= */
+/* ========================================= */
 /* MODULE - FLOOD EFFECT */
 /* ========================================= */
+import { registerAnimation } from '../utils/animation-manager.js';
 
 export function initFlood() {
     const section = document.querySelector('.journey_section');
@@ -24,7 +25,7 @@ export function initFlood() {
     section.prepend(canvas);
 
     const ctx = canvas.getContext('2d');
-    let animFrame = null;
+    let unregAnim = null;
     let waterLevel = 1;
     let targetLevel = 1;
     let particles = [];
@@ -101,7 +102,7 @@ export function initFlood() {
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        // Bläschen - GRÖSSER und MIT GLOW
+        // Bl�schen - GR�SSER und MIT GLOW
         particles.forEach(p => {
             p.wobble += p.wobbleSpeed;
             p.y -= p.speed;
@@ -117,7 +118,7 @@ export function initFlood() {
                 ctx.arc(p.x, p.y, p.r + p.glow, 0, 6.2832);
                 ctx.fill();
 
-                // Äußerer Rand
+                // �u�erer Rand
                 ctx.fillStyle = `rgba(73, 146, 154, ${alpha * 0.15})`;
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.r, 0, 6.2832);
@@ -150,7 +151,7 @@ export function initFlood() {
         waterLevel += (targetLevel - waterLevel) * 0.12;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         if (waterLevel > 0.005) draw();
-        animFrame = requestAnimationFrame(animate);
+        
     }
 
     // Only animate when section is visible
@@ -159,12 +160,12 @@ export function initFlood() {
             if (entry.isIntersecting && !isAnimating) {
                 isAnimating = true;
                 lastFrameTime = 0;
-                animate(performance.now());
+                unregAnim = registerAnimation((now, dt) => animate(now));
             } else if (!entry.isIntersecting) {
                 isAnimating = false;
-                if (animFrame) {
-                    cancelAnimationFrame(animFrame);
-                    animFrame = null;
+                if (unregAnim) {
+                    unregAnim();
+                    unregAnim = null;
                 }
             }
         });
@@ -175,9 +176,9 @@ export function initFlood() {
     updateWater();
 
     return () => {
-        if (animFrame) cancelAnimationFrame(animFrame);
         window.removeEventListener('scroll', updateWater);
         observer.disconnect();
+        if (unregAnim) unregAnim();
         canvas.remove();
     };
 }

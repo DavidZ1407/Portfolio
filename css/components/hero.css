@@ -2,14 +2,14 @@
 /* HERO COMPONENT */
 /* ========================================= */
 
-/* Hero Section Layout - compact, alles auf einer Bildschirmhöhe */
+/* Hero Section Layout */
 .hero_section {
     position: relative;
     min-height: 100vh;
-    padding: 80px 0 60px;
+    padding: 80px 10% 60px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    align-items: start;
+    align-items: center;
     justify-content: space-between;
     overflow: visible;
     background: transparent;
@@ -34,17 +34,19 @@
     background: linear-gradient(135deg, rgba(3, 8, 9, 0.6) 0%, rgba(20, 47, 51, 0.3) 50%, rgba(3, 8, 9, 0.7) 100%);
 }
 
-/* Hero Visual (Left Side) - Removed glowing circle for cleaner look */
+/* Hero Visual (Left Side) */
 .hero_visual {
     display: none;
 }
 
-/* Left Column: Name, Title, Description - */
+/* Left Column - responsive padding fixes */
 .hero_panel {
     position: relative;
     z-index: 2;
     padding-top: 40px;
-    padding-left: 125px;
+    padding-left: 100px;
+    transition: padding-left 0.3s ease;
+    max-width: 550px;
 }
 
 .hero_content {
@@ -65,12 +67,14 @@
 }
 
 .hero_content h1 {
-    font-size: 2.4rem;
+    font-size: clamp(2rem, 3vw, 3.2rem);
     color: var(--gold-accent);
     margin-bottom: 8px;
     text-shadow: 0 0 20px rgba(201, 168, 97, 0.3);
     letter-spacing: 3px;
     font-weight: 900;
+    animation: hero-float 6s ease-in-out infinite;
+    line-height: 1.1;
 }
 
 .hero_content h2 {
@@ -84,20 +88,26 @@
 
 .hero_small {
     color: var(--cyan-glow);
-    font-size: 0.75rem;
+    font-size: clamp(0.65rem, 1.2vw, 0.85rem);
     letter-spacing: 1.5px;
     text-transform: uppercase;
+    animation: hero-float 5s ease-in-out infinite;
+    animation-delay: 0.3s;
+    margin-bottom: 4px;
 }
 
 .hero_description {
-    font-size: 0.8rem;
+    font-size: clamp(0.7rem, 1.1vw, 0.85rem);
     color: #92a3a5;
     margin-bottom: 15px;
     line-height: 1.5;
     letter-spacing: 0.3px;
+    animation: hero-float 8s ease-in-out infinite;
+    animation-delay: 1s;
+    max-width: 100%;
 }
 
-/* Descend Button - kompakt */
+/* Descend Button */
 .descend_btn {
     display: inline-block;
     padding: 8px 30px;
@@ -113,6 +123,8 @@
     transition: 0.4s;
     position: relative;
     overflow: hidden;
+    animation: hero-float 6s ease-in-out infinite;
+    animation-delay: 0.8s;
 }
 
 .descend_btn::before {
@@ -130,8 +142,6 @@
 .descend_btn:hover {
     color: var(--abyss-deep);
     border-color: var(--cyan-glow);
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
     text-shadow: 0 0 15px rgba(73, 146, 154, 0.6), 0 0 30px rgba(73, 146, 154, 0.3);
 }
 
@@ -140,9 +150,7 @@
     background: var(--cyan-glow);
 }
 
-/* ========================================= */
-/* RIGHT COLUMN: Carousel + Skills - */
-/* ========================================= */
+/* Right Column */
 .hero_showcase_container {
     display: flex;
     flex-direction: column;
@@ -152,7 +160,7 @@
     padding-top: 40px;
 }
 
-/* Works Carousel Section - klein */
+/* Works Carousel */
 .works_carousel_section {
     padding-top: 0;
     width: 100%;
@@ -176,6 +184,8 @@
     aspect-ratio: 1;
     border-radius: 2px;
     max-height: 250px;
+    animation: hero-float 9s ease-in-out infinite;
+    animation-delay: 0.4s;
 }
 
 .carousel_track {
@@ -208,12 +218,56 @@
     object-fit: cover;
     filter: grayscale(60%) brightness(0.8);
     transition: filter 0.6s ease, transform 0.6s ease;
-    will-change: filter, transform;
 }
 
 .carousel_slide:hover img {
     filter: grayscale(20%) brightness(0.95);
     transform: scale(1.05);
+}
+
+/* Specular Light Shine */
+.carousel_slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+    background: linear-gradient(
+        105deg,
+        transparent 0%,
+        transparent 30%,
+        rgba(255, 255, 255, 0.08) 45%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0.08) 55%,
+        transparent 70%,
+        transparent 100%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    mix-blend-mode: overlay;
+}
+
+.carousel_slide:hover::after {
+    opacity: 1;
+    animation: carouselSpecularSweep 1.5s ease-in-out forwards;
+}
+
+@keyframes carouselSpecularSweep {
+    0% {
+        transform: translateX(-100%) translateY(-100%) skewX(-15deg);
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    60% {
+        transform: translateX(0%) translateY(10%) skewX(-15deg);
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateX(100%) translateY(100%) skewX(-15deg);
+        opacity: 0;
+    }
 }
 
 .carousel_info {
@@ -309,7 +363,7 @@
     box-shadow: 0 0 6px rgba(73, 146, 154, 0.3);
 }
 
-/* Arsenal Section (Skills) - schmaler damit Sidebar nicht überdeckt wird */
+/* Arsenal Section */
 .arsenal_section {
     padding-top: 15px;
     border-top: 2px solid rgba(201, 168, 97, 0.3);
@@ -386,7 +440,6 @@
     transform: scale(1.2);
 }
 
-/* Aktiver Skill wenn er zum aktuellen Carousel-Slide passt */
 .skill_item.skill-active {
     border-color: rgba(139, 224, 232, 0.7);
     box-shadow: 
@@ -415,17 +468,12 @@
     line-height: 1.2;
 }
 
-/* ========================================= */
-/* UNDERWATER FLOATING ANIMATIONS */
-/* ========================================= */
-
-/* Base floating animation - gentle vertical bob */
+/* Floating Animations */
 @keyframes hero-float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-6px); }
 }
 
-/* Hero content elements float together with slight delays */
 .hero_content h1 {
     animation: hero-float 6s ease-in-out infinite;
 }
@@ -445,24 +493,20 @@
     animation-delay: 0.3s;
 }
 
-/* Descend button floats gently */
 .descend_btn {
     animation: hero-float 6s ease-in-out infinite;
     animation-delay: 0.8s;
 }
 
-/* Carousel container floats */
 .carousel_container {
     animation: hero-float 9s ease-in-out infinite;
     animation-delay: 0.4s;
 }
 
-/* Indicator dots float with staggered timing */
 .indicator:nth-child(1) { animation: hero-float 5s ease-in-out infinite; animation-delay: 0s; }
 .indicator:nth-child(2) { animation: hero-float 5.5s ease-in-out infinite; animation-delay: 0.3s; }
 .indicator:nth-child(3) { animation: hero-float 6s ease-in-out infinite; animation-delay: 0.6s; }
 
-/* Skill items float with varied timing for organic feel */
 .skill_item:nth-child(1) { animation: hero-float 6s ease-in-out infinite; animation-delay: 0s; }
 .skill_item:nth-child(2) { animation: hero-float 7s ease-in-out infinite; animation-delay: 0.4s; }
 .skill_item:nth-child(3) { animation: hero-float 6.5s ease-in-out infinite; animation-delay: 0.8s; }
@@ -470,22 +514,18 @@
 .skill_item:nth-child(5) { animation: hero-float 6s ease-in-out infinite; animation-delay: 0.6s; }
 .skill_item:nth-child(6) { animation: hero-float 8s ease-in-out infinite; animation-delay: 1s; }
 
-/* Section titles float */
 .arsenal_section h3,
 .works_carousel_section h3 {
     animation: hero-float 7s ease-in-out infinite;
     animation-delay: 0.2s;
 }
 
-/* Section borders stay static - no animation on them */
 .arsenal_section,
 .works_carousel_section {
     animation: none;
 }
 
-/* ========================================= */
-/* "I am" - before DAVID ZAHN               */
-/* ========================================= */
+/* "I am" text */
 .hero_i_am {
     font-size: 1.1rem;
     color: #a8bbbd;
@@ -499,9 +539,7 @@
     width: 100%;
 }
 
-/* ========================================= */
-/* "studying Games & Immersive Media ..."    */
-/* ========================================= */
+/* "studying..." text */
 .hero_studying {
     font-size: 0.85rem;
     color: #92a3a5;
@@ -514,9 +552,7 @@
     width: 100%;
 }
 
-/* ========================================= */
-/* WATER SUBTITLE (CYCLING TEXT)             */
-/* ========================================= */
+/* Water Subtitle */
 .water-subtitle-container {
     display: flex;
     justify-content: center;
@@ -532,5 +568,3 @@
     max-width: 520px;
     height: 65px;
 }
-
-/* Responsive layout moved to css/responsive.css */

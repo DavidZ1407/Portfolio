@@ -190,7 +190,7 @@ export function initHeroShader() {
 
     function animate() {
         if (!isActive) { animFrame = requestAnimationFrame(animate); return; }
-        material.uniforms.uTime.value += 0.016;
+        material.uniforms.uTime.value += 1 / 60;
         renderer.render(scene, camera);
         animFrame = requestAnimationFrame(animate);
     }
