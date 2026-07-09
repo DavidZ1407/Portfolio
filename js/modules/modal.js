@@ -143,10 +143,19 @@ export function showPopupAtCard(project, card) {
     if (currentProjectIndex === -1) currentProjectIndex = 0;
     currentProject = project;
     
-    // Set modal size (larger for images)
-    const modalWidth = Math.min(900, window.innerWidth - 60);
-    const modalHeight = Math.min(800, window.innerHeight - 80);
-    const left = (window.innerWidth - modalWidth) / 2;
+    // Set modal size - viewport-responsive for large screens (2056px+)
+    const vw = window.innerWidth;
+    let maxModalW = 900, maxModalH = 800;
+    if (vw >= 3840) {
+        maxModalW = 1800; maxModalH = 1400;
+    } else if (vw >= 2560) {
+        maxModalW = 1400; maxModalH = 1100;
+    } else if (vw >= 2056) {
+        maxModalW = 1100; maxModalH = 900;
+    }
+    const modalWidth = Math.min(maxModalW, vw - 60);
+    const modalHeight = Math.min(maxModalH, window.innerHeight - 80);
+    const left = (vw - modalWidth) / 2;
     const top = (window.innerHeight - modalHeight) / 2;
     
     // Position modal

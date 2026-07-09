@@ -301,8 +301,11 @@ export function initParallax() {
     initParticles(particles);
     initBubbles(bubbles);
     initFishes(fishes);
-    
-    particleRunning = true; const unregisterParticles = registerAnimation((now) => { if (!particleRunning) return; particleLoop(now); });
+    particleRunning = true;
+    const unregisterParticles = registerAnimation((now) => { 
+        if (!particleRunning) return; 
+        particleLoop(now); 
+    });
     
     return () => {
         window.removeEventListener('scroll', onScroll);

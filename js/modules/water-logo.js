@@ -147,6 +147,9 @@ export function initWaterLogo() {
     } else if (vw <= 768) {
         textWidth = Math.min(vw * 0.7, 600);
         textHeight = Math.round(textWidth * 0.2);
+    } else if (vw > 2056) {
+        textWidth = 1200;
+        textHeight = 240;
     }
     canvas.width = textWidth;
     canvas.height = textHeight;

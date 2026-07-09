@@ -260,6 +260,7 @@ export function initBioluminescentSwarm() {
         if (window.innerWidth <= 1200) return 9;
         return 12;
     }
+    
     const isMobile = window.innerWidth <= 768;
     const CREATURE_COUNT = getCreatureCount();
 

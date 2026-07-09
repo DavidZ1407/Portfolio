@@ -114,6 +114,9 @@ function drawBubble(ctx, x, y, r, opacity) {
 /* ----------------------------------------- */
 
 export function initFishSwarm() {
+    // Disable entirely on large viewports (2056px+) - performance critical
+    if (window.innerWidth >= 2056) return;
+
     const isMobile = window.innerWidth <= 768;
     const SWARM_SIZE = isMobile ? 25 : 45;
     const COOLDOWN = 3000; // ms between triggers
@@ -213,6 +216,8 @@ export function initFishSwarm() {
     /* ---- Spawn fish ---- */
     function spawnCreatures() {
         creatures = [];
+        // Skip fish on large viewports - only bubbles
+        if (window.innerWidth >= 2056) return;
         const w = canvas.width, h = canvas.height;
         const count = getSwarmSize();
         const goDown = false;

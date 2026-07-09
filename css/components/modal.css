@@ -680,4 +680,54 @@
     );
 }
 
-/* Responsive layout moved to css/responsive.css */
+/* ========================================= */
+/* VIEWPORT-RESPONSIVE SIZING (inline in JS) */
+/* ========================================= */
+
+@media (min-width: 2056px) {
+    .modal-project-title { font-size: 2rem; letter-spacing: 3px; }
+    .modal-project-subtitle { font-size: 1.1rem; }
+    .modal-project-image { height: 400px; }
+    .modal-project-description { font-size: 1.1rem; max-width: 75ch; line-height: 1.8; }
+    .modal-skills-title { font-size: 1.2rem; }
+    .modal-skill-tag { font-size: 0.95rem; padding: 10px 18px; }
+    .modal-skill-tag i { font-size: 1.2rem; }
+    .modal-content { padding: 40px; }
+    .modal-close-btn { width: 44px; height: 44px; font-size: 1rem; top: 22px; right: 22px; }
+    .modal-prev-btn,
+    .modal-next-btn { width: 64px; height: 64px; font-size: 2.2rem; }
+    .modal-prev-btn { left: -36px; }
+    .modal-next-btn { right: -36px; }
+}
+
+@media (min-width: 2560px) {
+    .modal-project-title { font-size: 2.4rem; letter-spacing: 4px; }
+    .modal-project-subtitle { font-size: 1.3rem; }
+    .modal-project-image { height: 480px; }
+    .modal-project-description { font-size: 1.2rem; max-width: 80ch; line-height: 1.9; }
+    .modal-skills-title { font-size: 1.4rem; }
+    .modal-skill-tag { font-size: 1.05rem; padding: 12px 22px; }
+    .modal-skill-tag i { font-size: 1.3rem; }
+    .modal-content { padding: 50px; }
+    .modal-close-btn { width: 50px; height: 50px; font-size: 1.1rem; top: 26px; right: 26px; }
+    .modal-prev-btn,
+    .modal-next-btn { width: 72px; height: 72px; font-size: 2.5rem; }
+    .modal-prev-btn { left: -40px; }
+    .modal-next-btn { right: -40px; }
+}
+
+@media (min-width: 3840px) {
+    .modal-project-title { font-size: 3rem; letter-spacing: 5px; }
+    .modal-project-subtitle { font-size: 1.5rem; }
+    .modal-project-image { height: 600px; }
+    .modal-project-description { font-size: 1.4rem; max-width: 85ch; line-height: 2; }
+    .modal-skills-title { font-size: 1.6rem; }
+    .modal-skill-tag { font-size: 1.15rem; padding: 14px 26px; }
+    .modal-skill-tag i { font-size: 1.5rem; }
+    .modal-content { padding: 60px; }
+    .modal-close-btn { width: 56px; height: 56px; font-size: 1.2rem; top: 30px; right: 30px; }
+    .modal-prev-btn,
+    .modal-next-btn { width: 84px; height: 84px; font-size: 3rem; }
+    .modal-prev-btn { left: -46px; }
+    .modal-next-btn { right: -46px; }
+}

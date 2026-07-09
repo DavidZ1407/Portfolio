@@ -3,18 +3,18 @@
 /* ========================================= */
 
 import { initNavigation } from './modules/navigation.js';
-import { initCarousel } from './modules/carousel.js';
-import { generateCarouselDots } from './modules/generate-carousel-dots.js';
+import { initCarousel } from './modules/hero-carousel.js';
+import { generateCarouselDots } from './modules/carousel-dots.js';
 import { initParallax, updateParallaxHeight } from './modules/parallax.js';
 import { initModal, showPopupAtCard } from './modules/modal.js';
 import { initPortal } from './modules/portal.js';
 import { initUnderwater } from './modules/underwater.js';
 import { initFlood } from './modules/flood.js';
-import { initContactRain } from './modules/contact-rain.js';
+import { initContactRain } from './modules/particle-rain.js';
 import { initDepthExperience } from './modules/depth-experience.js';
 import { initFishSwarm } from './modules/fish-swarm.js';
 import { initBioluminescentSwarm } from './modules/bioluminescent-swarm.js';
-import { initHeroShader } from './modules/hero-shader.js';
+import { initHeroShader } from './modules/ocean-shader.js';
 import { initWaterLogo } from './modules/water-logo.js';
 import { initWaterSubtitle } from './modules/water-subtitle.js';
 import { initLanguage, getCurrentLang } from './modules/language.js';

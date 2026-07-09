@@ -27,8 +27,8 @@ Portfolio/
 │   │
 │   └── components/
 │       ├── navbar.css                  # Header + Sidebar Socials + Lang-Button
-│       ├── hero.css                    # Landing Page (Hero Section)
-│       ├── projects.css                # Archives (3D Portal Carousel)
+│       ├── landing.css                 # Startseite (Hero Section)
+│       ├── archives.css                # Archives (3D Portal Carousel)
 │       ├── about.css                   # About Me
 │       ├── journey.css                 # Timeline (Anglerfisch-Lure Nodes)
 │       ├── contact.css                 # Contact Icons
@@ -47,21 +47,27 @@ Portfolio/
     │
     └── modules/
         ├── navigation.js               # Aktiver Nav-Link (scroll-basiert, rAF-getthrottelt)
-        ├── carousel.js                 # Hero Carousel (Indikatoren-Klick)
-        ├── generate-carousel-dots.js   # Auto-Generiert Carousel-Dots & Indicators
+        ├── hero-carousel.js            # Startseiten-Carousel (Indikatoren-Klick)
+        ├── carousel-dots.js            # Auto-Generiert Carousel-Dots & Indicators
         ├── parallax.js                 # Parallax Layers + CSS-Partikel (Fische/Blasen)
         ├── modal.js                    # Popup-Modal (ESC/Overlay-Klick schließen)
         ├── portal.js                   # 3D Portal Carousel (Auto-Rotate + Bubbles Canvas)
         ├── nav-water.js                # Wasser-Animation für Nav-Link Splash-Effekte
+        ├── ocean-shader.js             # Ozean-Shader (Three.js) für Hero-Hintergrund
         ├── underwater.js               # Anglerfisch-Leuchtköder (Timeline)
         ├── flood.js                    # Wasserflut-Effekt (Journey Section)
-        ├── contact-rain.js             # Wassertropfen (Contact Section)
+        ├── particle-rain.js            # Lichtstrahlen + biolumineszente Partikel (Contact)
         ├── depth-experience.js         # Fullpage-Depth-Fog + Vignette + Bubbles Canvas
-        └── language.js                 # EN/DE Sprachumschaltung (localStorage)
-│
+        ├── fish-swarm.js               # Fischschwarm-Transition (Section-Wechsel)
+        ├── bioluminescent-swarm.js     # Tiefsee-Kreaturen (Timeline Hintergrund)
+        ├── water-logo.js               # "DAVID ZAHN" Wasser-Shader (WebGL)
+        ├── water-subtitle.js           # Text-Cycler mit Wasser-Shader (WebGL)
+        ├── language.js                 # EN/DE Sprachumschaltung (localStorage)
+        └── modal-shader.js             # Voronoi-Shader (Three.js) für Modal-Hintergrund
+    │
     └── utils/
-        ├── helpers.js                  # Hilfsfunktionen (throttle, lerp, etc.)
-        └── smooth.js                   # Smooth Scroll Utilities
+        ├── helpers.js                  # Hilfsfunktionen (debounce, cleanupRegistry etc.)
+        └── smooth.js                   # Smooth Lerp Utilities
 ```
 
 ---
@@ -70,6 +76,7 @@ Portfolio/
 
 | Quelle | Zweck |
 |--------|-------|
+| `cdnjs.cloudflare.com/three.js/r128` | 3D Shader (Hero, Modal) |
 | `unpkg.com/boxicons` | Icons (Social Media, Skills) |
 | `fonts.googleapis.com` | Fonts: Cinzel (Titel), Crimson Text (Text), UnifrakturMaguntia |
 
@@ -96,7 +103,7 @@ Portfolio/
 |-------|---------|
 | `navbar.css` | Fixed Header + Sidebar (rechts) + Language Toggle Button |
 | `parallax.css` | Fixed Hintergrund mit Sky/Castle/Unterwasser-Layer |
-| `projects.css` | 3D-Perspektive + Portal-Slides (pos-center/left/right) |
+| `archives.css` | 3D-Perspektive + Portal-Slides (pos-center/left/right) |
 | `journey.css` | Timeline-Nodes (leuchten bei `.show` auf) |
 | `depth-experience.css` | Fullpage-Fog-Overlay + Vignette + Canvas |
 
@@ -123,20 +130,25 @@ Portfolio/
 ```javascript
 DOMContentLoaded → {
   1.  initLanguage()              // EN/DE Umschaltung (MUSS ERSTER SEIN!)
-  2.  generateCarouselDots()      // Dots AUTOMATISCH generieren (NEW!)
+  2.  generateCarouselDots()      // Dots AUTOMATISCH generieren
   3.  initNavigation()            // Scroll-basierte Nav
   4.  initCarousel()              // Hero Indikatoren
   5.  initParallax()              // Hintergrund-Bewegung
   6.  updateParallaxHeight()
-  7.  initModal(projects)         // Popup-System
-  8.  initPortal(callback)        // 3D Carousel + Bubbles
-  9.  renderHeroSkills()          // Skills (übersetzt) generieren
-  10. renderAboutSkills()         // About Skills (übersetzt) generieren
-  11. initUnderwater()            // Anglerfisch in Timeline
-  12. initFlood()                 // Wasser in Journey
-  13. initContactRain()           // Tropfen in Contact
-  14. initDepthExperience()       // Fog + Vignette + Bubbles (ganze Seite)
-  15. initTimelineAnimation()     // Scroll-Reveal
+  7.  initOceanShader()           // Three.js Ozean-Hintergrund (Hero)
+  8.  initWaterLogo()             // "DAVID ZAHN" Wasser-Effekt
+  9.  initWaterSubtitle()         // Text-Cycler
+  10. initModal(projects)         // Popup-System
+  11. initPortal(callback)        // 3D Carousel + Bubbles
+  12. renderHeroSkills()          // Skills (übersetzt) generieren
+  13. renderAboutSkills()         // About Skills (übersetzt) generieren
+  14. initUnderwater()            // Anglerfisch in Timeline
+  15. initFlood()                 // Wasser in Journey
+  16. initParticleRain()          // Licht + Partikel in Contact
+  17. initDepthExperience()       // Fog + Vignette + Bubbles (ganze Seite)
+  18. initFishSwarm()             // Fischschwarm (Section-Wechsel)
+  19. initBioluminescentSwarm()   // Tiefsee-Kreaturen (Timeline)
+  20. initTimelineAnimation()     // Scroll-Reveal
 }
 ```
 
@@ -146,6 +158,7 @@ Alle Canvas-Module vermeiden `shadowBlur` (teuer!) und verwenden stattdessen:
 - Große semi-transparente Kreise als Glow-Ersatz
 - `6.2832` als vorkomputierte 2π-Konstante
 - Vorberechnete RGB-Arrays statt String-Parsing
+- Low-Resolution Buffering auf großen Viewports (2056px+)
 
 ---
 
@@ -194,7 +207,7 @@ Dann in `index.html`:
 2. Neues `<div class="carousel_slide">` im `.carousel_track` (Hero)
 
 ✅ **Carousel-Dots & Indicators werden AUTOMATISCH generiert!**
-- Das `generate-carousel-dots.js` Modul läuft beim Seitenload
+- Das `carousel-dots.js` Modul läuft beim Seitenload
 - Buttons werden basierend auf der Anzahl der Projekte in `projects.js` generiert
 - **Kein manuelles Hinzufügen von Buttons mehr nötig!**
 
@@ -246,6 +259,11 @@ Dann in `index.html` neuen `.timeline_item`-Block im `.water_timeline`-Container
 - Scroll-gesteuert mit Lerp-Interpolation
 - RAF stoppt bei Inaktivität
 
+### Ocean Shader (ocean-shader.js)
+- Three.js WebGL Shader: animierte Wasseroberfläche von unten gesehen
+- God Rays, Caustics, Blasen
+- Fallback wenn Three.js fehlt → Seite läuft ohne
+
 ### Anglerfisch-Lure (underwater.js)
 - Biolumineszenter Leuchtköder wandert Timeline entlang
 - Mehrschichtiger Glow (außen → Mitte → Kern)
@@ -256,8 +274,9 @@ Dann in `index.html` neuen `.timeline_item`-Block im `.water_timeline`-Container
 - Wellenlinie + aufsteigende Blasen
 - RAF nur aktiv wenn Section sichtbar
 
-### Contact Rain (contact-rain.js)
-- Fallende Wassertropfen + Splashes + Ripples
+### Particle Rain (particle-rain.js)
+- Lichtstrahlen + biolumineszente Partikel mit Lifecycle (Birth → Float → Die)
+- Low-Res Buffering auf 2056px+ für 60fps
 - RAF nur aktiv wenn Section sichtbar
 
 ### Depth Experience (depth-experience.js)
@@ -265,6 +284,14 @@ Dann in `index.html` neuen `.timeline_item`-Block im `.water_timeline`-Container
 - **Vignette**: Ränder werden dunkler
 - **Bubbles Canvas**: ~12 Blasen (3-10px) über ganzer Viewport
 - **Particles**: ~30 kleine Punkte (Gold + Cyan) mit Scroll-Parallax
+
+### Fish Swarm (fish-swarm.js)
+- Fischschwarm + Blasen beim Section-Wechsel
+- Auf 2056px+ komplett deaktiviert (Performance)
+
+### Bioluminescent Swarm (bioluminescent-swarm.js)
+- Tiefsee-Kreaturen im Timeline-Hintergrund
+- 3 Typen: Qualle, Tintenfisch, Anglerfisch-Schatten
 
 ---
 
@@ -276,10 +303,11 @@ Dann in `index.html` neuen `.timeline_item`-Block im `.water_timeline`-Container
 - **Scroll**: `passive: true`, `requestAnimationFrame`-Throttling
 - **Sichtbarkeit**: IntersectionObserver stoppt Canvas-Animationen bei Unsichtbarkeit
 - **Reduced Motion**: `prefers-reduced-motion` deaktiviert alles
+- **Large Viewports (2056px+)**: Low-Res Buffering, reduzierte Segmente, deaktivierte Fish-Swarm
 
 ---
 
-## ✨ Navbar-Animationen (NEW)
+## ✨ Navbar-Animationen
 
 ### Navigation Links – Active & Hover Effekte
 
@@ -296,14 +324,12 @@ Dann in `index.html` neuen `.timeline_item`-Block im `.water_timeline`-Container
 ### Language Toggle Button – Ripple Ring Effekt
 
 - **Ripple Ring**: Expandierender Kreis beim Hovern (Cyan-Farbe)
-- Simuliert einen Glow-Effekt wie die Social-Media Icons rechts
 - Animationsdauer: **0.8s** ease-out
 
 ### Technische Details (navbar.css)
 
 Die Animationen nutzen:
-- **`::before` Pseudo-Element** für Splash-Effekte (bei non-active Links)
-- **`::before` Pseudo-Element** für Splash bei Active Links
+- **`::before` Pseudo-Element** für Splash-Effekte
 - **SVG-ähnliche Gradienten** mit `radial-gradient` für realistisches Wasser
 - **Box-shadow** Techniken für Spritzwasser-Partikel
 
@@ -312,29 +338,22 @@ Die Animationen nutzen:
 - `waterSplashCyan` (Cyan) – Hover Links
 - `navRippleRing` – Language Button & Sidebar Socials
 
-**Modifizieren:**
-- Splash-Größe: `width` / `height` Werte in den Keyframes ändern
-- Farben: `rgba(201, 168, 97, ...)` → Gold / `rgba(73, 146, 154, ...)` → Cyan
-- Geschwindigkeit: Animation-Dauer in `navbar.css` bei `.nav-link.active::after` und `.nav-link:hover::before` anpassen
-
 ---
 
 ## 🔧 Bekannte Issues / Todos
 
-- [ ] **Bild-Assets fehlen**: `assets/Picture/` existiert nicht im Repo → 404 beim Laden
--- [ ] **4k(alles testen)Responsive test 2056(main page noch großer machen,  frames fixen, fishes scroll fix,),1024,726(navbar rechts fixen) 425(fix main page zu groß, navbar)**: 
--- [ ] **Clean up**: 
--- [ ] **Handy shader Work?**: 
--- [ ] **Magic Number**: 
--- [ ] **Hero Page change strukture*: 
--- [ ] **Hero Page change name*: 
--- [ ] **PDF Download*: 
--- [ ] **Add Connten*: 
--- [] **Scroll Handy**
--- [ ] **texte change*:
+### WICHTIG - Noch zu erledigen
+- [x] Responsive Large Viewports (2056px-4000px): Frames auf 60fps gebracht, Fische deaktiviert
+- [x] Datei-Umbenennung: hero→landing, projects→archives, hero-shader→ocean-shader, etc. abgeschlossen
+- [ ] **Bild-Assets ablegen**: Projekt-Bilder (`Project1.png`, `Project2.png`, `Project3.png`, `Profile.png`) in `assets/Picture/` kopieren → sonst 404 im Modal/Portal
+- [ ] **Eigene Projektdaten anpassen**: `js/constants/projects.js` mit echten Projekten füllen (Name, Beschreibung, Skills, Bildpfade)
+- [ ] **Lebenslauf einbinden**: PDF-Download-Link implementieren (z.B. im About-Bereich oder Footer)
+- [ ] **Weitere Inhalte hinzufügen**: Timeline-Einträge in `js/constants/timeline.js` + `index.html` erweitern
 
-
- 
+### OPTIONAL - Nice to have
+- [ ] **Clean up**: Eventuell verbleibende alte Referenzen auf umbenannte Dateien prüfen (hero.css, projects.css, etc.)
+- [ ] **Performance-Decay**: Überprüfen, ob Canvas-Module auf 3840px+ noch flüssig laufen
+- [ ] **Accessibility**: `:focus-visible` Stati auf allen interaktiven Elementen testen
 
 ---
 
@@ -348,9 +367,8 @@ Die Animationen nutzen:
 
 ### Responsive Design
 - **Zentrale Datei**: `css/responsive.css` – alle Breakpoints an einem Ort
-- **Breakpoints**: 1400px (Laptop), 1200px (Small Laptop), 1024px (Tablet), 768px (Mobile), 480px (Small Mobile), 550px (Portal)
+- **Breakpoints**: 1980px, 2056px, 2560px, 3840px (groß), 1400px, 1200px, 1024px, 768px, 480px, 425px (klein)
 - **Komponenten**: Responsive-Regeln leben in `responsive.css`, nicht in den Komponenten-Dateien
-- **z-index**: Responsive anpassen bei kleineren Screens
 
 ### Barrierefreiheit
 - **Alle interaktiven Elemente** müssen `:focus-visible` haben
