@@ -38,6 +38,24 @@ export function throttle(fn, interval = 50) {
 }
 
 /**
+ * Optimized canvas sizing for performance
+ * Caps backing store at maxWidth to prevent explosion on large viewports
+ * @param {HTMLCanvasElement} canvas - Canvas element to size
+ * @param {number} logicalWidth - Logical CSS width
+ * @param {number} logicalHeight - Logical CSS height
+ * @param {number} maxWidth - Maximum backing store width (default 2560)
+ * @returns {{width: number, height: number}} Actual backing store dimensions
+ */
+export function sizeCanvas(canvas, logicalWidth, logicalHeight, maxWidth = 2560) {
+    const scale = Math.min(1, maxWidth / Math.max(logicalWidth, 1));
+    const width = Math.max(1, Math.ceil(logicalWidth * scale));
+    const height = Math.max(1, Math.ceil(logicalHeight * scale));
+    canvas.width = width;
+    canvas.height = height;
+    return { width, height, scale };
+}
+
+/**
  * Centralized cleanup registry
  * Allows modules to register cleanup callbacks that will be called on page unload
  */

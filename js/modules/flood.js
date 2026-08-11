@@ -2,6 +2,7 @@
 /* MODULE - FLOOD EFFECT */
 /* ========================================= */
 import { registerAnimation } from '../utils/animation-manager.js';
+import { sizeCanvas } from '../utils/helpers.js';
 
 export function initFlood() {
     const section = document.querySelector('.journey_section');
@@ -39,8 +40,12 @@ export function initFlood() {
     const SCALE = isXLarge ? 0.35 : isLarge ? 0.5 : 1.0;
 
     function resize() {
-        canvas.width = Math.max(1, Math.ceil(section.offsetWidth * SCALE));
-        canvas.height = Math.max(1, Math.ceil(section.offsetHeight * SCALE));
+        const w = section.offsetWidth;
+        const h = section.offsetHeight;
+        // Cap backing store at 2560px to prevent explosion on large viewports
+        const result = sizeCanvas(canvas, w, h, 2560);
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
     }
     resize();
     window.addEventListener('resize', resize);

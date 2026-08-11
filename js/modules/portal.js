@@ -3,7 +3,8 @@
 /* Auto-rotate + click + bubbles + 3D Tilt */
 /* ========================================= */
 
-import { cleanupRegistry, debounce } from '../utils/helpers.js';
+import { cleanupRegistry, debounce, sizeCanvas } from '../utils/helpers.js';
+import { registerAnimation } from '../utils/animation-manager.js';
 
 let modalOpenCallback = null;
 let currentCenter = 0;
@@ -510,6 +511,7 @@ function initBubbles() {
     let bubbles = [];
     let particles = [];
     let isActive = false;
+    let unregisterAnim = null;
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -518,11 +520,19 @@ function initBubbles() {
                     isActive = true;
                     resize();
                     initParticles();
-                    animate();
+                    
+                    // Register with centralized animation manager
+                    unregisterAnim = registerAnimation(() => {
+                        if (!isActive) return;
+                        animate();
+                    });
                 }
             } else {
                 isActive = false;
-                if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+                if (unregisterAnim) {
+                    unregisterAnim();
+                    unregisterAnim = null;
+                }
             }
         });
     }, { threshold: 0.05 });
@@ -531,8 +541,10 @@ function initBubbles() {
 
     function resize() {
         const rect = section.getBoundingClientRect();
-        canvas.width = rect.width;
-        canvas.height = rect.height;
+        // Cap backing store at 2560px to prevent explosion on large viewports
+        const result = sizeCanvas(canvas, rect.width, rect.height, 2560);
+        canvas.style.width = rect.width + 'px';
+        canvas.style.height = rect.height + 'px';
     }
 
     const debouncedResize = debounce(resize, 150);
@@ -611,15 +623,16 @@ function initBubbles() {
             ctx.arc(p.x, floatY, p.r, 0, 6.2832);
             ctx.fill();
         });
-
-        animFrame = requestAnimationFrame(animate);
+        // Animation loop managed by AnimationManager
     }
 
     // Register cleanup for bubbles
     cleanupRegistry.register(() => {
         isActive = false;
-        if (animFrame) cancelAnimationFrame(animFrame);
-        animFrame = null;
+        if (unregisterAnim) {
+            unregisterAnim();
+            unregisterAnim = null;
+        }
         window.removeEventListener('resize', debouncedResize);
         observer.disconnect();
     });

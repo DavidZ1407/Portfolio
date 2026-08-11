@@ -5,7 +5,8 @@
 /* atmospheric effect with organic movement. */
 /* ========================================= */
 
-import { debounce, cleanupRegistry } from '../utils/helpers.js';
+import { debounce, cleanupRegistry, sizeCanvas } from '../utils/helpers.js';
+import { registerAnimation } from '../utils/animation-manager.js';
 
 /* ----------------------------------------- */
 /* CREATURE TYPES                            */
@@ -252,6 +253,7 @@ export function initBioluminescentSwarm() {
     let isActive = false;
     let time = 0;
     let creatures = [];
+    let unregisterAnim = null;
 
     // Dynamic creature count based on viewport
     function getCreatureCount() {
@@ -280,15 +282,20 @@ export function initBioluminescentSwarm() {
                     resize();
                     spawnCreatures();
                     lastFrameTime = 0;
-                    animate(performance.now());
+                    
+                    // Register with centralized animation manager
+                    unregisterAnim = registerAnimation((now) => {
+                        if (!isActive) return;
+                        animate(now);
+                    });
                 }
             } else {
                 canvas.style.opacity = '0';
                 if (isActive) {
                     isActive = false;
-                    if (animFrame) {
-                        cancelAnimationFrame(animFrame);
-                        animFrame = null;
+                    if (unregisterAnim) {
+                        unregisterAnim();
+                        unregisterAnim = null;
                     }
                 }
             }
@@ -298,8 +305,12 @@ export function initBioluminescentSwarm() {
     observer.observe(section);
 
     function resize() {
-        canvas.width = Math.max(1, Math.ceil(section.offsetWidth * SCALE));
-        canvas.height = Math.max(1, Math.ceil(section.offsetHeight * SCALE));
+        const w = section.offsetWidth;
+        const h = section.offsetHeight;
+        // Cap backing store at 2560px to prevent explosion on large viewports
+        const result = sizeCanvas(canvas, w, h, 2560);
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
     }
 
     const debouncedResize = debounce(resize, 200);
@@ -399,8 +410,7 @@ export function initBioluminescentSwarm() {
 
         // Floating bioluminescent particles (extra ambient)
         drawAmbientParticles();
-
-        animFrame = requestAnimationFrame(animate);
+        // Animation loop managed by AnimationManager
     }
 
     /* ---- Ambient Particles ---- */

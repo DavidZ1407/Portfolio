@@ -3,6 +3,7 @@
 /* Immersive underwater gothic scroll */
 /* ========================================= */
 import { registerAnimation } from '../utils/animation-manager.js';
+import { sizeCanvas } from '../utils/helpers.js';
 
 export function initDepthExperience() {
     createParticleCanvas();
@@ -40,8 +41,12 @@ function createParticleCanvas() {
     function resize() {
         const logicalW = window.innerWidth;
         const logicalH = window.innerHeight;
-        width = canvas.width = Math.max(1, Math.ceil(logicalW * SCALE));
-        height = canvas.height = Math.max(1, Math.ceil(logicalH * SCALE));
+        // Cap backing store at 2560px to prevent explosion on large viewports
+        const result = sizeCanvas(canvas, logicalW, logicalH, 2560);
+        width = result.width;
+        height = result.height;
+        canvas.style.width = logicalW + 'px';
+        canvas.style.height = logicalH + 'px';
         initParticles();
         initBubbles();
     }

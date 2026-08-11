@@ -6,6 +6,9 @@
 /* für große Viewports (2056px-4000px)        */
 /* ========================================= */
 
+import { sizeCanvas } from '../utils/helpers.js';
+import { registerAnimation } from '../utils/animation-manager.js';
+
 export function initContactRain() {
     const section = document.querySelector('.contact_section');
     if (!section) return;
@@ -32,7 +35,7 @@ export function initContactRain() {
     let isVisible = false;
     let isAnimating = false;
     let time = 0;
-
+    let unregisterAnim = null;
     // ---- VIEWPORT DETECTION ----
     const vw = window.innerWidth;
     const isLarge = vw >= 2056;
@@ -260,8 +263,12 @@ export function initContactRain() {
     }
 
     function resize() {
-        canvas.width = section.offsetWidth;
-        canvas.height = section.offsetHeight;
+        const w = section.offsetWidth;
+        const h = section.offsetHeight;
+        // Cap backing store at 2560px to prevent explosion on large viewports
+        const result = sizeCanvas(canvas, w, h, 2560);
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
         ensureBuffer(canvas.width, canvas.height);
     }
 
@@ -282,7 +289,15 @@ export function initContactRain() {
         lastFrameTime = 0;
         // Ensure buffer exists
         ensureBuffer(canvas.width || section.offsetWidth, canvas.height || section.offsetHeight);
-        animate(performance.now());
+        
+        // Register with centralized animation manager
+        unregisterAnim = registerAnimation((now) => {
+            if (!isVisible) {
+                isAnimating = false;
+                return;
+            }
+            animate(now);
+        });
     }
 
     let lastFrameTime = 0;
@@ -293,9 +308,6 @@ export function initContactRain() {
         const dt = Math.min((now - lastFrameTime) / 1000, 0.05);
         lastFrameTime = now;
         time += dt * 0.5;
-
-        // Always call rAF immediately for smooth 60fps timing
-        animFrame = requestAnimationFrame(animate);
 
         const w = canvas.width || section.offsetWidth;
         const h = canvas.height || section.offsetHeight;
@@ -343,3 +355,4 @@ export function initContactRain() {
         canvas.remove();
     };
 }
+

@@ -4,7 +4,8 @@
 /* scrolling. Gothic underwater atmosphere.  */
 /* ========================================= */
 
-import { debounce, cleanupRegistry } from '../utils/helpers.js';
+import { debounce, cleanupRegistry, sizeCanvas } from '../utils/helpers.js';
+import { registerAnimation } from '../utils/animation-manager.js';
 
 /* ----------------------------------------- */
 /* FISH SHAPES                               */
@@ -125,6 +126,7 @@ export function initFishSwarm() {
 
     const ctx = canvas.getContext('2d');
     let animFrame = null, isActive = false, time = 0;
+    let unregisterAnim = null;
     let creatures = [], bubbles = [], trailParticles = [];
     let swarmHideTimer = null, lastTriggerTime = 0;
     let lastScrollY = window.scrollY, scrollDirection = 'down', lastSectionId = null;
@@ -153,8 +155,10 @@ export function initFishSwarm() {
     function resize() {
         logicalW = window.innerWidth;
         logicalH = window.innerHeight;
-        canvas.width = Math.max(1, Math.ceil(logicalW * SCALE));
-        canvas.height = Math.max(1, Math.ceil(logicalH * SCALE));
+        // Cap backing store at 2560px to prevent explosion on large viewports
+        const result = sizeCanvas(canvas, logicalW, logicalH, 2560);
+        canvas.style.width = logicalW + 'px';
+        canvas.style.height = logicalH + 'px';
     }
     resize();
     window.addEventListener('resize', debounce(resize, 200));
@@ -217,10 +221,16 @@ export function initFishSwarm() {
 
         clearTimeout(swarmHideTimer);
         if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+        if (unregisterAnim) { unregisterAnim(); unregisterAnim = null; }
 
         spawnCreatures();
         spawnBubbles();
-        animate(performance.now());
+        
+        // Register with centralized animation manager
+        unregisterAnim = registerAnimation((now) => {
+            if (!isActive) return;
+            animate(now);
+        });
 
         canvas.style.opacity = '1';
     }
@@ -341,14 +351,13 @@ export function initFishSwarm() {
             canvas.style.opacity = '0';
             if (time > 8) {
                 isActive = false;
-                if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+                if (unregisterAnim) { unregisterAnim(); unregisterAnim = null; }
                 return;
             }
         } else {
             canvas.style.opacity = '1';
         }
-
-        animFrame = requestAnimationFrame(animate);
+        // Animation loop managed by AnimationManager
     }
 
     /* ---- Trail ---- */

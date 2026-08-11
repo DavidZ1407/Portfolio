@@ -6,8 +6,9 @@
 /* flow map distortion, bioluminescence       */
 /* ========================================= */
 
-import { debounce, cleanupRegistry } from '../utils/helpers.js';
+import { debounce, cleanupRegistry, sizeCanvas } from '../utils/helpers.js';
 import { smoothLerp } from '../utils/smooth.js';
+import { registerAnimation } from '../utils/animation-manager.js';
 
 /* ========================================= */
 /* SIMPLEX NOISE 3D (compact implementation) */
@@ -130,6 +131,7 @@ export function initUnderwater() {
     let animFrame = null;
     let isActive = false;
     let time = 0;
+    let unregisterAnim = null;
 
     // Simplex noise instance
     const noise = new SimplexNoise(42);
@@ -178,15 +180,20 @@ export function initUnderwater() {
                     resize();
                     initParticles();
                     lastFrameTime = 0;
-                    animate(performance.now());
+                    
+                    // Register with centralized animation manager
+                    unregisterAnim = registerAnimation((now) => {
+                        if (!isActive) return;
+                        animate(now);
+                    });
                 }
             } else {
                 canvas.style.opacity = '0';
                 if (isActive) {
                     isActive = false;
-                    if (animFrame) {
-                        cancelAnimationFrame(animFrame);
-                        animFrame = null;
+                    if (unregisterAnim) {
+                        unregisterAnim();
+                        unregisterAnim = null;
                     }
                 }
             }
@@ -197,8 +204,10 @@ export function initUnderwater() {
 
     function resize() {
         const rect = container.getBoundingClientRect();
-        canvas.width = 260;
-        canvas.height = rect.height;
+        // Cap canvas backing store to prevent explosion on large viewports
+        const result = sizeCanvas(canvas, 260, rect.height, 800);
+        canvas.style.width = '260px';
+        canvas.style.height = rect.height + 'px';
     }
 
     const debouncedResize = debounce(resize, 150);
@@ -238,16 +247,27 @@ export function initUnderwater() {
         }
     }
 
+    let cachedNodePositions = [];
+    let lastNodePositionsUpdate = 0;
+    const NODE_POSITION_UPDATE_INTERVAL = 200; // Update positions max every 200ms
+    
     function getNodePositions() {
+        const now = performance.now();
+        // Only recalculate positions periodically to avoid layout thrashing
+        if (now - lastNodePositionsUpdate < NODE_POSITION_UPDATE_INTERVAL) {
+            return cachedNodePositions;
+        }
+        lastNodePositionsUpdate = now;
+        
         const nodes = container.querySelectorAll('.timeline_item');
         const containerRect = container.getBoundingClientRect();
-        const positions = [];
+        cachedNodePositions = [];
         nodes.forEach(node => {
             const rect = node.getBoundingClientRect();
             const y = rect.top - containerRect.top + rect.height / 2;
-            positions.push({ y, visible: node.classList.contains('show') });
+            cachedNodePositions.push({ y, visible: node.classList.contains('show') });
         });
-        return positions;
+        return cachedNodePositions;
     }
 
     let lastFrameTime = 0;
@@ -262,7 +282,6 @@ export function initUnderwater() {
 
         const nodes = getNodePositions();
         if (nodes.length === 0) {
-            animFrame = requestAnimationFrame(animate);
             return;
         }
 
@@ -273,8 +292,7 @@ export function initUnderwater() {
         drawTrail(centerX);
         drawParticles();
         drawBubbles();
-
-        animFrame = requestAnimationFrame(animate);
+        // Animation loop managed by AnimationManager
     }
 
     function drawEnergyLine(centerX, nodes) {
