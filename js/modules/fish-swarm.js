@@ -114,9 +114,6 @@ function drawBubble(ctx, x, y, r, opacity) {
 /* ----------------------------------------- */
 
 export function initFishSwarm() {
-    // Disable entirely on large viewports (2056px+) - performance critical
-    if (window.innerWidth >= 2056) return;
-
     const isMobile = window.innerWidth <= 768;
     const SWARM_SIZE = isMobile ? 25 : 45;
     const COOLDOWN = 3000; // ms between triggers
@@ -133,7 +130,32 @@ export function initFishSwarm() {
     let lastScrollY = window.scrollY, scrollDirection = 'down', lastSectionId = null;
     let lastFrameTime = 0;
 
-    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    /* ----------------------------------------- */
+    /* LARGE VIEWPORT LOW-RES RENDERING (2056px-) */
+    /* This is the SAME strategy already used by   */
+    /* particle-rain.js: the fixed full-screen     */
+    /* canvas is rendered at a reduced internal    */
+    /* resolution and CSS stretches it to fill the */
+    /* viewport. This cuts per-frame fill-rate     */
+    /* (clearRect + all draw calls) ~4-8x on huge  */
+    /* viewports while keeping fish, bubbles and   */
+    /* trails fully enabled and visible.           */
+    /* ----------------------------------------- */
+    const vw = window.innerWidth;
+    const isLarge = vw >= 2056;
+    const isXLarge = vw >= 3000;
+    const SCALE = isXLarge ? 0.35 : isLarge ? 0.5 : 1.0;
+
+    // Logical (CSS-pixel) viewport size. The simulation runs in this space;
+    // a SCALE transform maps it onto the reduced backing store.
+    let logicalW = window.innerWidth, logicalH = window.innerHeight;
+
+    function resize() {
+        logicalW = window.innerWidth;
+        logicalH = window.innerHeight;
+        canvas.width = Math.max(1, Math.ceil(logicalW * SCALE));
+        canvas.height = Math.max(1, Math.ceil(logicalH * SCALE));
+    }
     resize();
     window.addEventListener('resize', debounce(resize, 200));
 
@@ -216,9 +238,7 @@ export function initFishSwarm() {
     /* ---- Spawn fish ---- */
     function spawnCreatures() {
         creatures = [];
-        // Skip fish on large viewports - only bubbles
-        if (window.innerWidth >= 2056) return;
-        const w = canvas.width, h = canvas.height;
+        const w = logicalW, h = logicalH;
         const count = getSwarmSize();
         const goDown = false;
         const cols = Math.ceil(count / 5);
@@ -242,7 +262,7 @@ export function initFishSwarm() {
     /* ---- Spawn bubbles ---- */
     function spawnBubbles() {
         bubbles = [];
-        const w = canvas.width, h = canvas.height;
+        const w = logicalW, h = logicalH;
         for (let i = 0; i < 15; i++) {
             bubbles.push({
                 x: Math.random() * w,
@@ -266,7 +286,11 @@ export function initFishSwarm() {
         const dt = Math.min((now - lastFrameTime) / 1000, 0.05);
         lastFrameTime = now;
         time += dt;
+        // Clear the full backing store (already low-res on large viewports).
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Map logical (CSS-pixel) coordinates into the reduced backing store.
+        // SCALE === 1 leaves the transform as identity on normal viewports.
+        ctx.setTransform(SCALE, 0, 0, SCALE, 0, 0);
 
         // Draw fish with organic swimming
         creatures.forEach(c => {
@@ -305,6 +329,9 @@ export function initFishSwarm() {
 
         ctx.globalAlpha = 1;
         drawTrail();
+
+        // Reset transform so later clear/state handling uses identity space.
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
 
         let aliveFish = 0;
         for (let i = 0; i < creatures.length; i++) {

@@ -451,6 +451,34 @@
 }
 
 /* ========================================= */
+/* DESCRIPTION LIST */
+/* ========================================= */
+.timeline_desc {
+    margin-top: 10px;
+    padding-left: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.timeline_desc p {
+    margin: 0;
+    color: rgba(205, 207, 208, 0.78);
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    line-height: 1.5;
+    white-space: normal;
+}
+
+.timeline_desc p::before {
+    content: '•';
+    color: rgba(73, 146, 154, 0.85);
+    font-size: 1rem;
+    margin-right: 8px;
+    line-height: 1;
+}
+
+/* ========================================= */
 /* ICON */
 /* ========================================= */
 .timeline_icon {

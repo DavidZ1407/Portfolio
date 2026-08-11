@@ -133,6 +133,68 @@
     color: var(--cyan-glow);
 }
 
+/* CV Download Button (matches the site's button design) */
+.cv_download_btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    align-self: flex-start;
+    width: fit-content;
+    margin-top: 10px;
+    padding: 12px 28px;
+    border: 2px solid var(--gold-accent);
+    background: transparent;
+    color: var(--gold-accent);
+    text-decoration: none;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    position: relative;
+    z-index: 2;
+    animation: about-float 7s ease-in-out infinite;
+    animation-delay: 1.2s;
+}
+
+.cv_download_btn i {
+    font-size: 1.3rem;
+    color: var(--gold-accent);
+    line-height: 1;
+    transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.cv_download_btn span {
+    font-family: inherit;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold-accent);
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+/* Hover uses the water-distortion effect like the other site elements */
+.cv_download_btn:hover {
+    border-color: var(--cyan-glow);
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
+}
+
+.cv_download_btn:hover i {
+    color: var(--cyan-glow);
+    text-shadow:
+        0 0 20px var(--cyan-glow),
+        0 0 40px rgba(73, 146, 154, 0.4),
+        0 0 60px rgba(73, 146, 154, 0.2);
+    transform: scale(1.15);
+}
+
+.cv_download_btn:hover span {
+    color: var(--cyan-glow);
+    text-shadow: 0 0 8px rgba(73, 146, 154, 0.2);
+}
+
 /* ========================================= */
 /* UNDERWATER FLOATING ANIMATIONS - ABOUT */
 /* ========================================= */

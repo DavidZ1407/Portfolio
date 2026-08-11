@@ -1187,7 +1187,33 @@ section {
 @media (max-width: 768px) {
     .timeline_item {
         padding: 20px;
-        margin-bottom: 20px;
+        margin-bottom: 28px;
+        width: 100%;
+    }
+    /* Centered mobile timeline: vertical line stays at the middle,
+       content sits to the right of it and text wraps (no overflow). */
+    .timeline_content {
+        margin-left: 55%;
+    }
+    .timeline_item::after {
+        display: none;
+    }
+    .timeline_year {
+        white-space: normal;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+    }
+    .timeline_title {
+        white-space: normal;
+        font-size: 1rem;
+        letter-spacing: 1px;
+    }
+    .timeline_org {
+        white-space: normal;
+        font-size: 0.9rem;
+    }
+    .timeline_desc p {
+        font-size: 0.8rem;
     }
 }
 

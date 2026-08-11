@@ -169,7 +169,6 @@
     cursor: pointer;
     transition: 0.4s;
     position: relative;
-    overflow: hidden;
     animation: hero-float 6s ease-in-out infinite;
     animation-delay: 0.8s;
 }
@@ -182,27 +181,17 @@
     }
 }
 
-.descend_btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: var(--gold-accent);
-    z-index: -1;
-    transition: left 0.4s;
-}
-
+/* Hover uses the water-distortion effect like the other site elements */
 .descend_btn:hover {
-    color: var(--abyss-deep);
+    color: var(--cyan-glow);
     border-color: var(--cyan-glow);
-    text-shadow: 0 0 15px rgba(73, 146, 154, 0.6), 0 0 30px rgba(73, 146, 154, 0.3);
-}
-
-.descend_btn:hover::before {
-    left: 0;
-    background: var(--cyan-glow);
+    text-shadow:
+        0 0 20px var(--cyan-glow),
+        0 0 40px rgba(73, 146, 154, 0.4),
+        0 0 60px rgba(73, 146, 154, 0.2);
+    transform: translateY(-3px);
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
 }
 
 /* Right Column */

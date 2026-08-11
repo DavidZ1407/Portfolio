@@ -287,7 +287,7 @@ Dann in `index.html` neuen `.timeline_item`-Block im `.water_timeline`-Container
 
 ### Fish Swarm (fish-swarm.js)
 - Fischschwarm + Blasen beim Section-Wechsel
-- Auf 2056px+ komplett deaktiviert (Performance)
+- Auf 2056px+ Low-Res Rendering (SCALE 0.5/0.35) statt Deaktivierung → Fische bleiben sichtbar
 
 ### Bioluminescent Swarm (bioluminescent-swarm.js)
 - Tiefsee-Kreaturen im Timeline-Hintergrund
@@ -303,7 +303,7 @@ Dann in `index.html` neuen `.timeline_item`-Block im `.water_timeline`-Container
 - **Scroll**: `passive: true`, `requestAnimationFrame`-Throttling
 - **Sichtbarkeit**: IntersectionObserver stoppt Canvas-Animationen bei Unsichtbarkeit
 - **Reduced Motion**: `prefers-reduced-motion` deaktiviert alles
-- **Large Viewports (2056px+)**: Low-Res Buffering, reduzierte Segmente, deaktivierte Fish-Swarm
+- **Large Viewports (2056px+)**: Low-Res Buffering, reduzierte Segmente, Fish-Swarm via Low-Res Rendering
 
 ---
 
@@ -343,16 +343,13 @@ Die Animationen nutzen:
 ## 🔧 Bekannte Issues / Todos
 
 ### WICHTIG - Noch zu erledigen
-- [x] Responsive Large Viewports (2056px-4000px): Frames auf 60fps gebracht, Fische deaktiviert
-- [x] Datei-Umbenennung: hero→landing, projects→archives, hero-shader→ocean-shader, etc. abgeschlossen
+- [] Responsive Large Viewports (2056px-4000px): Frames auf 60fps gebracht, Fische per Low-Res Rendering aktiviert statt deaktiviert
 - [ ] **Bild-Assets ablegen**: Projekt-Bilder (`Project1.png`, `Project2.png`, `Project3.png`, `Profile.png`) in `assets/Picture/` kopieren → sonst 404 im Modal/Portal
 - [ ] **Eigene Projektdaten anpassen**: `js/constants/projects.js` mit echten Projekten füllen (Name, Beschreibung, Skills, Bildpfade)
-- [ ] **Lebenslauf einbinden**: PDF-Download-Link implementieren (z.B. im About-Bereich oder Footer)
-- [ ] **Weitere Inhalte hinzufügen**: Timeline-Einträge in `js/constants/timeline.js` + `index.html` erweitern
+
 
 ### OPTIONAL - Nice to have
 - [ ] **Clean up**: Eventuell verbleibende alte Referenzen auf umbenannte Dateien prüfen (hero.css, projects.css, etc.)
-- [ ] **Performance-Decay**: Überprüfen, ob Canvas-Module auf 3840px+ noch flüssig laufen
 - [ ] **Accessibility**: `:focus-visible` Stati auf allen interaktiven Elementen testen
 
 ---

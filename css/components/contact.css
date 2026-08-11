@@ -85,62 +85,78 @@
     text-shadow: 0 0 8px rgba(73, 146, 154, 0.2);
 }
 
-/* ASCEND Link */
+/* ASCEND Link - styled to match the hero DESCEND button */
 .back_to_top {
     display: inline-flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    justify-content: center;
+    gap: 2px;
+    margin-top: 40px;
+    padding: 10px 32px 8px;
+    border: 2px solid var(--gold-accent);
+    background: transparent;
     color: var(--gold-accent);
     text-decoration: none;
-    font-size: 0.65rem;
-    letter-spacing: 2px;
+    font-size: 0.75rem;
     text-transform: uppercase;
-    margin-top: 40px;
-    transition: all 0.3s ease;
-    padding: 4px 8px;
-    border-radius: 4px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: 0.4s;
     position: relative;
-    z-index: 2;
-    opacity: 0.6;
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
+    z-index: 2;
+    opacity: 1;
+    animation: hero-float 6s ease-in-out infinite;
+    animation-delay: 0.8s;
+}
+
+@media (min-width: 2056px) {
+    .back_to_top {
+        font-size: 1rem;
+        padding: 14px 50px 12px;
+        letter-spacing: 4px;
+    }
 }
 
 .back_to_top i {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     color: var(--gold-accent);
+    line-height: 1;
     transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .back_to_top span {
-    font-family: monospace;
-    font-size: 0.65rem;
+    font-family: inherit;
+    font-size: 0.75rem;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--text-light);
-    transition: color 0.3s ease;
+    color: var(--gold-accent);
+    transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
+/* Hover uses the water-distortion effect like the other site elements */
 .back_to_top:hover {
-    opacity: 1;
+    border-color: var(--cyan-glow);
     filter: url(#water-distort-hover);
     -webkit-filter: url(#water-distort-hover);
+    transform: translateY(-3px);
 }
 
 .back_to_top:hover i {
     color: var(--cyan-glow);
-    text-shadow: 
+    text-shadow:
         0 0 20px var(--cyan-glow),
         0 0 40px rgba(73, 146, 154, 0.4),
         0 0 60px rgba(73, 146, 154, 0.2);
-    transform: scale(1.2);
+    transform: scale(1.15);
 }
 
 .back_to_top:hover span {
     color: var(--cyan-glow);
-    text-shadow: 0 0 12px rgba(73, 146, 154, 0.4);
+    text-shadow: 0 0 8px rgba(73, 146, 154, 0.2);
 }
 
 /* ========================================= */
@@ -158,10 +174,10 @@
     50% { transform: translateY(-6px); }
 }
 
-/* Back to top link floats gently */
+/* Back to top link floats gently (matches hero .descend_btn) */
 .back_to_top {
-    animation: contact-float 8s ease-in-out infinite;
-    animation-delay: 0.5s;
+    animation: hero-float 6s ease-in-out infinite;
+    animation-delay: 0.8s;
 }
 
 /* Responsive layout moved to css/responsive.css */
