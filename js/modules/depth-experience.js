@@ -31,9 +31,17 @@ function createParticleCanvas() {
     let time = 0;
     let lastTime = 0;
 
+    /* ---- Large viewport low-res buffering (2056px+) ---- */
+    const vw = window.innerWidth;
+    const isLarge = vw >= 2056;
+    const isXLarge = vw >= 3000;
+    const SCALE = isXLarge ? 0.35 : isLarge ? 0.5 : 1.0;
+
     function resize() {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
+        const logicalW = window.innerWidth;
+        const logicalH = window.innerHeight;
+        width = canvas.width = Math.max(1, Math.ceil(logicalW * SCALE));
+        height = canvas.height = Math.max(1, Math.ceil(logicalH * SCALE));
         initParticles();
         initBubbles();
     }

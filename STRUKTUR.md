@@ -52,7 +52,6 @@ Portfolio/
         ├── parallax.js                 # Parallax Layers + CSS-Partikel (Fische/Blasen)
         ├── modal.js                    # Popup-Modal (ESC/Overlay-Klick schließen)
         ├── portal.js                   # 3D Portal Carousel (Auto-Rotate + Bubbles Canvas)
-        ├── nav-water.js                # Wasser-Animation für Nav-Link Splash-Effekte
         ├── ocean-shader.js             # Ozean-Shader (Three.js) für Hero-Hintergrund
         ├── underwater.js               # Anglerfisch-Leuchtköder (Timeline)
         ├── flood.js                    # Wasserflut-Effekt (Journey Section)
@@ -343,13 +342,12 @@ Die Animationen nutzen:
 ## 🔧 Bekannte Issues / Todos
 
 ### WICHTIG - Noch zu erledigen
-- [] Responsive Large Viewports (2056px-4000px): Frames auf 60fps gebracht, Fische per Low-Res Rendering aktiviert statt deaktiviert
+- [x] Responsive Large Viewports (2056px-4000px): Frames auf 60fps gebracht, Fische per Low-Res Rendering aktiviert statt deaktiviert
 - [ ] **Bild-Assets ablegen**: Projekt-Bilder (`Project1.png`, `Project2.png`, `Project3.png`, `Profile.png`) in `assets/Picture/` kopieren → sonst 404 im Modal/Portal
 - [ ] **Eigene Projektdaten anpassen**: `js/constants/projects.js` mit echten Projekten füllen (Name, Beschreibung, Skills, Bildpfade)
 
 
 ### OPTIONAL - Nice to have
-- [ ] **Clean up**: Eventuell verbleibende alte Referenzen auf umbenannte Dateien prüfen (hero.css, projects.css, etc.)
 - [ ] **Accessibility**: `:focus-visible` Stati auf allen interaktiven Elementen testen
 
 ---

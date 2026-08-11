@@ -52,9 +52,15 @@ export function initParallax() {
     }
     const ctx = canvas.getContext('2d');
     
+    /* ---- Large viewport low-res buffering (2056px+) ---- */
+    const vw = window.innerWidth;
+    const isLarge = vw >= 2056;
+    const isXLarge = vw >= 3000;
+    const SCALE = isXLarge ? 0.35 : isLarge ? 0.5 : 1.0;
+
     function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        canvas.width = Math.max(1, Math.ceil(window.innerWidth * SCALE));
+        canvas.height = Math.max(1, Math.ceil(window.innerHeight * SCALE));
     }
     resizeCanvas();
     

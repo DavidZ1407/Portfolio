@@ -32,9 +32,15 @@ export function initFlood() {
     let time = 0;
     let isAnimating = false;
 
+    /* ---- Large viewport low-res buffering (2056px+) ---- */
+    const vw = window.innerWidth;
+    const isLarge = vw >= 2056;
+    const isXLarge = vw >= 3000;
+    const SCALE = isXLarge ? 0.35 : isLarge ? 0.5 : 1.0;
+
     function resize() {
-        canvas.width = section.offsetWidth;
-        canvas.height = section.offsetHeight;
+        canvas.width = Math.max(1, Math.ceil(section.offsetWidth * SCALE));
+        canvas.height = Math.max(1, Math.ceil(section.offsetHeight * SCALE));
     }
     resize();
     window.addEventListener('resize', resize);

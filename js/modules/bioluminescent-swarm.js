@@ -264,6 +264,12 @@ export function initBioluminescentSwarm() {
     const isMobile = window.innerWidth <= 768;
     const CREATURE_COUNT = getCreatureCount();
 
+    /* ---- Large viewport low-res buffering (2056px+) ---- */
+    const vw = window.innerWidth;
+    const isLarge = vw >= 2056;
+    const isXLarge = vw >= 3000;
+    const SCALE = isXLarge ? 0.35 : isLarge ? 0.5 : 1.0;
+
     /* ---- IntersectionObserver ---- */
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -292,8 +298,8 @@ export function initBioluminescentSwarm() {
     observer.observe(section);
 
     function resize() {
-        canvas.width = section.offsetWidth;
-        canvas.height = section.offsetHeight;
+        canvas.width = Math.max(1, Math.ceil(section.offsetWidth * SCALE));
+        canvas.height = Math.max(1, Math.ceil(section.offsetHeight * SCALE));
     }
 
     const debouncedResize = debounce(resize, 200);
