@@ -61,6 +61,11 @@ function createModalElements() {
     modalOverlay.appendChild(modalContainer);
     document.body.appendChild(modalOverlay);
     
+    // TEMP PERFORMANCE TEST - THREE.JS DISABLED
+    // Prevent Three.js modal shader from initializing by setting window.THREE to undefined.
+    window.THREE = undefined;
+    // END TEMP PERFORMANCE TEST
+
     // Initialize voronoi shader background
     modalShader = initModalShader(modalContainer);
 }
