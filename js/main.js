@@ -35,12 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initParallax();
     updateParallaxHeight();
     
-    // TEMP PERFORMANCE TEST - THREE.JS DISABLED
-    // Prevent Three.js modules from initializing by setting window.THREE to undefined.
-    // The modules already have built-in fallbacks that return early when THREE is missing.
-    window.THREE = undefined;
-    // END TEMP PERFORMANCE TEST
-
     // Hero Three.js Shader Parallax
     initHeroShader();
     

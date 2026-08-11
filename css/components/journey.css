@@ -86,14 +86,14 @@
 .timeline_item:nth-child(odd),
 .timeline_item:nth-child(even) {
     transform: translateX(-80px) translateY(40px) scale(0.9);
-    transition: all 0.9s cubic-bezier(0.4, 0, 0.2, 1);
-    filter: blur(8px) brightness(0.7);
+    opacity: 0;
+    transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .timeline_item.show {
     opacity: 1;
     transform: translateX(0) translateY(0) scale(1);
-    filter: blur(0) brightness(1);
 }
 
 .timeline_content {
@@ -529,6 +529,14 @@
 @keyframes journey-float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-5px); }
+}
+
+/* Reduce floating animation intensity at very large viewports for better performance */
+@media (min-width: 2560px) {
+    .timeline_item {
+        animation-duration: 12s !important;
+        animation-iteration-count: infinite !important;
+    }
 }
 
 /* Responsive layout moved to css/responsive.css */

@@ -876,4 +876,15 @@
     50% { transform: translateY(-5px); }
 }
 
+/* Reduce floating animation intensity at very large viewports for better performance */
+@media (min-width: 2560px) {
+    .archives_section .section_title,
+    .archives_section .section_subtitle,
+    .carousel-arrow,
+    .c-dot {
+        animation-duration: 12s !important;
+        animation-iteration-count: infinite !important;
+    }
+}
+
 /* Responsive layout moved to css/responsive.css */

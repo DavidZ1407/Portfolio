@@ -131,7 +131,9 @@ export function initModalShader(container) {
         powerPreference: 'high-performance'
     });
     renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // Cap pixel ratio to prevent excessive GPU load at very large viewports
+    const pixelRatio = Math.min(window.devicePixelRatio, 2, 1.5);
+    renderer.setPixelRatio(pixelRatio);
     renderer.setClearColor(0x000000, 0);
 
     renderer.domElement.className = 'modal-shader-canvas';

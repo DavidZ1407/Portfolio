@@ -12,6 +12,21 @@ export function initNavigation() {
     if (navLinks.length === 0 || sections.length === 0) return;
 
     let ticking = false;
+    
+    // Cache section positions to avoid repeated layout reads
+    let sectionRects = [];
+    
+    function cacheSectionRects() {
+        sectionRects = Array.from(sections).map(section => ({
+            id: section.getAttribute('id'),
+            top: section.getBoundingClientRect().top + window.pageYOffset - 200,
+            height: section.offsetHeight
+        }));
+    }
+    
+    // Cache on load and resize
+    cacheSectionRects();
+    window.addEventListener('resize', cacheSectionRects, { passive: true });
 
     function updateActiveLink() {
         let current = '';
@@ -19,20 +34,20 @@ export function initNavigation() {
         const windowHeight = window.innerHeight;
         const docHeight = document.documentElement.scrollHeight;
 
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop - 200;
-            const sectionHeight = section.clientHeight;
-
-            if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
-                current = section.getAttribute('id');
+        // Use cached rects instead of reading offsetTop/clientHeight every frame
+        for (let i = 0; i < sectionRects.length; i++) {
+            const rect = sectionRects[i];
+            if (scrollY >= rect.top && scrollY < rect.top + rect.height) {
+                current = rect.id;
+                break;
             }
-        });
+        }
 
         // Special case: if we're near the bottom of the page, activate the last section
         if (!current && scrollY + windowHeight >= docHeight - 100) {
-            const lastSection = sections[sections.length - 1];
+            const lastSection = sectionRects[sectionRects.length - 1];
             if (lastSection) {
-                current = lastSection.getAttribute('id');
+                current = lastSection.id;
             }
         }
 

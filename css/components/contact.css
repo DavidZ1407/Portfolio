@@ -180,4 +180,13 @@
     animation-delay: 0.8s;
 }
 
+/* Reduce floating animation intensity at very large viewports for better performance */
+@media (min-width: 2560px) {
+    .contact_icon_link,
+    .back_to_top {
+        animation-duration: 12s !important;
+        animation-iteration-count: infinite !important;
+    }
+}
+
 /* Responsive layout moved to css/responsive.css */

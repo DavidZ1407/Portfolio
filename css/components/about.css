@@ -232,4 +232,16 @@
     50% { transform: translateY(-5px); }
 }
 
+/* Reduce floating animation intensity at very large viewports for better performance */
+@media (min-width: 2560px) {
+    .about_profile_box,
+    .about_content_box,
+    .skills_title,
+    .skill_item_box,
+    .cv_download_btn {
+        animation-duration: 12s !important;
+        animation-iteration-count: infinite !important;
+    }
+}
+
 /* Responsive layout moved to css/responsive.css */

@@ -48,6 +48,14 @@
     50% { transform: translateY(-4px); }
 }
 
+/* Reduce floating animation intensity at very large viewports for better performance */
+@media (min-width: 2560px) {
+    .sidebar_socials a {
+        animation-duration: 12s !important;
+        animation-iteration-count: infinite !important;
+    }
+}
+
 .sidebar_socials a:hover {
     color: var(--cyan-glow);
     filter: url(#water-distort-hover);
@@ -105,8 +113,18 @@
     z-index: 100;
     background: rgba(3, 8, 9, 0.95);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(73, 146, 154, 0.3);
     box-sizing: border-box;
+}
+
+/* Reduce backdrop-filter intensity at large viewports for better Firefox performance */
+@media (min-width: 2560px) {
+    .header {
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        background: rgba(3, 8, 9, 0.98);
+    }
 }
 
 .logo {

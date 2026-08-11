@@ -228,6 +228,15 @@ section {
     }
 }
 
+/* Reduce backdrop-filter at large viewports for better Firefox performance */
+@media (min-width: 2560px) {
+    .header {
+        backdrop-filter: blur(6px) !important;
+        -webkit-backdrop-filter: blur(6px) !important;
+        background: rgba(3, 8, 9, 0.98) !important;
+    }
+}
+
 @media (max-width: 480px) {
     .header {
         padding: 10px 3%;
@@ -1484,5 +1493,84 @@ section {
     .descend_btn {
         font-size: 0.5rem !important;
         padding: 4px 12px !important;
+    }
+}
+
+/* ========================================= */
+/* LARGE VIEWPORT PERFORMANCE MODE (2560px+) */
+/* Reduce expensive rendering for Firefox   */
+/* ========================================= */
+@media (min-width: 2560px) {
+    /* Reduce text-shadow intensity on hover to save compositing */
+    .skill_item:hover i,
+    .contact_icon_link:hover i,
+    .back_to_top:hover i,
+    .sidebar_socials a:hover i,
+    .nav-link:hover,
+    .nav-link.active,
+    .logo:hover {
+        text-shadow: 0 0 10px rgba(73, 146, 154, 0.3) !important;
+    }
+    
+    /* Simplify box-shadow on hover states */
+    .about_profile_box:hover,
+    .skill_item_box:hover,
+    .portal-slide.pos-center {
+        box-shadow: 
+            0 0 20px rgba(73, 146, 154, 0.15),
+            0 0 40px rgba(73, 146, 154, 0.08) !important;
+    }
+    
+    /* Reduce light ray blur */
+    .light-ray {
+        filter: blur(2px) !important;
+    }
+    
+    /* Reduce caustics animation complexity */
+    .underwater-caustics {
+        animation-duration: 20s !important;
+    }
+    
+    /* Simplify section transitions */
+    section:not(#home) {
+        box-shadow: 
+            inset 0 60px 40px -30px var(--abyss-deep),
+            inset 0 -60px 40px -30px var(--abyss-deep);
+    }
+    
+    .hero_section {
+        box-shadow: inset 0 -60px 40px -30px var(--abyss-deep);
+    }
+    
+    .site_footer {
+        box-shadow: inset 0 40px 30px -20px var(--abyss-deep);
+    }
+}
+
+/* Even more aggressive optimizations for ultra-wide screens (3440px+) */
+@media (min-width: 3440px) {
+    /* Further reduce backdrop blur */
+    .header {
+        backdrop-filter: blur(4px) !important;
+        -webkit-backdrop-filter: blur(4px) !important;
+        background: rgba(3, 8, 9, 0.98) !important;
+    }
+    
+    /* Disable expensive hover filters on large elements */
+    .skill_item_box:hover,
+    .about_profile_box:hover {
+        filter: none !important;
+        -webkit-filter: none !important;
+    }
+    
+    /* Simplify light rays further */
+    .light-ray {
+        filter: none !important;
+        opacity: 0.3 !important;
+    }
+    
+    /* Reduce particle canvas complexity */
+    .depth-particles-canvas {
+        opacity: 0.7;
     }
 }

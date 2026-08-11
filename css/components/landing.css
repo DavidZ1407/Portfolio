@@ -612,6 +612,25 @@
     }
 }
 
+/* Reduce floating animation intensity at very large viewports for better performance */
+@media (min-width: 2560px) {
+    .hero_content h1,
+    .hero_content h2,
+    .hero_description,
+    .hero_small,
+    .descend_btn,
+    .carousel_container,
+    .indicator,
+    .skill_item,
+    .arsenal_section h3,
+    .works_carousel_section h3,
+    .hero_i_am,
+    .hero_studying {
+        animation-duration: 12s !important;
+        animation-iteration-count: infinite !important;
+    }
+}
+
 /* Water Subtitle */
 .water-subtitle-container {
     display: flex;
