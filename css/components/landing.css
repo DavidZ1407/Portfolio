@@ -135,7 +135,7 @@
 }
 
 .hero_description {
-    font-size: clamp(0.7rem, 1.1vw, 0.85rem);
+    font-size: clamp(0.9rem, 1.3vw, 1rem);
     color: #92a3a5;
     margin-bottom: 15px;
     line-height: 1.5;
@@ -593,7 +593,7 @@
 
 /* "studying..." text */
 .hero_studying {
-    font-size: 0.85rem;
+    font-size: 1.05rem;
     color: #92a3a5;
     margin-bottom: 6px;
     line-height: 1.5;

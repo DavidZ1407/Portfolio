@@ -20,11 +20,11 @@ export const translations = {
         'hero-subtitle': 'GAMES & IMMERSIVE MEDIA CREATOR',
         'hero-name': 'DAVID ZAHN',
         'hero-role': 'AETHERTTECT',
-        'hero-desc': 'Descend into realms of ancient mystery and forgotten lore. Where atmosphere guides, and gameplay binds. A chronicle of suffering, faith, and the untold.',
-        'hero-btn': 'DESCEND',
+        'hero-desc': 'Passionate about gameplay systems and core mechanics. I love building and refining systems that turn ideas into smooth, engaging experiences.',
+        'hero-btn': 'EXPLORE MY WORK',
 
         // Hero Carousel
-        'carousel-title': 'WORKS IN PROGRESS',
+        'carousel-title': 'MY PROJECTS',
         'carousel-1-title': 'UNREAL TOWER DEFENSE',
         'carousel-1-desc': 'Action Gameplay & Strategy',
         'carousel-2-title': 'CHARACTER DESIGN',
@@ -33,7 +33,7 @@ export const translations = {
         'carousel-3-desc': 'Blender Environment',
 
         // Hero Skills
-        'arsenal-title': 'WEAPONS IN MY ARSENAL',
+        'arsenal-title': 'SKILLS & TOOLS',
 
         // Skills names (used in hero + about)
         'skill-unreal': 'UNREAL ENGINE 5',
@@ -47,8 +47,8 @@ export const translations = {
         'skill-pixelart': 'PIXEL ART',
 
         // Archives
-        'archives-title': 'SELECTED ARCHIVES',
-        'archives-subtitle': 'Journey through the deep, forgotten realms.',
+        'archives-title': 'WORK',
+        'archives-subtitle': 'A SELECTION OF PROJECTS, PROTOTYPES AND DESIGNS',
         'portal-1-title': 'UNREAL TOWER DEFENSE',
         'portal-1-desc': 'Action Gameplay & Strategy',
         'portal-2-title': 'CHARACTER DESIGN',
@@ -58,11 +58,11 @@ export const translations = {
 
         // About
         'about-title': 'ABOUT ME',
-        'about-subtitle': 'A LITTLE SOMETHING FROM THE SURFACE...',
-        'about-text-1': "I'M A GAME DESIGNER & IMMERSIVE MEDIA STUDENT",
-        'about-text-2': 'PASSIONATE ABOUT CREATING DARK, MEANINGFUL EXPERIENCES. I LOVE GAMES THAT CHALLENGE, INSPIRE, AND LEAVE A MARK.',
+        'about-text-1': "I've always been fascinated by how games work under the hood—how gameplay systems, mechanics, and storytelling weave together to create truly immersive experiences. While I deeply appreciate great atmosphere and narrative depth, I am fundamentally a gameplay guy who loves building the core interactions that bring a world to life.",
+        'about-text-2': "When I'm not deep into developing systems or playing games to analyze what makes them tick, you'll often find me drawing inspiration from other games, movies, and books to see what makes an experience memorable.",
+        'about-text-3': "My goal is simple: to combine smart, responsive mechanics with engaging design to create experiences that feel meaningful and fun. I love experimenting with crazy, unconventional ideas, testing how far mechanics can go, and embracing the occasional failure to learn and make things better. I believe the best projects come from curiosity, bold experiments, and a lot of passion along the way.",
         'about-skills-title': 'SKILLS & TOOLS',
-        'about-skills-subtitle': 'Weapons in my Arsenal.',
+        'about-skills-subtitle': 'Skills and tools I work with.',
         'about-skill-1': 'GAME DESIGN',
         'about-skill-2': 'LEVEL DESIGN',
         'about-skill-3': 'SYSTEMS DESIGN',
@@ -74,8 +74,8 @@ export const translations = {
         'about-cv': 'DOWNLOAD CV',
 
         // Journey
-        'journey-title': 'JOURNEY CHRONICLES',
-        'journey-subtitle': 'A Record of Expedition and Creation.',
+        'journey-title': 'EDUCATION',
+        'journey-subtitle': 'ACADEMIC BACKGROUND',
 
         // Timeline
         'timeline-1-year': 'SEPT 2025 - approx. 2028',
@@ -102,13 +102,13 @@ export const translations = {
         'timeline-6-org': 'Fachhochschulreife',
 
         // Contact
-        'contact-title': 'ESTABLISH CONNECTION',
-        'contact-subtitle': 'Expedition Access Channels',
+        'contact-title': 'CONTACT',
+        'contact-subtitle': 'REACH OUT THROUGH ANY OF THESE CHANNELS',
 
         // Footer
         'footer-text': '© 2025 DAVID ZAHN — ALL RIGHTS RESERVED',
         'footer-subtext': 'FORGED IN THE DEPTHS',
-        'footer-back': 'ASCEND',
+        'footer-back': 'BACK TO HOME',
 
         // Language switch
         'lang-en': 'EN',
@@ -132,11 +132,11 @@ export const translations = {
         'hero-subtitle': 'GAMES & IMMERSIVE MEDIA CREATOR',
         'hero-name': 'DAVID ZAHN',
         'hero-role': 'AETHERTTECT',
-        'hero-desc': 'Tauche ein in Reiche uralter Mysterien und vergessener Überlieferungen. Wo Atmosphäre leitet und Spielmechaniken binden. Eine Chronik von Leid, Glaube und dem Unerzählten.',
-        'hero-btn': 'TAUCHE AB',
+        'hero-desc': 'Leidenschaft für Gameplay-Systeme und Kernmechaniken. Ich liebe es, Systeme zu entwickeln und zu verfeinern, die Ideen in flüssige, fesselnde Erlebnisse verwandeln.',
+        'hero-btn': 'MEINE ARBEIT ENTDECKEN',
 
         // Hero Carousel
-        'carousel-title': 'PROJEKTE IN ARBEIT',
+        'carousel-title': 'MEINE PROJEKTE',
         'carousel-1-title': 'UNREAL TOWER DEFENSE',
         'carousel-1-desc': 'Action Gameplay & Strategie',
         'carousel-2-title': 'CHARACTER DESIGN',
@@ -145,7 +145,7 @@ export const translations = {
         'carousel-3-desc': 'Blender Umgebung',
 
         // Hero Skills
-        'arsenal-title': 'WAFFEN IN MEINEM ARSENAL',
+        'arsenal-title': 'FÄHIGKEITEN & WERKZEUGE',
 
         // Skills names (used in hero + about)
         'skill-unreal': 'UNREAL ENGINE 5',
@@ -159,8 +159,8 @@ export const translations = {
         'skill-pixelart': 'PIXEL ART',
 
         // Archives
-        'archives-title': 'AUSGEWÄHLTE ARCHIVE',
-        'archives-subtitle': 'Reise durch die tiefen, vergessenen Reiche.',
+        'archives-title': 'WORK',
+        'archives-subtitle': 'Eine Auswahl von Projekten, Prototypen und Designs.',
         'portal-1-title': 'UNREAL TOWER DEFENSE',
         'portal-1-desc': 'Action Gameplay & Strategie',
         'portal-2-title': 'CHARACTER DESIGN',
@@ -170,11 +170,11 @@ export const translations = {
 
         // About
         'about-title': 'ÜBER MICH',
-        'about-subtitle': 'EIN KLEINES ETWAS VON DER OBERFLÄCHE...',
-        'about-text-1': 'ICH BIN GAME DESIGNER & IMMERSIVE MEDIA STUDENT',
-        'about-text-2': 'LEIDENSCHAFTLICH DARIN, DUNKLE, BEDEUTUNGSVOLLE ERFAHRUNGEN ZU SCHAFFEN. ICH LIEBE SPIELE, DIE HERAUSFORDERN, INSPIRIEREN UND EINEN EINDRUCK HINTERLASSEN.',
+        'about-text-1': "Mich hat schon immer fasziniert, wie Spiele unter der Haube funktionieren – wie Gameplay-Systeme, Mechaniken und Storytelling zusammenwirken, um wahrhaft immersive Erlebnisse zu schaffen. Obwoohl ich große Atmosphäre und erzählerische Tiefe sehr schätze, bin ich im Kern ein Gameplay-Typ, der es liebt, die zentralen Interaktionen zu entwickeln, die eine Welt zum Leben erwecken.",
+        'about-text-2': "Wenn ich nicht gerade tief in der Entwicklung von Systemen stecke oder Spiele spiele, um zu analysieren, was sie zum Funktionieren bringt, lasse ich mich oft von anderen Spielen, Filmen und Büchern inspirieren, um zu sehen, was eine Erfahrung unvergesslich macht.",
+        'about-text-3': "Mein Ziel ist einfach: kluge, reaktionsfreudige Mechaniken mit ansprechendem Design zu verbinden, um Erlebnisse zu schaffen, die sich bedeutungsvoll und unterhaltsam anfühlen. Ich liebe es, mit verrückten, unkonventionellen Ideen zu experimentieren, zu testen, wie weit Mechaniken gehen können, und gelegentliches Scheitern anzunehmen, um daraus zu lernen und besser zu werden. Ich glaube, die besten Projekte entstehen aus Neugier, mutigen Experimenten und einer Menge Leidenschaft auf dem Weg.",
         'about-skills-title': 'FÄHIGKEITEN & WERKZEUGE',
-        'about-skills-subtitle': 'Waffen in meinem Arsenal.',
+        'about-skills-subtitle': 'Fähigkeiten und Werkzeuge, mit denen ich arbeite.',
         'about-skill-1': 'GAME DESIGN',
         'about-skill-2': 'LEVEL DESIGN',
         'about-skill-3': 'SYSTEM DESIGN',
@@ -186,8 +186,8 @@ export const translations = {
         'about-cv': 'LEBENSLAUF HERUNTERLADEN',
 
         // Journey
-        'journey-title': 'WERDEGANG CHRONIK',
-        'journey-subtitle': 'Eine Aufzeichnung von Expedition und Schöpfung.',
+        'journey-title': 'BILDUNG',
+        'journey-subtitle': 'AKADEMISCHER HINTERGRUND',
 
         // Timeline
         'timeline-1-year': 'SEPT 2025 - ca. 2028',
@@ -214,13 +214,13 @@ export const translations = {
         'timeline-6-org': 'Fachhochschulreife',
 
         // Contact
-        'contact-title': 'KONTAKT AUFNEHMEN',
-        'contact-subtitle': 'Expeditions-Zugangskanäle',
+        'contact-title': 'KONTAKT',
+        'contact-subtitle': 'KONTAKTIERE MICH ÜBER EINES DIESER KANÄLE',
 
         // Footer
         'footer-text': '© 2025 DAVID ZAHN — ALLE RECHTE VORBEHALTEN',
         'footer-subtext': 'GESCHMIEDET IN DER TIEFE',
-        'footer-back': 'AUFTAUCHEN',
+        'footer-back': 'ZURÜCK ZUR STARTSEITE',
 
         // Language switch
         'lang-en': 'EN',

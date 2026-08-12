@@ -56,8 +56,12 @@
     color: var(--text-light);
     font-size: 0.9rem;
     line-height: 1.8;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-transform: none;
+    /* Lesbarkeit: Zeilenlänge begrenzen (Wall-of-Text vermeiden) */
+    max-width: 65ch;
+    /* Abstand zwischen den Absätzen */
+    margin-bottom: 1rem;
 }
 
 /* Skills Section */
