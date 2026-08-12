@@ -264,7 +264,7 @@
     );
     opacity: 0;
     transition: opacity 0.4s ease;
-    mix-blend-mode: overlay;
+    /* mix-blend-mode entfernt für Firefox-Performance */
 }
 
 .portal-slide:hover::after {
@@ -612,8 +612,7 @@
             transparent 80%);
 
     transform: scale(1.2);
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    /* filter entfernt für Firefox-Performance */
 }
 
 .carousel-arrow:hover::before {

@@ -58,8 +58,7 @@
 
 .sidebar_socials a:hover {
     color: var(--cyan-glow);
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    /* filter entfernt für Firefox-Performance (URL-SVG-Displacement) */
     border-color: rgba(73, 146, 154, 0.4);
 }
 
@@ -112,14 +111,14 @@
     align-items: center;
     z-index: 100;
     background: rgba(3, 8, 9, 0.95);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border-bottom: 1px solid rgba(73, 146, 154, 0.3);
     box-sizing: border-box;
 }
 
-/* Reduce backdrop-filter intensity at large viewports for better Firefox performance */
-@media (min-width: 2560px) {
+/* Punkt 2: backdrop-filter ab HD+ (1600px) reduzieren für Firefox-Performance */
+@media (min-width: 1600px) {
     .header {
         backdrop-filter: blur(6px);
         -webkit-backdrop-filter: blur(6px);
@@ -146,8 +145,7 @@
 .logo:hover {
     color: var(--cyan-glow);
     text-shadow: 0 0 20px rgba(73, 146, 154, 0.6), 0 0 40px rgba(73, 146, 154, 0.3);
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    /* filter entfernt für Firefox-Performance – Glow via text-shadow */
 }
 
 .logo span {
@@ -180,8 +178,7 @@
 .nav-phone-icon:hover {
     color: var(--cyan-glow);
     text-shadow: 0 0 20px rgba(73, 146, 154, 0.6), 0 0 40px rgba(73, 146, 154, 0.3);
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    /* filter entfernt für Firefox-Performance – Glow via text-shadow */
 }
 
 /* Language Toggle Button */
@@ -204,8 +201,7 @@
     background: rgba(73, 146, 154, 0.15);
     border-color: var(--cyan-glow);
     box-shadow: 0 0 25px rgba(73, 146, 154, 0.4), 0 0 50px rgba(73, 146, 154, 0.2);
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    /* filter entfernt für Firefox-Performance – Glow via box-shadow */
 }
 
 .nav-link {
@@ -233,8 +229,7 @@
 .nav-link:hover {
     color: var(--cyan-glow);
     text-shadow: 0 0 20px rgba(73, 146, 154, 0.6), 0 0 40px rgba(73, 146, 154, 0.3);
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    /* filter entfernt für Firefox-Performance – Glow via text-shadow */
 }
 
 .nav-link.active {
@@ -245,8 +240,7 @@
 .nav-link.active:hover {
     color: var(--cyan-glow);
     text-shadow: 0 0 20px rgba(73, 146, 154, 0.6), 0 0 40px rgba(73, 146, 154, 0.3);
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    /* filter entfernt für Firefox-Performance – Glow via text-shadow */
 }
 
 @keyframes navRippleRing {

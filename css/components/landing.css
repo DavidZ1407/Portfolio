@@ -190,8 +190,7 @@
         0 0 40px rgba(73, 146, 154, 0.4),
         0 0 60px rgba(73, 146, 154, 0.2);
     transform: translateY(-3px);
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    /* filter entfernt für Firefox-Performance */
 }
 
 /* Right Column */
@@ -288,7 +287,7 @@
     );
     opacity: 0;
     transition: opacity 0.4s ease;
-    mix-blend-mode: overlay;
+    /* mix-blend-mode entfernt für Firefox-Performance */
 }
 
 .carousel_slide:hover::after {
@@ -466,8 +465,7 @@
         inset 0 0 20px rgba(139, 224, 232, 0.15);
     transform: translateY(-5px);
     will-change: transform, box-shadow;
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    /* filter entfernt für Firefox-Performance */
     background: rgba(20, 47, 51, 0.5);
 }
 

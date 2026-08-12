@@ -461,8 +461,7 @@
 
 /* Close button water effect when clicked */
 .modal-close-btn.water-effect {
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    /* filter entfernt für Firefox-Performance – Splash-Animation bleibt */
     animation: close-btn-water 1s ease-in-out;
 }
 

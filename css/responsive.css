@@ -228,8 +228,8 @@ section {
     }
 }
 
-/* Reduce backdrop-filter at large viewports for better Firefox performance */
-@media (min-width: 2560px) {
+/* Punkt 2: backdrop-filter früher reduzieren (ab HD+) für Firefox-Performance */
+@media (min-width: 1600px) {
     .header {
         backdrop-filter: blur(6px) !important;
         -webkit-backdrop-filter: blur(6px) !important;
@@ -1274,7 +1274,6 @@ section {
 /* ========================================= */
 /* DEPTH EXPERIENCE LAYERS */
 /* ========================================= */
-.depth-particles-canvas,
 .depth-fog-overlay,
 .depth-vignette {
     transition: opacity 0.5s ease;
@@ -1569,8 +1568,8 @@ section {
         opacity: 0.3 !important;
     }
     
-    /* Reduce particle canvas complexity */
-    .depth-particles-canvas {
+    /* Reduce particle canvas complexity (single .particles-canvas) */
+    .particles-canvas {
         opacity: 0.7;
     }
 }

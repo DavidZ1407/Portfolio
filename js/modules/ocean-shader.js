@@ -189,9 +189,12 @@ export function initHeroShader() {
 
     let animFrame = null;
     let isActive = true;
+    let isVisible = true;
 
     function animate() {
         if (!isActive) { animFrame = requestAnimationFrame(animate); return; }
+        // Punkt 4: GPU-Render überspringen, solange die Hero-Section off-screen ist
+        if (!isVisible) { animFrame = requestAnimationFrame(animate); return; }
         material.uniforms.uTime.value += 1 / 60;
         renderer.render(scene, camera);
         animFrame = requestAnimationFrame(animate);
@@ -199,7 +202,14 @@ export function initHeroShader() {
 
     animFrame = requestAnimationFrame(animate);
 
+    // Punkt 4: Hero-Shader pausieren, wenn nicht sichtbar (wie particle-rain.js)
+    const heroObserver = new IntersectionObserver((entries) => {
+        isVisible = entries[0].isIntersecting;
+    }, { threshold: 0.05 });
+    heroObserver.observe(heroSection);
+
     cleanupRegistry.register(() => {
+        heroObserver.disconnect();
         isActive = false;
         if (animFrame) cancelAnimationFrame(animFrame);
         renderer.dispose();

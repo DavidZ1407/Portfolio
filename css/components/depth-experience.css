@@ -42,17 +42,12 @@
 }
 
 /* ========================================= */
-/* PARTICLE CANVAS - Full viewport */
+/* PARTICLE CANVAS - Full viewport           */
+/* Punkt 1: Das vollflächige Partikel-Canvas */
+/* wird EINZIG über .particles-canvas        */
+/* (parallax.js) betrieben – kein separates   */
+/* depth-Partikel-Canvas mehr.                */
 /* ========================================= */
-.depth-particles-canvas {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 7;
-    /* GPU compositing handled by position:fixed */
-}
 
 /* ========================================= */
 /* RESPONSIVE */
@@ -61,7 +56,8 @@
     .scroll-ripple {
         display: none;
     }
-    .depth-particles-canvas {
+    /* Einziges verbleibendes Vollflächen-Partikel-Canvas ausblenden */
+    .particles-canvas {
         display: none;
     }
 }

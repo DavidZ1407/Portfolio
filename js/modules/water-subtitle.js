@@ -260,11 +260,14 @@ export function initWaterSubtitle() {
 
     let animFrame = null;
     let isActive = true;
+    let isVisible = true;
     let startTime = performance.now();
     let lastCycleTime = performance.now();
 
     function render() {
         if (!isActive) return;
+        // Punkt 4: WebGL-Render überspringen, solange das Subtitle off-screen ist
+        if (!isVisible) { animFrame = requestAnimationFrame(render); return; }
         const t = (performance.now() - startTime) / 1000.0;
         const now = performance.now();
         const elapsed = now - lastCycleTime;
@@ -305,7 +308,14 @@ export function initWaterSubtitle() {
 
     animFrame = requestAnimationFrame(render);
 
+    // Punkt 4: pausieren, wenn nicht sichtbar (wie particle-rain.js)
+    const heroObserver = new IntersectionObserver((entries) => {
+        isVisible = entries[0].isIntersecting;
+    }, { threshold: 0.05 });
+    heroObserver.observe(container);
+
     cleanupRegistry.register(() => {
+        heroObserver.disconnect();
         isActive = false;
         if (animFrame) cancelAnimationFrame(animFrame);
         container.remove();

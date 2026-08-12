@@ -6,7 +6,12 @@ import { registerAnimation } from '../utils/animation-manager.js';
 import { sizeCanvas } from '../utils/helpers.js';
 
 export function initDepthExperience() {
-    createParticleCanvas();
+    // Punkt 1 (Firefox-Performance): Das vollflächige Partikel-Canvas ist hier
+    // DEAKTIVIERT und in das EINZIGE Vollflächen-System .particles-canvas in
+    // parallax.js zusammengelegt. Zwei parallel laufende fixed full-screen
+    // Canvas2D-Systeme mit Alpha-Blending sind in Firefox deutlich teurer als
+    // in Chrome/Skia. (createParticleCanvas bleibt definiert, wird aber nicht
+    // mehr aufgerufen.)
     createFogOverlay();
     createVignette();
     initScrollHandlers();

@@ -119,8 +119,7 @@
         0 0 25px rgba(73, 146, 154, 0.2),
         0 0 50px rgba(73, 146, 154, 0.1),
         inset 0 0 20px rgba(73, 146, 154, 0.05);
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    /* filter entfernt für Firefox-Performance */
 }
 
 .skill_item_box:hover i {
@@ -177,8 +176,7 @@
 /* Hover uses the water-distortion effect like the other site elements */
 .cv_download_btn:hover {
     border-color: var(--cyan-glow);
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    /* filter entfernt für Firefox-Performance */
 }
 
 .cv_download_btn:hover i {
