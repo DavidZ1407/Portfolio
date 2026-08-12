@@ -8,7 +8,7 @@
 
 import { debounce, cleanupRegistry, sizeCanvas } from '../utils/helpers.js';
 import { smoothLerp } from '../utils/smooth.js';
-import { registerAnimation } from '../utils/animation-manager.js';
+import { registerAnimation } from '../utils/animation_manager.js';
 
 /* ========================================= */
 /* SIMPLEX NOISE 3D (compact implementation) */

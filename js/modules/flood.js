@@ -1,7 +1,7 @@
 /* ========================================= */
 /* MODULE - FLOOD EFFECT */
 /* ========================================= */
-import { registerAnimation } from '../utils/animation-manager.js';
+import { registerAnimation } from '../utils/animation_manager.js';
 import { sizeCanvas } from '../utils/helpers.js';
 
 export function initFlood() {

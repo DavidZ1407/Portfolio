@@ -2,7 +2,7 @@
 /* MODULE - FULL-PAGE DEPTH EXPERIENCE */
 /* Immersive underwater gothic scroll */
 /* ========================================= */
-import { initUnifiedParticles } from './unified-particles.js';
+import { initUnifiedParticles } from './unified_particles.js';
 
 export function initDepthExperience() {
     // EIN gemeinsames Partikel-System (fuehrt beide alten Systeme zusammen):

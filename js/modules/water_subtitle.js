@@ -107,7 +107,7 @@ function createTextCanvas(text, w, h) {
     c.height = h;
     const ctx = c.getContext('2d');
     ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = '#ffffff';
+    ctx.fillStyle = '#49929a';
     ctx.font = 'bold 48px Cinzel, serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';

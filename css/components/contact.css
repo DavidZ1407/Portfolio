@@ -68,7 +68,8 @@
 }
 
 .contact_icon_link:hover {
-    /* filter entfernt für Firefox-Performance – Glow via text-shadow auf <i> */
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
 }
 
 .contact_icon_link:hover i {
@@ -139,8 +140,8 @@
 /* Hover uses the water-distortion effect like the other site elements */
 .back_to_top:hover {
     border-color: var(--cyan-glow);
-    /* filter entfernt für Firefox-Performance – reiner CSS-Glow statt SVG-Displacement */
-    box-shadow: 0 0 25px rgba(73, 146, 154, 0.35), 0 0 50px rgba(73, 146, 154, 0.15);
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
     transform: translateY(-3px);
 }
 

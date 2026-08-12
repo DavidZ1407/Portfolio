@@ -118,8 +118,8 @@
 
 .hero_small {
     color: var(--cyan-glow);
-    font-size: clamp(0.65rem, 1.2vw, 0.85rem);
-    letter-spacing: 1.5px;
+    font-size: clamp(1rem, 1.7vw, 1.4rem);
+    letter-spacing: 2px;
     text-transform: uppercase;
     animation: hero-float 5s ease-in-out infinite;
     animation-delay: 0.3s;
@@ -128,7 +128,7 @@
 
 @media (min-width: 2056px) {
     .hero_small {
-        font-size: 1.3rem;
+        font-size: 1.7rem;
         letter-spacing: 4px;
         margin-bottom: 10px;
     }
@@ -190,7 +190,8 @@
         0 0 40px rgba(73, 146, 154, 0.4),
         0 0 60px rgba(73, 146, 154, 0.2);
     transform: translateY(-3px);
-    /* filter entfernt für Firefox-Performance */
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
 }
 
 /* Right Column */
@@ -465,7 +466,8 @@
         inset 0 0 20px rgba(139, 224, 232, 0.15);
     transform: translateY(-5px);
     will-change: transform, box-shadow;
-    /* filter entfernt für Firefox-Performance */
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
     background: rgba(20, 47, 51, 0.5);
 }
 

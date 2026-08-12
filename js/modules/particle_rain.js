@@ -7,7 +7,7 @@
 /* ========================================= */
 
 import { sizeCanvas } from '../utils/helpers.js';
-import { registerAnimation } from '../utils/animation-manager.js';
+import { registerAnimation } from '../utils/animation_manager.js';
 
 export function initContactRain() {
     const section = document.querySelector('.contact_section');

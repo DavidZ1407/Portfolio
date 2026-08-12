@@ -1,77 +1,78 @@
-# Portfolio Struktur & Dokumentation
+﻿# Portfolio Struktur & Dokumentation
 
 > **David Zahn | Games & Immersive Media Creator**  
-> Gothic Underwater Theme – Parallax, Canvas-Effekte, 3D Portal Carousel
+> Gothic Underwater Theme â€“ Parallax, Canvas-Effekte, 3D Portal Carousel
 
 ---
 
-## 📁 Projektstruktur (vollständig)
+## ðŸ“ Projektstruktur (vollstÃ¤ndig)
 
 ```
 Portfolio/
-│
-├── index.html                          # Hauptdatei (data-i18n Attribute)
-│
-├── STRUKTUR.md                         # Diese Datei
-│
-├── assets/
-│   └── Picture/
-│       ├── Project1.png                # Unreal Tower Defense
-│       ├── Project2.png                # Character Design
-│       ├── Project3.png                # 3D Space Scene
-│       └── Profile.png                 # Profilbild
-│
-├── css/
-│   ├── main.css                        # Root-Variablen + Globals + Footer
-│   ├── responsive.css                  # Zentrales Responsive-System (alle Breakpoints)
-│   │
-│   └── components/
-│       ├── navbar.css                  # Header + Sidebar Socials + Lang-Button
-│       ├── landing.css                 # Startseite (Hero Section)
-│       ├── archives.css                # Archives (3D Portal Carousel)
-│       ├── about.css                   # About Me
-│       ├── journey.css                 # Timeline (Anglerfisch-Lure Nodes)
-│       ├── contact.css                 # Contact Icons
-│       ├── parallax.css                # Fixed Parallax Background (Sky/Castle/Water)
-│       ├── modal.css                   # Project Detail Popup
-│       └── depth-experience.css        # Scroll-Fog + Vignette + Partikel-Canvas
-│
-└── js/
-    ├── main.js                         # Entry Point – initialisiert ALLES
-    │
-    ├── constants/
-    │   ├── projects.js                 # Projektdaten-Array
-    │   ├── skills.js                   # Skills-Array (Hero + About)
-    │   ├── timeline.js                 # Timeline-Einträge
-    │   └── translations.js             # EN/DE Übersetzungen (alle Texte)
-    │
-    └── modules/
-        ├── navigation.js               # Aktiver Nav-Link (scroll-basiert, rAF-getthrottelt)
-        ├── hero-carousel.js            # Startseiten-Carousel (Indikatoren-Klick)
-        ├── carousel-dots.js            # Auto-Generiert Carousel-Dots & Indicators
-        ├── parallax.js                 # Parallax Layers + CSS-Partikel (Fische/Blasen)
-        ├── modal.js                    # Popup-Modal (ESC/Overlay-Klick schließen)
-        ├── portal.js                   # 3D Portal Carousel (Auto-Rotate + Bubbles Canvas)
-        ├── ocean-shader.js             # Ozean-Shader (Three.js) für Hero-Hintergrund
-        ├── underwater.js               # Anglerfisch-Leuchtköder (Timeline)
-        ├── flood.js                    # Wasserflut-Effekt (Journey Section)
-        ├── particle-rain.js            # Lichtstrahlen + biolumineszente Partikel (Contact)
-        ├── depth-experience.js         # Fullpage-Depth-Fog + Vignette + Bubbles Canvas
-        ├── fish-swarm.js               # Fischschwarm-Transition (Section-Wechsel)
-        ├── bioluminescent-swarm.js     # Tiefsee-Kreaturen (Timeline Hintergrund)
-        ├── water-logo.js               # "DAVID ZAHN" Wasser-Shader (WebGL)
-        ├── water-subtitle.js           # Text-Cycler mit Wasser-Shader (WebGL)
-        ├── language.js                 # EN/DE Sprachumschaltung (localStorage)
-        └── modal-shader.js             # Voronoi-Shader (Three.js) für Modal-Hintergrund
-    │
-    └── utils/
-        ├── helpers.js                  # Hilfsfunktionen (debounce, cleanupRegistry etc.)
-        └── smooth.js                   # Smooth Lerp Utilities
+â”‚
+â”œâ”€â”€ index.html                          # Hauptdatei (data-i18n Attribute)
+â”‚
+â”œâ”€â”€ STRUKTUR.md                         # Diese Datei
+â”‚
+â”œâ”€â”€ assets/
+â”‚   â””â”€â”€ Picture/
+â”‚       â”œâ”€â”€ Project1.png                # Unreal Tower Defense
+â”‚       â”œâ”€â”€ Project2.png                # Character Design
+â”‚       â”œâ”€â”€ Project3.png                # 3D Space Scene
+â”‚       â””â”€â”€ Profile.png                 # Profilbild
+â”‚
+â”œâ”€â”€ css/
+â”‚   â”œâ”€â”€ main.css                        # Root-Variablen + Globals + Footer
+â”‚   â”œâ”€â”€ responsive.css                  # Zentrales Responsive-System (alle Breakpoints)
+â”‚   â”‚
+â”‚   â””â”€â”€ components/
+â”‚       â”œâ”€â”€ navbar.css                  # Header + Sidebar Socials + Lang-Button
+â”‚       â”œâ”€â”€ landing.css                 # Startseite (Hero Section)
+â”‚       â”œâ”€â”€ archives.css                # Archives (3D Portal Carousel)
+â”‚       â”œâ”€â”€ about.css                   # About Me
+â”‚       â”œâ”€â”€ journey.css                 # Timeline (Anglerfisch-Lure Nodes)
+â”‚       â”œâ”€â”€ contact.css                 # Contact Icons
+â”‚       â”œâ”€â”€ parallax.css                # Fixed Parallax Background (Sky/Castle/Water)
+â”‚       â”œâ”€â”€ modal.css                   # Project Detail Popup
+â”‚       â””â”€â”€ depth-experience.css        # Scroll-Fog + Vignette + Partikel-Canvas
+â”‚
+â””â”€â”€ js/
+    â”œâ”€â”€ main.js                         # Entry Point â€“ initialisiert ALLES
+    â”‚
+    â”œâ”€â”€ constants/
+    â”‚   â”œâ”€â”€ projects.js                 # Projektdaten-Array
+    â”‚   â”œâ”€â”€ skills.js                   # Skills-Array (Hero + About)
+    â”‚   â”œâ”€â”€ timeline.js                 # Timeline-EintrÃ¤ge
+    â”‚   â””â”€â”€ translations.js             # EN/DE Ãœbersetzungen (alle Texte)
+    â”‚
+    â””â”€â”€ modules/
+        â”œâ”€â”€ navigation.js               # Aktiver Nav-Link (scroll-basiert, rAF-getthrottelt)
+        â”œâ”€â”€ hero_carousel.js            # Startseiten-Carousel (Indikatoren-Klick)
+        â”œâ”€â”€ carousel_dots.js            # Auto-Generiert Carousel-Dots & Indicators
+        â”œâ”€â”€ parallax.js                 # Parallax Scroll-Layers (Transform bei Scroll)
+        â”œâ”€â”€ unified_particles.js        # Ein gemeinsames Vollbild-Partikelsystem (back z3 + front z7)
+        â”œâ”€â”€ modal.js                    # Popup-Modal (ESC/Overlay-Klick schlieÃŸen)
+        â”œâ”€â”€ portal.js                   # 3D Portal Carousel (Auto-Rotate + Bubbles Canvas)
+        â”œâ”€â”€ ocean_shader.js             # Ozean-Shader (Three.js) fÃ¼r Hero-Hintergrund
+        â”œâ”€â”€ underwater.js               # Anglerfisch-LeuchtkÃ¶der (Timeline)
+        â”œâ”€â”€ flood.js                    # Wasserflut-Effekt (Journey Section)
+        â”œâ”€â”€ particle_rain.js            # Lichtstrahlen + biolumineszente Partikel (Contact)
+        â”œâ”€â”€ depth_experience.js         # Fullpage-Depth-Fog + Vignette + Scroll (ruft unified-particles)
+        â”œâ”€â”€ fish_swarm.js               # Fischschwarm-Transition (Section-Wechsel)
+        â”œâ”€â”€ bioluminescent_swarm.js     # Tiefsee-Kreaturen (Timeline Hintergrund)
+        â”œâ”€â”€ water_logo.js               # "DAVID ZAHN" Wasser-Shader (WebGL)
+        â”œâ”€â”€ water_subtitle.js           # Text-Cycler mit Wasser-Shader (WebGL)
+        â”œâ”€â”€ language.js                 # EN/DE Sprachumschaltung (localStorage)
+        â””â”€â”€ modal_shader.js             # Voronoi-Shader (Three.js) fÃ¼r Modal-Hintergrund
+    â”‚
+    â””â”€â”€ utils/
+        â”œâ”€â”€ helpers.js                  # Hilfsfunktionen (debounce, cleanupRegistry etc.)
+        â””â”€â”€ smooth.js                   # Smooth Lerp Utilities
 ```
 
 ---
 
-## 📦 Abhängigkeiten (extern, via CDN)
+## ðŸ“¦ AbhÃ¤ngigkeiten (extern, via CDN)
 
 | Quelle | Zweck |
 |--------|-------|
@@ -81,24 +82,24 @@ Portfolio/
 
 ---
 
-## 🎨 CSS-Architektur
+## ðŸŽ¨ CSS-Architektur
 
-### `main.css` – Globale Basis
+### `main.css` â€“ Globale Basis
 
-- **`:root` Variablen** – Alle Farben an einer Stelle:
+- **`:root` Variablen** â€“ Alle Farben an einer Stelle:
   ```
   --abyss-deep: #030809   (Hintergrund)
   --cyan-glow: #49929a    (Unterwasser-Akzente)
   --gold-accent: #c9a861  (Goldene Elemente)
   --text-light: #cdcfd0   (Textfarbe)
   ```
-- **`prefers-reduced-motion`** – Deaktiviert Animationen bei Bedarf (Barrierefreiheit)
-- **`contain: layout style`** auf Sections – Performance-Optimierung
-- **Footer** – `.site_footer` mit Copyright + "ASCEND"-Button
+- **`prefers-reduced-motion`** â€“ Deaktiviert Animationen bei Bedarf (Barrierefreiheit)
+- **`contain: layout style`** auf Sections â€“ Performance-Optimierung
+- **Footer** â€“ `.site_footer` mit Copyright + "ASCEND"-Button
 
 ### Wichtige CSS-Komponenten
 
-| Datei | Enthält |
+| Datei | EnthÃ¤lt |
 |-------|---------|
 | `navbar.css` | Fixed Header + Sidebar (rechts) + Language Toggle Button |
 | `parallax.css` | Fixed Hintergrund mit Sky/Castle/Unterwasser-Layer |
@@ -114,7 +115,7 @@ Portfolio/
 | 1-2 | Parallax Mid/Foreground |
 | 3 | Parallax FG Particles |
 | 5 | Sections (Content) |
-| 6 | Depth Fog + Vignette (über Content) |
+| 6 | Depth Fog + Vignette (Ã¼ber Content) |
 | 7 | Partikel-Canvas |
 | 100 | Header |
 | 150 | Sidebar Socials |
@@ -122,12 +123,12 @@ Portfolio/
 
 ---
 
-## ⚙️ JS-Module im Detail
+## âš™ï¸ JS-Module im Detail
 
-### `main.js` – Initialisierungsreihenfolge
+### `main.js` â€“ Initialisierungsreihenfolge
 
 ```javascript
-DOMContentLoaded → {
+DOMContentLoaded â†’ {
   1.  initLanguage()              // EN/DE Umschaltung (MUSS ERSTER SEIN!)
   2.  generateCarouselDots()      // Dots AUTOMATISCH generieren
   3.  initNavigation()            // Scroll-basierte Nav
@@ -139,8 +140,8 @@ DOMContentLoaded → {
   9.  initWaterSubtitle()         // Text-Cycler
   10. initModal(projects)         // Popup-System
   11. initPortal(callback)        // 3D Carousel + Bubbles
-  12. renderHeroSkills()          // Skills (übersetzt) generieren
-  13. renderAboutSkills()         // About Skills (übersetzt) generieren
+  12. renderHeroSkills()          // Skills (Ã¼bersetzt) generieren
+  13. renderAboutSkills()         // About Skills (Ã¼bersetzt) generieren
   14. initUnderwater()            // Anglerfisch in Timeline
   15. initFlood()                 // Wasser in Journey
   16. initParticleRain()          // Licht + Partikel in Contact
@@ -154,38 +155,38 @@ DOMContentLoaded → {
 ### Canvas-Performance (alle 60fps)
 
 Alle Canvas-Module vermeiden `shadowBlur` (teuer!) und verwenden stattdessen:
-- Große semi-transparente Kreise als Glow-Ersatz
-- `6.2832` als vorkomputierte 2π-Konstante
+- GroÃŸe semi-transparente Kreise als Glow-Ersatz
+- `6.2832` als vorkomputierte 2Ï€-Konstante
 - Vorberechnete RGB-Arrays statt String-Parsing
-- Low-Resolution Buffering auf großen Viewports (2056px+)
+- Low-Resolution Buffering auf groÃŸen Viewports (2056px+)
 
 ---
 
-## 🌐 Sprachumschaltung (EN/DE)
+## ðŸŒ Sprachumschaltung (EN/DE)
 
 ### Wie es funktioniert
-- **Default: Englisch** – beim ersten Besuch wird Englisch angezeigt
-- **Button im Header** (rechts neben den Nav-Links): zeigt die **nächste** Sprache an
-- **localStorage** – die Wahl wird gespeichert (`portfolio-lang`)
-- **`data-i18n` Attribute** im HTML – jedes übersetzbare Element hat `data-i18n="key-name"`
-- **`translations.js`** – alle Texte als Key/Value in EN und DE
-- **Skills werden dynamisch gerendert** → i18n-Keys passen automatisch
+- **Default: Englisch** â€“ beim ersten Besuch wird Englisch angezeigt
+- **Button im Header** (rechts neben den Nav-Links): zeigt die **nÃ¤chste** Sprache an
+- **localStorage** â€“ die Wahl wird gespeichert (`portfolio-lang`)
+- **`data-i18n` Attribute** im HTML â€“ jedes Ã¼bersetzbare Element hat `data-i18n="key-name"`
+- **`translations.js`** â€“ alle Texte als Key/Value in EN und DE
+- **Skills werden dynamisch gerendert** â†’ i18n-Keys passen automatisch
 
-### Neue Texte hinzufügen
+### Neue Texte hinzufÃ¼gen
 1. Key in `translations.js` bei EN + DE eintragen
-2. `data-i18n="dein-key"` im HTML-Element hinzufügen
+2. `data-i18n="dein-key"` im HTML-Element hinzufÃ¼gen
 
 ### Sprache wechseln
 - Klick auf den `[DE]` oder `[EN]` Button im Header
-- Seite muss nicht neu geladen werden (kein Server nötig)
+- Seite muss nicht neu geladen werden (kein Server nÃ¶tig)
 
 ---
 
-## 🧩 Inhalt hinzufügen
+## ðŸ§© Inhalt hinzufÃ¼gen
 
 ### Neues Projekt (Archives + Modal)
 
-`js/constants/projects.js` – Array-Eintrag hinzufügen:
+`js/constants/projects.js` â€“ Array-Eintrag hinzufÃ¼gen:
 
 ```javascript
 {
@@ -205,12 +206,12 @@ Dann in `index.html`:
 1. Neues `<div class="portal-slide" data-index="X" data-project="X">` im `.portal-carousel`
 2. Neues `<div class="carousel_slide">` im `.carousel_track` (Hero)
 
-✅ **Carousel-Dots & Indicators werden AUTOMATISCH generiert!**
-- Das `carousel-dots.js` Modul läuft beim Seitenload
+âœ… **Carousel-Dots & Indicators werden AUTOMATISCH generiert!**
+- Das `carousel_dots.js` Modul lÃ¤uft beim Seitenload
 - Buttons werden basierend auf der Anzahl der Projekte in `projects.js` generiert
-- **Kein manuelles Hinzufügen von Buttons mehr nötig!**
+- **Kein manuelles HinzufÃ¼gen von Buttons mehr nÃ¶tig!**
 
-> ⚠️ Wenn du die Anzahl der Slides erhöhst, muss `data-index` und `data-project` aktualisiert werden!
+> âš ï¸ Wenn du die Anzahl der Slides erhÃ¶hst, muss `data-index` und `data-project` aktualisiert werden!
 
 ### Neue Skills
 
@@ -221,7 +222,7 @@ Dann in `index.html`:
 ```
 
 Icons von [Boxicons](https://boxicons.com/).  
-Skills erscheinen automatisch im Hero-Arsenal + About-Grid (übersetzt).
+Skills erscheinen automatisch im Hero-Arsenal + About-Grid (Ã¼bersetzt).
 
 ### Timeline-Eintrag
 
@@ -232,11 +233,11 @@ Skills erscheinen automatisch im Hero-Arsenal + About-Grid (übersetzt).
     year: "SEPT 2025 - approx. 2028",
     title: "Titel",
     org: "Organisation",
-    icon: "🎮"
+    icon: "ðŸŽ®"
 }
 ```
 
-Dann in `index.html` neuen `.timeline_item`-Block im `.water_timeline`-Container hinzufügen + `data-i18n` Attribute.
+Dann in `index.html` neuen `.timeline_item`-Block im `.water_timeline`-Container hinzufÃ¼gen + `data-i18n` Attribute.
 
 ### Neues CSS-Modul
 
@@ -246,26 +247,26 @@ Dann in `index.html` neuen `.timeline_item`-Block im `.water_timeline`-Container
 ### Neues JS-Modul
 
 1. Datei in `js/modules/` erstellen mit `export function initModulName() { ... }`
-2. In `js/main.js` importieren: `import { initModulName } from './modules/modul-name.js';`
+2. In `js/main.js` importieren: `import { initModulName } from './modules/modul_name.js';`
 3. Im `DOMContentLoaded`-Event aufrufen
 
 ---
 
-## 🎮 Visuelle Effekte & Themes
+## ðŸŽ® Visuelle Effekte & Themes
 
 ### Parallax (parallax.js + parallax.css)
 - 3 Ebenen: BG (Himmel/Burg), Mid (Castle Walls), FG (Partikel/Fische)
 - Scroll-gesteuert mit Lerp-Interpolation
-- RAF stoppt bei Inaktivität
+- RAF stoppt bei InaktivitÃ¤t
 
-### Ocean Shader (ocean-shader.js)
-- Three.js WebGL Shader: animierte Wasseroberfläche von unten gesehen
+### Ocean Shader (ocean_shader.js)
+- Three.js WebGL Shader: animierte WasseroberflÃ¤che von unten gesehen
 - God Rays, Caustics, Blasen
-- Fallback wenn Three.js fehlt → Seite läuft ohne
+- Fallback wenn Three.js fehlt â†’ Seite lÃ¤uft ohne
 
 ### Anglerfisch-Lure (underwater.js)
-- Biolumineszenter Leuchtköder wandert Timeline entlang
-- Mehrschichtiger Glow (außen → Mitte → Kern)
+- Biolumineszenter LeuchtkÃ¶der wandert Timeline entlang
+- Mehrschichtiger Glow (auÃŸen â†’ Mitte â†’ Kern)
 - Nodes leuchten auf (CSS `.timeline_item.show::before`)
 
 ### Flood-Effekt (flood.js)
@@ -273,28 +274,28 @@ Dann in `index.html` neuen `.timeline_item`-Block im `.water_timeline`-Container
 - Wellenlinie + aufsteigende Blasen
 - RAF nur aktiv wenn Section sichtbar
 
-### Particle Rain (particle-rain.js)
-- Lichtstrahlen + biolumineszente Partikel mit Lifecycle (Birth → Float → Die)
-- Low-Res Buffering auf 2056px+ für 60fps
+### Particle Rain (particle_rain.js)
+- Lichtstrahlen + biolumineszente Partikel mit Lifecycle (Birth â†’ Float â†’ Die)
+- Low-Res Buffering auf 2056px+ fÃ¼r 60fps
 - RAF nur aktiv wenn Section sichtbar
 
-### Depth Experience (depth-experience.js)
+### Depth Experience (depth_experience.js)
 - **Fog Overlay**: Wird dunkler je tiefer gescrollt (max 0.7 opacity)
-- **Vignette**: Ränder werden dunkler
-- **Bubbles Canvas**: ~12 Blasen (3-10px) über ganzer Viewport
+- **Vignette**: RÃ¤nder werden dunkler
+- **Bubbles Canvas**: ~12 Blasen (3-10px) Ã¼ber ganzer Viewport
 - **Particles**: ~30 kleine Punkte (Gold + Cyan) mit Scroll-Parallax
 
-### Fish Swarm (fish-swarm.js)
+### Fish Swarm (fish_swarm.js)
 - Fischschwarm + Blasen beim Section-Wechsel
-- Auf 2056px+ Low-Res Rendering (SCALE 0.5/0.35) statt Deaktivierung → Fische bleiben sichtbar
+- Auf 2056px+ Low-Res Rendering (SCALE 0.5/0.35) statt Deaktivierung â†’ Fische bleiben sichtbar
 
-### Bioluminescent Swarm (bioluminescent-swarm.js)
+### Bioluminescent Swarm (bioluminescent_swarm.js)
 - Tiefsee-Kreaturen im Timeline-Hintergrund
 - 3 Typen: Qualle, Tintenfisch, Anglerfisch-Schatten
 
 ---
 
-## 🚀 Performance-Tipps
+## ðŸš€ Performance-Tipps
 
 - **Bilder**: `loading="lazy"` + `decoding="async"` auf allen `<img>`-Tags
 - **Canvas**: Kein `shadowBlur`, `6.2832` statt `Math.PI*2`, vorberechnete Arrays
@@ -306,21 +307,21 @@ Dann in `index.html` neuen `.timeline_item`-Block im `.water_timeline`-Container
 
 ---
 
-## ✨ Navbar-Animationen
+## âœ¨ Navbar-Animationen
 
-### Navigation Links – Active & Hover Effekte
+### Navigation Links â€“ Active & Hover Effekte
 
 **Active State (aktueller Seite)**
-- 💧 **Goldengelb Splash-Animation** – kontinuierliche Wasser-Platsch-Effekte unterhalb des Links
+- ðŸ’§ **Goldengelb Splash-Animation** â€“ kontinuierliche Wasser-Platsch-Effekte unterhalb des Links
 - Animationsdauer: **5.5s** smooth ease-in-out
 - Farbe: `--gold-accent` (#c9a861)
 
-**Hover State (über Link fahren)**
-- 💧 **Cyan Splash-Animation** – Wasser-Platsch-Effekt in Cyan-Farbe
+**Hover State (Ã¼ber Link fahren)**
+- ðŸ’§ **Cyan Splash-Animation** â€“ Wasser-Platsch-Effekt in Cyan-Farbe
 - Gleiche Animationsdauer und Sanftheit wie Active
 - Farbe: `--cyan-glow` (#49929a)
 
-### Language Toggle Button – Ripple Ring Effekt
+### Language Toggle Button â€“ Ripple Ring Effekt
 
 - **Ripple Ring**: Expandierender Kreis beim Hovern (Cyan-Farbe)
 - Animationsdauer: **0.8s** ease-out
@@ -328,23 +329,23 @@ Dann in `index.html` neuen `.timeline_item`-Block im `.water_timeline`-Container
 ### Technische Details (navbar.css)
 
 Die Animationen nutzen:
-- **`::before` Pseudo-Element** für Splash-Effekte
-- **SVG-ähnliche Gradienten** mit `radial-gradient` für realistisches Wasser
-- **Box-shadow** Techniken für Spritzwasser-Partikel
+- **`::before` Pseudo-Element** fÃ¼r Splash-Effekte
+- **SVG-Ã¤hnliche Gradienten** mit `radial-gradient` fÃ¼r realistisches Wasser
+- **Box-shadow** Techniken fÃ¼r Spritzwasser-Partikel
 
 **Keyframe-Animationen:**
-- `waterSplash` (Gold) – Active Links
-- `waterSplashCyan` (Cyan) – Hover Links
-- `navRippleRing` – Language Button & Sidebar Socials
+- `waterSplash` (Gold) â€“ Active Links
+- `waterSplashCyan` (Cyan) â€“ Hover Links
+- `navRippleRing` â€“ Language Button & Sidebar Socials
 
 ---
 
-## 🔧 Bekannte Issues / Todos
+## ðŸ”§ Bekannte Issues / Todos
 
 ### WICHTIG - Noch zu erledigen
 - [x] Responsive Large Viewports (2056px-4000px): Frames auf 60fps gebracht, Fische per Low-Res Rendering aktiviert statt deaktiviert
-- [ ] **Bild-Assets ablegen**: Projekt-Bilder (`Project1.png`, `Project2.png`, `Project3.png`, `Profile.png`) in `assets/Picture/` kopieren → sonst 404 im Modal/Portal
-- [ ] **Eigene Projektdaten anpassen**: `js/constants/projects.js` mit echten Projekten füllen (Name, Beschreibung, Skills, Bildpfade)
+- [ ] **Bild-Assets ablegen**: Projekt-Bilder (`Project1.png`, `Project2.png`, `Project3.png`, `Profile.png`) in `assets/Picture/` kopieren â†’ sonst 404 im Modal/Portal
+- [ ] **Eigene Projektdaten anpassen**: `js/constants/projects.js` mit echten Projekten fÃ¼llen (Name, Beschreibung, Skills, Bildpfade)
 
 
 ### OPTIONAL - Nice to have
@@ -352,47 +353,47 @@ Die Animationen nutzen:
 
 ---
 
-## 📝 Best Practices für Änderungen
+## ðŸ“ Best Practices fÃ¼r Ã„nderungen
 
 ### Animations-Performance
-- **Canvas-Operationen**: Nur mit `requestAnimationFrame` durchführen
+- **Canvas-Operationen**: Nur mit `requestAnimationFrame` durchfÃ¼hren
 - **IntersectionObserver**: Nutzen, um Canvas zu pausieren wenn off-screen
-- **CSS-Animationen**: Bevorzugen für einfache Transforms/Opacity
-- **Avoid**: `shadowBlur` (GPU-intensive), häufige DOM-Manipulationen
+- **CSS-Animationen**: Bevorzugen fÃ¼r einfache Transforms/Opacity
+- **Avoid**: `shadowBlur` (GPU-intensive), hÃ¤ufige DOM-Manipulationen
 
 ### Responsive Design
-- **Zentrale Datei**: `css/responsive.css` – alle Breakpoints an einem Ort
-- **Breakpoints**: 1980px, 2056px, 2560px, 3840px (groß), 1400px, 1200px, 1024px, 768px, 480px, 425px (klein)
+- **Zentrale Datei**: `css/responsive.css` â€“ alle Breakpoints an einem Ort
+- **Breakpoints**: 1980px, 2056px, 2560px, 3840px (groÃŸ), 1400px, 1200px, 1024px, 768px, 480px, 425px (klein)
 - **Komponenten**: Responsive-Regeln leben in `responsive.css`, nicht in den Komponenten-Dateien
 
 ### Barrierefreiheit
-- **Alle interaktiven Elemente** müssen `:focus-visible` haben
+- **Alle interaktiven Elemente** mÃ¼ssen `:focus-visible` haben
 - **`aria-labels`** auf Buttons (Language Toggle, Modal Close)
-- **`prefers-reduced-motion`** wird beachtet – keine Animationen
+- **`prefers-reduced-motion`** wird beachtet â€“ keine Animationen
 - **Color Contrast**: Text muss genug Kontrast haben (WCAG AA)
 
 ### Internationalisierung (i18n)
-- Alle sichtbaren Texte müssen `data-i18n="key"` haben
+- Alle sichtbaren Texte mÃ¼ssen `data-i18n="key"` haben
 - Key-Namen: kebab-case (z.B. `hero-title`, `about-description`)
 - Neue Keys IMMER in beide Sprachen (EN + DE) in `translations.js` eintragen
 
 ---
 
-## 🎨 Farb-Palette Referenz
+## ðŸŽ¨ Farb-Palette Referenz
 
 ```css
 --abyss-deep: #030809      /* Haupt-Hintergrund (dunkelste) */
 --depth-bg: #051214        /* Hover-Dunkel im Portal */
 --cyan-glow: #49929a       /* Unterwasser-Leucht (Cyan) */
 --gold-accent: #c9a861     /* Gold-Highlight */
---text-light: #cdcfd0      /* Primärer Text */
+--text-light: #cdcfd0      /* PrimÃ¤rer Text */
 ```
 
 Alle Farben sind als CSS-Custom-Properties in `css/main.css` definiert.
 
 ---
 
-## 📞 Kontakt & Wartung
+## ðŸ“ž Kontakt & Wartung
 
-**Fragen zur Struktur?** → Siehe `STRUKTUR.md` (diese Datei)  
-**Bugs melden?** → Überprüfe die Issues/Todos (oben)
+**Fragen zur Struktur?** â†’ Siehe `STRUKTUR.md` (diese Datei)  
+**Bugs melden?** â†’ ÃœberprÃ¼fe die Issues/Todos (oben)

@@ -5,7 +5,7 @@
 
 import { getCurrentLang } from './language.js';
 import { getProjectFullDescription, getProjectDescription } from '../constants/projects.js';
-import { initModalShader } from './modal-shader.js';
+import { initModalShader } from './modal_shader.js';
 
 /**
  * Modal with SVG filter water emergence (like hover effect)

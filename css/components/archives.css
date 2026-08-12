@@ -612,7 +612,8 @@
             transparent 80%);
 
     transform: scale(1.2);
-    /* filter entfernt für Firefox-Performance */
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
 }
 
 .carousel-arrow:hover::before {

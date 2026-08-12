@@ -3,20 +3,20 @@
 /* ========================================= */
 
 import { initNavigation } from './modules/navigation.js';
-import { initCarousel } from './modules/hero-carousel.js';
-import { generateCarouselDots } from './modules/carousel-dots.js';
+import { initCarousel } from './modules/hero_carousel.js';
+import { generateCarouselDots } from './modules/carousel_dots.js';
 import { initParallax, updateParallaxHeight } from './modules/parallax.js';
 import { initModal, showPopupAtCard } from './modules/modal.js';
 import { initPortal } from './modules/portal.js';
 import { initUnderwater } from './modules/underwater.js';
 import { initFlood } from './modules/flood.js';
-import { initContactRain } from './modules/particle-rain.js';
-import { initDepthExperience } from './modules/depth-experience.js';
-import { initFishSwarm } from './modules/fish-swarm.js';
-import { initBioluminescentSwarm } from './modules/bioluminescent-swarm.js';
-import { initHeroShader } from './modules/ocean-shader.js';
-import { initWaterLogo } from './modules/water-logo.js';
-import { initWaterSubtitle } from './modules/water-subtitle.js';
+import { initContactRain } from './modules/particle_rain.js';
+import { initDepthExperience } from './modules/depth_experience.js';
+import { initFishSwarm } from './modules/fish_swarm.js';
+import { initBioluminescentSwarm } from './modules/bioluminescent_swarm.js';
+import { initHeroShader } from './modules/ocean_shader.js';
+import { initWaterLogo } from './modules/water_logo.js';
+import { initWaterSubtitle } from './modules/water_subtitle.js';
 import { initLanguage, getCurrentLang } from './modules/language.js';
 import { projects } from './constants/projects.js';
 import { skills } from './constants/skills.js';

@@ -5,7 +5,7 @@
 /* ========================================= */
 
 import { debounce, cleanupRegistry, sizeCanvas } from '../utils/helpers.js';
-import { registerAnimation } from '../utils/animation-manager.js';
+import { registerAnimation } from '../utils/animation_manager.js';
 
 /* ----------------------------------------- */
 /* FISH SHAPES                               */

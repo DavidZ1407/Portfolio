@@ -58,7 +58,8 @@
 
 .sidebar_socials a:hover {
     color: var(--cyan-glow);
-    /* filter entfernt für Firefox-Performance (URL-SVG-Displacement) */
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
     border-color: rgba(73, 146, 154, 0.4);
 }
 
@@ -145,7 +146,8 @@
 .logo:hover {
     color: var(--cyan-glow);
     text-shadow: 0 0 20px rgba(73, 146, 154, 0.6), 0 0 40px rgba(73, 146, 154, 0.3);
-    /* filter entfernt für Firefox-Performance – Glow via text-shadow */
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
 }
 
 .logo span {
@@ -165,21 +167,8 @@
     padding-top: 0;
 }
 
-/* Phone Icon in Navbar */
-.nav-phone-icon {
-    color: var(--gold-accent);
-    font-size: 1.3rem;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    padding: 5px;
-    margin-left: 15px;
-}
-
-.nav-phone-icon:hover {
-    color: var(--cyan-glow);
-    text-shadow: 0 0 20px rgba(73, 146, 154, 0.6), 0 0 40px rgba(73, 146, 154, 0.3);
-    /* filter entfernt für Firefox-Performance – Glow via text-shadow */
-}
+/* Phone Icon in Navbar: Element existiert nicht mehr (kein HTML-Knoten, keine
+   JS-Referenz) → Regeln wurden entfernt. */
 
 /* Language Toggle Button */
 .lang-toggle-btn {
@@ -201,7 +190,8 @@
     background: rgba(73, 146, 154, 0.15);
     border-color: var(--cyan-glow);
     box-shadow: 0 0 25px rgba(73, 146, 154, 0.4), 0 0 50px rgba(73, 146, 154, 0.2);
-    /* filter entfernt für Firefox-Performance – Glow via box-shadow */
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
 }
 
 .nav-link {
@@ -229,7 +219,8 @@
 .nav-link:hover {
     color: var(--cyan-glow);
     text-shadow: 0 0 20px rgba(73, 146, 154, 0.6), 0 0 40px rgba(73, 146, 154, 0.3);
-    /* filter entfernt für Firefox-Performance – Glow via text-shadow */
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
 }
 
 .nav-link.active {
@@ -240,7 +231,8 @@
 .nav-link.active:hover {
     color: var(--cyan-glow);
     text-shadow: 0 0 20px rgba(73, 146, 154, 0.6), 0 0 40px rgba(73, 146, 154, 0.3);
-    /* filter entfernt für Firefox-Performance – Glow via text-shadow */
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
 }
 
 @keyframes navRippleRing {
