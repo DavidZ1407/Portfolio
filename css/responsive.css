@@ -1568,8 +1568,9 @@ section {
         opacity: 0.3 !important;
     }
     
-    /* Reduce particle canvas complexity (single .particles-canvas) */
-    .particles-canvas {
+    /* Reduce particle canvas complexity (unified back + front) */
+    .unified-particles-canvas-back,
+    .unified-particles-canvas-front {
         opacity: 0.7;
     }
 }

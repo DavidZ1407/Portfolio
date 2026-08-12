@@ -43,10 +43,11 @@
 
 /* ========================================= */
 /* PARTICLE CANVAS - Full viewport           */
-/* Punkt 1: Das vollflächige Partikel-Canvas */
-/* wird EINZIG über .particles-canvas        */
-/* (parallax.js) betrieben – kein separates   */
-/* depth-Partikel-Canvas mehr.                */
+/* Punkt 1: Das vollflächige Partikel-System */
+/* liegt jetzt in unified-particles.js:      */
+/* .unified-particles-canvas-back (z3, Fische+ */
+/* Parallax) + -front (z7, Depth) in EINEM   */
+/* registerAnimation-Loop.                   */
 /* ========================================= */
 
 /* ========================================= */
@@ -56,8 +57,9 @@
     .scroll-ripple {
         display: none;
     }
-    /* Einziges verbleibendes Vollflächen-Partikel-Canvas ausblenden */
-    .particles-canvas {
+    /* Einziges verbleibendes Partikel-System ausblenden (back + front) */
+    .unified-particles-canvas-back,
+    .unified-particles-canvas-front {
         display: none;
     }
 }
