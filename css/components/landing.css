@@ -550,6 +550,9 @@
 .indicator:nth-child(1) { animation: hero-float 5s ease-in-out infinite; animation-delay: 0s; }
 .indicator:nth-child(2) { animation: hero-float 5.5s ease-in-out infinite; animation-delay: 0.3s; }
 .indicator:nth-child(3) { animation: hero-float 6s ease-in-out infinite; animation-delay: 0.6s; }
+.indicator:nth-child(4) { animation: hero-float 5.25s ease-in-out infinite; animation-delay: 0.15s; }
+.indicator:nth-child(5) { animation: hero-float 6.25s ease-in-out infinite; animation-delay: 0.45s; }
+.indicator:nth-child(6) { animation: hero-float 6.75s ease-in-out infinite; animation-delay: 0.75s; }
 
 .skill_item:nth-child(1) { animation: hero-float 6s ease-in-out infinite; animation-delay: 0s; }
 .skill_item:nth-child(2) { animation: hero-float 7s ease-in-out infinite; animation-delay: 0.4s; }

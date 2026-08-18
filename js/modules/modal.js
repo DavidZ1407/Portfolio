@@ -20,7 +20,7 @@ import {
     getAdjacentCategoryProject,
     getCategorySchemeIndex,
     applyImageFallback,
-} from '../constants/projects.js';
+} from '../constants/projects.js?v=4';
 import { initModalShader } from './modal_shader.js';
 
 let modalOverlay = null;
