@@ -79,7 +79,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous"></script>
 
     <!-- Main JavaScript (ES Module - imports all modules and constants) -->
-    <script defer type="module" src="js/main.js"></script>
+    <!-- v-Teaser (=cache busting): Erhoehen, damit Browser nach Aenderungen an
+         Projektdaten (projects.js) die neue Version zwingend neu laden. -->
+    <script defer type="module" src="js/main.js?v=2"></script>
 
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet' crossorigin="anonymous">
 
@@ -180,30 +182,7 @@
                 <h3 data-i18n="carousel-title">MY PROJECTS</h3>
                 <div class="carousel_container">
                     <div class="carousel_track">
-                        <div class="carousel_slide">
-                            <img src="assets/Picture/Project1.png" alt="UNREAL TOWER DEFENSE" loading="lazy"
-                                decoding="async">
-                            <div class="carousel_info">
-                                <h4 data-i18n="carousel-1-title">UNREAL TOWER DEFENSE</h4>
-                                <p data-i18n="carousel-1-desc">Action Gameplay & Strategy</p>
-                            </div>
-                        </div>
-                        <div class="carousel_slide">
-                            <img src="assets/Picture/Project2.png" alt="CHARACTER DESIGN" loading="lazy"
-                                decoding="async">
-                            <div class="carousel_info">
-                                <h4 data-i18n="carousel-2-title">CHARACTER DESIGN</h4>
-                                <p data-i18n="carousel-2-desc">Dark Fantasy Concept Art</p>
-                            </div>
-                        </div>
-                        <div class="carousel_slide">
-                            <img src="assets/Picture/Project3.png" alt="3D SPACE SCENE" loading="lazy"
-                                decoding="async">
-                            <div class="carousel_info">
-                                <h4 data-i18n="carousel-3-title">3D SPACE SCENE</h4>
-                                <p data-i18n="carousel-3-desc">Blender Environment</p>
-                            </div>
-                        </div>
+                        <!-- Slides werden dynamisch aus projects.js generiert -->
                     </div>
                 </div>
                 <div class="carousel_indicators">
@@ -236,47 +215,13 @@
         <h1 class="section_title" data-i18n="archives-title">WORK</h1>
         <p class="section_subtitle" data-i18n="archives-subtitle">A SELECTION OF PROJECTS, PROTOTYPES AND DESIGNS</p>
 
+
+        <!-- KATEGORIE-REGISTER (Ebene 1) fuer die Hauptseite - dynamisch aus categories befuellt -->
+        <div class="main-cat-tabs"></div>
+
         <!-- 3D Portal Carousel -->
         <div class="portal-carousel">
-            <!-- Slide 0 -->
-            <div class="portal-slide" data-index="0" data-project="0">
-                <img src="assets/Picture/Project1.png" alt="Unreal Tower Defense" loading="lazy" decoding="async">
-                <div class="slide-glow"></div>
-                <div class="slide-frame">
-                    <span class="fc-tl"></span><span class="fc-tr"></span>
-                    <span class="fc-bl"></span><span class="fc-br"></span>
-                </div>
-                <div class="slide-overlay">
-                    <h2 data-i18n="portal-1-title">UNREAL TOWER DEFENSE</h2>
-                    <p data-i18n="portal-1-desc">Action Gameplay & Strategy</p>
-                </div>
-            </div>
-            <!-- Slide 1 -->
-            <div class="portal-slide" data-index="1" data-project="1">
-                <img src="assets/Picture/Project2.png" alt="Character Design" loading="lazy" decoding="async">
-                <div class="slide-glow"></div>
-                <div class="slide-frame">
-                    <span class="fc-tl"></span><span class="fc-tr"></span>
-                    <span class="fc-bl"></span><span class="fc-br"></span>
-                </div>
-                <div class="slide-overlay">
-                    <h2 data-i18n="portal-2-title">CHARACTER DESIGN</h2>
-                    <p data-i18n="portal-2-desc">Dark Fantasy Concept Art</p>
-                </div>
-            </div>
-            <!-- Slide 2 -->
-            <div class="portal-slide" data-index="2" data-project="2">
-                <img src="assets/Picture/Project3.png" alt="3D Space Scene" loading="lazy" decoding="async">
-                <div class="slide-glow"></div>
-                <div class="slide-frame">
-                    <span class="fc-tl"></span><span class="fc-tr"></span>
-                    <span class="fc-bl"></span><span class="fc-br"></span>
-                </div>
-                <div class="slide-overlay">
-                    <h2 data-i18n="portal-3-title">3D SPACE SCENE</h2>
-                    <p data-i18n="portal-3-desc">Blender Environment</p>
-                </div>
-            </div>
+            <!-- Slides werden dynamisch aus projects.js generiert -->
 
             <div class="carousel-controls">
                 <button class="carousel-arrow carousel-prev" aria-label="Previous"></button>

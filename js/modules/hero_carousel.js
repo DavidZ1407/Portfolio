@@ -2,7 +2,8 @@
 /* MODULE - CAROUSEL */
 /* ========================================= */
 
-import { projects } from "../constants/projects.js";
+import { projects, getProjectSubtitle, getProjectCover, applyImageFallback } from "../constants/projects.js";
+import { getCurrentLang } from "./language.js";
 import { cleanupRegistry } from '../utils/helpers.js';
 
 let currentProjectIndex = 0;
@@ -11,11 +12,71 @@ let autoPlayInterval = null;
 const AUTO_PLAY_DELAY = 5000; // 5 seconds per slide
 
 /**
+ * Build carousel slides dynamically from projects.js
+ * (eine Kategorie = ein Portal-Slide)
+ */
+function buildCarouselSlides() {
+    const track = document.querySelector('.carousel_track');
+    if (!track) return;
+    track.innerHTML = '';
+    const lang = getCurrentLang();
+
+    projects.forEach((project, i) => {
+        const slide = document.createElement('div');
+        slide.className = 'carousel_slide';
+        slide.setAttribute('data-index', i);
+
+        const img = document.createElement('img');
+        img.src = getProjectCover(i) || '';
+        img.alt = project.title || '';
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        // Fallback fuer fehlendes Cover
+        applyImageFallback(img, project.category);
+        slide.appendChild(img);
+
+        const info = document.createElement('div');
+        info.className = 'carousel_info';
+        const h4 = document.createElement('h4');
+        h4.textContent = project.title;
+        const p = document.createElement('p');
+        p.textContent = getProjectSubtitle(i, lang);
+        info.appendChild(h4);
+        info.appendChild(p);
+        slide.appendChild(info);
+
+        track.appendChild(slide);
+    });
+}
+
+/**
+ * Update Titel/Untertitel der Hero-Slides (bei Sprachwechsel)
+ */
+function renderCarouselLabels() {
+    const lang = getCurrentLang();
+    document.querySelectorAll('.carousel_track .carousel_slide').forEach((slide, i) => {
+        const project = projects[i];
+        if (!project) return;
+        const h4 = slide.querySelector('.carousel_info h4');
+        const p = slide.querySelector('.carousel_info p');
+        if (h4) h4.textContent = project.title;
+        if (p) p.textContent = getProjectSubtitle(i, lang);
+    });
+}
+
+/**
  * Initialize the hero carousel
  */
 export function initCarousel() {
+    // Slides dynamisch aus projects.js erzeugen
+    buildCarouselSlides();
+
     const indicators = document.querySelectorAll('.indicator');
     const slides = document.querySelectorAll('.carousel_slide');
+
+    // Labels bei Sprachwechsel aktualisieren
+    const onLangChanged = renderCarouselLabels;
+    document.addEventListener('languageChanged', onLangChanged);
     
     // Apply ARIA labels to indicators
     indicators.forEach((indicator, i) => {
@@ -55,6 +116,7 @@ export function initCarousel() {
         cleanupFunctions.forEach(fn => { try { fn(); } catch(e) {} });
         cleanupFunctions = [];
         stopAutoPlay();
+        document.removeEventListener('languageChanged', onLangChanged);
     });
 }
 
@@ -123,14 +185,15 @@ export function highlightHeroSkills(projectIndex) {
     // Highlight skills for current project using static projects import
 
         const project = projects[projectIndex];
-        if (!project || !project.skills) return;
+        if (!project) return;
+        const projectTools = project.tools || project.skills || [];
         
         const skillItems = document.querySelectorAll('.arsenal_grid .skill_item');
-        const skillNames = project.skills.map(s => s.name.toLowerCase());
+        const toolNames = projectTools.map(s => (s.name || s).toLowerCase());
         
         skillItems.forEach(item => {
             const skillName = item.getAttribute('data-skill') || '';
-            const isMatch = skillNames.includes(skillName.toLowerCase());
+            const isMatch = toolNames.includes(skillName.toLowerCase());
             item.classList.toggle('skill-active', isMatch);
         });
     }

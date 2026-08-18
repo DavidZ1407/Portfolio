@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Project placeholder">
+  <defs>
+    <linearGradient id="phGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d1830;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#060b1c;stop-opacity:1"/>
+    </linearGradient>
+    <pattern id="phGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M20 0L0 20 M0 0L20 20" stroke="rgba(126,217,214,0.06)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="200" height="200" fill="url(#phGradient)"/>
+  <rect width="200" height="200" fill="url(#phGrid)"/>
+  <rect x="10" y="10" width="180" height="180" fill="none" stroke="rgba(126,217,214,0.35)" stroke-width="1"/>
+  <path d="M12 188 L188 12" stroke="rgba(240,197,92,0.35)" stroke-width="1"/>
+  <text x="100" y="94" font-family="Arial, sans-serif" font-size="12" letter-spacing="2" fill="#7ED9D6" text-anchor="middle" style="user-select:none;">PROJECT PREVIEW</text>
+  <text x="100" y="112" font-family="Arial, sans-serif" font-size="8" letter-spacing="1" fill="#8A9AAB" text-anchor="middle" style="user-select:none;">Screenshot coming soon</text>
+</svg>

@@ -112,6 +112,46 @@
     margin-bottom: 30px;
 }
 
+/* MAIN-PAGE CATEGORY TABS (Kategorie-Register ueber dem Portal) */
+.main-cat-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    padding: 12px 0 16px;
+    position: relative;
+    z-index: 6;
+}
+
+.main-cat-item {
+    padding: 8px 16px;
+    border: 1px solid rgba(73, 146, 154, 0.35);
+    border-radius: 26px;
+    background: rgba(10, 30, 45, 0.5);
+    color: rgba(201, 168, 97, 0.7);
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.main-cat-item:hover {
+    border-color: rgba(139, 224, 232, 0.6);
+    color: #8be0e8;
+    background: rgba(10, 30, 45, 0.75);
+    box-shadow: 0 0 10px rgba(73, 146, 154, 0.25);
+}
+
+.main-cat-item.active {
+    border-color: var(--gold-accent, #c9a861);
+    color: var(--gold-accent, #c9a861);
+    background: rgba(201, 168, 97, 0.1);
+    box-shadow: 0 0 14px rgba(201, 168, 97, 0.35);
+}
+
+
 /* ========================================= */
 /* 3D PORTAL CAROUSEL */
 /* ========================================= */

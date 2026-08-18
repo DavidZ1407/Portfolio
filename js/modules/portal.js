@@ -5,12 +5,15 @@
 
 import { cleanupRegistry, debounce, sizeCanvas } from '../utils/helpers.js';
 import { registerAnimation } from '../utils/animation_manager.js';
+import { projects, getProjectSubtitle, getProjectCover, getCategories, getCategoryLabel, getFirstProjectOfCategory, applyImageFallback } from '../constants/projects.js';
+import { getCurrentLang } from './language.js';
 
 let modalOpenCallback = null;
 let currentCenter = 0;
 let autoTimer = null;
 let isAutoCycling = false;
 let isPaused = false;
+let activeMainCategory = null;
 let TOTAL_SLIDES = 0;
 const AUTO_INTERVAL = 9000;
 
@@ -23,15 +26,177 @@ let tiltAnimFrame = null;
 const TILT_MAX_ANGLE = 14; // max degrees of tilt
 
 /**
+ * Build the 3D portal slides dynamically from projects.js
+ * (eine Kategorie = ein Portal)
+ */
+function buildPortalSlides() {
+    const carousel = document.querySelector('.portal-carousel');
+    if (!carousel) return;
+
+    // Bereits vorhandene Slides entfernen (Controls bleiben unberuehrt)
+    carousel.querySelectorAll(':scope > .portal-slide').forEach(s => s.remove());
+
+    const controls = carousel.querySelector('.carousel-controls');
+    const lang = getCurrentLang();
+
+    projects.forEach((project, i) => {
+        const slide = document.createElement('div');
+        slide.className = 'portal-slide';
+        slide.dataset.index = String(i);
+        slide.dataset.project = String(i);
+
+        const img = document.createElement('img');
+        img.src = getProjectCover(i) || '';
+        img.alt = project.title || '';
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        // Fallback: fehlendes Cover -> Kategorie-Platzhalter
+        applyImageFallback(img, project.category);
+        slide.appendChild(img);
+
+        const glow = document.createElement('div');
+        glow.className = 'slide-glow';
+        slide.appendChild(glow);
+
+        const frame = document.createElement('div');
+        frame.className = 'slide-frame';
+        ['fc-tl', 'fc-tr', 'fc-bl', 'fc-br'].forEach(c => {
+            const s = document.createElement('span');
+            s.className = c;
+            frame.appendChild(s);
+        });
+        slide.appendChild(frame);
+
+        const overlay = document.createElement('div');
+        overlay.className = 'slide-overlay';
+        const h2 = document.createElement('h2');
+        h2.textContent = project.title;
+        const p = document.createElement('p');
+        p.textContent = getProjectSubtitle(i, lang);
+        overlay.appendChild(h2);
+        overlay.appendChild(p);
+        slide.appendChild(overlay);
+
+        carousel.insertBefore(slide, controls);
+    });
+}
+
+/**
+ * Update Titel/Untertitel der Portal-Slides (bei Sprachwechsel)
+ */
+function renderPortalLabels() {
+    const lang = getCurrentLang();
+    document.querySelectorAll('.portal-slide').forEach((slide, i) => {
+        const project = projects[i];
+        if (!project) return;
+        const h2 = slide.querySelector('.slide-overlay h2');
+        const p = slide.querySelector('.slide-overlay p');
+        if (h2) h2.textContent = project.title;
+        if (p) p.textContent = getProjectSubtitle(i, lang);
+    });
+}
+
+/**
  * Initialize the portal carousel
  * @param {Function} onOpenModal - callback(card) to open modal
  */
 export function initPortal(onOpenModal) {
     modalOpenCallback = onOpenModal;
+
+    // Slides dynamisch aus projects.js erzeugen (VOR Carousel-Init)
+    buildPortalSlides();
+
+    // Kategorie-Register fuer die Hauptseite (Level 1) aufbauen
+    buildMainCategoryTabs();
+
     initBubbles();
     initCarousel();
     setupTiltStructure();
+
+    // Aktiven Kategorie-Tab mit dem zentrierten Slide synchronisieren
+    syncMainCategoryTab();
+
+    // Klick-Delegation fuer das Kategorie-Register (einmalig)
+    const catContainer = document.querySelector('.main-cat-tabs');
+    if (catContainer) {
+        catContainer.addEventListener('click', (e) => {
+            const item = e.target.closest('.main-cat-item');
+            if (item && item.dataset.category) {
+                navigateToMainCategory(item.dataset.category);
+            }
+        });
+    }
+
+    // Labels bei Sprachwechsel aktualisieren
+    document.addEventListener('languageChanged', renderPortalLabels);
+    document.addEventListener('languageChanged', () => {
+        buildMainCategoryTabs();
+        syncMainCategoryTab();
+    });
 }
+
+/* ---- MAIN-PAGE CATEGORY TABS ---- */
+/**
+ * Baut das Kategorie-Register (Level 1) ueber dem Portal-Carousel auf.
+ * Ein Klick springt zum ersten Projekt der jeweiligen Kategorie.
+ */
+function buildMainCategoryTabs() {
+    const container = document.querySelector('.main-cat-tabs');
+    if (!container) return;
+    container.innerHTML = '';
+    const lang = getCurrentLang();
+    getCategories().forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = 'main-cat-item';
+        btn.dataset.category = cat;
+        btn.setAttribute('role', 'tab');
+        btn.setAttribute('aria-selected', 'false');
+        const label = getCategoryLabel(cat, lang);
+        btn.textContent = label;
+        btn.title = label;
+        container.appendChild(btn);
+    });
+    setActiveMainCategory(activeMainCategory);
+}
+
+function findSlidePositionByProject(projectIdx) {
+    const slides = document.querySelectorAll('.portal-slide');
+    for (let i = 0; i < slides.length; i++) {
+        if (parseInt(slides[i].dataset.project) === projectIdx) return i;
+    }
+    return -1;
+}
+
+function navigateToMainCategory(category) {
+    const idx = getFirstProjectOfCategory(category);
+    if (idx === null || idx === undefined) return;
+    const pos = findSlidePositionByProject(idx);
+    if (pos >= 0) {
+        goToPortalSlide(pos);
+    }
+    // Aktiver Tab wird ueber syncMainCategoryTab() (in updatePositions)
+    // passend zum zentrierten Slide gesetzt.
+    setActiveMainCategory(category);
+}
+
+function setActiveMainCategory(category) {
+    activeMainCategory = category;
+    document.querySelectorAll('.main-cat-item').forEach(item => {
+        const selected = item.dataset.category === category;
+        item.classList.toggle('active', selected);
+        item.setAttribute('aria-selected', selected ? 'true' : 'false');
+    });
+}
+
+function syncMainCategoryTab() {
+    const centerSlide = document.querySelector('.portal-slide.pos-center');
+    if (!centerSlide) return;
+    const projectIdx = parseInt(centerSlide.dataset.project);
+    const project = projects[projectIdx];
+    if (!project) return;
+    setActiveMainCategory(project.category);
+}
+
 /**
  * Navigate the portal carousel to a specific slide index
  * @param {number} index - The slide index to navigate to
@@ -414,18 +579,28 @@ function updatePositions(slides, dots) {
         if (rel < -1) rel += TOTAL_SLIDES;
         if (rel > 1) rel -= TOTAL_SLIDES;
 
+        // Show ALL projects simultaneously - visual hierarchy:
+        // centered project emphasized, neighbors reduced, further reduced
         if (rel === 0) {
-            slide.classList.add('pos-center');
-            slide.setAttribute('aria-current', 'true');
-        } else if (rel === -1) {
-            slide.classList.add('pos-left');
-            slide.removeAttribute('aria-current');
-        } else if (rel === 1) {
-            slide.classList.add('pos-right');
-            slide.removeAttribute('aria-current');
+            // Centered project - emphasized and enlarged
+            slide.classList.add("pos-center");
+            slide.setAttribute("aria-current", "true");
+            slide.style.transform = `translateX(0) translateZ(100px) scale(1.12)`;
+            slide.style.opacity = '1';
+        } else if (rel === -1 || rel === 1) {
+            // Neighboring projects - medium visibility with 3D positioning
+            slide.classList.add("pos-" + (rel === -1 ? "left" : "right"));
+            slide.setAttribute("aria-current", "false");
+            slide.style.transform = `translateX(${rel === -1 ? -520 : 520}px) translateZ(-80px) rotateY(${rel === -1 ? 25 : -25}deg) scale(0.78)`;
+            slide.style.opacity = '0.7';
         } else {
-            slide.classList.add('pos-hidden');
-            slide.removeAttribute('aria-current');
+            // Further projects - reduced visibility but still visible
+            // Use pos-hidden class but with overridden styles for visibility
+            slide.classList.add("pos-hidden");
+            // Inline styles override CSS defaults for visibility
+            slide.style.opacity = '0.4';
+            slide.style.pointerEvents = 'auto';
+            slide.style.transform = `translateX(0) translateZ(-200px) scale(0.65)`;
         }
     });
 
@@ -440,6 +615,9 @@ function updatePositions(slides, dots) {
         }
     });
 
+
+    // Kategorie-Register aktualisieren (aktiver Tab folgt dem zentrierten Slide)
+    syncMainCategoryTab();
     // Attach tilt to the new center slide (after transitions settle)
     requestAnimationFrame(() => {
         requestAnimationFrame(() => {

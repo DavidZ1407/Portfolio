@@ -80,26 +80,36 @@ const fragmentShader = `
         v += voronoi(uv, t * 2.0, 0.5, 2.5 - sizeDistortion);
         v += voronoi(uv, t * 4.0, 0.0, 4.0 - sizeDistortion) / 2.0;
 
-        // Color schemes: 0=abyss(blue), 1=teal, 2=ocean(purple-blue), 3=bio(green)
+        // Color schemes (eine pro Kategorie):
+        // 0=GameDev(blau), 1=3D(teal), 2=2D/Concept(purple),
+        // 3=Coding(gruen), 4=Sound(amber/gold), 5=Other(rose)
         vec3 fgColor;
         vec3 bgColor;
-        
-        if (uColorScheme < 1.5) {
-            // Abyss - deep blue (default)
+
+        if (uColorScheme < 1.0) {
+            // Scheme 0 - Game Dev (deep blue)
             fgColor = vec3(0.55, 0.75, 1.0);
             bgColor = vec3(0.0, 0.3, 0.5);
-        } else if (uColorScheme < 2.5) {
-            // Teal - cyan/teal tones
+        } else if (uColorScheme < 2.0) {
+            // Scheme 1 - 3D (teal/cyan)
             fgColor = vec3(0.4, 0.85, 0.8);
             bgColor = vec3(0.0, 0.35, 0.4);
-        } else if (uColorScheme < 3.5) {
-            // Ocean - purple/indigo
+        } else if (uColorScheme < 3.0) {
+            // Scheme 2 - 2D & Concept (purple/indigo)
             fgColor = vec3(0.7, 0.55, 0.9);
             bgColor = vec3(0.15, 0.1, 0.3);
-        } else {
-            // Bio - green/emerald
+        } else if (uColorScheme < 4.0) {
+            // Scheme 3 - Coding (green/emerald)
             fgColor = vec3(0.45, 0.8, 0.55);
             bgColor = vec3(0.05, 0.25, 0.15);
+        } else if (uColorScheme < 5.0) {
+            // Scheme 4 - Sound (amber/gold warm)
+            fgColor = vec3(1.0, 0.78, 0.4);
+            bgColor = vec3(0.35, 0.22, 0.05);
+        } else {
+            // Scheme 5 - Other (rose/magenta)
+            fgColor = vec3(0.95, 0.4, 0.6);
+            bgColor = vec3(0.3, 0.05, 0.18);
         }
         
         vec3 col = v * fgColor;
@@ -199,9 +209,10 @@ export function initModalShader(container) {
     }
 
     function start(scheme) {
+        // Auch bei laufendem Shader die Farbe aktualisieren
+        if (scheme !== undefined) setColorScheme(scheme);
         if (isActive) return;
         isActive = true;
-        if (scheme !== undefined) setColorScheme(scheme);
         resize();
         if (!animFrame) {
             animFrame = requestAnimationFrame(animate);
