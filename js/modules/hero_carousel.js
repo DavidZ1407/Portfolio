@@ -2,7 +2,7 @@
 /* MODULE - CAROUSEL */
 /* ========================================= */
 
-import { projects, getProjectSubtitle, getProjectCover, applyImageFallback } from "../constants/projects.js?v=4";
+import { projects, getProjectSubtitle, getProjectCover, applyImageFallback } from "../constants/projects.js?v=5";
 import { getCurrentLang } from "./language.js";
 import { cleanupRegistry } from '../utils/helpers.js';
 

@@ -3,7 +3,7 @@
 /* Automatically generates indicator dots based on projects.length */
 /* ========================================= */
 
-import { projects } from '../constants/projects.js?v=4';
+import { projects } from '../constants/projects.js?v=5';
 import { setAttributes } from '../utils/helpers.js';
 
 export function generateCarouselDots() {

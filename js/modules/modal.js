@@ -20,7 +20,7 @@ import {
     getAdjacentCategoryProject,
     getCategorySchemeIndex,
     applyImageFallback,
-} from '../constants/projects.js?v=4';
+} from '../constants/projects.js?v=5';
 import { initModalShader } from './modal_shader.js';
 
 let modalOverlay = null;
@@ -30,6 +30,13 @@ let currentProject = null;
 let projectsList = [];
 let currentProjectIndex = 0;
 let currentMediaIndex = 0;
+
+// Lightbox state (Vollbild-Ansicht des Media-Viewers)
+let lightboxOverlay = null;
+let lightboxContainer = null;
+let lightboxImage = null;
+let lightboxVideo = null;
+let lightboxOpen = false;
 
 /**
  * Initialize modal system
@@ -54,6 +61,9 @@ function createModalElements() {
 
         <div class="modal-content">
             <div class="modal-cat-tabs" role="tablist" aria-label="Project categories"></div>
+
+            <!-- LABEL ÜBER DER PROJEKT-AUSWAHL-LEISTE -->
+            <div class="modal-project-bar-label">Projects in this category</div>
 
             <!-- PROJEKT-AUSWAHL-LEISTE (Ebene 2: Projekte innerhalb der aktuellen Kategorie) -->
             <div class="modal-project-bar" role="group" aria-label="Projects in category"></div>
@@ -108,6 +118,10 @@ function createModalElements() {
     // Media-Events (Play-Button/Video) einmalig verdrahten
     setupMediaEvents();
 
+    // Lightbox für den großen Media-Viewer (Vollbild) erstellen und verdrahten
+    createLightbox();
+    setupLightbox();
+
     // Initialize voronoi shader background (unveraendert)
     modalShader = initModalShader(modalContainer);
 }
@@ -152,7 +166,12 @@ function attachEventListeners(projects) {
     }
 
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closePopup();
+        if (e.key === 'Escape') {
+            // Lightbox schließen, wenn geöffnet – Modal bleibt offen
+            if (lightboxOpen) { closeLightbox(); return; }
+            closePopup();
+            return;
+        }
         // Ctrl+Pfeil -> zwischen KATEGORIEN wechseln
         if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && (e.ctrlKey || e.metaKey)) {
             e.preventDefault();
@@ -432,6 +451,9 @@ export function showPopupAtCard(project, card) {
 function closePopup() {
     if (!currentProject) return;
 
+    // Lightbox schließen, falls noch geöffnet
+    if (lightboxOpen) closeLightbox();
+
     if (modalContainer._emergeTimer) {
         clearTimeout(modalContainer._emergeTimer);
         modalContainer._emergeTimer = null;
@@ -503,6 +525,9 @@ function closePopup() {
  */
 function populateModal(project) {
     const lang = getCurrentLang();
+
+    // Lightbox schließen, falls ein anderes Projekt geladen wird
+    if (lightboxOpen) closeLightbox();
 
     // Wasser-Hintergrund basierend auf Kategorie (CSS-Gradient + Shader-Farbe)
     const bgClasses = ['modal-bg-abyss', 'modal-bg-teal', 'modal-bg-ocean', 'modal-bg-bio', 'modal-bg-amber', 'modal-bg-rose'];
@@ -603,6 +628,8 @@ function buildThumbnails(project) {
         btn.addEventListener('click', () => {
             currentMediaIndex = index;
             showMedia(index);
+            // Thumbnail-Klick öffnet direkt die Lightbox mit dem vergrößerten Medium
+            openLightbox();
         });
 
         bar.appendChild(btn);
@@ -654,6 +681,9 @@ function showMedia(index) {
     thumbs.forEach((t, i) => {
         t.classList.toggle('active', i === index);
     });
+
+    // Lightbox-Inhalt synchronisieren, falls geöffnet
+    if (lightboxOpen) syncLightbox();
 }
 
 /**
@@ -684,5 +714,142 @@ function setupMediaEvents() {
         playBtn.style.display = 'flex';
         videoEl.removeAttribute('controls');
     });
+}
+
+
+/* ========================================= */
+/* LIGHTBOX FÜR DEN MEDIA-VIEWER (Vollbild)   */
+/* ========================================= */
+
+/**
+ * Erstellt das Lightbox-Overlay als separates Element im body.
+ * Wird unabhängig vom Haupt-Modal positioniert (z-index 2000).
+ */
+function createLightbox() {
+    if (lightboxOverlay) return; // bereits erstellt
+
+    lightboxOverlay = document.createElement('div');
+    lightboxOverlay.className = 'modal-lightbox-overlay';
+    lightboxOverlay.setAttribute('aria-hidden', 'true');
+
+    lightboxOverlay.innerHTML = `
+        <div class="modal-lightbox">
+            <button class="modal-close-btn" aria-label="Close">✕</button>
+            <button class="modal-lightbox-prev" aria-label="Previous media">‹</button>
+            <button class="modal-lightbox-next" aria-label="Next media">›</button>
+            <img class="modal-lightbox-image" src="" alt="">
+            <video class="modal-lightbox-video" playsinline preload="metadata" controls></video>
+        </div>
+    `;
+
+    document.body.appendChild(lightboxOverlay);
+
+    lightboxContainer = lightboxOverlay.querySelector('.modal-lightbox');
+    lightboxImage = lightboxOverlay.querySelector('.modal-lightbox-image');
+    lightboxVideo = lightboxOverlay.querySelector('.modal-lightbox-video');
+}
+
+/**
+ * Verdrahtet die Lightbox-Events:
+ * - Klick auf Media-Stage öffnet die Lightbox
+ * - Klick auf X-Button oder Overlay-Hintergrund schließt sie
+ * - Pfeile navigieren durch die Medien des aktuellen Projekts
+ */
+function setupLightbox() {
+    const mediaStage = modalContainer.querySelector('.modal-media-stage');
+    mediaStage.addEventListener('click', (e) => {
+        // Play-Button-Klick nicht als Lightbox-Öffnung interpretieren
+        if (e.target.closest('.modal-media-play')) return;
+        openLightbox();
+    });
+
+    // X-Button schließt die Lightbox
+    const closeBtn = lightboxOverlay.querySelector('.modal-close-btn');
+    closeBtn.addEventListener('click', closeLightbox);
+
+    // Klick auf Overlay-Hintergrund schließt die Lightbox
+    lightboxOverlay.addEventListener('click', (e) => {
+        if (e.target === lightboxOverlay) closeLightbox();
+    });
+
+    // Pfeile navigieren durch die Bilder des aktuellen Projekts
+    const prevBtn = lightboxOverlay.querySelector('.modal-lightbox-prev');
+    const nextBtn = lightboxOverlay.querySelector('.modal-lightbox-next');
+    prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        navigateMedia(-1);
+    });
+    nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        navigateMedia(1);
+    });
+}
+
+/**
+ * Öffnet die Lightbox und zeigt das aktuell ausgewählte Medium.
+ */
+function openLightbox() {
+    if (!lightboxOverlay) return;
+
+    const project = currentProject;
+    if (!project || !Array.isArray(project.media) || project.media.length === 0) return;
+
+    syncLightbox();
+    lightboxOverlay.classList.add('active');
+    lightboxOverlay.setAttribute('aria-hidden', 'false');
+    lightboxOpen = true;
+}
+
+/**
+ * Schließt die Lightbox und pausiert das Video.
+ */
+function closeLightbox() {
+    if (!lightboxOverlay) return;
+
+    lightboxOverlay.classList.remove('active');
+    lightboxOverlay.setAttribute('aria-hidden', 'true');
+    lightboxOpen = false;
+
+    if (lightboxVideo) {
+        lightboxVideo.pause();
+        lightboxVideo.removeAttribute('src');
+        lightboxVideo.load();
+    }
+}
+
+/**
+ * Aktualisiert die Lightbox-Ansicht auf das aktuell ausgewählte Medium
+ * (currentMediaIndex). Wird nach showMedia aufgerufen, wenn die Lightbox offen ist.
+ */
+function syncLightbox() {
+    if (!lightboxImage || !lightboxVideo) return;
+
+    const project = currentProject;
+    if (!project) return;
+    const media = Array.isArray(project.media) ? project.media : [];
+    if (!media.length) return;
+
+    const item = media[currentMediaIndex] || media[0];
+
+    if (item.type === 'video') {
+        lightboxVideo.pause();
+        lightboxImage.style.display = 'none';
+        lightboxVideo.style.display = 'block';
+        lightboxVideo.setAttribute('src', item.src);
+        if (item.thumb) lightboxVideo.setAttribute('poster', item.thumb);
+        lightboxVideo.load();
+        // Native Controls für Play/Pause im Vollbild
+        lightboxVideo.setAttribute('controls', '');
+    } else {
+        lightboxVideo.pause();
+        lightboxVideo.removeAttribute('controls');
+        lightboxVideo.removeAttribute('src');
+        lightboxVideo.load();
+        lightboxVideo.style.display = 'none';
+        lightboxImage.src = item.src || '';
+        applyImageFallback(lightboxImage, project.category);
+        lightboxImage.alt = project.title || '';
+        lightboxImage.style.display = 'block';
+    }
 }
 

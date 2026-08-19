@@ -52,6 +52,15 @@ const PROJECT_TRANSLATIONS = {
                 'Aufbau der Shader-Netzwerke und Beleuchtung',
                 'Animation der Kamera und der volumetrischen Effekte'
             ]
+        },
+        6: {
+            subtitle: 'UE5 Puzzle-Mechanik-Prototyp',
+            description: 'Ein Prototyp zur Erkundung rasterbasierter Puzzle-Mechanismen und Player-Affordanzen in Unreal Engine 5. Mit Blueprints und C++ entwickelt, Fokus auf praezise Interaktions-Feedbacks und saubere Regelsysteme.',
+            contribution: [
+                'Prototypisierung des Kern-Gitter- und Regelsystems in Blueprints',
+                'Implementierung der Spielerinteraktion und visueller Feedbacks (C++)',
+                'Pacing und Schwierigkeitskurve der Puzzles balanciert'
+            ]
         }
     }
 };
@@ -99,7 +108,7 @@ export {
 
 /* ---- Mapping Kategorie -> Indizes in projects[] (mehrere Projekte pro Kategorie moeglich) ---- */
 const categoryProjects = {
-    gamedev: [0],
+    gamedev: [0, 6],
     '3d':    [2],
     concept: [1],
     coding:  [3],
@@ -217,6 +226,27 @@ const projects = [
         ],
         contribution: [],
         tools: []
+    },
+
+    /* Index 6 - Game Dev (second project) */ {
+        category: 'gamedev',
+        title: 'Puzzle Prototype',
+        subtitle: 'UE5 Puzzle Mechanics Prototype',
+        description: 'A prototype exploring grid-based puzzle mechanics and player affordances in Unreal Engine 5. Built with Blueprints and C++, focusing on tight interaction feedback and clean rule systems.',
+        cover: 'assets/Picture/Project7.png',
+        media: [
+            { type: 'image', src: 'assets/Picture/Project7.png', thumb: 'assets/Picture/Project7.png' }
+        ],
+        contribution: [
+            'Prototyped the core grid-locking and rule system in Blueprints',
+            'Implemented player interaction and visual feedback (C++)',
+            'Balanced puzzle pacing and difficulty progression'
+        ],
+        tools: [
+            { name: 'Unreal Engine 5', icon: 'bx-code-alt' },
+            { name: 'Blueprints', icon: 'bx-edit' },
+            { name: 'C++', icon: 'bx-code' }
+        ]
     }
 
     /*

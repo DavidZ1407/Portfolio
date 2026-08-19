@@ -1507,6 +1507,10 @@ section {
     .sidebar_socials a:hover i,
     .nav-link:hover,
     .nav-link.active,
+    .main-cat-item:hover,
+    .main-cat-item.active:hover,
+    .modal-cat-tab:hover,
+    .modal-cat-tab.active:hover,
     .logo:hover {
         text-shadow: 0 0 10px rgba(73, 146, 154, 0.3) !important;
     }

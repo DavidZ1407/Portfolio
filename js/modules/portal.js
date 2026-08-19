@@ -5,7 +5,7 @@
 
 import { cleanupRegistry, debounce, sizeCanvas } from '../utils/helpers.js';
 import { registerAnimation } from '../utils/animation_manager.js';
-import { projects, getProjectSubtitle, getProjectCover, getCategories, getCategoryLabel, getFirstProjectOfCategory, applyImageFallback } from '../constants/projects.js?v=4';
+import { projects, getProjectSubtitle, getProjectCover, getCategories, getCategoryLabel, getFirstProjectOfCategory, applyImageFallback } from '../constants/projects.js?v=5';
 import { getCurrentLang } from './language.js';
 
 let modalOpenCallback = null;

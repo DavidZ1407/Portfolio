@@ -138,17 +138,27 @@
 }
 
 .main-cat-item:hover {
-    border-color: rgba(139, 224, 232, 0.6);
-    color: #8be0e8;
-    background: rgba(10, 30, 45, 0.75);
-    box-shadow: 0 0 10px rgba(73, 146, 154, 0.25);
+    color: var(--cyan-glow);
+    text-shadow: 0 0 20px rgba(73, 146, 154, 0.6), 0 0 40px rgba(73, 146, 154, 0.3);
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
 }
 
 .main-cat-item.active {
     border-color: var(--gold-accent, #c9a861);
     color: var(--gold-accent, #c9a861);
-    background: rgba(201, 168, 97, 0.1);
-    box-shadow: 0 0 14px rgba(201, 168, 97, 0.35);
+    background: rgba(201, 168, 97, 0.14);
+    box-shadow:
+        0 0 0 2px rgba(201, 168, 97, 0.5),
+        0 0 16px rgba(201, 168, 97, 0.45),
+        inset 0 0 6px rgba(201, 168, 97, 0.3);
+}
+
+.main-cat-item.active:hover {
+    color: var(--cyan-glow);
+    text-shadow: 0 0 20px rgba(73, 146, 154, 0.6), 0 0 40px rgba(73, 146, 154, 0.3);
+    filter: url(#water-distort-hover);
+    -webkit-filter: url(#water-distort-hover);
 }
 
 
