@@ -1319,10 +1319,8 @@
     .modal-thumb { width: 72px; height: 54px; }
     .modal-project-item { width: 100px; }
     .modal-project-item img { height: 56px; }
-    /* Lightbox-Responsiv */
+    /* Lightbox-Größe (Steuerelement-Positionierung siehe Lightbox-Abschnitt) */
     .modal-lightbox { max-width: 95vw; max-height: 80vh; }
-    .modal-lightbox-prev { left: 12px; width: 38px; height: 38px; font-size: 1.3rem; }
-    .modal-lightbox-next { right: 12px; width: 38px; height: 38px; font-size: 1.3rem; }
 }
 
 /* ========================================= */
@@ -1420,8 +1418,21 @@
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.modal-lightbox-prev { left: 20px; }
-.modal-lightbox-next { right: 20px; }
+/* Pfeile zentriert AUF der goldenen Kante der Lightbox-Box (nicht innen über dem Bild).
+   Halber Button ragt über die Kante hinaus - gleicht dem Media-Viewer-Rand-Design. */
+.modal-lightbox-prev { left: -23px; }
+.modal-lightbox-next { right: -23px; }
+
+/* X-Button (Lightbox): zentriert auf der oberen rechten Kante der Box.
+   Eigene Größe, damit die Kanten-Zentrierung (halber Button auf dem Rahmen)
+   in allen Breakpoints stimmig bleibt. */
+.modal-lightbox-overlay .modal-close-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 0.85rem;
+    top: -18px;
+    right: -18px;
+}
 
 .modal-lightbox-prev:hover,
 .modal-lightbox-next:hover {
@@ -1437,6 +1448,46 @@
         width: 54px;
         height: 54px;
         font-size: 1.9rem;
+    }
+    .modal-lightbox-prev { left: -27px; }
+    .modal-lightbox-next { right: -27px; }
+}
+
+/* Lightbox-Steuerelemente an der Kante – Tablet (Breakpoints 768–1200px) */
+@media (max-width: 1200px) {
+    .modal-lightbox-prev,
+    .modal-lightbox-next {
+        width: 40px;
+        height: 40px;
+        font-size: 1.3rem;
+    }
+    .modal-lightbox-prev { left: -20px; }
+    .modal-lightbox-next { right: -20px; }
+    .modal-lightbox-overlay .modal-close-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 0.75rem;
+        top: -16px;
+        right: -16px;
+    }
+}
+
+/* Lightbox-Steuerelemente an der Kante – Mobile */
+@media (max-width: 768px) {
+    .modal-lightbox-prev,
+    .modal-lightbox-next {
+        width: 38px;
+        height: 38px;
+        font-size: 1.25rem;
+    }
+    .modal-lightbox-prev { left: -19px; }
+    .modal-lightbox-next { right: -19px; }
+    .modal-lightbox-overlay .modal-close-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 0.7rem;
+        top: -15px;
+        right: -15px;
     }
 }
 

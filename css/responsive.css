@@ -546,6 +546,25 @@ section {
     .carousel_indicators { gap: 24px; }
 }
 
+/* ========================================= */
+/* HERO-KARUSSELL-INDIKATOREN – sehr große Screens (2056px+)
+   Es gibt in CSS/JS keinen Code, der die Punkte ausblendet – die absoluten
+   Hero-Overlays (hero_scene/hero_overlay + Bottom-Fade) liegen aber ÜBER dem
+   unpositionierten Punkte-Container. Damit die Punkte auf 2560–4K zuverlässig
+   sichtbar bleiben, werden sie über die Overlays gehoben (nur Positionierung,
+   keine Änderung an Größe/Layout/Abstand des Karussells). */
+@media (min-width: 2056px) {
+    .carousel_indicators {
+        position: relative;
+        z-index: 8;
+    }
+    .indicator,
+    .indicator.active {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
 @media (max-width: 1200px) {
     .hero_content { 
         max-width: 75%;

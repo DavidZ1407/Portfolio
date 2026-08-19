@@ -222,6 +222,9 @@
 
 .carousel_container {
     position: relative;
+    /* Horizontale Zentrierung unter der Überschrift – nur Positionierung.
+       (änderung nur links/rechts via auto; top/bottom bleiben 0) */
+    margin: 0 auto;
     overflow: hidden;
     border: 1.5px solid rgba(201, 168, 97, 0.3);
     background: rgba(20, 47, 51, 0.2);
