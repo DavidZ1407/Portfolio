@@ -18,7 +18,7 @@ const CATEGORY_LABELS = {
     gamedev: { en: 'Game Dev', de: 'Game Development' },
     '3d':    { en: '3D', de: '3D & Visual Art' },
     concept: { en: '2D & Concept Art', de: '2D & Concept Art' },
-    coding:  { en: 'Coding', de: 'Web & Interactive' },
+    coding:  { en: 'Coding Web', de: 'Web & Interactive' },
     sound:   { en: 'Sound', de: 'Audio & Sound Design' },
     other:   { en: 'Other Projects', de: 'Other Projects' }
 };
@@ -101,7 +101,8 @@ export function getProjectCountInCategory(category) {
 }
 
 /* ---- Kategories-Ordnung (Definition des Shader-Color-Schemes) ---- */
-const CATEGORY_ORDER = ['gamedev', '3d', 'concept', 'coding', 'sound', 'other'];
+/* Reihenfolge bestimmt die Register-Tabs, das Portal und das Hero-Carousel. */
+const CATEGORY_ORDER = ['gamedev', 'coding', '3d', 'concept', 'sound', 'other'];
 export {
     CATEGORY_ORDER
 };
@@ -325,6 +326,17 @@ export function getFirstProjectOfCategory(category) {
 }
 
 /**
+ * Liefert die Projekt-Indizes aller Kategorien in CATEGORY_ORDER-Reihenfolge,
+ * pro Kategorie nur das ERSTE Projekt. Wird vom Portal- und Hero-Carousel genutzt,
+ * damit beide die gleiche (eine) Karte je Bereich in identischer Reihenfolge zeigen.
+ */
+export function getOrderedProjectIndices() {
+    return getCategories()
+        .map(cat => getFirstProjectOfCategory(cat))
+        .filter(idx => idx !== null && idx !== undefined);
+}
+
+/**
  * Wechsel zwischen Projekten DERS SELBEN Kategorie.
  * direction: 'prev' | 'next'  (wrap-around)
  * Gibt null zurueck, wenn die Kategorie nur ein Projekt hat.
@@ -362,7 +374,7 @@ export function getAdjacentCategoryProject(currentIndex, direction) {
 
 /**
  * Farb-Schema-Index einer Kategorie fuer den Voronoi-Shadert.
- * Reihenfolge entspricht CATEGORY_ORDER (0=gamedev, 1=3d, 2=concept, 3=coding, 4=sound, 5=other).
+ * Reihenfolge entspricht CATEGORY_ORDER (0=gamedev, 1=coding, 2=3d, 3=concept, 4=sound, 5=other).
  */
 export function getCategorySchemeIndex(category) {
     return CATEGORY_ORDER.indexOf(category);

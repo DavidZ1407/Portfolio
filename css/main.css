@@ -20,6 +20,18 @@
     --bone-white: #d4c5a9;
     --shadow-dark: #050a14;
     --mist: rgba(73, 146, 154, 0.1);
+
+    /* Layout */
+    --section-pad-y: 140px;      /* vertikaler Abstand der Sektionen */
+    --section-pad-x: 10%;        /* horizontaler Abstand der Sektionen */
+    --footer-pad-y: 60px;        /* vertikaler Abstand des Footers */
+    --footer-pad-x: 10%;         /* horizontaler Abstand des Footers */
+    --base-line-height: 1.6;
+    --text-line-height: 1.8;
+
+    /* Transitions (einheitlich fuer UI-Elemente) */
+    --transition-fast: 0.3s ease;
+    --transition-med: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 /* ========================================= */
@@ -54,7 +66,7 @@ body {
     color: var(--text-light);
     font-family: 'Crimson Text', 'Georgia', serif;
     overflow-x: hidden;
-    line-height: 1.6;
+    line-height: var(--base-line-height);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -79,14 +91,14 @@ button {
 }
 
 p {
-    line-height: 1.8;
+    line-height: var(--text-line-height);
 }
 
 /* ========================================= */
 /* SECTION BASE STYLES (shared) */
 /* ========================================= */
 section {
-    padding: 140px 10%;
+    padding: var(--section-pad-y) var(--section-pad-x);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -157,7 +169,7 @@ section:not(#home) {
 /* FOOTER */
 /* ========================================= */
 .site_footer {
-    padding: 60px 10%;
+    padding: var(--footer-pad-y) var(--footer-pad-x);
     background: var(--abyss-deep);
     border-top: 1px solid rgba(73, 146, 154, 0.2);
     text-align: center;

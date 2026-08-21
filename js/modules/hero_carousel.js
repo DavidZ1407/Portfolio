@@ -2,9 +2,9 @@
 /* MODULE - CAROUSEL */
 /* ========================================= */
 
-import { projects, getProjectSubtitle, getProjectCover, applyImageFallback } from "../constants/projects.js?v=5";
+import { projects, getProjectSubtitle, getProjectCover, getOrderedProjectIndices, applyImageFallback } from "../constants/projects.js?v=5";
 import { getCurrentLang } from "./language.js";
-import { cleanupRegistry } from '../utils/helpers.js';
+import { cleanupRegistry, bindHorizontalSwipe } from '../utils/helpers.js';
 
 let currentProjectIndex = 0;
 let cleanupFunctions = [];
@@ -13,7 +13,7 @@ const AUTO_PLAY_DELAY = 5000; // 5 seconds per slide
 
 /**
  * Build carousel slides dynamically from projects.js
- * (eine Kategorie = ein Portal-Slide)
+ * (eine Kategorie = ein Portal-Slide, gleiche Reihenfolge wie das Portal)
  */
 function buildCarouselSlides() {
     const track = document.querySelector('.carousel_track');
@@ -21,13 +21,20 @@ function buildCarouselSlides() {
     track.innerHTML = '';
     const lang = getCurrentLang();
 
-    projects.forEach((project, i) => {
+    const orderedProjectIndices = getOrderedProjectIndices();
+
+    orderedProjectIndices.forEach((projectIdx, slideIndex) => {
+        const project = projects[projectIdx];
+        if (!project) return;
+
         const slide = document.createElement('div');
         slide.className = 'carousel_slide';
-        slide.setAttribute('data-index', i);
+        // data-index = Position im Carousel; data-project = Index in projects[]
+        slide.setAttribute('data-index', slideIndex);
+        slide.setAttribute('data-project', projectIdx);
 
         const img = document.createElement('img');
-        img.src = getProjectCover(i) || '';
+        img.src = getProjectCover(projectIdx) || '';
         img.alt = project.title || '';
         img.loading = 'lazy';
         img.decoding = 'async';
@@ -40,7 +47,7 @@ function buildCarouselSlides() {
         const h4 = document.createElement('h4');
         h4.textContent = project.title;
         const p = document.createElement('p');
-        p.textContent = getProjectSubtitle(i, lang);
+        p.textContent = getProjectSubtitle(projectIdx, lang);
         info.appendChild(h4);
         info.appendChild(p);
         slide.appendChild(info);
@@ -54,13 +61,14 @@ function buildCarouselSlides() {
  */
 function renderCarouselLabels() {
     const lang = getCurrentLang();
-    document.querySelectorAll('.carousel_track .carousel_slide').forEach((slide, i) => {
-        const project = projects[i];
+    document.querySelectorAll('.carousel_track .carousel_slide').forEach((slide) => {
+        const projectIdx = parseInt(slide.dataset.project);
+        const project = projects[projectIdx];
         if (!project) return;
         const h4 = slide.querySelector('.carousel_info h4');
         const p = slide.querySelector('.carousel_info p');
         if (h4) h4.textContent = project.title;
-        if (p) p.textContent = getProjectSubtitle(i, lang);
+        if (p) p.textContent = getProjectSubtitle(projectIdx, lang);
     });
 }
 
@@ -77,6 +85,17 @@ export function initCarousel() {
     // Labels bei Sprachwechsel aktualisieren
     const onLangChanged = renderCarouselLabels;
     document.addEventListener('languageChanged', onLangChanged);
+
+    // Touch-Swipe: nach links/ueber die naechste Karte, nach rechts zur vorherigen
+    const track = document.querySelector('.carousel_track');
+    if (track) {
+        const cleanupSwipe = bindHorizontalSwipe(
+            track,
+            () => { goToSlide((currentProjectIndex + 1) % slides.length); resetAutoPlay(); },
+            () => { goToSlide((currentProjectIndex - 1 + slides.length) % slides.length); resetAutoPlay(); }
+        );
+        cleanupFunctions.push(cleanupSwipe);
+    }
     
     // Apply ARIA labels to indicators
     indicators.forEach((indicator, i) => {
@@ -86,7 +105,9 @@ export function initCarousel() {
             const slideIndex = parseInt(indicator.getAttribute('data-slide'));
             goToSlide(slideIndex);
             resetAutoPlay();
-            navigateToWorkSection(slideIndex);
+            const slide = document.querySelectorAll('.carousel_slide')[slideIndex];
+            const projectIdx = slide ? parseInt(slide.dataset.project) : slideIndex;
+            navigateToWorkSection(projectIdx);
         };
         indicator.addEventListener('click', onClick);
         cleanupFunctions.push(() => indicator.removeEventListener('click', onClick));
@@ -102,7 +123,8 @@ export function initCarousel() {
             e.preventDefault();
             goToSlide(i);
             resetAutoPlay();
-            navigateToWorkSection(i);
+            const projectIdx = parseInt(slide.dataset.project);
+            navigateToWorkSection(projectIdx);
         };
         slide.addEventListener('click', onSlideClick);
         cleanupFunctions.push(() => slide.removeEventListener('click', onSlideClick));
@@ -122,18 +144,18 @@ export function initCarousel() {
 
 /**
  * Navigate to the #work section and show the clicked project in the portal carousel
- * @param {number} slideIndex - The project index to show
+ * @param {number} projectIndex - The project index (in projects[]) to show
  */
-function navigateToWorkSection(slideIndex) {
+function navigateToWorkSection(projectIndex) {
     const workSection = document.querySelector('#work');
     if (!workSection) return;
 
     // Smooth scroll to the work section
     workSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-    // Dynamically import the portal module and navigate to the selected slide
+    // Dynamically import the portal module and navigate to the selected project
     if (window.goToPortalSlide) {
-        window.goToPortalSlide(slideIndex);
+        window.goToPortalSlide(projectIndex);
     }
 }
 function startAutoPlay() {
@@ -162,6 +184,7 @@ function resetAutoPlay() {
 function goToSlide(index) {
     const track = document.querySelector('.carousel_track');
     const indicators = document.querySelectorAll('.indicator');
+    const slides = document.querySelectorAll('.carousel_slide');
     
     if (!track) return;
     
@@ -177,8 +200,9 @@ function goToSlide(index) {
         }
     });
     
-    // Highlight matching skills in hero arsenal based on current project
-    highlightHeroSkills(index);
+    // Highlight matching skills in hero arsenal based on the slide's project
+    const projectIdx = slides[index] ? parseInt(slides[index].dataset.project) : index;
+    highlightHeroSkills(projectIdx);
 }
 
 export function highlightHeroSkills(projectIndex) {

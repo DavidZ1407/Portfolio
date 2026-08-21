@@ -68,8 +68,8 @@
 }
 
 .contact_icon_link:hover {
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    filter: url(#water_distort_hover);
+    -webkit-filter: url(#water_distort_hover);
 }
 
 .contact_icon_link:hover i {
@@ -137,11 +137,11 @@
     transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
-/* Hover uses the water-distortion effect like the other site elements */
+/* Hover uses the water_distortion effect like the other site elements */
 .back_to_top:hover {
     border-color: var(--cyan-glow);
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    filter: url(#water_distort_hover);
+    -webkit-filter: url(#water_distort_hover);
     transform: translateY(-3px);
 }
 

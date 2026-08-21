@@ -3,6 +3,10 @@
 /* Single rAF loop for ALL canvas modules   */
 /* ========================================= */
 
+/* Max. DeltaTime (Sekunden) pro Frame. Verhindert grosse Zeitspruenge
+   (z.B. nach Tab-Wechsel), die die Simulation "explodieren" lassen. */
+const MAX_FRAME_DELTA_SECONDS = 0.05;
+
 /**
  * AnimationManager - Single requestAnimationFrame loop
  * that drives all canvas/webgl animations.
@@ -107,7 +111,7 @@ class AnimationManager {
         
         // Calculate delta time (capped at 50ms to prevent spiral of death)
         if (!this.lastFrameTime) this.lastFrameTime = now;
-        const dt = Math.min((now - this.lastFrameTime) / 1000, 0.05);
+        const dt = Math.min((now - this.lastFrameTime) / 1000, MAX_FRAME_DELTA_SECONDS);
         this.lastFrameTime = now;
 
         // Call all registered callbacks

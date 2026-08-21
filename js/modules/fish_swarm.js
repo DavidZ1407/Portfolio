@@ -5,6 +5,7 @@
 /* ========================================= */
 
 import { debounce, cleanupRegistry, sizeCanvas } from '../utils/helpers.js';
+import { MOBILE_BREAKPOINT } from '../constants/ui.js';
 import { registerAnimation } from '../utils/animation_manager.js';
 
 /* ----------------------------------------- */
@@ -115,7 +116,7 @@ function drawBubble(ctx, x, y, r, opacity) {
 /* ----------------------------------------- */
 
 export function initFishSwarm() {
-    const isMobile = window.innerWidth <= 768;
+    const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
     const SWARM_SIZE = isMobile ? 25 : 45;
     const COOLDOWN = 3000; // ms between triggers
 
@@ -156,7 +157,7 @@ export function initFishSwarm() {
         logicalW = window.innerWidth;
         logicalH = window.innerHeight;
         // Cap backing store at 2560px to prevent explosion on large viewports
-        const result = sizeCanvas(canvas, logicalW, logicalH, 2560);
+        const result = sizeCanvas(canvas, logicalW, logicalH);
         canvas.style.width = logicalW + 'px';
         canvas.style.height = logicalH + 'px';
     }
@@ -238,7 +239,7 @@ export function initFishSwarm() {
     /* ---- Determine swarm size based on viewport ---- */
     function getSwarmSize() {
         if (window.innerWidth <= 480) return 8;
-        if (window.innerWidth <= 768) return 12;
+        if (window.innerWidth <= MOBILE_BREAKPOINT) return 12;
         if (window.innerWidth <= 1200) return 18;
         if (window.innerWidth <= 2560) return 25;
         if (window.innerWidth <= 3840) return 20;

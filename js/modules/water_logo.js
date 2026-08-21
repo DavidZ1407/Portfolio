@@ -6,6 +6,7 @@
 /* ========================================= */
 
 import { cleanupRegistry } from '../utils/helpers.js';
+import { MOBILE_BREAKPOINT } from '../constants/ui.js';
 
 const vertSrc = `#version 300 es
 in vec2 aPosition;
@@ -144,7 +145,7 @@ export function initWaterLogo() {
     if (vw <= 480) {
         textWidth = Math.max(180, Math.round(vw * 0.85));
         textHeight = Math.round(textWidth * 0.2);
-    } else if (vw <= 768) {
+    } else if (vw <= MOBILE_BREAKPOINT) {
         textWidth = Math.min(vw * 0.7, 600);
         textHeight = Math.round(textWidth * 0.2);
     } else if (vw > 2056) {

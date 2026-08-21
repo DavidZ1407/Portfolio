@@ -128,11 +128,11 @@ export function initModalShader(container) {
 
     const THREE = window.THREE;
     if (!THREE) {
-        console.warn('[modal-shader] Three.js not loaded.');
+        console.warn('[modal_shader] Three.js not loaded.');
         return null;
     }
 
-    const oldCanvas = container.querySelector('.modal-shader-canvas');
+    const oldCanvas = container.querySelector('.modal_shader_canvas');
     if (oldCanvas) oldCanvas.remove();
 
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
@@ -150,7 +150,7 @@ export function initModalShader(container) {
     renderer.setPixelRatio(pixelRatio);
     renderer.setClearColor(0x000000, 0);
 
-    renderer.domElement.className = 'modal-shader-canvas';
+    renderer.domElement.className = 'modal_shader_canvas';
     renderer.domElement.style.cssText = `
         position: absolute;
         top: 0; left: 0;

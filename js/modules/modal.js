@@ -38,6 +38,20 @@ let lightboxImage = null;
 let lightboxVideo = null;
 let lightboxOpen = false;
 
+/* ---- Timing / Animation constants ---- */
+const WATER_ANIMATION_MS = 1000;      // Dauer der SVG Wasser-Morph-Animation (0.8s + Buffer)
+
+/* ---- Viewport-responsive Modal-Groessen ---- */
+// Groessenschema pro grossem Breakpoint (2056px+). Kleinere Viewports fallen auf den Default.
+const MODAL_SIZE_PRESETS = [
+    { minWidth: 3840, width: 1800, height: 1400 },
+    { minWidth: 2560, width: 1400, height: 1100 },
+    { minWidth: 2056, width: 1100, height: 900 },
+];
+const MODAL_DEFAULT_SIZE = { minWidth: 0, width: 900, height: 800 };
+const MODAL_VIEWPORT_MARGIN_X = 60;   // Abstand des Modals zum Viewport-Rand (horizontal)
+const MODAL_VIEWPORT_MARGIN_Y = 80;   // Abstand des Modals zum Viewport-Rand (vertikal)
+
 /**
  * Initialize modal system
  */
@@ -51,63 +65,63 @@ export function initModal(projects) {
  */
 function createModalElements() {
     modalOverlay = document.createElement('div');
-    modalOverlay.className = 'project-modal-overlay';
+    modalOverlay.className = 'project_modal_overlay';
 
     modalContainer = document.createElement('div');
-    modalContainer.className = 'project-modal';
+    modalContainer.className = 'project_modal';
 
     modalContainer.innerHTML = `
-        <button class="modal-close-btn" aria-label="Close">✕</button>
+        <button class="modal_close_btn" aria-label="Close">✕</button>
 
-        <div class="modal-content">
-            <div class="modal-cat-tabs" role="tablist" aria-label="Project categories"></div>
+        <div class="modal_content">
+            <div class="modal_cat_tabs" role="tablist" aria-label="Project categories"></div>
 
             <!-- LABEL ÜBER DER PROJEKT-AUSWAHL-LEISTE -->
-            <div class="modal-project-bar-label">Projects in this category</div>
+            <div class="modal_project_bar_label">Projects in this category</div>
 
             <!-- PROJEKT-AUSWAHL-LEISTE (Ebene 2: Projekte innerhalb der aktuellen Kategorie) -->
-            <div class="modal-project-bar" role="group" aria-label="Projects in category"></div>
+            <div class="modal_project_bar" role="group" aria-label="Projects in category"></div>
 
-            <div class="modal-project-header">
-                <h2 class="modal-project-title"></h2>
-                <span class="modal-project-category"></span>
-                <p class="modal-project-subtitle"></p>
-                <div class="modal-project-switch">
-                    <button class="modal-project-prev" aria-label="Previous project" title="">‹</button>
-                    <span class="modal-project-switch-label"></span>
-                    <button class="modal-project-next" aria-label="Next project" title="">›</button>
+            <div class="modal_project_header">
+                <h2 class="modal_project_title"></h2>
+                <span class="modal_project_category"></span>
+                <p class="modal_project_subtitle"></p>
+                <div class="modal_project_switch">
+                    <button class="modal_project_prev" aria-label="Previous project" title="">‹</button>
+                    <span class="modal_project_switch_label"></span>
+                    <button class="modal_project_next" aria-label="Next project" title="">›</button>
                 </div>
             </div>
 
             <!-- HAUPT-MEDIA-VIEWER -->
-            <div class="modal-media-viewer">
-                <div class="modal-media-stage">
-                    <img class="modal-media-image" src="" alt="">
-                    <video class="modal-media-video" playsinline preload="metadata"></video>
-                    <button class="modal-media-play" aria-label="Play video">▶</button>
+            <div class="modal_media_viewer">
+                <div class="modal_media_stage">
+                    <img class="modal_media_image" src="" alt="">
+                    <video class="modal_media_video" playsinline preload="metadata"></video>
+                    <button class="modal_media_play" aria-label="Play video">▶</button>
                 </div>
-                <button class="modal-media-prev" aria-label="Previous media">‹</button>
-                <button class="modal-media-next" aria-label="Next media">›</button>
+                <button class="modal_media_prev" aria-label="Previous media">‹</button>
+                <button class="modal_media_next" aria-label="Next media">›</button>
             </div>
 
             <!-- THUMBNAIL-LEISTE -->
-            <div class="modal-thumb-bar"></div>
+            <div class="modal_thumb_bar"></div>
 
             <!-- ZWEI-SPALTEN-BEREICH -->
-            <div class="modal-info-grid">
-                <div class="modal-description-col">
-                    <p class="modal-project-description"></p>
+            <div class="modal_info_grid">
+                <div class="modal_description_col">
+                    <p class="modal_project_description"></p>
                 </div>
-                <div class="modal-contribution-col">
-                    <h3 class="modal-contribution-title">My Contribution</h3>
-                    <ul class="modal-contribution-list"></ul>
+                <div class="modal_contribution_col">
+                    <h3 class="modal_contribution_title">My Contribution</h3>
+                    <ul class="modal_contribution_list"></ul>
                 </div>
             </div>
 
             <!-- TOOLS & SKILLS -->
-            <div class="modal-skills-section">
-                <h3 class="modal-skills-title">Tools & Skills used</h3>
-                <div class="modal-skills-grid"></div>
+            <div class="modal_skills_section">
+                <h3 class="modal_skills_title">Tools & Skills used</h3>
+                <div class="modal_skills_grid"></div>
             </div>
         </div>
     `;
@@ -132,33 +146,33 @@ function createModalElements() {
 function attachEventListeners(projects) {
     projectsList = projects;
 
-    const closeBtn = modalContainer.querySelector('.modal-close-btn');
+    const closeBtn = modalContainer.querySelector('.modal_close_btn');
     closeBtn.addEventListener('click', () => closePopup());
 
-    const mediaPrev = modalContainer.querySelector('.modal-media-prev');
-    const mediaNext = modalContainer.querySelector('.modal-media-next');
+    const mediaPrev = modalContainer.querySelector('.modal_media_prev');
+    const mediaNext = modalContainer.querySelector('.modal_media_next');
     mediaPrev.addEventListener('click', () => navigateMedia(-1));
     mediaNext.addEventListener('click', () => navigateMedia(1));
 
-    const projectPrev = modalContainer.querySelector('.modal-project-prev');
-    const projectNext = modalContainer.querySelector('.modal-project-next');
+    const projectPrev = modalContainer.querySelector('.modal_project_prev');
+    const projectNext = modalContainer.querySelector('.modal_project_next');
     projectPrev.addEventListener('click', () => navigateProject(-1));
     projectNext.addEventListener('click', () => navigateProject(1));
 
     // Kategorie-Reiter (Delegation: Reiter werden dynamisch neu gebaut)
-    const catTabs = modalContainer.querySelector('.modal-cat-tabs');
+    const catTabs = modalContainer.querySelector('.modal_cat_tabs');
     catTabs.addEventListener('click', (e) => {
-        const tab = e.target.closest('.modal-cat-tab');
+        const tab = e.target.closest('.modal_cat_tab');
         if (tab && tab.dataset.category) {
             switchCategory(tab.dataset.category);
         }
     });
 
     // Projekt-Auswahl-Leiste (Ebene 2) - Klick-Delegation
-    const projectBar = modalContainer.querySelector('.modal-project-bar');
+    const projectBar = modalContainer.querySelector('.modal_project_bar');
     if (projectBar) {
         projectBar.addEventListener('click', (e) => {
-            const item = e.target.closest('.modal-project-item');
+            const item = e.target.closest('.modal_project_item');
             if (item && item.dataset.index !== undefined) {
                 switchToProjectIndex(parseInt(item.dataset.index));
             }
@@ -255,14 +269,14 @@ function navigateCategory(direction) {
  * Der aktive Reiter markiert die aktuell geoeffnete Kategorie.
  */
 function buildCategoryTabs() {
-    const tabsEl = modalContainer.querySelector('.modal-cat-tabs');
+    const tabsEl = modalContainer.querySelector('.modal_cat_tabs');
     if (!tabsEl) return;
     const lang = getCurrentLang();
 
     tabsEl.innerHTML = '';
     getCategories().forEach(cat => {
         const btn = document.createElement('button');
-        btn.className = 'modal-cat-tab';
+        btn.className = 'modal_cat_tab';
         btn.dataset.category = cat;
         btn.setAttribute('role', 'tab');
         const active = currentProject && currentProject.category === cat;
@@ -283,10 +297,10 @@ function updateProjectNav() {
     // Reiter neu aufbauen (aktiver = aktuelle Kategorie)
     buildCategoryTabs();
 
-    const switchRow = modalContainer.querySelector('.modal-project-switch');
-    const prevBtn = modalContainer.querySelector('.modal-project-prev');
-    const nextBtn = modalContainer.querySelector('.modal-project-next');
-    const labelEl = modalContainer.querySelector('.modal-project-switch-label');
+    const switchRow = modalContainer.querySelector('.modal_project_switch');
+    const prevBtn = modalContainer.querySelector('.modal_project_prev');
+    const nextBtn = modalContainer.querySelector('.modal_project_next');
+    const labelEl = modalContainer.querySelector('.modal_project_switch_label');
 
     const hasSiblings = currentProject
         ? getProjectIndicesByCategory(currentProject.category).length > 1
@@ -317,7 +331,7 @@ function updateProjectNav() {
  * Das aktuell ausgewaehlte Projekt erhaelt die 'active'-Klasse.
  */
 function buildProjectBar() {
-    const bar = modalContainer.querySelector('.modal-project-bar');
+    const bar = modalContainer.querySelector('.modal_project_bar');
     if (!bar) return;
     bar.innerHTML = '';
     if (!currentProject) return;
@@ -328,7 +342,7 @@ function buildProjectBar() {
         if (!project) return;
 
         const item = document.createElement('button');
-        item.className = 'modal-project-item';
+        item.className = 'modal_project_item';
         item.dataset.index = String(idx);
         item.setAttribute('role', 'tab');
         const isActive = idx === currentProjectIndex;
@@ -344,7 +358,7 @@ function buildProjectBar() {
         item.appendChild(img);
 
         const label = document.createElement('span');
-        label.className = 'modal-project-item-label';
+        label.className = 'modal_project_item_label';
         label.textContent = project.title || '';
         item.appendChild(label);
 
@@ -375,16 +389,11 @@ export function showPopupAtCard(project, card) {
 
     // Set modal size - viewport-responsive for large screens (2056px+)
     const vw = window.innerWidth;
-    let maxModalW = 900, maxModalH = 800;
-    if (vw >= 3840) {
-        maxModalW = 1800; maxModalH = 1400;
-    } else if (vw >= 2560) {
-        maxModalW = 1400; maxModalH = 1100;
-    } else if (vw >= 2056) {
-        maxModalW = 1100; maxModalH = 900;
-    }
-    const modalWidth = Math.min(maxModalW, vw - 60);
-    const modalHeight = Math.min(maxModalH, window.innerHeight - 80);
+    const sizePreset = MODAL_SIZE_PRESETS.find(p => vw >= p.minWidth) || MODAL_DEFAULT_SIZE;
+    const maxModalW = sizePreset.width;
+    const maxModalH = sizePreset.height;
+    const modalWidth = Math.min(maxModalW, vw - MODAL_VIEWPORT_MARGIN_X);
+    const modalHeight = Math.min(maxModalH, window.innerHeight - MODAL_VIEWPORT_MARGIN_Y);
     const left = (vw - modalWidth) / 2;
     const top = (window.innerHeight - modalHeight) / 2;
 
@@ -396,7 +405,7 @@ export function showPopupAtCard(project, card) {
     modalContainer.style.maxHeight = `${modalHeight}px`;
 
     // Remove any previous animation class
-    modalContainer.classList.remove('water-emerge', 'fade-complete');
+    modalContainer.classList.remove('water_emerge', 'fade_complete');
     void modalContainer.offsetWidth;
 
     // Show overlay
@@ -412,7 +421,7 @@ export function showPopupAtCard(project, card) {
     modalContainer.style.transform = 'scale(1)';
 
     // Restart SVG animation by triggering all animate elements
-    const svgFilter = document.getElementById('water-emerge');
+    const svgFilter = document.getElementById('water_emerge');
     if (svgFilter) {
         const animations = svgFilter.querySelectorAll('animate');
         animations.forEach(anim => {
@@ -428,15 +437,15 @@ export function showPopupAtCard(project, card) {
     }
 
     // Trigger the water emerge animation
-    modalContainer.classList.add('water-emerge');
+    modalContainer.classList.add('water_emerge');
 
     if (modalContainer._emergeTimer) {
         clearTimeout(modalContainer._emergeTimer);
     }
     modalContainer._emergeTimer = setTimeout(() => {
-        // Remove water-emerge class - SVG filter already at scale=0
-        modalContainer.classList.remove('water-emerge');
-    }, 1000); // after SVG animation completes (0.8s + buffer)
+        // Remove water_emerge class - SVG filter already at scale=0
+        modalContainer.classList.remove('water_emerge');
+    }, WATER_ANIMATION_MS); // after SVG animation completes (0.8s + buffer)
 
     // Populate content (including media + thumbnails)
     // Der Shader wird hier mit der passenden Kategorie-Farbe gestartet
@@ -465,22 +474,22 @@ function closePopup() {
     }
 
     // Pause any playing video before closing
-    const video = modalContainer.querySelector('.modal-media-video');
+    const video = modalContainer.querySelector('.modal_media_video');
     if (video) {
         video.pause();
         video.removeAttribute('src');
         video.load();
     }
 
-    modalContainer.classList.remove('water-emerge', 'fade-complete');
-    const modalContent = modalContainer.querySelector('.modal-content');
+    modalContainer.classList.remove('water_emerge', 'fade_complete');
+    const modalContent = modalContainer.querySelector('.modal_content');
     if (modalContent) {
         modalContent.style.filter = '';
         modalContent.style.webkitFilter = '';
     }
 
-    // Trigger water-distort-close SVG animation (same as water-emerge opening)
-    const closeFilter = document.getElementById('water-distort-close');
+    // Trigger water_distort_close SVG animation (same as water_emerge opening)
+    const closeFilter = document.getElementById('water_distort_close');
     if (closeFilter) {
         const animations = closeFilter.querySelectorAll('animate');
         animations.forEach(anim => {
@@ -495,21 +504,21 @@ function closePopup() {
     }
 
     // Add water effect to close button
-    const closeBtn = modalContainer.querySelector('.modal-close-btn');
+    const closeBtn = modalContainer.querySelector('.modal_close_btn');
     if (closeBtn) {
-        closeBtn.classList.add('water-effect');
+        closeBtn.classList.add('water_effect');
     }
 
     // Trigger water close animation
-    modalContainer.classList.add('water-close');
+    modalContainer.classList.add('water_close');
 
     // Wait for animation to complete before hiding
     setTimeout(() => {
         modalOverlay.style.display = 'none';
         modalContainer.style.display = 'none';
-        modalContainer.classList.remove('water-close');
+        modalContainer.classList.remove('water_close');
         if (closeBtn) {
-            closeBtn.classList.remove('water-effect');
+            closeBtn.classList.remove('water_effect');
         }
         // Stop shader only AFTER hiding to prevent text flicker during close
         if (modalShader) {
@@ -517,7 +526,7 @@ function closePopup() {
         }
         currentProject = null;
         document.body.style.overflow = '';
-    }, 1000);
+    }, WATER_ANIMATION_MS);
 }
 
 /**
@@ -530,7 +539,7 @@ function populateModal(project) {
     if (lightboxOpen) closeLightbox();
 
     // Wasser-Hintergrund basierend auf Kategorie (CSS-Gradient + Shader-Farbe)
-    const bgClasses = ['modal-bg-abyss', 'modal-bg-teal', 'modal-bg-ocean', 'modal-bg-bio', 'modal-bg-amber', 'modal-bg-rose'];
+    const bgClasses = ['modal_bg_abyss', 'modal_bg_teal', 'modal_bg_ocean', 'modal_bg_bio', 'modal_bg_amber', 'modal_bg_rose'];
     modalContainer.classList.remove(...bgClasses);
     const scheme = currentProject ? getCategorySchemeIndex(currentProject.category) : 0;
     if (scheme >= 0 && scheme < bgClasses.length) {
@@ -542,9 +551,9 @@ function populateModal(project) {
     }
 
     // Header
-    const titleEl = modalContainer.querySelector('.modal-project-title');
-    const subtitleEl = modalContainer.querySelector('.modal-project-subtitle');
-    const categoryEl = modalContainer.querySelector('.modal-project-category');
+    const titleEl = modalContainer.querySelector('.modal_project_title');
+    const subtitleEl = modalContainer.querySelector('.modal_project_subtitle');
+    const categoryEl = modalContainer.querySelector('.modal_project_category');
     titleEl.textContent = project.title;
     subtitleEl.textContent = getProjectSubtitle(currentProjectIndex, lang) || project.subtitle || '';
     categoryEl.textContent = getCategoryLabel(project.category, lang) || '';
@@ -553,11 +562,11 @@ function populateModal(project) {
     buildProjectBar();
 
     // Beschreibung (links)
-    const descriptionEl = modalContainer.querySelector('.modal-project-description');
+    const descriptionEl = modalContainer.querySelector('.modal_project_description');
     descriptionEl.textContent = getProjectDescription(currentProjectIndex, lang) || project.description || '';
 
     // Contribution (rechts)
-    const contributionList = modalContainer.querySelector('.modal-contribution-list');
+    const contributionList = modalContainer.querySelector('.modal_contribution_list');
     const contributions = getProjectContribution(currentProjectIndex, lang) || project.contribution || [];
     contributionList.innerHTML = '';
     contributions.forEach(item => {
@@ -567,13 +576,13 @@ function populateModal(project) {
     });
 
     // Tools & Skills
-    const skillsGridEl = modalContainer.querySelector('.modal-skills-grid');
+    const skillsGridEl = modalContainer.querySelector('.modal_skills_grid');
     skillsGridEl.innerHTML = '';
     const tools = project.tools || [];
     tools.forEach((tool, index) => {
         const tag = document.createElement('span');
         // tools[0] = Haupttool -> hervorgehoben
-        tag.className = 'modal-skill-tag' + (index === 0 ? ' main' : '');
+        tag.className = 'modal_skill_tag' + (index === 0 ? ' main' : '');
         if (tool.icon) {
             tag.innerHTML = `<i class='bx ${tool.icon}'></i> ${tool.name}`;
         } else {
@@ -601,13 +610,13 @@ function populateModal(project) {
  * Baue die Thumbnail-Leiste für alle Medien des Projekts
  */
 function buildThumbnails(project) {
-    const bar = modalContainer.querySelector('.modal-thumb-bar');
+    const bar = modalContainer.querySelector('.modal_thumb_bar');
     bar.innerHTML = '';
 
     const media = Array.isArray(project.media) ? project.media : [];
     media.forEach((item, index) => {
         const btn = document.createElement('button');
-        btn.className = 'modal-thumb';
+        btn.className = 'modal_thumb';
         btn.setAttribute('aria-label', `Media ${index + 1}`);
 
         const img = document.createElement('img');
@@ -620,7 +629,7 @@ function buildThumbnails(project) {
         // Video-Thumbnails bekommen ein kleines Play-Symbol
         if (item.type === 'video') {
             const badge = document.createElement('span');
-            badge.className = 'modal-thumb-badge';
+            badge.className = 'modal_thumb_badge';
             badge.textContent = '▶';
             btn.appendChild(badge);
         }
@@ -638,6 +647,41 @@ function buildThumbnails(project) {
 
 
 /**
+ * Zeige ein Medienelement (Bild oder Video) in den uebergebenen Elementen an.
+ * Gemeinsame Logik fuer Haupt-Media-Viewer (showMedia) und Lightbox (syncLightbox),
+ * damit die Video-/Bild-Render-Logik nur an EINER Stelle liegt.
+ * @param {HTMLImageElement} imageEl - Bild-Element, das gefuellt wird
+ * @param {HTMLVideoElement} videoEl - Video-Element, das gefuellt wird
+ * @param {{type:string}|undefined} item - Medienobjekt (item.type === 'video' oder Bild)
+ * @param {Object} opts - Optionen
+ * @param {boolean} opts.showControls - Native Controls am Video setzen/entfernen
+ * @param {HTMLElement|null} opts.playBtn - Play-Overlay-Button (wird gezeigt/versteckt)
+ * @param {string} altText - Alt-Text fuer Bilder
+ * @param {string} category - Projekt-Kategorie (fuer Fallback-Bilder)
+ */
+function renderMediaItem(imageEl, videoEl, item, opts, altText, category) {
+    if (item.type === 'video') {
+        imageEl.style.display = 'none';
+        videoEl.style.display = 'block';
+        videoEl.setAttribute('src', item.src);
+        if (item.thumb) videoEl.setAttribute('poster', item.thumb);
+        videoEl.load();
+        if (opts.showControls) videoEl.setAttribute('controls', '');
+        if (opts.playBtn) opts.playBtn.style.display = 'flex';
+    } else {
+        videoEl.style.display = 'none';
+        if (opts.showControls) videoEl.removeAttribute('controls');
+        videoEl.removeAttribute('src');
+        videoEl.load();
+        if (opts.playBtn) opts.playBtn.style.display = 'none';
+        imageEl.src = item.src || '';
+        applyImageFallback(imageEl, category);
+        imageEl.alt = altText;
+        imageEl.style.display = 'block';
+    }
+}
+
+/**
  * Zeige das Medium an Position `index` im Haupt-Viewer an
  */
 function showMedia(index) {
@@ -647,37 +691,18 @@ function showMedia(index) {
     if (!media.length) return;
 
     const item = media[index] || media[0];
-    const imageEl = modalContainer.querySelector('.modal-media-image');
-    const videoEl = modalContainer.querySelector('.modal-media-video');
-    const playBtn = modalContainer.querySelector('.modal-media-play');
+    const imageEl = modalContainer.querySelector('.modal_media_image');
+    const videoEl = modalContainer.querySelector('.modal_media_video');
+    const playBtn = modalContainer.querySelector('.modal_media_play');
 
     // Altes Video stoppen
     videoEl.pause();
     videoEl.removeAttribute('controls');
 
-    if (item.type === 'video') {
-        // Video anzeigen, Poster (Thumbnail) nutzen, Play-Overlay zeigen
-        imageEl.style.display = 'none';
-        videoEl.style.display = 'block';
-        videoEl.setAttribute('src', item.src);
-        if (item.thumb) videoEl.setAttribute('poster', item.thumb);
-        videoEl.load();
-        playBtn.style.display = 'flex';
-    } else {
-        // Bild anzeigen
-        videoEl.pause();
-        videoEl.removeAttribute('src');
-        videoEl.load();
-        videoEl.style.display = 'none';
-        playBtn.style.display = 'none';
-        imageEl.src = item.src || '';
-        applyImageFallback(imageEl, project.category);
-        imageEl.alt = project.title;
-        imageEl.style.display = 'block';
-    }
+    renderMediaItem(imageEl, videoEl, item, { showControls: false, playBtn }, project.title, project.category);
 
     // Aktives Thumbnail markieren (goldener Rahmen)
-    const thumbs = modalContainer.querySelectorAll('.modal-thumb');
+    const thumbs = modalContainer.querySelectorAll('.modal_thumb');
     thumbs.forEach((t, i) => {
         t.classList.toggle('active', i === index);
     });
@@ -690,8 +715,8 @@ function showMedia(index) {
  * Play-Button: spielt das aktuelle Video ab
  */
 function setupMediaEvents() {
-    const playBtn = modalContainer.querySelector('.modal-media-play');
-    const videoEl = modalContainer.querySelector('.modal-media-video');
+    const playBtn = modalContainer.querySelector('.modal_media_play');
+    const videoEl = modalContainer.querySelector('.modal_media_video');
 
     playBtn.addEventListener('click', () => {
         if (videoEl.style.display === 'none') return;
@@ -729,24 +754,24 @@ function createLightbox() {
     if (lightboxOverlay) return; // bereits erstellt
 
     lightboxOverlay = document.createElement('div');
-    lightboxOverlay.className = 'modal-lightbox-overlay';
+    lightboxOverlay.className = 'modal_lightbox_overlay';
     lightboxOverlay.setAttribute('aria-hidden', 'true');
 
     lightboxOverlay.innerHTML = `
-        <div class="modal-lightbox">
-            <button class="modal-close-btn" aria-label="Close">✕</button>
-            <button class="modal-lightbox-prev" aria-label="Previous media">‹</button>
-            <button class="modal-lightbox-next" aria-label="Next media">›</button>
-            <img class="modal-lightbox-image" src="" alt="">
-            <video class="modal-lightbox-video" playsinline preload="metadata" controls></video>
+        <div class="modal_lightbox">
+            <button class="modal_close_btn" aria-label="Close">✕</button>
+            <button class="modal_lightbox_prev" aria-label="Previous media">‹</button>
+            <button class="modal_lightbox_next" aria-label="Next media">›</button>
+            <img class="modal_lightbox_image" src="" alt="">
+            <video class="modal_lightbox_video" playsinline preload="metadata" controls></video>
         </div>
     `;
 
     document.body.appendChild(lightboxOverlay);
 
-    lightboxContainer = lightboxOverlay.querySelector('.modal-lightbox');
-    lightboxImage = lightboxOverlay.querySelector('.modal-lightbox-image');
-    lightboxVideo = lightboxOverlay.querySelector('.modal-lightbox-video');
+    lightboxContainer = lightboxOverlay.querySelector('.modal_lightbox');
+    lightboxImage = lightboxOverlay.querySelector('.modal_lightbox_image');
+    lightboxVideo = lightboxOverlay.querySelector('.modal_lightbox_video');
 }
 
 /**
@@ -756,15 +781,15 @@ function createLightbox() {
  * - Pfeile navigieren durch die Medien des aktuellen Projekts
  */
 function setupLightbox() {
-    const mediaStage = modalContainer.querySelector('.modal-media-stage');
+    const mediaStage = modalContainer.querySelector('.modal_media_stage');
     mediaStage.addEventListener('click', (e) => {
         // Play-Button-Klick nicht als Lightbox-Öffnung interpretieren
-        if (e.target.closest('.modal-media-play')) return;
+        if (e.target.closest('.modal_media_play')) return;
         openLightbox();
     });
 
     // X-Button schließt die Lightbox
-    const closeBtn = lightboxOverlay.querySelector('.modal-close-btn');
+    const closeBtn = lightboxOverlay.querySelector('.modal_close_btn');
     closeBtn.addEventListener('click', closeLightbox);
 
     // Klick auf Overlay-Hintergrund schließt die Lightbox
@@ -773,8 +798,8 @@ function setupLightbox() {
     });
 
     // Pfeile navigieren durch die Bilder des aktuellen Projekts
-    const prevBtn = lightboxOverlay.querySelector('.modal-lightbox-prev');
-    const nextBtn = lightboxOverlay.querySelector('.modal-lightbox-next');
+    const prevBtn = lightboxOverlay.querySelector('.modal_lightbox_prev');
+    const nextBtn = lightboxOverlay.querySelector('.modal_lightbox_next');
     prevBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         navigateMedia(-1);
@@ -831,25 +856,7 @@ function syncLightbox() {
 
     const item = media[currentMediaIndex] || media[0];
 
-    if (item.type === 'video') {
-        lightboxVideo.pause();
-        lightboxImage.style.display = 'none';
-        lightboxVideo.style.display = 'block';
-        lightboxVideo.setAttribute('src', item.src);
-        if (item.thumb) lightboxVideo.setAttribute('poster', item.thumb);
-        lightboxVideo.load();
-        // Native Controls für Play/Pause im Vollbild
-        lightboxVideo.setAttribute('controls', '');
-    } else {
-        lightboxVideo.pause();
-        lightboxVideo.removeAttribute('controls');
-        lightboxVideo.removeAttribute('src');
-        lightboxVideo.load();
-        lightboxVideo.style.display = 'none';
-        lightboxImage.src = item.src || '';
-        applyImageFallback(lightboxImage, project.category);
-        lightboxImage.alt = project.title || '';
-        lightboxImage.style.display = 'block';
-    }
+    lightboxVideo.pause();
+    renderMediaItem(lightboxImage, lightboxVideo, item, { showControls: true, playBtn: null }, project.title || '', project.category);
 }
 

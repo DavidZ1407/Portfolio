@@ -102,7 +102,7 @@
 }
 
 /* Wave distortion effect on show */
-@keyframes underwater-emerge {
+@keyframes underwater_emerge {
     0% {
         opacity: 0;
         filter: blur(12px) brightness(0.5);
@@ -403,8 +403,8 @@
 }
 
 .timeline_content:hover {
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    filter: url(#water_distort_hover);
+    -webkit-filter: url(#water_distort_hover);
 }
 
 /* ========================================= */

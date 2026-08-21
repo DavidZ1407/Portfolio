@@ -66,9 +66,10 @@ html {
 /* ========================================= */
 /* SECTION PADDING */
 /* ========================================= */
+/* Basiswerte via :root-Variablen aus main.css - hier nur die Overrides je Breakpoint */
 section {
-    padding: 140px 10%;
-    transition: padding 0.3s ease;
+    padding: var(--section-pad-y) var(--section-pad-x);
+    transition: padding var(--transition-fast);
 }
 
 @media (min-width: 1980px) {
@@ -252,7 +253,7 @@ section {
         flex-wrap: wrap; 
         justify-content: center;
     }
-    .nav-link { 
+    .nav_link { 
         font-size: 0.5rem; 
         letter-spacing: 0.2px; 
         padding: 2px 3px;
@@ -279,19 +280,19 @@ section {
 
 @media (min-width: 2056px) {
     .navbar { gap: 70px; }
-    .nav-link { font-size: 1rem; letter-spacing: 2px; }
+    .nav_link { font-size: 1rem; letter-spacing: 2px; }
     .logo { font-size: 1.4rem; letter-spacing: 3px; }
 }
 
 @media (min-width: 2560px) {
     .navbar { gap: 80px; }
-    .nav-link { font-size: 1.1rem; }
+    .nav_link { font-size: 1.1rem; }
     .logo { font-size: 1.6rem; }
 }
 
 @media (min-width: 3840px) {
     .navbar { gap: 100px; }
-    .nav-link { font-size: 1.3rem; }
+    .nav_link { font-size: 1.3rem; }
     .logo { font-size: 1.8rem; }
 }
 
@@ -301,7 +302,7 @@ section {
 
 @media (max-width: 1024px) {
     .navbar { gap: 14px; }
-    .nav-link { font-size: 0.7rem; letter-spacing: 0.5px; }
+    .nav_link { font-size: 0.7rem; letter-spacing: 0.5px; }
     .logo { font-size: 1rem; letter-spacing: 1.2px; }
 }
 
@@ -1311,31 +1312,31 @@ section {
 }
 
 @media (min-width: 1980px) {
-    .project-modal { max-width: 1400px !important; }
+    .project_modal { max-width: 1400px !important; }
 }
 
 @media (min-width: 2056px) {
-    .project-modal { max-width: 1600px !important; }
+    .project_modal { max-width: 1600px !important; }
 }
 
 @media (max-width: 768px) {
-    .project-modal {
+    .project_modal {
         max-width: 95% !important;
         max-height: 90vh !important;
     }
 }
 
 @media (max-width: 480px) {
-    .project-modal { max-width: 98% !important; }
-    .modal-project-title { font-size: 1.2rem; }
-    .modal-project-description { font-size: 0.85rem; }
-    .modal-prev-btn, .modal-next-btn {
+    .project_modal { max-width: 98% !important; }
+    .modal_project_title { font-size: 1.2rem; }
+    .modal_project_description { font-size: 0.85rem; }
+    .modal_prev_btn, .modal_next_btn {
         width: 44px;
         height: 44px;
         font-size: 1.4rem;
     }
-    .modal-prev-btn { left: -20px; }
-    .modal-next-btn { right: -20px; }
+    .modal_prev_btn { left: -20px; }
+    .modal_next_btn { right: -20px; }
 }
 
 /* ========================================= */
@@ -1388,7 +1389,7 @@ section {
         width: auto;
         margin-left: auto;
     }
-    .nav-link { 
+    .nav_link { 
         font-size: 0.45rem; 
         letter-spacing: 0.1px; 
         padding: 2px 3px;
@@ -1524,12 +1525,12 @@ section {
     .contact_icon_link:hover i,
     .back_to_top:hover i,
     .sidebar_socials a:hover i,
-    .nav-link:hover,
-    .nav-link.active,
+    .nav_link:hover,
+    .nav_link.active,
     .main-cat-item:hover,
     .main-cat-item.active:hover,
-    .modal-cat-tab:hover,
-    .modal-cat-tab.active:hover,
+    .modal_cat_tab:hover,
+    .modal_cat_tab.active:hover,
     .logo:hover {
         text-shadow: 0 0 10px rgba(73, 146, 154, 0.3) !important;
     }

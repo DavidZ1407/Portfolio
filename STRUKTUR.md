@@ -170,7 +170,8 @@ Alle Canvas-Module vermeiden `shadowBlur` (teuer!) und verwenden stattdessen:
 - **localStorage** â€“ die Wahl wird gespeichert (`portfolio-lang`)
 - **`data-i18n` Attribute** im HTML â€“ jedes Ã¼bersetzbare Element hat `data-i18n="key-name"`
 - **`translations.js`** â€“ alle Texte als Key/Value in EN und DE
-- **Skills werden dynamisch gerendert** â†’ i18n-Keys passen automatisch
+- **Skills werden dynamisch gerendert** → i18n-Keys passen automatisch
+- **CV-Download ist sprachabhängig** → `assets/CV/David_Zahn_CV.pdf` (EN), `assets/CV/David_Zahn_CV_de.pdf` (DE)
 
 ### Neue Texte hinzufÃ¼gen
 1. Key in `translations.js` bei EN + DE eintragen
@@ -397,3 +398,100 @@ Alle Farben sind als CSS-Custom-Properties in `css/main.css` definiert.
 
 **Fragen zur Struktur?** â†’ Siehe `STRUKTUR.md` (diese Datei)  
 **Bugs melden?** â†’ ÃœberprÃ¼fe die Issues/Todos (oben)
+
+---
+
+## 🧹 Code-Cleanup & Konventionen
+
+> Gültig seit dem Refactoring. Ziel: keine sichtbaren Änderungen – nur Struktur,
+> Benennung und Wiederverwendbarkeit verbessern.
+
+### ⚙️ Magic Numbers → Konstanten / CSS-Variablen
+
+Hart kodierte Zahlenwerte werden durch benannte Konstanten bzw. CSS-Custom-Properties
+ersetzt und an zentralen Stellen gepflegt:
+
+| Wo | Was | Ort |
+|----|-----|-----|
+| **CSS-Variablen** | Layout-Paddings, Line-Heights, Transition-Dauern | `css/main.css` → `:root` |
+| **Shared JS-Konstanten** | Canvas-Cap (2560), Mobile-Breakpoint (768), Debounce/Throttle | `js/constants/ui.js` |
+| **Modul-Konstanten** | Modulspezifische Timing-/Größenwerte (z.B. `WATER_ANIMATION_MS`, `AUTO_INTERVAL`, `TILT_MAX_ANGLE`) | am Anfang jeder Modul-Datei |
+
+Beispiele:
+- `delay = 150` → `debounce(fn, DEBOUNCE_DELAY_MS)` aus `ui.js`
+- `padding: 140px 10%` → `padding: var(--section-pad-y) var(--section-pad-x)`
+- `setTimeout(..., 1000)` → `setTimeout(..., WATER_ANIMATION_MS)`
+
+### 🔁 Duplikation vermeiden
+
+- **Media-Render-Logik** im Modal (Bild/Video) liegt jetzt zentral in
+  `renderMediaItem()` – wird von `showMedia()` und `syncLightbox()` genutzt.
+- **Modal-Größen-Presets** (2056/2560/3840px) sind in `MODAL_SIZE_PRESETS` zusammengefasst
+  statt dreier if-Block-Kopien.
+- Canvas-Sizing, Debounce, Throttle & Cleanup-Registry sind gebündelt in `js/utils/`.
+
+### ✍️ Namenskonventionen
+
+- **JavaScript**: `camelCase` für Variablen & Funktionen (z.B. `currentProjectIndex`),
+  `UPPER_SNAKE_CASE` für Konstanten.
+- **CSS-Klassen/IDs & Dateinamen**: Unterstriche statt Bindestriche, einheitlich über
+  HTML, CSS und JS-Referenzen (z.B. `modal_close_btn` statt `modal-close-btn`).
+- Beim Umbenennen einer Klasse werden **alle** Vorkommen in HTML, CSS und JS angepasst
+  (`querySelector`, `classList`, `className`), damit nichts bricht.
+
+### 📱 Responsive-Datei (bewusst getrennt)
+
+- `css/responsive.css` bleibt **eigene, dedizierte Datei** – alle Breakpoints an einem Ort.
+- Media-Query-Blöcke werden **nicht** in andere CSS-Dateien verschoben/zusammengeführt.
+- Innerhalb der Datei gelten dieselben Cleanup-Regeln (Variablen, Namenskonventionen),
+  aber die Trennung bleibt erhalten.
+- Die numerischen **Breakpoint-Grenzen** (768/1024/1200/1400/1980/2056/2560/3840px)
+  stehen zentral im Kopf-Kommentar der Datei; `@media`-Bedingungen können technisch
+  kein `var()` verwenden, daher leben die Werte dort direkt.
+
+### 🔀 Umbenennungen (Cleanup)
+
+> Falls du Code-Stellen außerhalb dieses Repos referenzierst (z.B. externe Tools oder
+> Deployment-Skripte), prüfe folgende Namen:
+
+**Neu erstellt**
+- `js/constants/ui.js` – Shared-Konstanten (vorher verstreute Magic Numbers).
+
+**Umbenannte CSS-Klassen / IDs (Bindestrich → Unterstrich, konsistent in HTML+CSS+JS)**
+- Modal-System: `modal-close-btn` → `modal_close_btn`, `modal-content` → `modal_content`,
+  `modal-media-*` → `modal_media_*`, `modal-project-*` → `modal_project_*`,
+  `modal-cat-tab(s)` → `modal_cat_tab(s)`, `modal-thumb-*` → `modal_thumb_*`,
+  `modal-lightbox-*` → `modal_lightbox_*`, `modal-skills-*`, `modal-contribution-*`,
+  `project-modal(-overlay)` → `project_modal(_overlay)`.
+- Navigation: `nav-link` → `nav_link`.
+- SVG-Filter-IDs: `water-emerge` → `water_emerge`, `water-close` → `water_close`,
+  `water-effect` → `water_effect`, `water-distort-hover/-close/-modal-hover` → `water_distort_*`.
+- Aktiv-Klasse: `fade-complete` → `fade_complete`.
+- Animation-/Keyframe-Namen im Modal (`modal-emerge-water`, `modal-close-water`,
+  `modal-content-appear`, `modal-*`) wurden mit umbenannt.
+
+**Noch nicht umbenannt (bewusst ausgelassen – separate Folge-Pässe, um nichts Unverifiziertes zu brechen)**
+- Portal-Carousel: `portal-carousel`, `portal-slide`, `carousel-arrow/-prev/-next/-controls/-dots`,
+  `c-dot`, `main-cat-*`, `slide-*`, `tilt-*`, `fc-*`, `pos-*`, `portal-bubbles-canvas`, ...
+- Parallax/Atmosphäre: `parallax-*`, `sky-layer`, `castle-*`, `water-surface`,
+  `underwater-layer/-caustics`, `particles-layer`, `light-ray`, `lr-*`, ...
+- Canvas-Effekte: `*canvas` (hero-shader-, rain-, underwater-, flood-, swarm-, fish-swarm-,
+  unified-particles-canvas-*), `swarm-canvas`, `depth-fog-overlay`, `depth-vignette`,
+  `sphere-near`, `lang-toggle-btn`, `water-text-*`, `water-subtitle-*`.
+
+Falls du diese weiter vereinheitlichen möchtest, können sie in einem zweiten Durchgang
+analog zum Modal-System (längster Token zuerst, alle drei Sprachen konsistent) umbenannt werden.
+
+**Konstanten (neu)**
+- **Modal:** `WATER_ANIMATION_MS`, `MODAL_SIZE_PRESETS`, `MODAL_DEFAULT_SIZE`,
+  `MODAL_VIEWPORT_MARGIN_X/Y`; Helper `renderMediaItem()` neu.
+- **Portal:** `AUTO_RESUME_DELAY_MS`, `RESIZE_BOOT_DELAY_MS`, `BUBBLE_COUNT`, `PARTICLE_COUNT`.
+- **Parallax:** `BG_SPEED`, `MID_SPEED`, `UNDERWATER_THRESHOLD`, `WATER_SURFACE_WINDOW/LEAD`,
+  `CASTLE_THRESHOLD`, `LERP_SMOOTHING`, `SNAP_EPSILON`.
+- **Depth-Experience:** `FOG_*`, `VIGNETTE_*`, `BODY_BLUE_BASE/RANGE`.
+- **Navigation:** `SCROLL_ACTIVE_OFFSET`, `BOTTOM_DETECT_OFFSET`.
+- **AnimationManager:** `MAX_FRAME_DELTA_SECONDS`.
+- **CSS-Variablen (in `:root`):** `--section-pad-y/-x`, `--footer-pad-y/-x`,
+  `--base-line-height`, `--text-line-height`, `--transition-fast`, `--transition-med`.
+
+

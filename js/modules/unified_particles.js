@@ -147,8 +147,8 @@ export function initUnifiedParticles() {
     function resize() {
         const logicalW = window.innerWidth;
         const logicalH = window.innerHeight;
-        const result = sizeCanvas(canvasBack, logicalW, logicalH, 2560);
-        sizeCanvas(canvasFront, logicalW, logicalH, 2560);
+        const result = sizeCanvas(canvasBack, logicalW, logicalH);
+        sizeCanvas(canvasFront, logicalW, logicalH);
         width = result.width;
         height = result.height;
         canvasBack.style.width = logicalW + 'px';

@@ -4,7 +4,7 @@
 /* ========================================= */
 
 /* Modal Overlay - Dark transparent background */
-.project-modal-overlay {
+.project_modal_overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -16,7 +16,7 @@
 }
 
 /* Modal Container - The popup window */
-.project-modal {
+.project_modal {
     position: fixed;
     z-index: 1001;
     background: #02080c;
@@ -27,17 +27,17 @@
     display: none;
     overflow: visible;
     border-radius: 8px;
-    animation: modal-container-float 8s ease-in-out infinite;
+    animation: modal_container_float 8s ease-in-out infinite;
     will-change: transform;
 }
 
-@keyframes modal-container-float {
+@keyframes modal_container_float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-5px); }
 }
 
 /* Voronoi Shader Canvas - animated background */
-.modal-shader-canvas {
+.modal_shader_canvas {
     position: absolute;
     top: 0;
     left: 0;
@@ -50,7 +50,7 @@
 
 /* Water caustics overlay - animated, on top of shader.
    Deutlich abgeschwächt: soll nur noch einen subtilen, blauen Reflex geben. */
-.project-modal::before {
+.project_modal::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -67,9 +67,9 @@
 
 /* Dunkler, halbtransparenter Content-Overlay.
    Schichtung: Wasser/Shader (z1) + Caustics (z2) -> dieser dunkle Schleier (::after, z2)
-   -> dann der Inhalt (z3, .modal-content). Macht das animierte Wasser viel dezenteren
+   -> dann der Inhalt (z3, .modal_content). Macht das animierte Wasser viel dezenteren
    Hintergrund, ohne es komplett zu verstecken. Kein Filter/Blur - nur RGBA, performant. */
-.project-modal::after {
+.project_modal::after {
     content: '';
     position: absolute;
     inset: 0;
@@ -91,31 +91,31 @@
 }
 
 /* Water Emergence Animation - full modal with distortion */
-.project-modal.water-emerge {
-    animation: modal-emerge-water 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    filter: url(#water-emerge);
-    -webkit-filter: url(#water-emerge);
+.project_modal.water_emerge {
+    animation: modal_emerge_water 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    filter: url(#water_emerge);
+    -webkit-filter: url(#water_emerge);
 }
 
 /* Water Close Animation - reverse of emerge, mit starkem Distortion-Filter */
-.project-modal.water-close {
-    animation: modal-close-water 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    filter: url(#water-distort-close);
-    -webkit-filter: url(#water-distort-close);
+.project_modal.water_close {
+    animation: modal_close_water 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    filter: url(#water_distort_close);
+    -webkit-filter: url(#water_distort_close);
     overflow: hidden;
 }
 
 /* Hide scroll overflow on content during close to prevent text from peeking through */
-.project-modal.water-close .modal-content {
+.project_modal.water_close .modal_content {
     overflow: hidden;
 }
 
-.project-modal.water-emerge .modal-content {
-    animation: modal-content-appear 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+.project_modal.water_emerge .modal_content {
+    animation: modal_content_appear 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     opacity: 0;
 }
 
-@keyframes modal-emerge-water {
+@keyframes modal_emerge_water {
     0% {
         transform: scale(0.85);
         opacity: 0;
@@ -144,7 +144,7 @@
     }
 }
 
-@keyframes modal-close-water {
+@keyframes modal_close_water {
     0% {
         transform: scale(1);
         opacity: 1;
@@ -195,7 +195,7 @@
     }
 }
 
-@keyframes modal-content-appear {
+@keyframes modal_content_appear {
     0% {
         opacity: 0;
         transform: translateY(8px);
@@ -213,7 +213,7 @@
 }
 
 /* Modal Content */
-.modal-content {
+.modal_content {
     padding: 30px;
     overflow-y: auto;
     max-height: inherit;
@@ -222,7 +222,7 @@
 }
 
 /* Gentle floating animation for buttons */
-@keyframes modal-btn-float {
+@keyframes modal_btn_float {
     0%, 100% {
         transform: translateY(0);
     }
@@ -231,7 +231,7 @@
     }
 }
 
-@keyframes modal-btn-float-arrows {
+@keyframes modal_btn_float_arrows {
     0%, 100% {
         transform: translateY(-50%) translateX(0);
     }
@@ -241,7 +241,7 @@
 }
 
 /* Pulsing glow animation to indicate clickability */
-@keyframes modal-btn-glow {
+@keyframes modal_btn_glow {
     0%, 100% {
         box-shadow: 
             0 0 15px rgba(201, 168, 97, 0.6),
@@ -264,8 +264,8 @@
 }
 
 /* Navigation Arrows - Large Prominent Buttons */
-.modal-prev-btn,
-.modal-next-btn {
+.modal_prev_btn,
+.modal_next_btn {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -303,11 +303,11 @@
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
     opacity: 1;
     overflow: visible;
-    animation: modal-btn-float-arrows 6s ease-in-out infinite;
+    animation: modal_btn_float_arrows 6s ease-in-out infinite;
 }
 
-.modal-prev-btn::before,
-.modal-next-btn::before {
+.modal_prev_btn::before,
+.modal_next_btn::before {
     content: '';
     position: absolute;
     inset: 4px;
@@ -316,8 +316,8 @@
     pointer-events: none;
 }
 
-.modal-prev-btn::after,
-.modal-next-btn::after {
+.modal_prev_btn::after,
+.modal_next_btn::after {
     content: '';
     position: absolute;
     inset: 0;
@@ -330,16 +330,16 @@
     pointer-events: none;
 }
 
-.modal-prev-btn {
+.modal_prev_btn {
     left: -32px;
 }
 
-.modal-next-btn {
+.modal_next_btn {
     right: -32px;
 }
 
-.modal-prev-btn:hover,
-.modal-next-btn:hover {
+.modal_prev_btn:hover,
+.modal_next_btn:hover {
     opacity: 1;
     border-color: rgba(139, 224, 232, 0.6);
     color: #8be0e8;
@@ -365,12 +365,12 @@
         inset 0 0 22px rgba(139, 224, 232, 0.2),
         inset 0 1px 0 rgba(139, 224, 232, 0.3);
     transform: translateY(-50%) scale(1.15);
-    filter: url(#water-distort-modal-hover);
-    -webkit-filter: url(#water-distort-modal-hover);
+    filter: url(#water_distort_modal_hover);
+    -webkit-filter: url(#water_distort_modal_hover);
 }
 
-.modal-prev-btn:active,
-.modal-next-btn:active {
+.modal_prev_btn:active,
+.modal_next_btn:active {
     transform: translateY(-50%) scale(0.92);
     box-shadow: 
         0 1px 4px rgba(0, 0, 0, 0.5),
@@ -378,7 +378,7 @@
 }
 
 /* Close Button - Ancient Brass Relic matching the arrows */
-.modal-close-btn {
+.modal_close_btn {
     position: absolute;
     top: 18px;
     right: 18px;
@@ -415,7 +415,7 @@
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
-.modal-close-btn::before {
+.modal_close_btn::before {
     content: '';
     position: absolute;
     inset: 3px;
@@ -424,7 +424,7 @@
     pointer-events: none;
 }
 
-.modal-close-btn::after {
+.modal_close_btn::after {
     content: '';
     position: absolute;
     inset: 0;
@@ -437,7 +437,7 @@
     pointer-events: none;
 }
 
-.modal-close-btn:hover {
+.modal_close_btn:hover {
     color: #8be0e8;
     border-color: rgba(139, 224, 232, 0.6);
     background:
@@ -463,11 +463,11 @@
         inset 0 1px 0 rgba(139, 224, 232, 0.3);
     transform: scale(1.15);
     text-shadow: 0 0 10px rgba(139, 224, 232, 0.6), 0 1px 3px rgba(0, 0, 0, 0.6);
-    filter: url(#water-distort-modal-hover);
-    -webkit-filter: url(#water-distort-modal-hover);
+    filter: url(#water_distort_modal_hover);
+    -webkit-filter: url(#water_distort_modal_hover);
 }
 
-.modal-close-btn:active {
+.modal_close_btn:active {
     transform: scale(0.92);
     box-shadow: 
         0 1px 4px rgba(0, 0, 0, 0.5),
@@ -475,9 +475,9 @@
 }
 
 /* Close button water effect when clicked */
-.modal-close-btn.water-effect {
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+.modal_close_btn.water_effect {
+    filter: url(#water_distort_hover);
+    -webkit-filter: url(#water_distort_hover);
     animation: close-btn-water 1s ease-in-out;
 }
 
@@ -490,10 +490,10 @@
     }
 }
 
-/* After water-emerge class is removed, the SVG filter stays at scale=0
+/* After water_emerge class is removed, the SVG filter stays at scale=0
    (animated via the <animate> element in the SVG), so no visible distortion. */
 /* Project Header */
-.modal-project-header {
+.modal_project_header {
     margin-bottom: 25px;
     padding-bottom: 15px;
     border-bottom: 1px solid rgba(201, 168, 97, 0.3);
@@ -501,7 +501,7 @@
     z-index: 3;
 }
 
-.modal-project-title {
+.modal_project_title {
     font-family: 'Cinzel', serif;
     font-size: 1.5rem;
     /* Haupt-Titel: warmes, fast weißes Hellelfenbein für maximalen Kontrast.
@@ -512,7 +512,7 @@
     letter-spacing: 2px;
 }
 
-.modal-project-subtitle {
+.modal_project_subtitle {
     font-size: 0.9rem;
     color: var(--cyan-glow);
     letter-spacing: 1px;
@@ -520,7 +520,7 @@
 }
 
 /* Kategorie-Reiter (Tabs) oben im Modal - zeigen klar die aktuelle Kategorie */
-.modal-cat-tabs {
+.modal_cat_tabs {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
@@ -531,13 +531,13 @@
     z-index: 3;
 }
 
-.modal-cat-tab {
+.modal_cat_tab {
     padding: 6px 12px;
     border: 1px solid rgba(73, 146, 154, 0.4);
     border-radius: 20px;
     /* Dunkler, leicht transparenter Hintergrund-Chip fuer bessere Lesbarkeit
        auf dem bewegten Wasser-Shader-Hintergrund (nur inaktive Reiter).
-       Der aktive Reiter wird durch .modal-cat-tab.active uebergangen. */
+       Der aktive Reiter wird durch .modal_cat_tab.active uebergangen. */
     background: rgba(6, 20, 31, 0.9);
     color: rgba(139, 224, 232, 0.75);
     font-size: 0.68rem;
@@ -548,15 +548,15 @@
     transition: all 0.3s ease;
 }
 
-.modal-cat-tab:hover {
+.modal_cat_tab:hover {
     color: var(--cyan-glow);
     text-shadow: 0 0 20px rgba(73, 146, 154, 0.6), 0 0 40px rgba(73, 146, 154, 0.3);
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    filter: url(#water_distort_hover);
+    -webkit-filter: url(#water_distort_hover);
 }
 
 /* Aktiver Reiter = aktuelle Kategorie (gold hervorgehoben) */
-.modal-cat-tab.active {
+.modal_cat_tab.active {
     border-color: var(--gold-accent, #c9a861);
     color: var(--gold-accent, #c9a861);
     background: rgba(201, 168, 97, 0.18);
@@ -566,17 +566,17 @@
         inset 0 0 6px rgba(201, 168, 97, 0.3);
 }
 
-.modal-cat-tab.active:hover {
+.modal_cat_tab.active:hover {
     color: var(--cyan-glow);
     text-shadow: 0 0 20px rgba(73, 146, 154, 0.6), 0 0 40px rgba(73, 146, 154, 0.3);
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    filter: url(#water_distort_hover);
+    -webkit-filter: url(#water_distort_hover);
 }
 /* PROJEKT-AUSWAHL-LEISTE (Ebene 2): Projekte innerhalb der aktuellen Kategorie.
    Optisch klar von den Kategorie-Reitern (Ebene 1) und den Thumbnails (Ebene 3)
    unterscheidbar: rechteckige Karten in dunkel-blauem Panel mit Teal-Rahmen,
    aktiv mit goldenem Rahmen + Glow. */
-.modal-project-bar {
+.modal_project_bar {
     display: flex;
     gap: 10px;
     overflow-x: auto;
@@ -592,15 +592,15 @@
     scrollbar-color: rgba(201, 168, 97, 0.35) rgba(10, 28, 42, 0.4);
 }
 
-.modal-project-bar::-webkit-scrollbar {
+.modal_project_bar::-webkit-scrollbar {
     height: 4px;
 }
-.modal-project-bar::-webkit-scrollbar-thumb {
+.modal_project_bar::-webkit-scrollbar-thumb {
     background: rgba(201, 168, 97, 0.3);
     border-radius: 2px;
 }
 
-.modal-project-item {
+.modal_project_item {
     flex: 0 0 auto;
     width: 132px;
     background: #030a10;
@@ -614,14 +614,14 @@
     padding: 0;
 }
 
-.modal-project-item img {
+.modal_project_item img {
     width: 100%;
     height: 70px;
     object-fit: cover;
     display: block;
 }
 
-.modal-project-item-label {
+.modal_project_item_label {
     padding: 6px 8px;
     font-family: 'Cinzel', serif;
     font-size: 0.66rem;
@@ -637,16 +637,16 @@
     text-overflow: ellipsis;
 }
 
-.modal-project-item:hover {
+.modal_project_item:hover {
     border-color: rgba(139, 224, 232, 0.6);
     box-shadow: 0 0 10px rgba(201, 168, 97, 0.2);
     transform: translateY(-2px);
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    filter: url(#water_distort_hover);
+    -webkit-filter: url(#water_distort_hover);
 }
 
 /* Aktives Projekt in der Auswahl-Leiste: goldener Rahmen + Glow (kein Wasser-Filter) */
-.modal-project-item.active {
+.modal_project_item.active {
     border-color: var(--gold-accent, #c9a861);
     box-shadow:
         0 0 0 2px rgba(201, 168, 97, 0.5),
@@ -655,23 +655,23 @@
 }
 
 /* Aktives Projekt beim Hover: blau (cyan) wie die Navbar-Hover-Effekte */
-.modal-project-item.active:hover {
+.modal_project_item.active:hover {
     border-color: rgba(73, 146, 154, 0.7);
     box-shadow:
         0 0 0 2px rgba(73, 146, 154, 0.4),
         0 0 18px rgba(139, 224, 232, 0.45),
         inset 0 0 8px rgba(73, 146, 154, 0.25);
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    filter: url(#water_distort_hover);
+    -webkit-filter: url(#water_distort_hover);
 }
 
-.modal-project-item.active .modal-project-item-label {
+.modal_project_item.active .modal_project_item_label {
     color: var(--gold-accent, #c9a861);
     background: rgba(201, 168, 97, 0.12);
     text-shadow: 0 0 10px rgba(201, 168, 97, 0.5);
 }
 
-.modal-project-item.active:hover .modal-project-item-label {
+.modal_project_item.active:hover .modal_project_item_label {
     color: #8be0e8;
     background: rgba(73, 146, 154, 0.14);
     text-shadow: 0 0 10px rgba(139, 224, 232, 0.6);
@@ -679,7 +679,7 @@
 
 
 /* Projekt-Umschalter: nur sichtbar, wenn Kategorie mehrere Projekte hat */
-.modal-project-switch {
+.modal_project_switch {
     display: none; /* wird per JS auf 'flex' gesetzt */
     align-items: center;
     justify-content: center;
@@ -687,7 +687,7 @@
     margin-top: 12px;
 }
 
-.modal-project-switch-label {
+.modal_project_switch_label {
     font-size: 0.7rem;
     letter-spacing: 2px;
     color: rgba(139, 224, 232, 0.92);
@@ -695,8 +695,8 @@
     font-family: 'Cinzel', serif;
 }
 
-.modal-project-prev,
-.modal-project-next {
+.modal_project_prev,
+.modal_project_next {
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -714,21 +714,21 @@
     transition: all 0.3s ease;
 }
 
-.modal-project-prev:hover:not(:disabled),
-.modal-project-next:hover:not(:disabled) {
+.modal_project_prev:hover:not(:disabled),
+.modal_project_next:hover:not(:disabled) {
     border-color: rgba(139, 224, 232, 0.7);
     color: #8be0e8;
     background: rgba(139, 224, 232, 0.1);
     transform: translateY(-1px);
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    filter: url(#water_distort_hover);
+    -webkit-filter: url(#water_distort_hover);
 }
 
 /* Deaktiviert, wenn in der Kategorie nur EIN Projekt existiert */
-.modal-project-prev:disabled,
-.modal-project-next:disabled,
-.modal-project-prev.disabled,
-.modal-project-next.disabled {
+.modal_project_prev:disabled,
+.modal_project_next:disabled,
+.modal_project_prev.disabled,
+.modal_project_next.disabled {
     opacity: 0.3;
     cursor: not-allowed;
     border-color: rgba(201, 168, 97, 0.2);
@@ -739,8 +739,8 @@
 /* KATEGORIE-Pfeile (zwischen den Bereichen, z.B. Game Dev -> Sound).
    Deutlich unterscheidbar von den Projekt-Pfeilen: cyan/teal statt gold,
    doppelter Chevron, etwas weitere Positionierung am Rand. */
-.modal-cat-prev,
-.modal-cat-next {
+.modal_cat_prev,
+.modal_cat_next {
     width: 32px;
     height: 32px;
     border-radius: 8px;
@@ -759,8 +759,8 @@
     transition: all 0.3s ease;
 }
 
-.modal-cat-prev:hover:not(:disabled),
-.modal-cat-next:hover:not(:disabled) {
+.modal_cat_prev:hover:not(:disabled),
+.modal_cat_next:hover:not(:disabled) {
     border-color: rgba(139, 224, 232, 0.85);
     color: #ffffff;
     background: rgba(73, 146, 154, 0.25);
@@ -768,10 +768,10 @@
     transform: translateY(-1px);
 }
 
-.modal-cat-prev:disabled,
-.modal-cat-next:disabled,
-.modal-cat-prev.disabled,
-.modal-cat-next.disabled {
+.modal_cat_prev:disabled,
+.modal_cat_next:disabled,
+.modal_cat_prev.disabled,
+.modal_cat_next.disabled {
     opacity: 0.3;
     cursor: not-allowed;
     border-color: rgba(73, 146, 154, 0.2);
@@ -780,7 +780,7 @@
 }
 
 /* Project Image */
-.modal-project-image {
+.modal_project_image {
     width: 100%;
     height: 300px;
     object-fit: cover;
@@ -792,7 +792,7 @@
 }
 
 /* Project Description */
-.modal-project-description {
+.modal_project_description {
     font-size: 0.95rem;
     line-height: 1.7;
     color: var(--text-light);
@@ -803,13 +803,13 @@
 }
 
 /* Skills Section */
-.modal-skills-section {
+.modal_skills_section {
     margin-bottom: 20px;
     position: relative;
     z-index: 3;
 }
 
-.modal-skills-title {
+.modal_skills_title {
     font-family: 'Cinzel', serif;
     font-size: 1rem;
     color: var(--gold-accent);
@@ -819,7 +819,7 @@
 }
 
 /* LABEL ÜBER DER PROJEKT-AUSWAHL-LEISTE (sichtbar nur, wenn Projekte existieren) */
-.modal-project-bar-label {
+.modal_project_bar_label {
     font-family: 'Cinzel', serif;
     font-size: 1rem;
     color: var(--gold-accent);
@@ -830,13 +830,13 @@
     z-index: 3;
 }
 
-.modal-skills-grid {
+.modal_skills_grid {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
 }
 
-.modal-skill-tag {
+.modal_skill_tag {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -850,19 +850,19 @@
     transition: all 0.4s ease;
     position: relative;
     z-index: 3;
-    animation: modal-skill-float 7s ease-in-out infinite;
+    animation: modal_skill_float 7s ease-in-out infinite;
     animation-delay: calc(var(--skill-index, 0) * 0.5s);
 }
 
-.modal-skill-tag:nth-child(odd) {
+.modal_skill_tag:nth-child(odd) {
     animation-delay: 0s;
 }
 
-.modal-skill-tag:nth-child(even) {
+.modal_skill_tag:nth-child(even) {
     animation-delay: 1s;
 }
 
-@keyframes modal-skill-float {
+@keyframes modal_skill_float {
     0%, 100% {
         transform: translateY(0);
     }
@@ -871,41 +871,41 @@
     }
 }
 
-.modal-skill-tag:hover {
+.modal_skill_tag:hover {
     border-color: rgba(139, 224, 232, 0.6);
     color: #8be0e8;
-    filter: url(#water-distort-modal-hover);
-    -webkit-filter: url(#water-distort-modal-hover);
+    filter: url(#water_distort_modal_hover);
+    -webkit-filter: url(#water_distort_modal_hover);
 }
 
-.modal-skill-tag i {
+.modal_skill_tag i {
     font-size: 1rem;
     color: var(--cyan-glow);
 }
 
-.modal-skill-tag.active {
+.modal_skill_tag.active {
     border-color: rgba(139, 224, 232, 0.7);
     background: rgba(10, 22, 40, 0.9);
     color: #8be0e8;
-    filter: url(#water-distort-modal-hover);
-    -webkit-filter: url(#water-distort-modal-hover);
+    filter: url(#water_distort_modal_hover);
+    -webkit-filter: url(#water_distort_modal_hover);
 }
 
-.modal-skill-tag.active i {
+.modal_skill_tag.active i {
     color: #8be0e8;
 }
 
 /* Scrollbar - Underwater Brass Style */
-.modal-content::-webkit-scrollbar {
+.modal_content::-webkit-scrollbar {
     width: 8px;
 }
 
-.modal-content::-webkit-scrollbar-track {
+.modal_content::-webkit-scrollbar-track {
     background: rgba(10, 22, 40, 0.8);
     border-radius: 4px;
 }
 
-.modal-content::-webkit-scrollbar-thumb {
+.modal_content::-webkit-scrollbar-thumb {
     background: linear-gradient(145deg, 
         #8a7340 0%,
         #6b5828 25%,
@@ -917,7 +917,7 @@
     border: 1px solid rgba(201, 168, 97, 0.3);
 }
 
-.modal-content::-webkit-scrollbar-thumb:hover {
+.modal_content::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(145deg, 
         #c9a861 0%,
         #8a7340 25%,
@@ -929,7 +929,7 @@
 }
 
 /* Firefox scrollbar */
-.modal-content {
+.modal_content {
     scrollbar-width: thin;
     scrollbar-color: var(--gold-accent) rgba(10, 22, 40, 0.8);
 }
@@ -938,7 +938,7 @@
 /* WATER THEMED BACKGROUNDS PER PROJECT     */
 /* ========================================= */
 
-.modal-bg-abyss {
+.modal_bg_abyss {
     background: linear-gradient(to bottom,
         #0a2830 0%,
         #061820 50%,
@@ -946,7 +946,7 @@
     );
 }
 
-.modal-bg-teal {
+.modal_bg_teal {
     background: linear-gradient(to bottom,
         #0d3540 0%,
         #082530 50%,
@@ -954,7 +954,7 @@
     );
 }
 
-.modal-bg-ocean {
+.modal_bg_ocean {
     background: linear-gradient(to bottom,
         #0c2a42 0%,
         #071d30 50%,
@@ -962,7 +962,7 @@
     );
 }
 
-.modal-bg-bio {
+.modal_bg_bio {
     background: linear-gradient(to bottom,
         #0a2830 0%,
         #061a24 50%,
@@ -970,7 +970,7 @@
     );
 }
 
-.modal-bg-amber {
+.modal_bg_amber {
     background: linear-gradient(to bottom,
         #2a2412 0%,
         #18150b 50%,
@@ -978,7 +978,7 @@
     );
 }
 
-.modal-bg-rose {
+.modal_bg_rose {
     background: linear-gradient(to bottom,
         #2a1020 0%,
         #180910 50%,
@@ -991,51 +991,51 @@
 /* ========================================= */
 
 @media (min-width: 2056px) {
-    .modal-project-title { font-size: 2rem; letter-spacing: 3px; }
-    .modal-project-subtitle { font-size: 1.1rem; }
-    .modal-project-image { height: 400px; }
-    .modal-project-description { font-size: 1.1rem; max-width: 75ch; line-height: 1.8; }
-    .modal-skills-title { font-size: 1.2rem; }
-    .modal-skill-tag { font-size: 0.95rem; padding: 10px 18px; }
-    .modal-skill-tag i { font-size: 1.2rem; }
-    .modal-content { padding: 40px; }
-    .modal-close-btn { width: 44px; height: 44px; font-size: 1rem; top: 22px; right: 22px; }
-    .modal-prev-btn,
-    .modal-next-btn { width: 64px; height: 64px; font-size: 2.2rem; }
-    .modal-prev-btn { left: -36px; }
-    .modal-next-btn { right: -36px; }
+    .modal_project_title { font-size: 2rem; letter-spacing: 3px; }
+    .modal_project_subtitle { font-size: 1.1rem; }
+    .modal_project_image { height: 400px; }
+    .modal_project_description { font-size: 1.1rem; max-width: 75ch; line-height: 1.8; }
+    .modal_skills_title { font-size: 1.2rem; }
+    .modal_skill_tag { font-size: 0.95rem; padding: 10px 18px; }
+    .modal_skill_tag i { font-size: 1.2rem; }
+    .modal_content { padding: 40px; }
+    .modal_close_btn { width: 44px; height: 44px; font-size: 1rem; top: 22px; right: 22px; }
+    .modal_prev_btn,
+    .modal_next_btn { width: 64px; height: 64px; font-size: 2.2rem; }
+    .modal_prev_btn { left: -36px; }
+    .modal_next_btn { right: -36px; }
 }
 
 @media (min-width: 2560px) {
-    .modal-project-title { font-size: 2.4rem; letter-spacing: 4px; }
-    .modal-project-subtitle { font-size: 1.3rem; }
-    .modal-project-image { height: 480px; }
-    .modal-project-description { font-size: 1.2rem; max-width: 80ch; line-height: 1.9; }
-    .modal-skills-title { font-size: 1.4rem; }
-    .modal-skill-tag { font-size: 1.05rem; padding: 12px 22px; }
-    .modal-skill-tag i { font-size: 1.3rem; }
-    .modal-content { padding: 50px; }
-    .modal-close-btn { width: 50px; height: 50px; font-size: 1.1rem; top: 26px; right: 26px; }
-    .modal-prev-btn,
-    .modal-next-btn { width: 72px; height: 72px; font-size: 2.5rem; }
-    .modal-prev-btn { left: -40px; }
-    .modal-next-btn { right: -40px; }
+    .modal_project_title { font-size: 2.4rem; letter-spacing: 4px; }
+    .modal_project_subtitle { font-size: 1.3rem; }
+    .modal_project_image { height: 480px; }
+    .modal_project_description { font-size: 1.2rem; max-width: 80ch; line-height: 1.9; }
+    .modal_skills_title { font-size: 1.4rem; }
+    .modal_skill_tag { font-size: 1.05rem; padding: 12px 22px; }
+    .modal_skill_tag i { font-size: 1.3rem; }
+    .modal_content { padding: 50px; }
+    .modal_close_btn { width: 50px; height: 50px; font-size: 1.1rem; top: 26px; right: 26px; }
+    .modal_prev_btn,
+    .modal_next_btn { width: 72px; height: 72px; font-size: 2.5rem; }
+    .modal_prev_btn { left: -40px; }
+    .modal_next_btn { right: -40px; }
 }
 
 @media (min-width: 3840px) {
-    .modal-project-title { font-size: 3rem; letter-spacing: 5px; }
-    .modal-project-subtitle { font-size: 1.5rem; }
-    .modal-project-image { height: 600px; }
-    .modal-project-description { font-size: 1.4rem; max-width: 85ch; line-height: 2; }
-    .modal-skills-title { font-size: 1.6rem; }
-    .modal-skill-tag { font-size: 1.15rem; padding: 14px 26px; }
-    .modal-skill-tag i { font-size: 1.5rem; }
-    .modal-content { padding: 60px; }
-    .modal-close-btn { width: 56px; height: 56px; font-size: 1.2rem; top: 30px; right: 30px; }
-    .modal-prev-btn,
-    .modal-next-btn { width: 84px; height: 84px; font-size: 3rem; }
-    .modal-prev-btn { left: -46px; }
-    .modal-next-btn { right: -46px; }
+    .modal_project_title { font-size: 3rem; letter-spacing: 5px; }
+    .modal_project_subtitle { font-size: 1.5rem; }
+    .modal_project_image { height: 600px; }
+    .modal_project_description { font-size: 1.4rem; max-width: 85ch; line-height: 2; }
+    .modal_skills_title { font-size: 1.6rem; }
+    .modal_skill_tag { font-size: 1.15rem; padding: 14px 26px; }
+    .modal_skill_tag i { font-size: 1.5rem; }
+    .modal_content { padding: 60px; }
+    .modal_close_btn { width: 56px; height: 56px; font-size: 1.2rem; top: 30px; right: 30px; }
+    .modal_prev_btn,
+    .modal_next_btn { width: 84px; height: 84px; font-size: 3rem; }
+    .modal_prev_btn { left: -46px; }
+    .modal_next_btn { right: -46px; }
 }
 /* ========================================= */
 /* NEW MODAL CONTENT - MEDIA GALLERY          */
@@ -1043,7 +1043,7 @@
 /* ========================================= */
 
 /* Kategorie-Pill im Header */
-.modal-project-category {
+.modal_project_category {
     display: inline-block;
     margin-bottom: 10px;
     padding: 4px 12px;
@@ -1059,7 +1059,7 @@
 }
 
 /* HAUPT-MEDIA-VIEWER */
-.modal-media-viewer {
+.modal_media_viewer {
     position: relative;
     margin-bottom: 18px;
     border: 3px solid var(--gold-accent, #c9a861);
@@ -1070,7 +1070,7 @@
     box-shadow: 0 0 24px rgba(201, 168, 97, 0.18);
 }
 
-.modal-media-stage {
+.modal_media_stage {
     position: relative;
     width: 100%;
     height: 420px;
@@ -1083,12 +1083,12 @@
 }
 
 /* Media-Fläche: gleicher Wasser-Distort-Hover wie auf anderen Elementen der Seite */
-.modal-media-stage:hover {
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+.modal_media_stage:hover {
+    filter: url(#water_distort_hover);
+    -webkit-filter: url(#water_distort_hover);
 }
 
-.modal-media-image {
+.modal_media_image {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -1097,7 +1097,7 @@
     display: block;
 }
 
-.modal-media-video {
+.modal_media_video {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -1108,7 +1108,7 @@
 }
 
 /* Zentrierter Play-Button-Overlay */
-.modal-media-play {
+.modal_media_play {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -1135,15 +1135,15 @@
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.modal-media-play:hover {
+.modal_media_play:hover {
     transform: translate(-50%, -50%) scale(1.12);
     color: #8be0e8;
     border-color: rgba(139, 224, 232, 0.7);
 }
 
 /* Runde Pfeil-Buttons im Viewer (Vor/Zurueck) */
-.modal-media-prev,
-.modal-media-next {
+.modal_media_prev,
+.modal_media_next {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -1171,18 +1171,18 @@
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.modal-media-prev { left: -30px; }
-.modal-media-next { right: -30px; }
+.modal_media_prev { left: -30px; }
+.modal_media_next { right: -30px; }
 
-.modal-media-prev:hover,
-.modal-media-next:hover {
+.modal_media_prev:hover,
+.modal_media_next:hover {
     color: #8be0e8;
     border-color: rgba(139, 224, 232, 0.7);
     transform: translateY(-50%) scale(1.1);
 }
 
 /* THUMBNAIL-LEISTE */
-.modal-thumb-bar {
+.modal_thumb_bar {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -1191,7 +1191,7 @@
     z-index: 3;
 }
 
-.modal-thumb {
+.modal_thumb {
     position: relative;
     width: 96px;
     height: 72px;
@@ -1204,22 +1204,22 @@
     transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 
-.modal-thumb img {
+.modal_thumb img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
 }
 
-.modal-thumb:hover {
+.modal_thumb:hover {
     transform: translateY(-2px);
     border-color: rgba(139, 224, 232, 0.6);
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    filter: url(#water_distort_hover);
+    -webkit-filter: url(#water_distort_hover);
 }
 
 /* Aktives Medium: goldener Rahmen + Glow */
-.modal-thumb.active {
+.modal_thumb.active {
     border-color: var(--gold-accent, #c9a861);
     box-shadow:
         0 0 12px rgba(201, 168, 97, 0.6),
@@ -1227,7 +1227,7 @@
 }
 
 /* Play-Badge auf Video-Thumbnails */
-.modal-thumb-badge {
+.modal_thumb_badge {
     position: absolute;
     right: 3px;
     bottom: 3px;
@@ -1245,7 +1245,7 @@
 }
 
 /* ZWEI-SPALTEN-BEREICH */
-.modal-info-grid {
+.modal_info_grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 26px;
@@ -1254,12 +1254,12 @@
     z-index: 3;
 }
 
-.modal-description-col .modal-project-description {
+.modal_description_col .modal_project_description {
     margin-bottom: 0;
     max-width: none;
 }
 
-.modal-contribution-title {
+.modal_contribution_title {
     font-family: 'Cinzel', serif;
     font-size: 1rem;
     color: var(--gold-accent, #c9a861);
@@ -1268,13 +1268,13 @@
     text-transform: uppercase;
 }
 
-.modal-contribution-list {
+.modal_contribution_list {
     margin: 0;
     padding: 0;
     list-style: none;
 }
 
-.modal-contribution-list li {
+.modal_contribution_list li {
     position: relative;
     padding-left: 20px;
     margin-bottom: 9px;
@@ -1283,7 +1283,7 @@
     line-height: 1.6;
 }
 
-.modal-contribution-list li::before {
+.modal_contribution_list li::before {
     content: '';
     position: absolute;
     left: 2px;
@@ -1296,7 +1296,7 @@
 }
 
 /* TOOLS & SKILLS - Haupttool hervorgehoben */
-.modal-skill-tag.main {
+.modal_skill_tag.main {
     border-color: rgba(201, 168, 97, 0.85);
     color: var(--gold-accent, #c9a861);
     background: rgba(201, 168, 97, 0.12);
@@ -1305,22 +1305,22 @@
         inset 0 0 8px rgba(201, 168, 97, 0.25);
 }
 
-.modal-skill-tag.main i {
+.modal_skill_tag.main i {
     color: var(--gold-accent, #c9a861);
 }
 
 /* Responsive: zwei Spalten stapeln */
 @media (max-width: 720px) {
-    .modal-info-grid {
+    .modal_info_grid {
         grid-template-columns: 1fr;
         gap: 18px;
     }
-    .modal-media-stage { height: 260px; }
-    .modal-thumb { width: 72px; height: 54px; }
-    .modal-project-item { width: 100px; }
-    .modal-project-item img { height: 56px; }
+    .modal_media_stage { height: 260px; }
+    .modal_thumb { width: 72px; height: 54px; }
+    .modal_project_item { width: 100px; }
+    .modal_project_item img { height: 56px; }
     /* Lightbox-Größe (Steuerelement-Positionierung siehe Lightbox-Abschnitt) */
-    .modal-lightbox { max-width: 95vw; max-height: 80vh; }
+    .modal_lightbox { max-width: 95vw; max-height: 80vh; }
 }
 
 /* ========================================= */
@@ -1329,7 +1329,7 @@
 /* goldenen Rahmen-/Pfeil-Styles (wie im Modal) */
 /* ========================================= */
 
-.modal-lightbox-overlay {
+.modal_lightbox_overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -1343,11 +1343,11 @@
     backdrop-filter: blur(3px);
 }
 
-.modal-lightbox-overlay.active {
+.modal_lightbox_overlay.active {
     display: flex;
 }
 
-.modal-lightbox {
+.modal_lightbox {
     position: relative;
     /* Feste, komfortable Bildfläche – auch für kleine Platzhalter-/Realbilder
        groß genug. Das Medium wächst per object-fit in diese Fläche. */
@@ -1365,8 +1365,8 @@
     justify-content: center;
 }
 
-.modal-lightbox-image,
-.modal-lightbox-video {
+.modal_lightbox_image,
+.modal_lightbox_video {
     width: 100%;
     height: 100%;
     max-width: none;
@@ -1375,22 +1375,22 @@
     border-radius: 6px;
 }
 
-.modal-lightbox-image {
+.modal_lightbox_image {
     display: none;
 }
 
-.modal-lightbox-video {
+.modal_lightbox_video {
     display: none;
     background: #030a10;
     border-radius: 4px;
 }
 
-/* X-Button oben rechts – nutzt dieselbe modal-close-btn-Klasse
+/* X-Button oben rechts – nutzt dieselbe modal_close_btn-Klasse
    wie das Haupt-Modal für visuelle Konsistenz */
 
 /* Runde Pfeil-Buttons in der Lightbox (identischer Stil zum Media-Viewer) */
-.modal-lightbox-prev,
-.modal-lightbox-next {
+.modal_lightbox_prev,
+.modal_lightbox_next {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -1420,13 +1420,13 @@
 
 /* Pfeile zentriert AUF der goldenen Kante der Lightbox-Box (nicht innen über dem Bild).
    Halber Button ragt über die Kante hinaus - gleicht dem Media-Viewer-Rand-Design. */
-.modal-lightbox-prev { left: -23px; }
-.modal-lightbox-next { right: -23px; }
+.modal_lightbox_prev { left: -23px; }
+.modal_lightbox_next { right: -23px; }
 
 /* X-Button (Lightbox): zentriert auf der oberen rechten Kante der Box.
    Eigene Größe, damit die Kanten-Zentrierung (halber Button auf dem Rahmen)
    in allen Breakpoints stimmig bleibt. */
-.modal-lightbox-overlay .modal-close-btn {
+.modal_lightbox_overlay .modal_close_btn {
     width: 36px;
     height: 36px;
     font-size: 0.85rem;
@@ -1434,8 +1434,8 @@
     right: -18px;
 }
 
-.modal-lightbox-prev:hover,
-.modal-lightbox-next:hover {
+.modal_lightbox_prev:hover,
+.modal_lightbox_next:hover {
     color: #8be0e8;
     border-color: rgba(139, 224, 232, 0.7);
     transform: translateY(-50%) scale(1.1);
@@ -1443,27 +1443,27 @@
 
 /* Größere Pfeile auf hohen Auflösungen */
 @media (min-width: 1756px) {
-    .modal-lightbox-prev,
-    .modal-lightbox-next {
+    .modal_lightbox_prev,
+    .modal_lightbox_next {
         width: 54px;
         height: 54px;
         font-size: 1.9rem;
     }
-    .modal-lightbox-prev { left: -27px; }
-    .modal-lightbox-next { right: -27px; }
+    .modal_lightbox_prev { left: -27px; }
+    .modal_lightbox_next { right: -27px; }
 }
 
 /* Lightbox-Steuerelemente an der Kante – Tablet (Breakpoints 768–1200px) */
 @media (max-width: 1200px) {
-    .modal-lightbox-prev,
-    .modal-lightbox-next {
+    .modal_lightbox_prev,
+    .modal_lightbox_next {
         width: 40px;
         height: 40px;
         font-size: 1.3rem;
     }
-    .modal-lightbox-prev { left: -20px; }
-    .modal-lightbox-next { right: -20px; }
-    .modal-lightbox-overlay .modal-close-btn {
+    .modal_lightbox_prev { left: -20px; }
+    .modal_lightbox_next { right: -20px; }
+    .modal_lightbox_overlay .modal_close_btn {
         width: 32px;
         height: 32px;
         font-size: 0.75rem;
@@ -1474,15 +1474,15 @@
 
 /* Lightbox-Steuerelemente an der Kante – Mobile */
 @media (max-width: 768px) {
-    .modal-lightbox-prev,
-    .modal-lightbox-next {
+    .modal_lightbox_prev,
+    .modal_lightbox_next {
         width: 38px;
         height: 38px;
         font-size: 1.25rem;
     }
-    .modal-lightbox-prev { left: -19px; }
-    .modal-lightbox-next { right: -19px; }
-    .modal-lightbox-overlay .modal-close-btn {
+    .modal_lightbox_prev { left: -19px; }
+    .modal_lightbox_next { right: -19px; }
+    .modal_lightbox_overlay .modal_close_btn {
         width: 30px;
         height: 30px;
         font-size: 0.7rem;

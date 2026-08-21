@@ -140,8 +140,8 @@
 .main-cat-item:hover {
     color: var(--cyan-glow);
     text-shadow: 0 0 20px rgba(73, 146, 154, 0.6), 0 0 40px rgba(73, 146, 154, 0.3);
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    filter: url(#water_distort_hover);
+    -webkit-filter: url(#water_distort_hover);
 }
 
 .main-cat-item.active {
@@ -157,8 +157,8 @@
 .main-cat-item.active:hover {
     color: var(--cyan-glow);
     text-shadow: 0 0 20px rgba(73, 146, 154, 0.6), 0 0 40px rgba(73, 146, 154, 0.3);
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    filter: url(#water_distort_hover);
+    -webkit-filter: url(#water_distort_hover);
 }
 
 
@@ -662,8 +662,8 @@
             transparent 80%);
 
     transform: scale(1.2);
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    filter: url(#water_distort_hover);
+    -webkit-filter: url(#water_distort_hover);
 }
 
 .carousel-arrow:hover::before {

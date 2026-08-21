@@ -3,9 +3,9 @@
 /* Auto-rotate + click + bubbles + 3D Tilt */
 /* ========================================= */
 
-import { cleanupRegistry, debounce, sizeCanvas } from '../utils/helpers.js';
+import { cleanupRegistry, debounce, sizeCanvas, bindHorizontalSwipe } from '../utils/helpers.js';
 import { registerAnimation } from '../utils/animation_manager.js';
-import { projects, getProjectSubtitle, getProjectCover, getCategories, getCategoryLabel, getFirstProjectOfCategory, applyImageFallback } from '../constants/projects.js?v=5';
+import { projects, getProjectSubtitle, getProjectCover, getCategories, getCategoryLabel, getFirstProjectOfCategory, getOrderedProjectIndices, applyImageFallback } from '../constants/projects.js?v=5';
 import { getCurrentLang } from './language.js';
 
 let modalOpenCallback = null;
@@ -15,7 +15,11 @@ let isAutoCycling = false;
 let isPaused = false;
 let activeMainCategory = null;
 let TOTAL_SLIDES = 0;
-const AUTO_INTERVAL = 9000;
+const AUTO_INTERVAL = 9000;         // Auto-Rotation nach 9s ohne Interaktion
+const AUTO_RESUME_DELAY_MS = 8000;  // Auto-Rotation nach Pause wieder aufnehmen
+const RESIZE_BOOT_DELAY_MS = 100;   // Erster Canvas-Resize nach dem Laden
+const BUBBLE_COUNT = 30;            // Blasen im Portal-Canvas
+const PARTICLE_COUNT = 40;          // Schwebepartikel im Portal-Canvas
 
 /* ---- 3D Tilt state ---- */
 let tiltActive = false;
@@ -39,14 +43,23 @@ function buildPortalSlides() {
     const controls = carousel.querySelector('.carousel-controls');
     const lang = getCurrentLang();
 
-    projects.forEach((project, i) => {
+    // Projekt-Karten kategorie-geordnet aufbauen (gleiche Reihenfolge wie im
+    // Kategorie-Register: Game Dev -> Coding Web -> 3D -> Concept -> Sound -> Other).
+    // Pro Kategorie wird nur das ERSTE Projekt angezeigt (ein Projekt je Bereich).
+    const orderedProjectIndices = getOrderedProjectIndices();
+
+    orderedProjectIndices.forEach((projectIdx, slideIndex) => {
+        const project = projects[projectIdx];
+        if (!project) return;
+
         const slide = document.createElement('div');
         slide.className = 'portal-slide';
-        slide.dataset.index = String(i);
-        slide.dataset.project = String(i);
+        // data-index = Position im Carousel; data-project = Index in projects[]
+        slide.dataset.index = String(slideIndex);
+        slide.dataset.project = String(projectIdx);
 
         const img = document.createElement('img');
-        img.src = getProjectCover(i) || '';
+        img.src = getProjectCover(projectIdx) || '';
         img.alt = project.title || '';
         img.loading = 'lazy';
         img.decoding = 'async';
@@ -72,7 +85,7 @@ function buildPortalSlides() {
         const h2 = document.createElement('h2');
         h2.textContent = project.title;
         const p = document.createElement('p');
-        p.textContent = getProjectSubtitle(i, lang);
+        p.textContent = getProjectSubtitle(projectIdx, lang);
         overlay.appendChild(h2);
         overlay.appendChild(p);
         slide.appendChild(overlay);
@@ -86,13 +99,14 @@ function buildPortalSlides() {
  */
 function renderPortalLabels() {
     const lang = getCurrentLang();
-    document.querySelectorAll('.portal-slide').forEach((slide, i) => {
-        const project = projects[i];
+    document.querySelectorAll('.portal-slide').forEach((slide) => {
+        const projectIdx = parseInt(slide.dataset.project);
+        const project = projects[projectIdx];
         if (!project) return;
         const h2 = slide.querySelector('.slide-overlay h2');
         const p = slide.querySelector('.slide-overlay p');
         if (h2) h2.textContent = project.title;
-        if (p) p.textContent = getProjectSubtitle(i, lang);
+        if (p) p.textContent = getProjectSubtitle(projectIdx, lang);
     });
 }
 
@@ -170,10 +184,7 @@ function findSlidePositionByProject(projectIdx) {
 function navigateToMainCategory(category) {
     const idx = getFirstProjectOfCategory(category);
     if (idx === null || idx === undefined) return;
-    const pos = findSlidePositionByProject(idx);
-    if (pos >= 0) {
-        goToPortalSlide(pos);
-    }
+    goToPortalSlide(idx);
     // Aktiver Tab wird ueber syncMainCategoryTab() (in updatePositions)
     // passend zum zentrierten Slide gesetzt.
     setActiveMainCategory(category);
@@ -198,11 +209,12 @@ function syncMainCategoryTab() {
 }
 
 /**
- * Navigate the portal carousel to a specific slide index
- * @param {number} index - The slide index to navigate to
+ * Navigate the portal carousel to the slide belonging to a project index.
+ * @param {number} projectIndex - Index in projects[] (aus Hero-Carousel / Kategorie-Tabs)
  */
-export function goToPortalSlide(index) {
-    if (index < 0 || index >= TOTAL_SLIDES) return;
+export function goToPortalSlide(projectIndex) {
+    const pos = findSlidePositionByProject(projectIndex);
+    if (pos < 0 || pos >= TOTAL_SLIDES) return;
     
     const slides = document.querySelectorAll('.portal-slide');
     const dots = document.querySelectorAll('.c-dot');
@@ -210,7 +222,7 @@ export function goToPortalSlide(index) {
     
     pauseAuto();
     detachTilt();
-    currentCenter = index;
+    currentCenter = pos;
     updatePositions(slides, dots);
     resumeAutoAfterDelay();
 }
@@ -398,6 +410,31 @@ function initCarousel() {
     // Set TOTAL_SLIDES dynamically
     TOTAL_SLIDES = slides.length;
 
+    let cleanupListeners = [];
+
+    // Touch-Swipe: nach links zur naechsten Karte, nach rechts zur vorherigen
+    const carouselEl = document.querySelector('.portal-carousel');
+    if (carouselEl && slides.length > 0) {
+        const cleanupSwipe = bindHorizontalSwipe(
+            carouselEl,
+            () => {
+                pauseAuto();
+                detachTilt();
+                currentCenter = (currentCenter + 1) % TOTAL_SLIDES;
+                updatePositions(slides, dots);
+                resumeAutoAfterDelay();
+            },
+            () => {
+                pauseAuto();
+                detachTilt();
+                currentCenter = (currentCenter - 1 + TOTAL_SLIDES) % TOTAL_SLIDES;
+                updatePositions(slides, dots);
+                resumeAutoAfterDelay();
+            }
+        );
+        cleanupListeners.push(cleanupSwipe);
+    }
+
     // Set ARIA labels on slides
     slides.forEach((slide, i) => {
         slide.setAttribute('role', 'button');
@@ -407,8 +444,6 @@ function initCarousel() {
 
     // Set initial positions
     updatePositions(slides, dots);
-
-    let cleanupListeners = [];
 
     // Navigation buttons
     if (prevBtn) {
@@ -522,7 +557,7 @@ function initCarousel() {
     cleanupListeners.push(() => document.removeEventListener('keydown', onEscKey));
 
     // Modal overlay click for close
-    const overlay = document.querySelector('.project-modal-overlay');
+    const overlay = document.querySelector('.project_modal_overlay');
     if (overlay) {
         const onOverlayClick = (e) => {
             if (e.target === overlay) onModalClose();
@@ -532,7 +567,7 @@ function initCarousel() {
     }
 
     // Close button
-    const closeBtn = document.querySelector('.modal-close-btn');
+    const closeBtn = document.querySelector('.modal_close_btn');
     if (closeBtn) {
         const onCloseClick = () => onModalClose();
         closeBtn.addEventListener('click', onCloseClick);
@@ -668,7 +703,7 @@ function resumeAutoAfterDelay() {
             const dots = document.querySelectorAll('.c-dot');
             startAuto(slides, dots);
         }
-    }, 8000);
+    }, AUTO_RESUME_DELAY_MS);
 }
 
 /* ========================================= */
@@ -716,14 +751,14 @@ function initBubbles() {
     function resize() {
         const rect = section.getBoundingClientRect();
         // Cap backing store at 2560px to prevent explosion on large viewports
-        const result = sizeCanvas(canvas, rect.width, rect.height, 2560);
+        const result = sizeCanvas(canvas, rect.width, rect.height);
         canvas.style.width = rect.width + 'px';
         canvas.style.height = rect.height + 'px';
     }
 
     const debouncedResize = debounce(resize, 150);
     window.addEventListener('resize', debouncedResize);
-    setTimeout(resize, 100);
+    setTimeout(resize, RESIZE_BOOT_DELAY_MS);
 
     function initParticles() {
         bubbles = [];
@@ -731,7 +766,7 @@ function initBubbles() {
         const w = canvas.width;
         const h = canvas.height;
 
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < BUBBLE_COUNT; i++) {
             bubbles.push({
                 x: Math.random() * w, y: Math.random() * h,
                 r: 1 + Math.random() * 4, speed: 0.15 + Math.random() * 0.4,
@@ -742,7 +777,7 @@ function initBubbles() {
             });
         }
 
-        for (let i = 0; i < 40; i++) {
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
             const isGold = Math.random() > 0.5;
             particles.push({
                 x: Math.random() * w, y: Math.random() * h,

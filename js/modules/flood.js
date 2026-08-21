@@ -43,7 +43,7 @@ export function initFlood() {
         const w = section.offsetWidth;
         const h = section.offsetHeight;
         // Cap backing store at 2560px to prevent explosion on large viewports
-        const result = sizeCanvas(canvas, w, h, 2560);
+        const result = sizeCanvas(canvas, w, h);
         canvas.style.width = w + 'px';
         canvas.style.height = h + 'px';
     }
@@ -193,3 +193,4 @@ export function initFlood() {
         canvas.remove();
     };
 }
+

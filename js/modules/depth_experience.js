@@ -52,6 +52,15 @@ function initScrollHandlers() {
     const fog = document.querySelector('.depth-fog-overlay');
     const vignette = document.querySelector('.depth-vignette');
 
+/* ---- Scroll-Starke (normalisiert 0..1) - Schwellwerte & Rampen ---- */
+    const FOG_ACTIVE_AT = 0.02;       // ab diesem Fortschritt wird der Fog sichtbar
+    const FOG_FULL_AT = 0.62;         // (0.02 + 0.6) ab hier ist der Fog voll da
+    const VIGNETTE_ACTIVE_AT = 0.03;  // ab diesem Fortschritt wird die Vignette sichtbar
+    const VIGNETTE_FULL_AT = 0.35;    // (0.03 + 0.32) ab hier ist die Vignette voll da
+    const FOG_MAX_OPACITY = 0.7;
+    const BODY_BLUE_BASE = 9;         // Blau-Basiswert des Hintergrund-Farbverlaufs
+    const BODY_BLUE_RANGE = 30;       // Zuwachs pro 1.0 Scroll-Fortschritt
+
     function onScroll() {
         if (!ticking) {
             requestAnimationFrame(update);
@@ -67,9 +76,9 @@ function initScrollHandlers() {
         const scrollPercent = maxScroll > 0 ? scrollY / maxScroll : 0;
 
         if (fog) {
-            if (scrollPercent > 0.02) {
+            if (scrollPercent > FOG_ACTIVE_AT) {
                 fog.classList.add('active');
-                fog.style.opacity = Math.min(0.7, (scrollPercent - 0.02) / 0.6);
+                fog.style.opacity = Math.min(FOG_MAX_OPACITY, (scrollPercent - FOG_ACTIVE_AT) / (FOG_FULL_AT - FOG_ACTIVE_AT));
             } else {
                 fog.classList.remove('active');
                 fog.style.opacity = 0;
@@ -77,9 +86,9 @@ function initScrollHandlers() {
         }
 
         if (vignette) {
-            if (scrollPercent > 0.03) {
+            if (scrollPercent > VIGNETTE_ACTIVE_AT) {
                 vignette.classList.add('active');
-                vignette.style.opacity = Math.min(1, (scrollPercent - 0.03) / 0.32);
+                vignette.style.opacity = Math.min(1, (scrollPercent - VIGNETTE_ACTIVE_AT) / (VIGNETTE_FULL_AT - VIGNETTE_ACTIVE_AT));
             } else {
                 vignette.classList.remove('active');
                 vignette.style.opacity = 0;
@@ -88,7 +97,7 @@ function initScrollHandlers() {
 
         lastScrollPercent = scrollPercent;
 
-        const b = Math.floor(9 + scrollPercent * 30);
+        const b = Math.floor(BODY_BLUE_BASE + scrollPercent * BODY_BLUE_RANGE);
         document.body.style.backgroundColor = `rgb(3, 8, ${b})`;
     }
 

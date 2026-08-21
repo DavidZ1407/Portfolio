@@ -181,7 +181,7 @@
     }
 }
 
-/* Hover uses the water-distortion effect like the other site elements */
+/* Hover uses the water_distortion effect like the other site elements */
 .descend_btn:hover {
     color: var(--cyan-glow);
     border-color: var(--cyan-glow);
@@ -190,8 +190,8 @@
         0 0 40px rgba(73, 146, 154, 0.4),
         0 0 60px rgba(73, 146, 154, 0.2);
     transform: translateY(-3px);
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    filter: url(#water_distort_hover);
+    -webkit-filter: url(#water_distort_hover);
 }
 
 /* Right Column */
@@ -469,8 +469,8 @@
         inset 0 0 20px rgba(139, 224, 232, 0.15);
     transform: translateY(-5px);
     will-change: transform, box-shadow;
-    filter: url(#water-distort-hover);
-    -webkit-filter: url(#water-distort-hover);
+    filter: url(#water_distort_hover);
+    -webkit-filter: url(#water_distort_hover);
     background: rgba(20, 47, 51, 0.5);
 }
 

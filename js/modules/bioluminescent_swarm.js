@@ -6,6 +6,7 @@
 /* ========================================= */
 
 import { debounce, cleanupRegistry, sizeCanvas } from '../utils/helpers.js';
+import { MOBILE_BREAKPOINT } from '../constants/ui.js';
 import { registerAnimation } from '../utils/animation_manager.js';
 
 /* ----------------------------------------- */
@@ -258,12 +259,12 @@ export function initBioluminescentSwarm() {
     // Dynamic creature count based on viewport
     function getCreatureCount() {
         if (window.innerWidth <= 480) return 4;
-        if (window.innerWidth <= 768) return 6;
+        if (window.innerWidth <= MOBILE_BREAKPOINT) return 6;
         if (window.innerWidth <= 1200) return 9;
         return 12;
     }
     
-    const isMobile = window.innerWidth <= 768;
+    const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
     const CREATURE_COUNT = getCreatureCount();
 
     /* ---- Large viewport low-res buffering (2056px+) ---- */
@@ -308,7 +309,7 @@ export function initBioluminescentSwarm() {
         const w = section.offsetWidth;
         const h = section.offsetHeight;
         // Cap backing store at 2560px to prevent explosion on large viewports
-        const result = sizeCanvas(canvas, w, h, 2560);
+        const result = sizeCanvas(canvas, w, h);
         canvas.style.width = w + 'px';
         canvas.style.height = h + 'px';
     }

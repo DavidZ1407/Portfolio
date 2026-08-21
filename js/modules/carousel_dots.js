@@ -3,11 +3,11 @@
 /* Automatically generates indicator dots based on projects.length */
 /* ========================================= */
 
-import { projects } from '../constants/projects.js?v=5';
-import { setAttributes } from '../utils/helpers.js';
+import { getOrderedProjectIndices } from '../constants/projects.js?v=5';
 
 export function generateCarouselDots() {
-    const projectCount = projects.length;
+    // Anzahl = eine Karte je Kategorie (gleiche Reihenfolge wie Portal/Hero)
+    const projectCount = getOrderedProjectIndices().length;
 
     // Generate Hero Carousel Indicators
     generateHeroIndicators(projectCount);
@@ -55,10 +55,3 @@ function generatePortalDots(count) {
     }
 }
 
-export function getCurrentSlideIndex() {
-    const activeIndicator = document.querySelector('.carousel_indicators .indicator.active');
-    if (activeIndicator) {
-        return parseInt(activeIndicator.getAttribute('data-slide'));
-    }
-    return 0;
-}

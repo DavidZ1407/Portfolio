@@ -30,8 +30,7 @@ export function initContactRain() {
     section.style.position = 'relative';
     section.prepend(canvas);
 
-    const ctx = canvas.getContext('2d');
-    let animFrame = null;
+        const ctx = canvas.getContext('2d');
     let isVisible = false;
     let isAnimating = false;
     let time = 0;
@@ -266,7 +265,7 @@ export function initContactRain() {
         const w = section.offsetWidth;
         const h = section.offsetHeight;
         // Cap backing store at 2560px to prevent explosion on large viewports
-        const result = sizeCanvas(canvas, w, h, 2560);
+        const result = sizeCanvas(canvas, w, h);
         canvas.style.width = w + 'px';
         canvas.style.height = h + 'px';
         ensureBuffer(canvas.width, canvas.height);
@@ -348,11 +347,11 @@ export function initContactRain() {
         if (isVisible && !isAnimating) startAnimation();
     }, 100);
 
-    return () => {
-        if (animFrame) cancelAnimationFrame(animFrame);
+        return () => {
         observer.disconnect();
         window.removeEventListener('resize', resize);
         canvas.remove();
     };
 }
+
 

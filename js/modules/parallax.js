@@ -16,10 +16,15 @@ export function initParallax() {
     const waterSurface = document.querySelector('.water-surface');
     const castleLayer = document.querySelector('.castle-layer');
 
-    const bgSpeed = 0.10;
-    const midSpeed = 0.30;
-    const underwaterThreshold = 0.3;
-    const castleThreshold = 0.5;
+    const BG_SPEED = 0.10;
+    const MID_SPEED = 0.30;
+    const UNDERWATER_THRESHOLD = 0.3;
+    const CASTLE_THRESHOLD = 0.5;
+
+    const WATER_SURFACE_WINDOW = 0.1;   // +0.1 oberhalb des Schwellwerts
+    const WATER_SURFACE_LEAD = 0.05;    // Wasseroberflaeche erscheint etwas vor dem Uebergang
+    const LERP_SMOOTHING = 0.08;        // Easing-Faktor der Scroll-Naeherung
+    const SNAP_EPSILON = 0.5;           // Abstand (px), ab dem die Naeherung einrastet
 
     let currentScroll = 0;
     let targetScroll = 0;
@@ -40,14 +45,14 @@ export function initParallax() {
     function updateParallax() {
         const diff = targetScroll - currentScroll;
 
-        if (Math.abs(diff) < 0.5) {
+        if (Math.abs(diff) < SNAP_EPSILON) {
             currentScroll = targetScroll;
             applyParallax(currentScroll);
             parallaxRunning = false;
             return;
         }
 
-        currentScroll += diff * 0.08;
+        currentScroll += diff * LERP_SMOOTHING;
         applyParallax(currentScroll);
 
         parallaxRafId = requestAnimationFrame(updateParallax);
@@ -57,22 +62,22 @@ export function initParallax() {
         const scrollPercent = scroll / maxScroll;
 
         if (bgLayer) {
-            bgLayer.style.transform = `translate3d(0, ${roundPx(scrollPercent * 100 * bgSpeed)}px, 0)`;
+            bgLayer.style.transform = `translate3d(0, ${roundPx(scrollPercent * 100 * BG_SPEED)}px, 0)`;
         }
         if (midLayer) {
-            midLayer.style.transform = `translate3d(0, ${roundPx(scrollPercent * 100 * midSpeed)}px, 0)`;
+            midLayer.style.transform = `translate3d(0, ${roundPx(scrollPercent * 100 * MID_SPEED)}px, 0)`;
         }
 
         if (underwaterLayer) {
-            underwaterLayer.classList.toggle('active', scrollPercent > underwaterThreshold);
+            underwaterLayer.classList.toggle('active', scrollPercent > UNDERWATER_THRESHOLD);
         }
         if (waterSurface) {
-            const showSurface = scrollPercent > underwaterThreshold - 0.05 &&
-                scrollPercent < underwaterThreshold + 0.1;
+            const showSurface = scrollPercent > UNDERWATER_THRESHOLD - WATER_SURFACE_LEAD &&
+                scrollPercent < UNDERWATER_THRESHOLD + WATER_SURFACE_WINDOW;
             waterSurface.classList.toggle('active', showSurface);
         }
         if (castleLayer) {
-            castleLayer.classList.toggle('active', scrollPercent > castleThreshold);
+            castleLayer.classList.toggle('active', scrollPercent > CASTLE_THRESHOLD);
         }
     }
 

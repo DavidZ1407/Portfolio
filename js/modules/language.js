@@ -8,6 +8,16 @@ import { cleanupRegistry } from '../utils/helpers.js';
 const STORAGE_KEY = 'portfolio-lang';
 const DEFAULT_LANG = 'en';
 
+/**
+ * CV file paths per language
+ * en → David_Zahn_CV.pdf (English)
+ * de → David_Zahn_CV_de.pdf (German)
+ */
+const CV_PATHS = {
+    en: { href: 'assets/CV/David_Zahn_CV.pdf', download: 'David_Zahn_CV.pdf', aria: 'Download CV' },
+    de: { href: 'assets/CV/David_Zahn_CV_de.pdf', download: 'David_Zahn_CV_de.pdf', aria: 'Lebenslauf herunterladen' }
+};
+
 let currentLang = DEFAULT_LANG;
 
 /**
@@ -38,6 +48,22 @@ export function initLanguage() {
  */
 export function getCurrentLang() {
     return currentLang;
+}
+
+/**
+ * Update CV download link based on language
+ * Swaps href and download attribute to serve the correct CV file
+ */
+function updateCVDownloadLink(lang) {
+    const cvLink = document.getElementById('cv-download-link');
+    if (!cvLink) return;
+
+    const cv = CV_PATHS[lang];
+    if (!cv) return;
+
+    cvLink.href = cv.href;
+    cvLink.download = cv.download;
+    cvLink.setAttribute('aria-label', cv.aria);
 }
 
 /**
@@ -82,6 +108,9 @@ function applyLanguage(lang) {
         langBtn.dataset.nextLang = nextLang;
         langBtn.setAttribute('aria-label', `Switch to ${nextLang === 'en' ? 'English' : 'Deutsch'}`);
     }
+
+    // 5. Update CV download link based on language
+    updateCVDownloadLink(lang);
 
     currentLang = lang;
 
