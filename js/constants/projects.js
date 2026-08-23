@@ -114,7 +114,7 @@ const categoryProjects = {
     concept: [1],
     coding:  [3],
     sound:   [4],
-    other:   [5]
+    other:   [5, 7]
 };
 export {
     categoryProjects
@@ -215,18 +215,29 @@ const projects = [
         tools: []
     },
 
-    /* Index 5 - Other (PLACEHOLDER -> echtes Projekt einsetzen) */
+    /* Index 5 - Other (Projekt 1 - Other_PJ_1) */
     {
         category: 'other',
-        title: 'Other Project',
+        title: 'Other Project 1',
         subtitle: 'Other Projects',
-        description: 'TODO: Replace this placeholder with your real other project.',
-        cover: 'assets/Picture/Project6.png',
+        description: '',
+        cover: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG7.jpg',
         media: [
-            { type: 'image', src: 'assets/Picture/Project6.png', thumb: 'assets/Picture/Project6.png' }
+            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG7.jpg', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG7.jpg' },
+            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG2.png', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG2.png' },
+            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG3.png', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG3.png' },
+            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG4.png', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG4.png' },
+            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG5.png', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG5.png' },
+            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG6.jpeg', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG6.jpeg' },
+            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG8.png', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG8.png' },
+            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG9.jpeg', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG9.jpeg' },
+            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG1.jpeg', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG1.jpeg' }
         ],
         contribution: [],
-        tools: []
+        tools: [
+            { name: 'Blender', icon: 'bx-cube' },
+            { name: 'Krita', icon: 'bx-edit' }
+        ]
     },
 
     /* Index 6 - Game Dev (second project) */ {
@@ -247,6 +258,32 @@ const projects = [
             { name: 'Unreal Engine 5', icon: 'bx-code-alt' },
             { name: 'Blueprints', icon: 'bx-edit' },
             { name: 'C++', icon: 'bx-code' }
+        ]
+    },
+
+    /* Index 7 - Other (Projekt 2 - Other_PJ_2) */
+    {
+        category: 'other',
+        title: 'Other Project 2',
+        subtitle: 'Other Projects',
+        description: '',
+        cover: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG1.png',
+        media: [
+            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG1.png', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG1.png' },
+            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG2.png', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG2.png' },
+            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG3.png', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG3.png' },
+            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG4.jpg', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG4.jpg' },
+            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG5.jpg', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG5.jpg' },
+            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG6.jpg', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG6.jpg' },
+            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG7.jpg', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG7.jpg' },
+            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG8.png', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG8.png' },
+            { type: 'video', src: 'assets/Other/Other_PJ_2/Other_Projekt2_V1.mp4', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG1.png' }
+        ],
+        contribution: [],
+        tools: [
+            { name: 'Krita', icon: 'bx-edit' },
+            { name: 'Figma', icon: 'bx-layout' },
+            { name: 'DaVinci Resolve', icon: 'bx-video' }
         ]
     }
 

@@ -37,9 +37,11 @@ let lightboxContainer = null;
 let lightboxImage = null;
 let lightboxVideo = null;
 let lightboxOpen = false;
+let lightboxCloseTimer = null;
 
 /* ---- Timing / Animation constants ---- */
-const WATER_ANIMATION_MS = 1000;      // Dauer der SVG Wasser-Morph-Animation (0.8s + Buffer)
+const WATER_ANIMATION_MS = 1000;      // Dauer der SVG Wasser-Morph-Animation (0.8s + Buffer; matcht --water-close-duration in modal.css)
+const PROJECT_GLOW_MS = 420;          // Anzeige-Dauer des Projekt-Glow-Feedbacks (matcht --media-nav-glow-duration in modal.css)
 
 /* ---- Viewport-responsive Modal-Groessen ---- */
 // Groessenschema pro grossem Breakpoint (2056px+). Kleinere Viewports fallen auf den Default.
@@ -211,8 +213,9 @@ function attachEventListeners(projects) {
 function navigateMedia(direction) {
     if (!currentProject || !Array.isArray(currentProject.media) || currentProject.media.length === 0) return;
     const total = currentProject.media.length;
-    currentMediaIndex = (currentMediaIndex + direction + total) % total;
+        currentMediaIndex = (currentMediaIndex + direction + total) % total;
     showMedia(currentMediaIndex);
+    triggerMediaFeedback();
 }
 
 /**
@@ -227,8 +230,9 @@ function switchCategory(category) {
     currentProjectIndex = target;
     currentProject = projectsList[target];
     if (!currentProject) return;
-    // populateModal setzt Shader-Farbe, Media auf 0 und baut alles neu
+        // populateModal setzt Shader-Farbe, Media auf 0 und baut alles neu
     populateModal(currentProject);
+    triggerProjectFeedback();
 }
 
 /**
@@ -244,8 +248,9 @@ function navigateProject(direction) {
     currentProject = projectsList[target];
     if (!currentProject) return;
 
-    // Fuehrt currentMediaIndex auf 0 zurueck + rebuilds alles (inkl. Shader-Farbe)
+        // Fuehrt currentMediaIndex auf 0 zurueck + rebuilds alles (inkl. Shader-Farbe)
     populateModal(currentProject);
+    triggerProjectFeedback();
 }
 
 /**
@@ -262,6 +267,8 @@ function navigateCategory(direction) {
     if (!currentProject) return;
 
     populateModal(currentProject);
+    // Auch beim Kategoriewechsel den neu aktivierten Projekt-Tab hervorheben
+    triggerProjectFeedback();
 }
 
 /**
@@ -373,9 +380,10 @@ function buildProjectBar() {
 function switchToProjectIndex(index) {
     if (!projectsList[index]) return;
     currentProjectIndex = index;
-    currentProject = projectsList[index];
+        currentProject = projectsList[index];
     if (!currentProject) return;
     populateModal(currentProject);
+    triggerProjectFeedback();
 }
 
 /**
@@ -455,6 +463,29 @@ export function showPopupAtCard(project, card) {
 }
 
 /**
+ * Startet die Wasser-Close-SVG-Animation (water_distort_close) neu und wirft
+ * den Water-Effekt auf den Schließen-Button. EINZIGE Stelle für diesen Ablauf –
+ * verwendet von Modal-Close (closePopup) und Lightbox-Close (closeLightbox),
+ * damit der Code nicht doppelt existiert.
+ */
+function restartWaterCloseAnimation(closeBtn) {
+    const closeFilter = document.getElementById('water_distort_close');
+    if (closeFilter) {
+        const animations = closeFilter.querySelectorAll('animate');
+        animations.forEach(anim => {
+            try {
+                anim.beginElement();
+            } catch (e) {
+                const parent = closeFilter.parentNode;
+                const clone = closeFilter.cloneNode(true);
+                parent.replaceChild(clone, closeFilter);
+            }
+        });
+    }
+    if (closeBtn) closeBtn.classList.add('water_effect');
+}
+
+/**
  * Close popup with water animation
  */
 function closePopup() {
@@ -489,25 +520,8 @@ function closePopup() {
     }
 
     // Trigger water_distort_close SVG animation (same as water_emerge opening)
-    const closeFilter = document.getElementById('water_distort_close');
-    if (closeFilter) {
-        const animations = closeFilter.querySelectorAll('animate');
-        animations.forEach(anim => {
-            try {
-                anim.beginElement();
-            } catch (e) {
-                const parent = closeFilter.parentNode;
-                const clone = closeFilter.cloneNode(true);
-                parent.replaceChild(clone, closeFilter);
-            }
-        });
-    }
-
-    // Add water effect to close button
     const closeBtn = modalContainer.querySelector('.modal_close_btn');
-    if (closeBtn) {
-        closeBtn.classList.add('water_effect');
-    }
+    restartWaterCloseAnimation(closeBtn);
 
     // Trigger water close animation
     modalContainer.classList.add('water_close');
@@ -637,8 +651,9 @@ function buildThumbnails(project) {
         btn.addEventListener('click', () => {
             currentMediaIndex = index;
             showMedia(index);
-            // Thumbnail-Klick öffnet direkt die Lightbox mit dem vergrößerten Medium
+                        // Thumbnail-Klick öffnet direkt die Lightbox mit dem vergrößerten Medium
             openLightbox();
+            triggerMediaFeedback();
         });
 
         bar.appendChild(btn);
@@ -707,8 +722,47 @@ function showMedia(index) {
         t.classList.toggle('active', i === index);
     });
 
-    // Lightbox-Inhalt synchronisieren, falls geöffnet
+        // Lightbox-Inhalt synchronisieren, falls geöffnet
     if (lightboxOpen) syncLightbox();
+}
+
+/**
+ * Trigger a brief teal "water-like" glow + fade on the active media
+ * whenever the selected image changes (viewer prev/next, thumbnails,
+ * lightbox prev/next). One-shot CSS animation – no JS animation loop.
+ */
+function triggerMediaFeedback() {
+    const targets = [];
+    if (lightboxOverlay && lightboxOpen && currentProject) {
+        const lbImg = lightboxOverlay.querySelector('.modal_lightbox_image');
+        if (lbImg && lbImg.offsetParent !== null) targets.push(lbImg);
+    } else if (modalContainer && currentProject) {
+        const mainImg = modalContainer.querySelector('.modal_media_image');
+        if (mainImg && mainImg.offsetParent !== null) targets.push(mainImg);
+    }
+    targets.forEach(img => {
+        img.classList.add('media_nav_glow');
+        img.addEventListener('animationend', () => {
+            img.classList.remove('media_nav_glow');
+        }, { once: true });
+    });
+}
+
+/**
+ * Trigger a brief blue/teal glow on the newly-selected project item when
+ * switching projects (prev/next arrows, project-bar click, category tab).
+ * Reuses the existing 0.3s transition of .modal_project_item – no JS loop.
+ */
+function triggerProjectFeedback() {
+    if (!modalContainer) return;
+    const activeItem = modalContainer.querySelector('.modal_project_item.active');
+    if (!activeItem) return;
+    activeItem.classList.add('project_nav_glow');
+    if (activeItem._glowTimer) clearTimeout(activeItem._glowTimer);
+    activeItem._glowTimer = setTimeout(() => {
+        activeItem.classList.remove('project_nav_glow');
+        activeItem._glowTimer = null;
+    }, PROJECT_GLOW_MS);
 }
 
 /**
@@ -820,6 +874,14 @@ function openLightbox() {
     if (!project || !Array.isArray(project.media) || project.media.length === 0) return;
 
     syncLightbox();
+    // Laufende Close-Animation abbrechen + alte Klassen entfernen
+    if (lightboxCloseTimer) {
+        clearTimeout(lightboxCloseTimer);
+        lightboxCloseTimer = null;
+    }
+    if (lightboxContainer) lightboxContainer.classList.remove('water_close');
+    const lbCloseBtn = lightboxOverlay.querySelector('.modal_close_btn');
+    if (lbCloseBtn) lbCloseBtn.classList.remove('water_effect');
     lightboxOverlay.classList.add('active');
     lightboxOverlay.setAttribute('aria-hidden', 'false');
     lightboxOpen = true;
@@ -830,16 +892,34 @@ function openLightbox() {
  */
 function closeLightbox() {
     if (!lightboxOverlay) return;
+    if (!lightboxOpen) return; // bereits geschlossen / Close-Animation läuft
 
-    lightboxOverlay.classList.remove('active');
-    lightboxOverlay.setAttribute('aria-hidden', 'true');
     lightboxOpen = false;
 
+    // Video pausieren, ABER das Bild für die Close-Animation sichtbar lassen
     if (lightboxVideo) {
         lightboxVideo.pause();
-        lightboxVideo.removeAttribute('src');
-        lightboxVideo.load();
     }
+
+    // Trigger water_distort_close SVG animation (gleicher Ablauf wie Modal-Close)
+    const closeBtn = lightboxOverlay.querySelector('.modal_close_btn');
+    restartWaterCloseAnimation(closeBtn);
+
+    // Wasser-Close-Animation auf der Lightbox starten
+    if (lightboxContainer) lightboxContainer.classList.add('water_close');
+
+    // Nach der Animation ausblenden (Dauer identisch zum Modal: WATER_ANIMATION_MS)
+    lightboxCloseTimer = setTimeout(() => {
+        lightboxCloseTimer = null;
+        if (lightboxContainer) lightboxContainer.classList.remove('water_close');
+        if (closeBtn) closeBtn.classList.remove('water_effect');
+        lightboxOverlay.classList.remove('active');
+        lightboxOverlay.setAttribute('aria-hidden', 'true');
+        if (lightboxVideo) {
+            lightboxVideo.removeAttribute('src');
+            lightboxVideo.load();
+        }
+    }, WATER_ANIMATION_MS);
 }
 
 /**

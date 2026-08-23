@@ -3,6 +3,14 @@
 /* Wasser-Hintergrund + Effekte              */
 /* ========================================= */
 
+/* Timing-Konstanten (mit modal.js synchron halten):
+   --water-close-duration     entspricht WATER_ANIMATION_MS (1000ms)
+   --media-nav-glow-duration  entspricht PROJECT_GLOW_MS (420ms) */
+:root {
+    --water-close-duration: 1s;
+    --media-nav-glow-duration: 0.42s;
+}
+
 /* Modal Overlay - Dark transparent background */
 .project_modal_overlay {
     position: fixed;
@@ -97,9 +105,12 @@
     -webkit-filter: url(#water_emerge);
 }
 
-/* Water Close Animation - reverse of emerge, mit starkem Distortion-Filter */
-.project_modal.water_close {
-    animation: modal_close_water 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+/* Water Close Animation - reverse of emerge, mit starkem Distortion-Filter.
+   Gilt für Modal UND Lightbox (gleicher Keyframe + gleicher Filter; dadurch
+   entfällt eine separate .modal_lightbox.water_close-Regel). */
+.project_modal.water_close,
+.modal_lightbox.water_close {
+    animation: modal_close_water var(--water-close-duration) cubic-bezier(0.4, 0, 0.2, 1) forwards;
     filter: url(#water_distort_close);
     -webkit-filter: url(#water_distort_close);
     overflow: hidden;
@@ -1480,7 +1491,7 @@
         height: 38px;
         font-size: 1.25rem;
     }
-    .modal_lightbox_prev { left: -19px; }
+        .modal_lightbox_prev { left: -19px; }
     .modal_lightbox_next { right: -19px; }
     .modal_lightbox_overlay .modal_close_btn {
         width: 30px;
@@ -1489,5 +1500,42 @@
         top: -15px;
         right: -15px;
     }
+}
+
+/* =========================================================
+   NAVIGATION-FEEDBACK  (Approach A – performant)
+   Kurzer, performanter "Wasser"-Glow + Fade bei jedem Wechsel:
+     - Bild (Media-Viewer + Lightbox): .media_nav_glow
+     - Projekt (Auswahl-Leiste): .project_nav_glow
+   Wird per JS-Klasse umgeschaltet; nutzt @keyframes (one-shot)
+   bzw. die vorhandene 0.3s-Transition von .modal_project_item.
+   KEINE neuen feTurbulence-/feDisplacementMap-Filter,
+   KEINE JS-Animations-Loops – im Sinne der Firefox-Performance.
+   ========================================================= */
+
+/* Media-Viewer / Lightbox-Bild: sanfter Fade-in aus dem "Wasser" + blauer Halo */
+.modal_media_image.media_nav_glow,
+.modal_lightbox_image.media_nav_glow {
+    animation: navMediaGlow var(--media-nav-glow-duration) ease-out forwards;
+    /* Approach B: reuse the EXISTING water distortion filter (no new filters).
+       Wird automatisch entfernt, sobald die animationend-Listener die
+       .media_nav_glow-Klasse entfernen. */
+    filter: url(#water_distort_hover);
+    -webkit-filter: url(#water_distort_hover);
+}
+@keyframes navMediaGlow {
+    0%   { opacity: 0.20; box-shadow: 0 0 0 2px rgba(139, 224, 232, 0.45), 0 0 16px rgba(73, 146, 154, 0.40); }
+    35%  { opacity: 0.55; box-shadow: 0 0 0 3px rgba(139, 224, 232, 0.30), 0 0 20px rgba(73, 146, 154, 0.25); }
+    100% { opacity: 1;   box-shadow: 0 0 0 0 rgba(0, 0, 0, 0), 0 0 0 rgba(0, 0, 0, 0); }
+}
+
+/* Projekt-Karte: kurzer cyan-blaßer Glow – die vorhandene Transition übernimmt das Ausblenden */
+.modal_project_item.project_nav_glow {
+    border-color: rgba(139, 224, 232, 0.9);
+    box-shadow:
+        0 0 0 4px rgba(139, 224, 232, 0.70),
+        0 0 22px rgba(73, 146, 154, 0.45),
+        inset 0 0 10px rgba(139, 224, 232, 0.30);
+    transform: scale(1.05);
 }
 
