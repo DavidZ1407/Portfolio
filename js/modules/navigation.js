@@ -2,6 +2,8 @@
 /* MODULE - NAVIGATION */
 /* ========================================= */
 
+import { closeProjectModal, isProjectModalOpen } from './modal.js';
+
 /**
  * Initialize navigation with throttled scroll handler
  */
@@ -10,6 +12,17 @@ export function initNavigation() {
     const sections = document.querySelectorAll('section[id]');
     
     if (navLinks.length === 0 || sections.length === 0) return;
+
+    /* Wenn eine Haupt-Navbar-Position geklickt wird, während ein Projekt-Modal
+       geöffnet ist, das Modal zuerst schließen und den Scroll-Lock freigeben,
+       damit der Browser normal zur Ziel-Sektion springen kann. */
+    document.addEventListener('click', (e) => {
+        const link = e.target.closest('.nav_link, .logo');
+        if (!link) return;
+        if (isProjectModalOpen()) {
+            closeProjectModal({ immediate: true });
+        }
+    });
 
     /* Offset oberhalb einer Sektion (px), ab dem sie als "aktiv" gilt */
     const SCROLL_ACTIVE_OFFSET = 200;

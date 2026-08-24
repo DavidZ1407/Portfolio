@@ -1,4 +1,4 @@
-/* ========================================= */
+﻿/* ========================================= */
 /* CONSTANTS - PROJECTS                        */
 /*                                           */
 /* Struktur:                                   */
@@ -26,6 +26,21 @@ const CATEGORY_LABELS = {
 /* ---- Deutsche Uebersetzungen (pro Index) ---- */
 const PROJECT_TRANSLATIONS = {
     de: {
+        5: {
+            subtitle: 'Asymmetrisches Kooperativ-Brettspiel',
+            description: 'Ein fünfwöchiges Brettspiel-Designprojekt über asymmetrische Kooperation durch bewusst begrenzte Informationen. Unser Team entwarf ein physisches Tischspiel, bei dem zwei Spieler gemeinsam ein U-Boot durch ein modulares Tiefsee-Labyrinth navigieren. Mit Farbfilterbrillen nimmt jeder Spieler unterschiedliche Gefahren auf derselben Karte wahr, und nur durch sorgfältige Kommunikation können sie die Umgebung richtig deuten und überleben. Das Projekt kombinierte Spielmechanik-Design, Würfelplatzierungssysteme und physisches Prototyping zu einem kohärenten Tabletop-Erlebnis, verpackt in eine handgravierte Holzkiste.',
+            gameConcept: 'Das Spiel erkundet Tiefseeforschung durch die Brille von Vertrauen und unvollständigem Wissen. Zwei Spieler teilen sich ein U-Boot, sehen aufgrund ihrer Farbfilter jedoch unterschiedliche Hindernisse (Korallen vs. Säulen) auf demselben Spielfeld. Über Würfelplatzierungs-Mechaniken müssen sie Bewegung, Ressourcenmanagement (Sauerstoff und Treibstoff) und Sonar-Abtastung koordinieren, ohne ihre exakten Würfelwerte preiszugeben, und drei Artefakte bergen, um die letzte Ebene, Atlantis, zu erreichen.',
+            duration: '5 Wochen',
+            team: '4 Personen',
+            contribution: [
+                'Spielmechanik- & Systemdesign',
+                'Regelbuch schreiben & Iteration',
+                'Playtesting & Balancing',
+                'Physische Prototypentwicklung',
+                'Holzgravur (Boxdesign)',
+                'Konzept- & Narrative-Entwicklung'
+            ]
+        },
         0: {
             subtitle: 'Tower Defense & Strategie in UE5',
             description: 'Ein tower defense Spiel entwickelt in Unreal Engine 5. Kombiniere strategisches Denken mit actionreichem Gameplay in einer dusteren Fantasy-Welt. Baue Verteidigungsanlagen, verwalte Ressourcen und besiege Wellen von Gegnern.',
@@ -61,6 +76,20 @@ const PROJECT_TRANSLATIONS = {
                 'Implementierung der Spielerinteraktion und visueller Feedbacks (C++)',
                 'Pacing und Schwierigkeitskurve der Puzzles balanciert'
             ]
+        },
+        7: {
+            subtitle: '',
+            description: 'Ein sieben-wöchiges UX-Projekt, das das Thema Kontrast durch ein hybrides Jump-and-Run-Spiel erkundet. Unser Team entwarf sowohl eine digitale als auch eine physische Spielkonzeption, wobei Schwarz und Weiß das zentrale visuelle und spielerische Konzept darstellen.\n\nDer digitale Prototyp wurde in Figma erstellt, während die physische Version als interaktiver Papier-Prototyp mit benutzerdefinierten Steuerungen, einem Ball und einer projizierten Spielumgebung gebaut wurde. Das Projekt konzentrierte sich auf die Kombination von Spielmechanismen, Interaktionsdesign und physischer Interaktion zu einem kohäsiven Erlebnis.',
+            gameConcept: 'Das Spiel erkundet eine Welt, die um den Kontrast zwischen Schwarz und Weiß gebaut ist. Der Spieler muss durch wechselnde Umgebungen navigieren und Bewegung, Timing und die Wechselwirkung beider Seiten nutzen, um Hindernisse zu überwinden und das Ende des Levels zu erreichen.',
+            duration: '7 Wochen',
+            team: '5 Personen',
+            contribution: [
+                'Spielmechanismen & Interaktionsdesign',
+                'Digitale Umsetzung in Figma',
+                'Charakterdesign',
+                'Physische Prototypentwicklung',
+                'Story & Konzeptentwicklung'
+            ]
         }
     }
 };
@@ -89,6 +118,30 @@ export function getProjectContribution(index, lang = 'en') {
         return PROJECT_TRANSLATIONS.de[index].contribution;
     }
     return p && p.contribution ? p.contribution : [];
+}
+export function getProjectGameConcept(index, lang = 'en') {
+    const p = projects[index];
+    if (!p) return '';
+    if (lang === 'de' && PROJECT_TRANSLATIONS.de[index] && PROJECT_TRANSLATIONS.de[index].gameConcept) {
+        return PROJECT_TRANSLATIONS.de[index].gameConcept;
+    }
+    return p && p.gameConcept ? p.gameConcept : '';
+}
+export function getProjectDuration(index, lang = 'en') {
+    const p = projects[index];
+    if (!p) return '';
+    if (lang === 'de' && PROJECT_TRANSLATIONS.de[index] && PROJECT_TRANSLATIONS.de[index].duration) {
+        return PROJECT_TRANSLATIONS.de[index].duration;
+    }
+    return p && p.duration ? p.duration : '';
+}
+export function getProjectTeam(index, lang = 'en') {
+    const p = projects[index];
+    if (!p) return '';
+    if (lang === 'de' && PROJECT_TRANSLATIONS.de[index] && PROJECT_TRANSLATIONS.de[index].team) {
+        return PROJECT_TRANSLATIONS.de[index].team;
+    }
+    return p && p.team ? p.team : '';
 }
 export function getCategoryLabel(category, lang = 'en') {
     const c = CATEGORY_LABELS[category];
@@ -218,9 +271,12 @@ const projects = [
     /* Index 5 - Other (Projekt 1 - Other_PJ_1) */
     {
         category: 'other',
-        title: 'Other Project 1',
-        subtitle: 'Other Projects',
-        description: '',
+        title: 'Sea Team',
+        subtitle: 'Asymmetric Cooperative Board Game',
+        description: 'A five-week board game design project exploring asymmetric cooperation through deliberately limited information. Our team designed a physical tabletop game in which two players jointly navigate a submarine through a modular deep-sea labyrinth. Using color filter glasses, each player perceives different hazards on the same map, and only through careful communication can they interpret the environment correctly and survive. The project combined game mechanics design, dice-placement systems, and physical prototyping into one cohesive tabletop experience, packaged in a hand-engraved wooden box.',
+        gameConcept: 'The game explores deep-sea exploration through the lens of trust and incomplete knowledge. Two players share a submarine but see different obstacles (corals vs. pillars) on the same board due to their colored filters. Through dice-placement mechanics, they must coordinate movement, resource management (oxygen and fuel) and sonar scanning without revealing their exact dice values, retrieving three artifacts to reach the final level, Atlantis.',
+        duration: '5 weeks',
+        team: '4 members',
         cover: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG7.jpg',
         media: [
             { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG7.jpg', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG7.jpg' },
@@ -233,10 +289,21 @@ const projects = [
             { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG9.jpeg', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG9.jpeg' },
             { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG1.jpeg', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG1.jpeg' }
         ],
-        contribution: [],
+        contribution: [
+            'Game mechanics & systems design',
+            'Rulebook writing & iteration',
+            'Playtesting & balancing',
+            'Physical prototype development',
+            'Wood engraving (box design)',
+            'Concept & narrative development'
+        ],
         tools: [
             { name: 'Blender', icon: 'bx-cube' },
-            { name: 'Krita', icon: 'bx-edit' }
+            { name: 'Krita', icon: 'bx-edit' },
+            { name: 'Board Game Design', icon: 'bx-game' },
+            { name: 'Map & Tile Design', icon: 'bx-map' },
+            { name: 'Rulebook Writing', icon: 'bx-book-open' },
+            { name: 'Playtesting', icon: 'bx-play-circle' }
         ]
     },
 
@@ -264,9 +331,12 @@ const projects = [
     /* Index 7 - Other (Projekt 2 - Other_PJ_2) */
     {
         category: 'other',
-        title: 'Other Project 2',
-        subtitle: 'Other Projects',
-        description: '',
+        title: 'Sir Aric\'s Souls',
+        subtitle: '',
+        description: 'A seven-week UX project exploring the theme of contrast through a hybrid jump-and-run game. Our team designed both a digital and physical game experience, using black and white as the central visual and gameplay concept.\n\nThe digital prototype was created in Figma, while the physical version was built as an interactive paper prototype with custom controls, a ball and a projected game environment. The project focused on combining game mechanics, interaction design and physical interaction into one cohesive experience.',
+        gameConcept: 'The game explores a world built around the contrast between black and white. The player must navigate through changing environments, using movement, timing and the interaction between both sides to overcome obstacles and reach the end of the level.',
+        duration: '7 weeks',
+        team: '5 members',
         cover: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG1.png',
         media: [
             { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG1.png', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG1.png' },
@@ -277,9 +347,16 @@ const projects = [
             { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG6.jpg', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG6.jpg' },
             { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG7.jpg', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG7.jpg' },
             { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG8.png', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG8.png' },
+            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG9.png', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG9.png' },
             { type: 'video', src: 'assets/Other/Other_PJ_2/Other_Projekt2_V1.mp4', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG1.png' }
         ],
-        contribution: [],
+        contribution: [
+            'Game mechanics & interaction design',
+            'Digital implementation in Figma',
+            'Character design',
+            'Physical prototype development',
+            'Story & concept development'
+        ],
         tools: [
             { name: 'Krita', icon: 'bx-edit' },
             { name: 'Figma', icon: 'bx-layout' },
@@ -416,3 +493,4 @@ export function getAdjacentCategoryProject(currentIndex, direction) {
 export function getCategorySchemeIndex(category) {
     return CATEGORY_ORDER.indexOf(category);
 }
+

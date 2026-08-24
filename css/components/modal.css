@@ -376,8 +376,6 @@
         inset 0 0 22px rgba(139, 224, 232, 0.2),
         inset 0 1px 0 rgba(139, 224, 232, 0.3);
     transform: translateY(-50%) scale(1.15);
-    filter: url(#water_distort_modal_hover);
-    -webkit-filter: url(#water_distort_modal_hover);
 }
 
 .modal_prev_btn:active,
@@ -474,8 +472,6 @@
         inset 0 1px 0 rgba(139, 224, 232, 0.3);
     transform: scale(1.15);
     text-shadow: 0 0 10px rgba(139, 224, 232, 0.6), 0 1px 3px rgba(0, 0, 0, 0.6);
-    filter: url(#water_distort_modal_hover);
-    -webkit-filter: url(#water_distort_modal_hover);
 }
 
 .modal_close_btn:active {
@@ -562,8 +558,6 @@
 .modal_cat_tab:hover {
     color: var(--cyan-glow);
     text-shadow: 0 0 20px rgba(73, 146, 154, 0.6), 0 0 40px rgba(73, 146, 154, 0.3);
-    filter: url(#water_distort_hover);
-    -webkit-filter: url(#water_distort_hover);
 }
 
 /* Aktiver Reiter = aktuelle Kategorie (gold hervorgehoben) */
@@ -580,8 +574,6 @@
 .modal_cat_tab.active:hover {
     color: var(--cyan-glow);
     text-shadow: 0 0 20px rgba(73, 146, 154, 0.6), 0 0 40px rgba(73, 146, 154, 0.3);
-    filter: url(#water_distort_hover);
-    -webkit-filter: url(#water_distort_hover);
 }
 /* PROJEKT-AUSWAHL-LEISTE (Ebene 2): Projekte innerhalb der aktuellen Kategorie.
    Optisch klar von den Kategorie-Reitern (Ebene 1) und den Thumbnails (Ebene 3)
@@ -731,8 +723,6 @@
     color: #8be0e8;
     background: rgba(139, 224, 232, 0.1);
     transform: translateY(-1px);
-    filter: url(#water_distort_hover);
-    -webkit-filter: url(#water_distort_hover);
 }
 
 /* Deaktiviert, wenn in der Kategorie nur EIN Projekt existiert */
@@ -811,6 +801,8 @@
     max-width: 65ch;
     position: relative;
     z-index: 3;
+    /* Absatzumbrüche im Beschreibungstext erhalten (mehrzeilige Beschreibungen) */
+    white-space: pre-line;
 }
 
 /* Skills Section */
@@ -885,8 +877,6 @@
 .modal_skill_tag:hover {
     border-color: rgba(139, 224, 232, 0.6);
     color: #8be0e8;
-    filter: url(#water_distort_modal_hover);
-    -webkit-filter: url(#water_distort_modal_hover);
 }
 
 .modal_skill_tag i {
@@ -898,8 +888,6 @@
     border-color: rgba(139, 224, 232, 0.7);
     background: rgba(10, 22, 40, 0.9);
     color: #8be0e8;
-    filter: url(#water_distort_modal_hover);
-    -webkit-filter: url(#water_distort_modal_hover);
 }
 
 .modal_skill_tag.active i {
@@ -1093,12 +1081,6 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Media-Fläche: gleicher Wasser-Distort-Hover wie auf anderen Elementen der Seite */
-.modal_media_stage:hover {
-    filter: url(#water_distort_hover);
-    -webkit-filter: url(#water_distort_hover);
-}
-
 .modal_media_image {
     position: absolute;
     inset: 0;
@@ -1270,6 +1252,61 @@
     max-width: none;
 }
 
+/* Game Concept + Project Details - lesbar gestaltet, passend zu den übrigen Überschriften */
+.modal_game_concept,
+.modal_project_details {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(201, 168, 97, 0.18);
+}
+
+.modal_game_concept_title,
+.modal_details_title {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    color: var(--gold-accent, #c9a861);
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.modal_game_concept_text {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--text-light, #b8d0d8);
+    max-width: 65ch;
+}
+
+.modal_details_list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+}
+
+.modal_detail_item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 14px;
+    background: rgba(10, 22, 40, 0.8);
+    border: 1px solid rgba(73, 146, 154, 0.25);
+    border-radius: 8px;
+}
+
+.modal_detail_label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold-accent, #c9a861);
+}
+
+.modal_detail_value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #eef7f8;
+}
+
 .modal_contribution_title {
     font-family: 'Cinzel', serif;
     font-size: 1rem;
@@ -1306,19 +1343,7 @@
     box-shadow: 0 0 6px rgba(201, 168, 97, 0.5);
 }
 
-/* TOOLS & SKILLS - Haupttool hervorgehoben */
-.modal_skill_tag.main {
-    border-color: rgba(201, 168, 97, 0.85);
-    color: var(--gold-accent, #c9a861);
-    background: rgba(201, 168, 97, 0.12);
-    box-shadow:
-        0 0 16px rgba(201, 168, 97, 0.5),
-        inset 0 0 8px rgba(201, 168, 97, 0.25);
-}
-
-.modal_skill_tag.main i {
-    color: var(--gold-accent, #c9a861);
-}
+/* TOOLS & SKILLS - einheitliche Tags ohne hervorgehobenes Haupttool */
 
 /* Responsive: zwei Spalten stapeln */
 @media (max-width: 720px) {
@@ -1517,9 +1542,7 @@
 .modal_media_image.media_nav_glow,
 .modal_lightbox_image.media_nav_glow {
     animation: navMediaGlow var(--media-nav-glow-duration) ease-out forwards;
-    /* Approach B: reuse the EXISTING water distortion filter (no new filters).
-       Wird automatisch entfernt, sobald die animationend-Listener die
-       .media_nav_glow-Klasse entfernen. */
+    /* Wasser-Distortion-Effekt beim Bildwechsel (wird per JS-Klasse entfernt) */
     filter: url(#water_distort_hover);
     -webkit-filter: url(#water_distort_hover);
 }

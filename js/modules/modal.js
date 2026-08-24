@@ -9,7 +9,6 @@
 
 import { getCurrentLang } from './language.js';
 import {
-    getProjectSubtitle,
     getProjectDescription,
     getProjectContribution,
     getCategoryLabel,
@@ -20,6 +19,9 @@ import {
     getAdjacentCategoryProject,
     getCategorySchemeIndex,
     applyImageFallback,
+    getProjectGameConcept,
+    getProjectDuration,
+    getProjectTeam,
 } from '../constants/projects.js?v=5';
 import { initModalShader } from './modal_shader.js';
 
@@ -86,8 +88,6 @@ function createModalElements() {
 
             <div class="modal_project_header">
                 <h2 class="modal_project_title"></h2>
-                <span class="modal_project_category"></span>
-                <p class="modal_project_subtitle"></p>
                 <div class="modal_project_switch">
                     <button class="modal_project_prev" aria-label="Previous project" title="">‹</button>
                     <span class="modal_project_switch_label"></span>
@@ -113,6 +113,14 @@ function createModalElements() {
             <div class="modal_info_grid">
                 <div class="modal_description_col">
                     <p class="modal_project_description"></p>
+                    <div class="modal_game_concept" hidden>
+                        <h3 class="modal_game_concept_title">Game Concept</h3>
+                        <p class="modal_game_concept_text"></p>
+                    </div>
+                    <div class="modal_project_details" hidden>
+                        <h3 class="modal_details_title">Project Details</h3>
+                        <div class="modal_details_list"></div>
+                    </div>
                 </div>
                 <div class="modal_contribution_col">
                     <h3 class="modal_contribution_title">My Contribution</h3>
@@ -203,6 +211,14 @@ function attachEventListeners(projects) {
 
     modalOverlay.addEventListener('click', (e) => {
         if (e.target === modalOverlay) closePopup();
+    });
+
+    // Wenn die Sprache gewechselt wird und ein Modal geöffnet ist,
+    // Modal-Inhalt in der neuen Sprache neu populieren
+    document.addEventListener('languageChanged', () => {
+        if (currentProject) {
+            populateModal(currentProject);
+        }
     });
 }
 
@@ -403,7 +419,13 @@ export function showPopupAtCard(project, card) {
     const modalWidth = Math.min(maxModalW, vw - MODAL_VIEWPORT_MARGIN_X);
     const modalHeight = Math.min(maxModalH, window.innerHeight - MODAL_VIEWPORT_MARGIN_Y);
     const left = (vw - modalWidth) / 2;
-    const top = (window.innerHeight - modalHeight) / 2;
+
+    // Modal unterhalb der festen Haupt-Navbar positionieren, damit Titel/X-Button
+    // nie von der Navbar verdeckt werden, wenn die Navbar über dem Overlay liegt.
+    const headerEl = document.querySelector('.header');
+    const headerBottom = headerEl ? headerEl.getBoundingClientRect().bottom : 0;
+    const centerTop = (window.innerHeight - modalHeight) / 2;
+    const top = Math.max(headerBottom + 14, centerTop);
 
     // Position modal
     modalContainer.style.position = 'fixed';
@@ -459,7 +481,9 @@ export function showPopupAtCard(project, card) {
     // Der Shader wird hier mit der passenden Kategorie-Farbe gestartet
     populateModal(project);
 
+    // Scroll-Lock setzen + Modal-Open-Zustand am body (Navbar bleibt via CSS über dem Overlay)
     document.body.style.overflow = 'hidden';
+    document.body.classList.add('modal-open');
 }
 
 /**
@@ -486,9 +510,21 @@ function restartWaterCloseAnimation(closeBtn) {
 }
 
 /**
- * Close popup with water animation
+ * Body-Scroll + Modal-Open-Zustand IMMER zurücksetzen.
+ * Wird synchron ausgeführt (auch während der Close-Animation), damit
+ * Navigation/Scroll sofort wieder funktionieren – nie ein "scroll-locked" Zustand.
  */
-function closePopup() {
+function unlockBodyScroll() {
+    document.body.style.overflow = '';
+    document.body.classList.remove('modal-open');
+}
+
+/**
+ * Close popup with water animation.
+ * @param {boolean} immediate - true = ohne Wasser-Close-Animation sofort schließen
+ *   (wird bei Navigation über die Haupt-Navbar verwendet).
+ */
+function closePopup(immediate = false) {
     if (!currentProject) return;
 
     // Lightbox schließen, falls noch geöffnet
@@ -519,8 +555,27 @@ function closePopup() {
         modalContent.style.webkitFilter = '';
     }
 
-    // Trigger water_distort_close SVG animation (same as water_emerge opening)
     const closeBtn = modalContainer.querySelector('.modal_close_btn');
+
+    // Scroll-Lock + modal-open-Klasse sofort freigeben (Navigation soll sofort scrollen koennen).
+    unlockBodyScroll();
+
+    if (immediate) {
+        // Ohne Close-Animation sofort ausblenden (z.B. bei Klick auf einen Navbar-Link).
+        modalOverlay.style.display = 'none';
+        modalContainer.style.display = 'none';
+        modalContainer.classList.remove('water_close');
+        if (closeBtn) {
+            closeBtn.classList.remove('water_effect');
+        }
+        if (modalShader) {
+            modalShader.stop();
+        }
+        currentProject = null;
+        return;
+    }
+
+    // Trigger water_distort_close SVG animation (same as water_emerge opening)
     restartWaterCloseAnimation(closeBtn);
 
     // Trigger water close animation
@@ -539,8 +594,23 @@ function closePopup() {
             modalShader.stop();
         }
         currentProject = null;
-        document.body.style.overflow = '';
     }, WATER_ANIMATION_MS);
+}
+
+/**
+ * Reusable: Exportierte Funktion, um das Projekt-Modal von außen zu schließen
+ * (z.B. aus der Navigation). Entspricht closePopup().
+ * @param {{ immediate?: boolean }} options
+ */
+export function closeProjectModal(options = {}) {
+    closePopup(Boolean(options.immediate));
+}
+
+/**
+ * Reusable: Ist aktuell ein Projekt-Modal geöffnet?
+ */
+export function isProjectModalOpen() {
+    return Boolean(currentProject);
 }
 
 /**
@@ -566,11 +636,11 @@ function populateModal(project) {
 
     // Header
     const titleEl = modalContainer.querySelector('.modal_project_title');
-    const subtitleEl = modalContainer.querySelector('.modal_project_subtitle');
-    const categoryEl = modalContainer.querySelector('.modal_project_category');
     titleEl.textContent = project.title;
-    subtitleEl.textContent = getProjectSubtitle(currentProjectIndex, lang) || project.subtitle || '';
-    categoryEl.textContent = getCategoryLabel(project.category, lang) || '';
+
+    // Label ueber der Projekt-Auswahl-Leiste in der aktuellen Sprache setzen
+    const barLabelEl = modalContainer.querySelector('.modal_project_bar_label');
+    if (barLabelEl) barLabelEl.textContent = lang === 'de' ? 'Projekte in dieser Kategorie' : 'Projects in this category';
 
     // Projekt-Auswahl-Leiste fuer die aktuelle Kategorie bauen (Ebene 2)
     buildProjectBar();
@@ -579,7 +649,44 @@ function populateModal(project) {
     const descriptionEl = modalContainer.querySelector('.modal_project_description');
     descriptionEl.textContent = getProjectDescription(currentProjectIndex, lang) || project.description || '';
 
+    // Game Concept (nur sichtbar, wenn das Projekt ein gameConcept-Feld besitzt)
+    const gameConceptEl = modalContainer.querySelector('.modal_game_concept');
+    const gameConceptTextEl = modalContainer.querySelector('.modal_game_concept_text');
+    const conceptTitleEl = modalContainer.querySelector('.modal_game_concept_title');
+    if (conceptTitleEl) conceptTitleEl.textContent = lang === 'de' ? 'Spielkonzept' : 'Game Concept';
+    const gameConcept = getProjectGameConcept(currentProjectIndex, lang);
+    gameConceptTextEl.textContent = gameConcept;
+    gameConceptEl.hidden = !gameConcept;
+
+    // Project Details (Duration/Team – nur sichtbar, wenn das Projekt Werte besitzt)
+    const detailsEl = modalContainer.querySelector('.modal_project_details');
+    const detailsTitleEl = modalContainer.querySelector('.modal_details_title');
+    if (detailsTitleEl) detailsTitleEl.textContent = lang === 'de' ? 'Projektdetails' : 'Project Details';
+    const detailsListEl = modalContainer.querySelector('.modal_details_list');
+    const durationValue = getProjectDuration(currentProjectIndex, lang);
+    const teamValue = getProjectTeam(currentProjectIndex, lang);
+    const detailItems = [];
+    if (durationValue) detailItems.push([lang === 'de' ? 'Dauer' : 'Duration', durationValue]);
+    if (teamValue) detailItems.push(['Team', teamValue]);
+    detailsListEl.innerHTML = '';
+    detailItems.forEach(detail => {
+        const item = document.createElement('div');
+        item.className = 'modal_detail_item';
+        const labelEl = document.createElement('span');
+        labelEl.className = 'modal_detail_label';
+        labelEl.textContent = detail[0];
+        const valueEl = document.createElement('span');
+        valueEl.className = 'modal_detail_value';
+        valueEl.textContent = detail[1];
+        item.appendChild(labelEl);
+        item.appendChild(valueEl);
+        detailsListEl.appendChild(item);
+    });
+    detailsEl.hidden = detailItems.length === 0;
+
     // Contribution (rechts)
+    const contributionTitleEl = modalContainer.querySelector('.modal_contribution_title');
+    if (contributionTitleEl) contributionTitleEl.textContent = lang === 'de' ? 'Mein Beitrag' : 'My Contribution';
     const contributionList = modalContainer.querySelector('.modal_contribution_list');
     const contributions = getProjectContribution(currentProjectIndex, lang) || project.contribution || [];
     contributionList.innerHTML = '';
@@ -590,13 +697,14 @@ function populateModal(project) {
     });
 
     // Tools & Skills
+    const skillsTitleEl = modalContainer.querySelector('.modal_skills_title');
+    if (skillsTitleEl) skillsTitleEl.textContent = lang === 'de' ? 'Tools & Skills' : 'Tools & Skills used';
     const skillsGridEl = modalContainer.querySelector('.modal_skills_grid');
     skillsGridEl.innerHTML = '';
     const tools = project.tools || [];
-    tools.forEach((tool, index) => {
+    tools.forEach((tool) => {
         const tag = document.createElement('span');
-        // tools[0] = Haupttool -> hervorgehoben
-        tag.className = 'modal_skill_tag' + (index === 0 ? ' main' : '');
+        tag.className = 'modal_skill_tag';
         if (tool.icon) {
             tag.innerHTML = `<i class='bx ${tool.icon}'></i> ${tool.name}`;
         } else {

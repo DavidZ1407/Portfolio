@@ -118,6 +118,13 @@
     box-sizing: border-box;
 }
 
+/* Solange ein Projekt-Modal offen ist, bleibt die Haupt-Navbar über dem
+   Modal-Overlay (z-index 1000) und dem Modal-Container (z-index 1001) –
+   damit Nav-Links, Logo und DE/EN-Umschalter sichtbar und klickbar bleiben. */
+body.modal-open .header {
+    z-index: 1100;
+}
+
 /* Punkt 2: backdrop-filter ab HD+ (1600px) reduzieren für Firefox-Performance */
 @media (min-width: 1600px) {
     .header {
