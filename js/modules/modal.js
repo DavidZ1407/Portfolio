@@ -22,6 +22,8 @@ import {
     getProjectGameConcept,
     getProjectDuration,
     getProjectTeam,
+    getProjectTitle,
+    getProjectTools,
 } from '../constants/projects.js?v=5';
 import { initModalShader } from './modal_shader.js';
 
@@ -169,9 +171,11 @@ function attachEventListeners(projects) {
     projectPrev.addEventListener('click', () => navigateProject(-1));
     projectNext.addEventListener('click', () => navigateProject(1));
 
-    // Kategorie-Reiter (Delegation: Reiter werden dynamisch neu gebaut)
+    // Kategorie-Reiter + KATEGORIE-Pfeile (Delegation: dynamisch neu gebaut)
     const catTabs = modalContainer.querySelector('.modal_cat_tabs');
     catTabs.addEventListener('click', (e) => {
+        if (e.target.closest('.modal_cat_prev')) { navigateCategory(-1); return; }
+        if (e.target.closest('.modal_cat_next')) { navigateCategory(1); return; }
         const tab = e.target.closest('.modal_cat_tab');
         if (tab && tab.dataset.category) {
             switchCategory(tab.dataset.category);
@@ -257,7 +261,9 @@ function switchCategory(category) {
  */
 function navigateProject(direction) {
     if (!currentProject) return;
-    const target = getSiblingProjectIndex(currentProjectIndex, direction);
+    // Aufrufer uebergeben -1/+1 – getSiblingProjectIndex erwartet 'prev'/'next'
+    const dirName = direction < 0 ? 'prev' : 'next';
+    const target = getSiblingProjectIndex(currentProjectIndex, dirName);
     if (target === null || target === undefined) return;
 
     currentProjectIndex = target;
@@ -275,7 +281,9 @@ function navigateProject(direction) {
  */
 function navigateCategory(direction) {
     if (!currentProject) return;
-    const target = getAdjacentCategoryProject(currentProjectIndex, direction);
+    // Aufrufer uebergeben -1/+1 – getAdjacentCategoryProject erwartet 'prev'/'next'
+    const dirName = direction < 0 ? 'prev' : 'next';
+    const target = getAdjacentCategoryProject(currentProjectIndex, dirName);
     if (target === null || target === undefined) return;
 
     currentProjectIndex = target;
@@ -297,6 +305,14 @@ function buildCategoryTabs() {
     const lang = getCurrentLang();
 
     tabsEl.innerHTML = '';
+
+    // KATEGORIE-Pfeil zurueck («) – zyklisch wie navigateCategory (Wrap-Around)
+    const catPrevBtn = document.createElement('button');
+    catPrevBtn.className = 'modal_cat_prev';
+    catPrevBtn.textContent = '«';
+    catPrevBtn.setAttribute('aria-label', 'Previous category');
+    tabsEl.appendChild(catPrevBtn);
+
     getCategories().forEach(cat => {
         const btn = document.createElement('button');
         btn.className = 'modal_cat_tab';
@@ -309,6 +325,13 @@ function buildCategoryTabs() {
         btn.textContent = getCategoryLabel(cat, lang);
         tabsEl.appendChild(btn);
     });
+
+    // KATEGORIE-Pfeil vorwaerts (») – zyklisch wie navigateCategory (Wrap-Around)
+    const catNextBtn = document.createElement('button');
+    catNextBtn.className = 'modal_cat_next';
+    catNextBtn.textContent = '»';
+    catNextBtn.setAttribute('aria-label', 'Next category');
+    tabsEl.appendChild(catNextBtn);
 }
 
 /**
@@ -319,6 +342,8 @@ function buildCategoryTabs() {
 function updateProjectNav() {
     // Reiter neu aufbauen (aktiver = aktuelle Kategorie)
     buildCategoryTabs();
+
+    const lang = getCurrentLang();
 
     const switchRow = modalContainer.querySelector('.modal_project_switch');
     const prevBtn = modalContainer.querySelector('.modal_project_prev');
@@ -336,8 +361,8 @@ function updateProjectNav() {
         const pos = indices.indexOf(currentProjectIndex);
         const prevIdx = hasSiblings ? indices[(pos - 1 + indices.length) % indices.length] : -1;
         const nextIdx = hasSiblings ? indices[(pos + 1) % indices.length] : -1;
-        prevBtn.title = prevIdx >= 0 && projectsList[prevIdx] ? projectsList[prevIdx].title : '';
-        nextBtn.title = nextIdx >= 0 && projectsList[nextIdx] ? projectsList[nextIdx].title : '';
+        prevBtn.title = prevIdx >= 0 && projectsList[prevIdx] ? getProjectTitle(prevIdx, lang) : '';
+        nextBtn.title = nextIdx >= 0 && projectsList[nextIdx] ? getProjectTitle(nextIdx, lang) : '';
         prevBtn.disabled = !hasSiblings;
         nextBtn.disabled = !hasSiblings;
         prevBtn.classList.toggle('disabled', !hasSiblings);
@@ -353,11 +378,32 @@ function updateProjectNav() {
  * Zeigt alle Projekte der Kategorie als anklickbare Karten mit Cover + Titel.
  * Das aktuell ausgewaehlte Projekt erhaelt die 'active'-Klasse.
  */
+/**
+ * Erzeugt ein stummes <video>-Vorschauelement, das per preload=metadata das
+ * erste Frame der Animation anzeigt – so sehen Video-Thumbnails/Karten aus
+ * wie die Animation selbst, nicht wie ein statisches Platzhalterbild.
+ */
+function createVideoPreviewElement(src) {
+    const vid = document.createElement('video');
+    vid.src = src || '';
+    vid.muted = true;
+    vid.preload = 'metadata';
+    vid.playsInline = true;
+    vid.setAttribute('playsinline', '');
+    vid.setAttribute('aria-hidden', 'true');
+    // Kleiner Zeit-Sprung, damit Browser das erste Frame zuverlaessig rendern
+    vid.addEventListener('loadeddata', () => {
+        try { vid.currentTime = 0.001; } catch (e) { /* ignore */ }
+    }, { once: true });
+    return vid;
+}
+
 function buildProjectBar() {
     const bar = modalContainer.querySelector('.modal_project_bar');
     if (!bar) return;
     bar.innerHTML = '';
     if (!currentProject) return;
+    const lang = getCurrentLang();
 
     const indices = getProjectIndicesByCategory(currentProject.category);
     indices.forEach(idx => {
@@ -372,17 +418,23 @@ function buildProjectBar() {
         item.classList.toggle('active', isActive);
         item.setAttribute('aria-selected', isActive ? 'true' : 'false');
 
-        const img = document.createElement('img');
         const media = Array.isArray(project.media) ? project.media : [];
-        img.src = project.cover || (media[0] && (media[0].thumb || media[0].src)) || '';
-        img.alt = project.title || '';
-        img.loading = 'lazy';
-        applyImageFallback(img, project.category);
-        item.appendChild(img);
+        const firstMedia = media[0];
+        if (firstMedia && firstMedia.type === 'video') {
+            // Reine Video-Projekte: Karten-Vorschau zeigt das erste Frame der ersten Animation
+            item.appendChild(createVideoPreviewElement(firstMedia.src));
+        } else {
+            const img = document.createElement('img');
+            img.src = project.cover || (firstMedia && (firstMedia.thumb || firstMedia.src)) || '';
+            img.alt = getProjectTitle(idx, lang);
+            img.loading = 'lazy';
+            applyImageFallback(img, project.category);
+            item.appendChild(img);
+        }
 
         const label = document.createElement('span');
         label.className = 'modal_project_item_label';
-        label.textContent = project.title || '';
+        label.textContent = getProjectTitle(idx, lang);
         item.appendChild(label);
 
         bar.appendChild(item);
@@ -636,7 +688,7 @@ function populateModal(project) {
 
     // Header
     const titleEl = modalContainer.querySelector('.modal_project_title');
-    titleEl.textContent = project.title;
+    titleEl.textContent = getProjectTitle(currentProjectIndex, lang);
 
     // Label ueber der Projekt-Auswahl-Leiste in der aktuellen Sprache setzen
     const barLabelEl = modalContainer.querySelector('.modal_project_bar_label');
@@ -647,7 +699,7 @@ function populateModal(project) {
 
     // Beschreibung (links)
     const descriptionEl = modalContainer.querySelector('.modal_project_description');
-    descriptionEl.textContent = getProjectDescription(currentProjectIndex, lang) || project.description || '';
+    descriptionEl.textContent = getProjectDescription(currentProjectIndex, lang);
 
     // Game Concept (nur sichtbar, wenn das Projekt ein gameConcept-Feld besitzt)
     const gameConceptEl = modalContainer.querySelector('.modal_game_concept');
@@ -688,7 +740,7 @@ function populateModal(project) {
     const contributionTitleEl = modalContainer.querySelector('.modal_contribution_title');
     if (contributionTitleEl) contributionTitleEl.textContent = lang === 'de' ? 'Mein Beitrag' : 'My Contribution';
     const contributionList = modalContainer.querySelector('.modal_contribution_list');
-    const contributions = getProjectContribution(currentProjectIndex, lang) || project.contribution || [];
+    const contributions = getProjectContribution(currentProjectIndex, lang);
     contributionList.innerHTML = '';
     contributions.forEach(item => {
         const li = document.createElement('li');
@@ -701,7 +753,7 @@ function populateModal(project) {
     if (skillsTitleEl) skillsTitleEl.textContent = lang === 'de' ? 'Tools & Skills' : 'Tools & Skills used';
     const skillsGridEl = modalContainer.querySelector('.modal_skills_grid');
     skillsGridEl.innerHTML = '';
-    const tools = project.tools || [];
+    const tools = getProjectTools(currentProjectIndex, lang);
     tools.forEach((tool) => {
         const tag = document.createElement('span');
         tag.className = 'modal_skill_tag';
@@ -741,12 +793,17 @@ function buildThumbnails(project) {
         btn.className = 'modal_thumb';
         btn.setAttribute('aria-label', `Media ${index + 1}`);
 
-        const img = document.createElement('img');
-        img.src = item.thumb || item.src || '';
-        img.alt = `${project.title} - media ${index + 1}`;
-        img.loading = 'lazy';
-        applyImageFallback(img, project.category);
-        btn.appendChild(img);
+        if (item.type === 'video') {
+            // Video-Vorschau: zeigt das erste Frame der Animation ("wie die Sachen aussehen")
+            btn.appendChild(createVideoPreviewElement(item.src));
+        } else {
+            const img = document.createElement('img');
+            img.src = item.thumb || item.src || '';
+            img.alt = `${getProjectTitle(currentProjectIndex, getCurrentLang())} - media ${index + 1}`;
+            img.loading = 'lazy';
+            applyImageFallback(img, project.category);
+            btn.appendChild(img);
+        }
 
         // Video-Thumbnails bekommen ein kleines Play-Symbol
         if (item.type === 'video') {
@@ -786,9 +843,15 @@ function renderMediaItem(imageEl, videoEl, item, opts, altText, category) {
     if (item.type === 'video') {
         imageEl.style.display = 'none';
         videoEl.style.display = 'block';
+        // Kein statisches Poster-Bild mehr: Das Video zeigt sein eigenes erstes Frame
+        videoEl.removeAttribute('poster');
         videoEl.setAttribute('src', item.src);
-        if (item.thumb) videoEl.setAttribute('poster', item.thumb);
+        videoEl.preload = 'metadata';
         videoEl.load();
+        // Erstes Frame zuverlaessig rendern (kleiner Zeit-Sprung nach dem Laden)
+        videoEl.addEventListener('loadeddata', () => {
+            try { if (videoEl.paused) videoEl.currentTime = 0.001; } catch (e) { /* ignore */ }
+        }, { once: true });
         if (opts.showControls) videoEl.setAttribute('controls', '');
         if (opts.playBtn) opts.playBtn.style.display = 'flex';
     } else {
@@ -822,7 +885,7 @@ function showMedia(index) {
     videoEl.pause();
     videoEl.removeAttribute('controls');
 
-    renderMediaItem(imageEl, videoEl, item, { showControls: false, playBtn }, project.title, project.category);
+    renderMediaItem(imageEl, videoEl, item, { showControls: false, playBtn }, getProjectTitle(currentProjectIndex, getCurrentLang()), project.category);
 
     // Aktives Thumbnail markieren (goldener Rahmen)
     const thumbs = modalContainer.querySelectorAll('.modal_thumb');
@@ -1045,6 +1108,6 @@ function syncLightbox() {
     const item = media[currentMediaIndex] || media[0];
 
     lightboxVideo.pause();
-    renderMediaItem(lightboxImage, lightboxVideo, item, { showControls: true, playBtn: null }, project.title || '', project.category);
+    renderMediaItem(lightboxImage, lightboxVideo, item, { showControls: true, playBtn: null }, getProjectTitle(currentProjectIndex, getCurrentLang()), project.category);
 }
 

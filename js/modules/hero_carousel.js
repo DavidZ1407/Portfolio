@@ -2,7 +2,7 @@
 /* MODULE - CAROUSEL */
 /* ========================================= */
 
-import { projects, getProjectSubtitle, getProjectCover, getOrderedProjectIndices, applyImageFallback } from "../constants/projects.js?v=5";
+import { projects, getProjectSubtitle, getProjectCover, getProjectTitle, getProjectTools, getOrderedProjectIndices, applyImageFallback } from "../constants/projects.js?v=5";
 import { getCurrentLang } from "./language.js";
 import { cleanupRegistry, bindHorizontalSwipe } from '../utils/helpers.js';
 
@@ -35,7 +35,7 @@ function buildCarouselSlides() {
 
         const img = document.createElement('img');
         img.src = getProjectCover(projectIdx) || '';
-        img.alt = project.title || '';
+        img.alt = getProjectTitle(projectIdx, lang) || '';
         img.loading = 'lazy';
         img.decoding = 'async';
         // Fallback fuer fehlendes Cover
@@ -45,7 +45,7 @@ function buildCarouselSlides() {
         const info = document.createElement('div');
         info.className = 'carousel_info';
         const h4 = document.createElement('h4');
-        h4.textContent = project.title;
+        h4.textContent = getProjectTitle(projectIdx, lang);
         const p = document.createElement('p');
         p.textContent = getProjectSubtitle(projectIdx, lang);
         info.appendChild(h4);
@@ -67,7 +67,7 @@ function renderCarouselLabels() {
         if (!project) return;
         const h4 = slide.querySelector('.carousel_info h4');
         const p = slide.querySelector('.carousel_info p');
-        if (h4) h4.textContent = project.title;
+        if (h4) h4.textContent = getProjectTitle(projectIdx, lang);
         if (p) p.textContent = getProjectSubtitle(projectIdx, lang);
     });
 }
@@ -210,7 +210,8 @@ export function highlightHeroSkills(projectIndex) {
 
         const project = projects[projectIndex];
         if (!project) return;
-        const projectTools = project.tools || project.skills || [];
+        // Tools sprachunabhaengig auf EN-Basis vergleichen (data-skill ist englisch)
+        const projectTools = getProjectTools(projectIndex, 'en');
         
         const skillItems = document.querySelectorAll('.arsenal_grid .skill_item');
         const toolNames = projectTools.map(s => (s.name || s).toLowerCase());

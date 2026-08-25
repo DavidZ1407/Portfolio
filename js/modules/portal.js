@@ -5,7 +5,7 @@
 
 import { cleanupRegistry, debounce, sizeCanvas, bindHorizontalSwipe } from '../utils/helpers.js';
 import { registerAnimation } from '../utils/animation_manager.js';
-import { projects, getProjectSubtitle, getProjectCover, getCategories, getCategoryLabel, getFirstProjectOfCategory, getOrderedProjectIndices, applyImageFallback } from '../constants/projects.js?v=5';
+import { projects, getProjectSubtitle, getProjectCover, getProjectTitle, getCategories, getCategoryLabel, getFirstProjectOfCategory, getOrderedProjectIndices, applyImageFallback } from '../constants/projects.js?v=5';
 import { getCurrentLang } from './language.js';
 
 let modalOpenCallback = null;
@@ -60,7 +60,7 @@ function buildPortalSlides() {
 
         const img = document.createElement('img');
         img.src = getProjectCover(projectIdx) || '';
-        img.alt = project.title || '';
+        img.alt = getProjectTitle(projectIdx, lang) || '';
         img.loading = 'lazy';
         img.decoding = 'async';
         // Fallback: fehlendes Cover -> Kategorie-Platzhalter
@@ -83,7 +83,7 @@ function buildPortalSlides() {
         const overlay = document.createElement('div');
         overlay.className = 'slide-overlay';
         const h2 = document.createElement('h2');
-        h2.textContent = project.title;
+        h2.textContent = getProjectTitle(projectIdx, lang);
         const p = document.createElement('p');
         p.textContent = getProjectSubtitle(projectIdx, lang);
         overlay.appendChild(h2);
@@ -105,7 +105,7 @@ function renderPortalLabels() {
         if (!project) return;
         const h2 = slide.querySelector('.slide-overlay h2');
         const p = slide.querySelector('.slide-overlay p');
-        if (h2) h2.textContent = project.title;
+        if (h2) h2.textContent = getProjectTitle(projectIdx, lang);
         if (p) p.textContent = getProjectSubtitle(projectIdx, lang);
     });
 }
