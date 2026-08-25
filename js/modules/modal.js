@@ -420,8 +420,10 @@ function buildProjectBar() {
 
         const media = Array.isArray(project.media) ? project.media : [];
         const firstMedia = media[0];
-        if (firstMedia && firstMedia.type === 'video') {
-            // Reine Video-Projekte: Karten-Vorschau zeigt das erste Frame der ersten Animation
+        // Reine Video-Projekte: Karten-Vorschau zeigt das erste Frame der ersten Animation.
+        // Gemischte Projekte (Video + Bilder) zeigen stattdessen das Cover-Bild.
+        const isPureVideoProject = Boolean(firstMedia && firstMedia.type === 'video' && !media.some(m => m && m.type === 'image'));
+        if (isPureVideoProject) {
             item.appendChild(createVideoPreviewElement(firstMedia.src));
         } else {
             const img = document.createElement('img');

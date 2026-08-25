@@ -94,7 +94,7 @@ export {
 /* ---- Mapping Kategorie -> Indizes in projects[] (mehrere Projekte pro Kategorie moeglich) ---- */
 const categoryProjects = {
     gamedev: [0, 6],
-    '3d':    [2],
+    '3d':    [2, 10, 11],
     concept: [1, 8, 9],
     coding:  [3],
     sound:   [4],
@@ -172,32 +172,41 @@ const projects = [
         ]
     },
 
-    /* Index 2 - 3D */ {
+    /* Index 2 - 3D (3D Modeling) */ {
         category: '3d',
-        title: { en: 'Space Station', de: 'Space Station' },
-        subtitle: { en: 'Blender Animation & Modeling', de: 'Blender-Animation & Modeling' },
-        description: { en: 'An atmospheric 3D space scene capturing the solitude and beauty of deep space. Complex shader networks, volumetric fog and dynamic lighting create an immersive experience.', de: 'Eine atmosphärische 3D-Weltraum-Szene, die die Einsamkeit und Schönheit des Weltraums einfängt. Komplexe Shader-Netzwerke, volumetrischer Nebel und dynamische Beleuchtung schaffen ein immersives Erlebnis.' },
-        cover: 'assets/Picture/Project3.png',
+        title: { en: '3D Modeling', de: '3D Modeling' },
+        subtitle: { en: 'Comprehensive 3D Work in Blender', de: 'Umfassende 3D-Arbeiten in Blender' },
+        description: { en: 'Comprehensive 3D work done in Blender, covering everything from high-to-low poly modeling and digital sculpting to detailed texturing and normal map workflows. Focused on creating clean, efficient assets.', de: 'Umfassende 3D-Arbeiten in Blender – von High- zu Low-Poly-Modellierung und digitalem Sculpting bis hin zu detaillierter Texturierung und Normal-Map-Workflows. Der Fokus liegt auf sauberen, effizienten Assets.' },
+        cover: 'assets/3D/3D_IMG/3D_IMG_1.png',
         media: [
-            { type: 'image', src: 'assets/Picture/Project3.png', thumb: 'assets/Picture/Project3.png' }
+            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_1.png', thumb: 'assets/3D/3D_IMG/3D_IMG_1.png' },
+            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_2.png', thumb: 'assets/3D/3D_IMG/3D_IMG_2.png' },
+            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_3.png', thumb: 'assets/3D/3D_IMG/3D_IMG_3.png' },
+            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_4.png', thumb: 'assets/3D/3D_IMG/3D_IMG_4.png' },
+            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_5.png', thumb: 'assets/3D/3D_IMG/3D_IMG_5.png' },
+            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_6.png', thumb: 'assets/3D/3D_IMG/3D_IMG_6.png' },
+            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_7.png', thumb: 'assets/3D/3D_IMG/3D_IMG_7.png' },
+            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_8.png', thumb: 'assets/3D/3D_IMG/3D_IMG_8.png' },
+            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_9.png', thumb: 'assets/3D/3D_IMG/3D_IMG_9.png' },
+            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_10.JPG', thumb: 'assets/3D/3D_IMG/3D_IMG_10.JPG' }
         ],
         contribution: {
             en: [
-                'Modeled the space station and the asteroids',
-                'Built the shader networks and lighting',
-                'Animated the camera and volumetric effects'
+                'Hard-surface / organic modeling & sculpting',
+                'UV unwrapping and layout optimization',
+                'Texturing, shading, and normal map baking',
+                'Preparing clean, game-ready assets'
             ],
             de: [
-                'Modeling der Raumstation und der Planetoiden',
-                'Aufbau der Shader-Netzwerke und Beleuchtung',
-                'Animation der Kamera und der volumetrischen Effekte'
+                'Hard-Surface-/Organic-Modeling & Sculpting',
+                'UV-Unwrapping und Layout-Optimierung',
+                'Texturierung, Shading und Normal-Map-Baking',
+                'Aufbereitung sauberer, game-ready Assets'
             ]
         },
         tools: [
-            { name: { en: 'Blender', de: 'Blender' }, icon: 'bx-cube' },
-            { name: { en: 'OctaneRender', de: 'OctaneRender' }, icon: 'bx-palette' },
-            { name: { en: 'After Effects', de: 'After Effects' }, icon: 'bx-video' }
-                ]
+            { name: { en: 'Blender', de: 'Blender' }, icon: 'bx-cube' }
+        ]
     },
 
     /* Index 3 - Coding (PLACEHOLDER -> echtes Projekt einsetzen) */
@@ -425,6 +434,82 @@ const projects = [
         },
         tools: [
             { name: { en: 'Blender', de: 'Blender' }, icon: 'bx-cube' }
+        ]
+    },
+
+    /* Index 10 - 3D (3D_VID) */
+    {
+        category: '3d',
+        title: { en: '3D Animation', de: '3D Animation' },
+        subtitle: { en: 'In-engine 3D Animation & Mechanics', de: '3D-Animationen & Gameplay-Mechaniken' },
+        description: { en: '3D animations developed in Blender and implemented within the Godot game engine to drive interactive gameplay mechanics, including character actions and facial animations.', de: 'In Blender entwickelte 3D-Animationen, die in der Godot-Spielengine umgesetzt wurden, um interaktive Gameplay-Mechaniken anzutreiben – einschließlich Charakteraktionen und Gesichtsanimationen.' },
+        cover: 'assets/3D/3D_IMG/3D_IMG_1.png',
+        media: [
+            { type: 'video', src: 'assets/3D/3D_VID/3D_VID_1.mp4', thumb: 'assets/3D/3D_IMG/3D_IMG_1.png' },
+            { type: 'video', src: 'assets/3D/3D_VID/3D_VID_2.mp4', thumb: 'assets/3D/3D_IMG/3D_IMG_1.png' },
+            { type: 'video', src: 'assets/3D/3D_VID/3D_VID_3.mp4', thumb: 'assets/3D/3D_IMG/3D_IMG_1.png' },
+            { type: 'video', src: 'assets/3D/3D_VID/3D_VID_4.mp4', thumb: 'assets/3D/3D_IMG/3D_IMG_1.png' },
+            { type: 'video', src: 'assets/3D/3D_VID/3D_VID_5.mp4', thumb: 'assets/3D/3D_IMG/3D_IMG_1.png' }
+        ],
+        contribution: {
+            en: [
+                'Rigging and animating character/object assets in Blender',
+                'Setting up animation trees and systems inside Godot',
+                'Scripting and integrating gameplay mechanics tied to the animations',
+                'Designing expressive facial animations for character interactions'
+            ],
+            de: [
+                'Rigging und Animation von Charakter-/Objekt-Assets in Blender',
+                'Einrichtung von Animations-Bäumen und -Systemen in Godot',
+                'Skripting und Integration von an die Animationen gekoppelter Gameplay-Mechaniken',
+                'Entwicklung ausdrucksstarker Gesichtsanimationen für Charakter-Interaktionen'
+            ]
+        },
+        tools: [
+            { name: { en: 'Blender', de: 'Blender' }, icon: 'bx-cube' },
+            { name: { en: 'Godot', de: 'Godot' }, icon: 'bx-code-alt' }
+        ]
+    },
+
+    /* Index 11 - 3D (3D_Pj) */
+    {
+        category: '3d',
+        title: { en: 'Battle for the Stars', de: 'Battle for the Stars' },
+        subtitle: { en: 'Four-Week Group Animation Production', de: 'Vierwöchige Gruppen-Animation' },
+        description: { en: 'A 4-week team project taking an animation from initial concept and storyboard to final production in Blender. The project features a high-speed chase sequence traveling from outer space down into a canyon. To bridge the gap between virtual and real worlds, we seamlessly combined recorded live-action video footage with 3D animation.', de: 'Ein vierwöchiges Teamprojekt, das eine Animation vom ersten Konzept und Storyboard bis zur finalen Produktion in Blender entwickelte. Das Projekt zeigt eine Hochgeschwindigkeits-Verfolgungsjagd vom Weltraum hinunter in einen Canyon. Um die Brücke zwischen virtueller und realer Welt zu schlagen, kombinierten wir aufgenommenes Realfilm-Material nahtlos mit 3D-Animation.' },
+        gameConcept: { en: "A chased spaceship navigates through outer space, featuring a real-life actor integrated directly into the animated scene.", de: "Ein gejagtes Raumschiff navigiert durch den Weltraum, mit einem echten Schauspieler, der direkt in die animierte Szene integriert ist." },
+        duration: { en: '4 weeks', de: '4 Wochen' },
+        team: { en: '4 members', de: '4 Mitglieder' },
+        cover: 'assets/3D/3D_Pj/3D_PJ_2.png',
+        media: [
+            { type: 'video', src: 'assets/3D/3D_Pj/3D_PJ_1.mp4', thumb: 'assets/3D/3D_Pj/3D_PJ_2.png' },
+            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_2.png', thumb: 'assets/3D/3D_Pj/3D_PJ_2.png' },
+            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_3.png', thumb: 'assets/3D/3D_Pj/3D_PJ_3.png' },
+            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_4.png', thumb: 'assets/3D/3D_Pj/3D_PJ_4.png' },
+            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_5.png', thumb: 'assets/3D/3D_Pj/3D_PJ_5.png' },
+            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_6.jpg', thumb: 'assets/3D/3D_Pj/3D_PJ_6.jpg' },
+            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_7.png', thumb: 'assets/3D/3D_Pj/3D_PJ_7.png' },
+            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_8.jpg', thumb: 'assets/3D/3D_Pj/3D_PJ_8.jpg' },
+            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_9.png', thumb: 'assets/3D/3D_Pj/3D_PJ_9.png' },
+            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_10.png', thumb: 'assets/3D/3D_Pj/3D_PJ_10.png' }
+        ],
+        contribution: {
+            en: [
+                'Spaceship modeling and asset creation',
+                'Animation scene design and layout',
+                'Concept development and storyboard',
+                'Acting / live-action integration'
+            ],
+            de: [
+                'Raumschiff-Modellierung und Asset-Erstellung',
+                'Animations-Szendesign und Layout',
+                'Konzeptentwicklung und Storyboard',
+                'Schauspielerei / Live-Action-Integration'
+            ]
+        },
+        tools: [
+            { name: { en: 'Blender', de: 'Blender' }, icon: 'bx-cube' },
+            { name: { en: 'DaVinci Resolve', de: 'DaVinci Resolve' }, icon: 'bx-video' }
         ]
     }
 
