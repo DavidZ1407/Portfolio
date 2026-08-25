@@ -97,7 +97,7 @@ const categoryProjects = {
     '3d':    [2, 10, 11],
     concept: [1, 8, 9],
     coding:  [3],
-    sound:   [4],
+    sound:   [4, 12, 13],
     other:   [5, 7]
 };
 export {
@@ -226,21 +226,39 @@ const projects = [
         tools: []
     },
 
-    /* Index 4 - Sound (PLACEHOLDER -> echtes Projekt einsetzen) */
+    /* Index 4 - Sound (Projekt 1 - Space_Balls) */
     {
         category: 'sound',
-        title: { en: 'Sound Project', de: 'Sound Project' },
-        subtitle: { en: 'Audio & Sound Design', de: 'Audio & Sound Design' },
-        description: { en: 'TODO: Replace this placeholder with your real sound/audio project.', de: 'TODO: Replace this placeholder with your real sound/audio project.' },
-        cover: 'assets/Picture/Project5.png',
+        title: { en: 'Space Balls', de: 'Space Balls' },
+        subtitle: { en: 'Sci-Fi Rhythm Game – Sound Design & Audio Integration', de: 'Sci-Fi-Rhythmusspiel – Sounddesign & Audio-Integration' },
+        description: { en: 'An exciting sci-fi rhythm game developed in the Godot Engine (C#). The project focused entirely on sound design: all sound effects were created from scratch in Ableton — from futuristic sci-fi weapons, drives and UI elements to crisp rhythm cues — and independently integrated into Godot via C#, perfectly synchronized with the gameplay and the rhythm of the game. Final video editing & sync realized with DaVinci Resolve.', de: 'Ein aufregendes Sci-Fi-Rhythmusspiel, entwickelt in der Godot Engine (C#). Das Projekt legte den Fokus komplett auf Sounddesign: Alle Soundeffekte entstanden von Grund auf in Ableton – von futuristischen Sci-Fi-Waffen, Antrieben und UI-Elementen bis hin zu knackigen Rhythmus-Cues – und wurden eigenständig per C# in Godot integriert, perfekt synchron zu Gameplay und Rhythmus des Spiels. Videoschnitt & Sync final umgesetzt mit DaVinci Resolve.' },
+        gameConcept: { en: 'Two players each control a ball ("Odd Balls"), charging a power meter to the beat by rhythmically shaking their controller. Once the meter is full, players can shoot and destroy UFOs.', de: 'Zwei Spieler steuern jeweils einen Ball ("Odd Balls") und laden einen Energie-Balken im Takt auf, indem sie ihren Controller rhythmisch schütteln. Ist der Balken voll, können die Spieler UFOs abschießen und zerstören.' },
+        duration: { en: '2 weeks', de: '2 Wochen' },
+        cover: 'assets/Sound/Space_Balls/Sound_2.png',
         media: [
-            { type: 'image', src: 'assets/Picture/Project5.png', thumb: 'assets/Picture/Project5.png' }
+            { type: 'video', src: 'assets/Sound/Space_Balls/Sound_1.mp4', thumb: 'assets/Sound/Space_Balls/Sound_2.png' },
+            { type: 'image', src: 'assets/Sound/Space_Balls/Sound_2.png', thumb: 'assets/Sound/Space_Balls/Sound_2.png' },
+            { type: 'image', src: 'assets/Sound/Space_Balls/Sound_3.jpg', thumb: 'assets/Sound/Space_Balls/Sound_3.jpg' }
         ],
         contribution: {
-            en: [],
-            de: []
+            en: [
+                'Complete sound design & creation of all audio assets from scratch in Ableton',
+                'Programming & integration of sounds in Godot via C#',
+                'Rhythm & timing coordination for the special two-player gameplay',
+                'Video editing & sync (realized with DaVinci Resolve)'
+            ],
+            de: [
+                'Komplettes Sounddesign & Erstellung aller Audio-Assets von Grund auf in Ableton',
+                'Programmierung & Integration der Sounds in Godot per C#',
+                'Rhythmus- & Timing-Koordination für das besondere Zwei-Spieler-Gameplay',
+                'Videoschnitt & Sync (umgesetzt mit DaVinci Resolve)'
+            ]
         },
-        tools: []
+        tools: [
+            { name: { en: 'Sound Design', de: 'Sounddesign' }, icon: 'bx-volume-full' },
+            { name: { en: 'Godot Engine (C#)', de: 'Godot Engine (C#)' }, icon: 'bx-code-alt' },
+            { name: { en: 'Ableton Live', de: 'Ableton Live' }, icon: 'bx-music' }
+        ]
     },
 
     /* Index 5 - Other (Projekt 1 - Other_PJ_1) */
@@ -509,6 +527,69 @@ const projects = [
         },
         tools: [
             { name: { en: 'Blender', de: 'Blender' }, icon: 'bx-cube' },
+            { name: { en: 'DaVinci Resolve', de: 'DaVinci Resolve' }, icon: 'bx-video' }
+        ]
+    },
+
+    /* Index 12 - Sound (Projekt 2 - Glow_Pods) */
+    {
+        category: 'sound',
+        title: { en: 'Glow Pods', de: 'Glow Pods' },
+        subtitle: { en: 'Atmospheric 3D Game – Environmental Audio & Immersion', de: 'Atmosphärisches 3D-Spiel – Umgebungsaudio & Immersion' },
+        description: { en: 'An atmospheric 3D game set in a dark, icy world where players must collect glowing pods to illuminate and navigate their path. The goal was to give this small 3D world a distinct, immersive acoustic identity using Godot and Ableton: dynamic ambient soundscapes and realistic environmental audio tailored to each environment, organic effects, foley and echoing orb interactions that reinforce distance, scale and mystery.', de: 'Ein atmosphärisches 3D-Spiel in einer dunklen, eisigen Welt, in der Spieler leuchtende Pods einsammeln müssen, um ihren Weg zu beleuchten und zu finden. Das Ziel war es, dieser kleinen 3D-Welt mit Godot und Ableton eine eigenständige, immersive akustische Identität zu geben: dynamische Ambient-Klanglandschaften und realistisches Umgebungsaudio, zugeschnitten auf jede Umgebung, dazu organische Effekte, Foley und hallende Orb-Interaktionen, die Distanz, Größe und Geheimnis verstärken.' },
+        gameConcept: { en: 'The world is divided into two contrasting environments: The Snow Field — vast, cold and isolated, shaped by ice crackling, wind and wide reverb — and The Cave — dark, enigmatic and enclosed, defined by water drips, abstract tones and deep hall reverb.', de: 'Die Welt ist in zwei kontrastierende Umgebungen geteilt: Das Schneefeld – weit, kalt und isoliert, geprägt von knisterndem Eis, Wind und weitem Hall – und Die Höhle – dunkel, rätselhaft und eng, definiert durch Wassertropfen, abstrakte Töne und tiefen Hallenklang.' },
+        duration: { en: '2 weeks', de: '2 Wochen' },
+        cover: 'assets/Sound/Glow_Pods/Sound_5.png',
+        media: [
+            { type: 'video', src: 'assets/Sound/Glow_Pods/Sound_4.mp4', thumb: 'assets/Sound/Glow_Pods/Sound_5.png' },
+            { type: 'image', src: 'assets/Sound/Glow_Pods/Sound_5.png', thumb: 'assets/Sound/Glow_Pods/Sound_5.png' }
+        ],
+        contribution: {
+            en: [
+                'Concept & creation of ambient soundscapes for snow and cave environments',
+                'Organic sound effects & foley art (ice crackling, wind, water drips)',
+                'Acoustic finishing & deep reverb/spatial design for all visual elements',
+                'Final audio mixing & game integration (Godot & Ableton)'
+            ],
+            de: [
+                'Konzeption & Erstellung von Ambient-Klanglandschaften für Schneefeld und Höhle',
+                'Organische Soundeffekte & Foley-Arbeit (knisterndes Eis, Wind, Wassertropfen)',
+                'Akustischer Feinschliff & tiefe Raum-/Klangraum-Gestaltung für alle visuellen Elemente',
+                'Abschließendes Audio-Mixing & Spiel-Integration (Godot & Ableton)'
+            ]
+        },
+        tools: [
+            { name: { en: 'Godot Engine', de: 'Godot Engine' }, icon: 'bx-code-alt' },
+            { name: { en: 'Ableton Live', de: 'Ableton Live' }, icon: 'bx-music' }
+        ]
+    },
+
+    /* Index 13 - Sound (Projekt 3 - Lifted) */
+    {
+        category: 'sound',
+        title: { en: 'Lifted', de: 'Lifted' },
+        subtitle: { en: 'Complete Sound Redesign & Synchronization', de: 'Komplettes Sound-Redesign & Synchronisation' },
+        description: { en: 'A dedicated sound redesign project in which an existing scene was fully re-scored and synchronized from scratch. The main focus was on breathing acoustic life into the visuals using a hybrid approach of custom-made sounds and professionally edited library assets.', de: 'Ein dediziertes Sound-Redesign-Projekt, bei dem eine bestehende Szene von Grund auf neu vertont und synchronisiert wurde. Der Hauptfokus lag darauf, den Bildern akustisches Leben einzuhauchen – mit einem hybriden Ansatz aus selbst erstellen Sounds und professionell bearbeiteten Bibliotheks-Sounds.' },
+        duration: { en: '1 week', de: '1 Woche' },
+        cover: 'assets/Picture/placeholders/sound.svg',
+        media: [
+            { type: 'video', src: 'assets/Sound/Lifted/Sound_6.mp4', thumb: 'assets/Picture/placeholders/sound.svg' }
+        ],
+        contribution: {
+            en: [
+                'Complete sound redesign for the scene',
+                'Sourcing, editing & custom-adapting sound effects from libraries',
+                'Precise audio-to-video synchronization & timing',
+                'Video editing & final audio mix (realized with DaVinci Resolve)'
+            ],
+            de: [
+                'Komplettes Sound-Redesign der Szene',
+                'Recherche, Editing & individuelle Anpassung von Soundeffekten aus Bibliotheken',
+                'Präzise Audio-zu-Video-Synchronisation & Timing',
+                'Videoschnitt & finaler Audio-Mix (umgesetzt mit DaVinci Resolve)'
+            ]
+        },
+        tools: [
             { name: { en: 'DaVinci Resolve', de: 'DaVinci Resolve' }, icon: 'bx-video' }
         ]
     }
