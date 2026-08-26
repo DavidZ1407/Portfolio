@@ -18,7 +18,7 @@ const CATEGORY_LABELS = {
     gamedev: { en: 'Game Dev', de: 'Game Development' },
     '3d':    { en: '3D', de: '3D & Visual Art' },
     concept: { en: '2D & Concept Art', de: '2D & Concept Art' },
-    coding:  { en: 'Coding Web', de: 'Web & Interactive' },
+    coding:  { en: 'Coding', de: 'Coding & Web' },
     sound:   { en: 'Sound', de: 'Audio & Sound Design' },
     other:   { en: 'Other Projects', de: 'Other Projects' }
 };
@@ -74,6 +74,13 @@ export function getProjectTools(index, lang = 'en') {
     if (!p || !Array.isArray(p.tools)) return [];
     return p.tools.map(t => ({ name: pickLang(t.name, lang), icon: t.icon || '' }));
 }
+export function getProjectLinks(index, lang = 'en') {
+    const p = projects[index];
+    if (!p || !Array.isArray(p.links)) return [];
+    return p.links
+        .map(l => ({ label: l.label ? pickLang(l.label, lang) : '', url: l.url || '' }))
+        .filter(l => l.url);
+}
 export function getCategoryLabel(category, lang = 'en') {
     const c = CATEGORY_LABELS[category];
     if (!c) return category;
@@ -96,7 +103,7 @@ const categoryProjects = {
     gamedev: [0, 6],
     '3d':    [2, 10, 11],
     concept: [1, 8, 9],
-    coding:  [3],
+    coding:  [3, 14, 15],
     sound:   [4, 12, 13],
     other:   [5, 7]
 };
@@ -209,21 +216,45 @@ const projects = [
         ]
     },
 
-    /* Index 3 - Coding (PLACEHOLDER -> echtes Projekt einsetzen) */
+    /* Index 3 - Coding (Projekt 1 - Physics & Shader) */
     {
         category: 'coding',
-        title: { en: 'Coding Project', de: 'Coding Project' },
-        subtitle: { en: 'Web & Interactive Development', de: 'Web & Interactive Development' },
-        description: { en: 'TODO: Replace this placeholder with your real coding/interactive project. It is scaffolded so all 6 categories appear in the carousel, portal and modal tabs.', de: 'TODO: Replace this placeholder with your real coding/interactive project. It is scaffolded so all 6 categories appear in the carousel, portal and modal tabs.' },
-        cover: 'assets/Picture/Project4.png',
+        title: { en: 'Coding: Physics & Shader', de: 'Coding: Physik & Shader' },
+        subtitle: { en: 'Playable Physics Games & WebGL Water Shader', de: 'Spielbare Physik-Spiele & WebGL-Wasser-Shader' },
+        description: { en: 'A playable collection of browser-based physics experiments plus a WebGL 2.0 water shader. Includes Cannonball (aim & power a shot, tune ball size and bounciness, gravity flip and slow motion), Spring (a procedurally-physics-driven tentacle game with targets, mutations and a neural-link lives system), Billiard (drag-to-aim shots with a red power meter and pocket scoring) and Pinball (flippers, multi-ball green zones and locally saved high-scores).', de: 'Eine spielbare Sammlung browserbasierter Physik-Experimente plus ein WebGL-2.0-Wasser-Shader. Darunter Cannonball (Ausrichten & Kraft einstellen, Ballgröße und Federung, Schwerkraft-Umkehr und Zeitlupe), Spring (ein physikgetriebenes Tentakel-Spiel mit Zielen, Mutationen und einem Neural-Link-Lebenssystem), Billiard (Ziel-Ziehen & Abfeuern mit Kraft-Messer und Pocket-Scoring) und Pinball (Flipper, Multi-Ball-Zonen und lokal gespeicherte Highscores).' },
+        links: [
+            { label: { en: 'Cannonball – Play', de: 'Cannonball – Spielen' }, url: 'https://davidz1407.github.io/Stem2_Code/Cannonball/index.html' },
+            { label: { en: 'Spring Game – Play', de: 'Spring Game – Spielen' }, url: 'https://davidz1407.github.io/Stem2_Code/Spring/index.html' },
+            { label: { en: 'Billiard – Play', de: 'Billiard – Spielen' }, url: 'https://davidz1407.github.io/Stem2_Code/Billiard/index.html' },
+            { label: { en: 'Pinball – Play', de: 'Pinball – Spielen' }, url: 'https://davidz1407.github.io/Stem2_Code/Pinball/index.html' },
+            { label: { en: 'WebGL Water Shader – Play', de: 'WebGL-Wasser-Shader – Ansehen' }, url: 'https://davidz1407.github.io/Stem2_Code/Shader_OpenGL/index.html' },
+            { label: { en: 'GitHub Repository', de: 'GitHub Repository' }, url: 'https://github.com/DavidZ1407/Stem2_Code' }
+        ],
+        cover: 'assets/Coding_Web/Coding_Physics/C_W_Physics_3.png',
         media: [
-            { type: 'image', src: 'assets/Picture/Project4.png', thumb: 'assets/Picture/Project4.png' }
+            { type: 'image', src: 'assets/Coding_Web/Coding_Physics/C_W_Physics_1.png', thumb: 'assets/Coding_Web/Coding_Physics/C_W_Physics_1.png' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Physics/C_W_Physics_2.png', thumb: 'assets/Coding_Web/Coding_Physics/C_W_Physics_2.png' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Physics/C_W_Physics_3.png', thumb: 'assets/Coding_Web/Coding_Physics/C_W_Physics_3.png' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Physics/C_W_Physics_4.png', thumb: 'assets/Coding_Web/Coding_Physics/C_W_Physics_4.png' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Physics/C_W_Physics_5.png', thumb: 'assets/Coding_Web/Coding_Physics/C_W_Physics_5.png' }
         ],
         contribution: {
-            en: [],
-            de: []
+            en: [
+                'WebGL & shader programming',
+                'Physics simulation logic',
+                'Interactive UI controls'
+            ],
+            de: [
+                'WebGL- & Shader-Programmierung',
+                'Physik-Simulationslogik',
+                'Interaktive UI-Steuerungselemente'
+            ]
         },
-        tools: []
+        tools: [
+            { name: { en: 'JavaScript', de: 'JavaScript' }, icon: 'bxl-javascript' },
+            { name: { en: 'WebGL', de: 'WebGL' }, icon: 'bx-code-block' },
+            { name: { en: 'HTML/CSS', de: 'HTML/CSS' }, icon: 'bxl-html5' }
+        ]
     },
 
     /* Index 4 - Sound (Projekt 1 - Space_Balls) */
@@ -591,6 +622,89 @@ const projects = [
         },
         tools: [
             { name: { en: 'DaVinci Resolve', de: 'DaVinci Resolve' }, icon: 'bx-video' }
+        ]
+    },
+
+    /* Index 14 - Coding (Projekt 2 - Website) */
+    {
+        category: 'coding',
+        title: { en: 'Coding: Website', de: 'Coding: Website' },
+        subtitle: { en: 'Web Development – Interactive Websites & Experimente', de: 'Webentwicklung – interaktive Websites & Experimente' },
+        description: { en: 'A collection of web development projects built with HTML, CSS, JavaScript and TypeScript — from an interactive markdown page and an older portfolio website to browser-based canvas games with animations. Focus on clean front-end structure, interactive elements and a smooth user experience.', de: 'Eine Sammlung von Webentwicklungsprojekten mit HTML, CSS, JavaScript und TypeScript – von einer interaktiven Markdown-Seite und einer älteren Portfolio-Website bis zu browserbasierten Canvas-Spielen und Animationen. Fokus auf saubere Frontend-Struktur, interaktive Elemente und eine flüssige User Experience.' },
+        links: [
+            { label: { en: 'Markdown Page – Live Website', de: 'Markdown-Seite – Live-Website' }, url: 'https://davidz1407.github.io/Code1/Markdown_page/' },
+            { label: { en: 'GitHub – Markdown Page', de: 'GitHub – Markdown-Seite' }, url: 'https://github.com/DavidZ1407/Code1' },
+            { label: { en: 'Old Portfolio – Live Website', de: 'Old Portfolio – Live-Website' }, url: 'https://davidz1407.github.io/Portfolio_Old/portfolio.html' },
+            { label: { en: 'GitHub – Portfolio_Old', de: 'GitHub – Portfolio_Old' }, url: 'https://github.com/DavidZ1407/Portfolio_Old' },
+            { label: { en: 'Canvas – Old Live Server', de: 'Canvas – Alter Live-Server' }, url: 'https://davidz1407.github.io/Code2/canvas/canvas.html' },
+            { label: { en: 'GitHub – Canvas', de: 'GitHub – Canvas' }, url: 'https://github.com/DavidZ1407/Code2/blob/main/canvas/canvas.html' },
+            { label: { en: 'Ball Animation – Live Website', de: 'Ball-Animation – Live-Website' }, url: 'https://davidz1407.github.io/Code1/Task_4_Coding/ball_animation/ball.html' },
+            { label: { en: 'Games of Games – Live Website', de: 'Games of Games – Live-Website' }, url: 'https://davidz1407.github.io/Code1/Task_4_Coding/games_of_games/games_of_games.html' }
+        ],
+        cover: 'assets/Coding_Web/Coding_Web/C_W_1.png',
+        media: [
+            { type: 'image', src: 'assets/Coding_Web/Coding_Web/C_W_1.png', thumb: 'assets/Coding_Web/Coding_Web/C_W_1.png' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Web/C_W_2.png', thumb: 'assets/Coding_Web/Coding_Web/C_W_2.png' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Web/C_W_3.png', thumb: 'assets/Coding_Web/Coding_Web/C_W_3.png' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Web/C_W_4.png', thumb: 'assets/Coding_Web/Coding_Web/C_W_4.png' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Web/C_W_5.png', thumb: 'assets/Coding_Web/Coding_Web/C_W_5.png' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Web/C_W_6.png', thumb: 'assets/Coding_Web/Coding_Web/C_W_6.png' }
+        ],
+        contribution: {
+            en: [
+                'Frontend development with HTML & CSS',
+                'Interactive logic & UI implementation with TypeScript & JavaScript',
+                'Responsive layouts & clean web structure'
+            ],
+            de: [
+                'Frontend-Entwicklung mit HTML & CSS',
+                'Interaktive Logik & UI-Umsetzung mit TypeScript & JavaScript',
+                'Responsive Layouts & saubere Web-Struktur'
+            ]
+        },
+        tools: [
+            { name: { en: 'HTML', de: 'HTML' }, icon: 'bxl-html5' },
+            { name: { en: 'CSS', de: 'CSS' }, icon: 'bxl-css3' },
+            { name: { en: 'JavaScript', de: 'JavaScript' }, icon: 'bxl-javascript' },
+            { name: { en: 'TypeScript', de: 'TypeScript' }, icon: 'bxl-typescript' }
+        ]
+    },
+
+    /* Index 15 - Coding (Projekt 3 - Jump) */
+    {
+        category: 'coding',
+        title: { en: 'Coding: Jump', de: 'Coding: Jump' },
+        subtitle: { en: 'Physical UI & Browser Interface (ESP Microcontroller)', de: 'Physisches UI & Browser-Interface (ESP-Mikrocontroller)' },
+        description: { en: 'An interactive application developed with HTML, CSS and JavaScript in combination with an ESP microcontroller. The goal was to design a physical user interface that captures input through pins and visually represents it in the browser. A paper prototype was created as part of the design process.', de: 'Eine interaktive Anwendung, entwickelt mit HTML, CSS und JavaScript in Kombination mit einem ESP-Mikrocontroller. Das Ziel war es, ein physisches User Interface zu gestalten, das Eingaben über Pins erfasst und sie im Browser visuell darstellt. Als Teil des Designprozesses wurde zusätzlich ein Papier-Prototyp erstellt.' },
+        links: [
+            { label: { en: 'Live Website', de: 'Live-Website' }, url: 'https://davidz1407.github.io/Abgabe1/Game/' },
+            { label: { en: 'GitHub Repository', de: 'GitHub repository' }, url: 'https://github.com/DavidZ1407/Abgabe1' }
+        ],
+        duration: { en: '1 week', de: '1 Woche' },
+        team: { en: 'Worked alone', de: 'Allein gearbeitet' },
+        cover: 'assets/Coding_Web/Coding_Jump/C_W_Jump_2.png',
+        media: [
+            { type: 'image', src: 'assets/Coding_Web/Coding_Jump/C_W_Jump_2.png', thumb: 'assets/Coding_Web/Coding_Jump/C_W_Jump_2.png' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Jump/C_W_Jump_3.png', thumb: 'assets/Coding_Web/Coding_Jump/C_W_Jump_3.png' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Jump/C_W_Jump_4.jpg', thumb: 'assets/Coding_Web/Coding_Jump/C_W_Jump_4.jpg' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Jump/C_W_Jump_5.jpg', thumb: 'assets/Coding_Web/Coding_Jump/C_W_Jump_5.jpg' }
+        ],
+        contribution: {
+            en: [
+                'Programming the web interface with HTML, CSS & JavaScript',
+                'Physical user interface reading input through microcontroller pins',
+                'Construction of the paper prototype'
+            ],
+            de: [
+                'Programmierung des Web-Interfaces mit HTML, CSS & JavaScript',
+                'Physisches User Interface zur Eingabeerfassung über Mikrocontroller-Pins',
+                'Bau des Papier-Prototyps'
+            ]
+        },
+        tools: [
+            { name: { en: 'HTML', de: 'HTML' }, icon: 'bxl-html5' },
+            { name: { en: 'CSS', de: 'CSS' }, icon: 'bxl-css3' },
+            { name: { en: 'JavaScript', de: 'JavaScript' }, icon: 'bxl-javascript' }
         ]
     }
 

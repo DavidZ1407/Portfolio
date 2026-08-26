@@ -24,6 +24,7 @@ import {
     getProjectTeam,
     getProjectTitle,
     getProjectTools,
+    getProjectLinks,
 } from '../constants/projects.js?v=5';
 import { initModalShader } from './modal_shader.js';
 
@@ -122,6 +123,10 @@ function createModalElements() {
                     <div class="modal_project_details" hidden>
                         <h3 class="modal_details_title">Project Details</h3>
                         <div class="modal_details_list"></div>
+                    </div>
+                    <div class="modal_project_links" hidden>
+                        <h3 class="modal_links_title">Links & Demos</h3>
+                        <div class="modal_links_grid"></div>
                     </div>
                 </div>
                 <div class="modal_contribution_col">
@@ -737,6 +742,24 @@ function populateModal(project) {
         detailsListEl.appendChild(item);
     });
     detailsEl.hidden = detailItems.length === 0;
+
+    // Links & Demos (nur sichtbar, wenn das Projekt links besitzt)
+    const linksEl = modalContainer.querySelector('.modal_project_links');
+    const linksTitleEl = modalContainer.querySelector('.modal_links_title');
+    if (linksTitleEl) linksTitleEl.textContent = lang === 'de' ? 'Links & Demos' : 'Links & Demos';
+    const linksGridEl = modalContainer.querySelector('.modal_links_grid');
+    const links = getProjectLinks(currentProjectIndex, lang);
+    linksGridEl.innerHTML = '';
+    links.forEach(link => {
+        const a = document.createElement('a');
+        a.className = 'modal_link_btn';
+        a.href = link.url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.innerHTML = `<i class='bx bx-link-external'></i> ${link.label}`;
+        linksGridEl.appendChild(a);
+    });
+    linksEl.hidden = links.length === 0;
 
     // Contribution (rechts)
     const contributionTitleEl = modalContainer.querySelector('.modal_contribution_title');

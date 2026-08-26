@@ -1309,6 +1309,55 @@
     color: #eef7f8;
 }
 
+/* Links & Demos */
+.modal_project_links {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(201, 168, 97, 0.18);
+}
+
+.modal_links_title {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    color: var(--gold-accent, #c9a861);
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.modal_links_grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.modal_link_btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 15px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--cyan-glow, #4a8da0);
+    background: rgba(10, 22, 40, 0.8);
+    border: 1px solid rgba(73, 146, 154, 0.3);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+.modal_link_btn i {
+    font-size: 0.9rem;
+}
+
+.modal_link_btn:hover {
+    color: var(--gold-accent, #c9a861);
+    border-color: var(--gold-accent, #c9a861);
+    box-shadow: 0 0 14px rgba(73, 146, 154, 0.25);
+}
+
 .modal_contribution_title {
     font-family: 'Cinzel', serif;
     font-size: 1rem;
