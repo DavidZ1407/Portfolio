@@ -100,7 +100,7 @@ export {
 
 /* ---- Mapping Kategorie -> Indizes in projects[] (mehrere Projekte pro Kategorie moeglich) ---- */
 const categoryProjects = {
-    gamedev: [0, 6],
+    gamedev: [0, 6, 16, 17],
     '3d':    [2, 10, 11],
     concept: [1, 8, 9],
     coding:  [3, 14, 15],
@@ -117,29 +117,88 @@ const projects = [
 
     /* Index 0 - Game Dev */ {
         category: 'gamedev',
-        title: { en: 'Unreal Tower Defense', de: 'Unreal Tower Defense' },
-        subtitle: { en: 'Tower Defense & Strategy in UE5', de: 'Tower Defense & Strategie in UE5' },
-        description: { en: 'A tower defense game built in Unreal Engine 5. Combine strategic thinking with fast-paced action in a dark fantasy world. Build defenses, manage resources and survive waves of enemies.', de: 'Ein Tower-Defense-Spiel entwickelt in Unreal Engine 5. Kombiniere strategisches Denken mit actionreichem Gameplay in einer düsteren Fantasy-Welt. Baue Verteidigungsanlagen, verwalte Ressourcen und überlebe Wellen von Gegnern.' },
-        cover: 'assets/Picture/Project1.png',
+        title: { en: 'Gothica Solaris', de: 'Gothica Solaris' },
+        subtitle: { en: 'First-Person Roguelite Dungeon Crawler', de: 'First-Person-Roguelite-Dungeon-Crawler' },
+        description: {
+            en: 'Gothic Solaris is a first-person roguelite dungeon crawler set in a dark Victorian world where reality is slowly collapsing under the influence of a mysterious forbidden Book.\n\nPlayers take on the role of Victor, a bounty hunter searching for a missing loved one while exploring corrupted realms connected to the Book.\n\nThe game combines challenging first-person combat, exploration and permanent progression through a Risk-versus-Reward system centered around the Insanity Meter. As Insanity increases, enemies become more dangerous and the dungeon becomes increasingly unstable, while also revealing hidden paths, events and valuable rewards.\n\nPlayers must decide how far they are willing to push their run before extracting and potentially losing unsecured resources.',
+            de: 'Gothic Solaris ist ein First-Person-Roguelite-Dungeon-Crawler in einer düsteren viktorianischen Welt, in der die Realität unter dem Einfluss eines mysteriösen, verbotenen Buchs langsam zerfällt.\n\nDie Spieler schlüpfen in die Rolle von Victor, einem Kopfgeldjäger, der eine vermisste geliebte Person sucht und dabei korrupte Bereiche erkundet, die mit dem Buch verbunden sind.\n\nDas Spiel kombiniert anspruchsvollen First-Person-Combat, Erkundung und permanente Progression durch ein Risk-versus-Reward-System rund um die Insanity-Anzeige. Mit steigender Insanity werden Gegner gefährlicher und der Dungeon zunehmend instabiler – es öffnen sich dabei auch versteckte Pfade, Events und wertvolle Belohnungen.\n\nDie Spieler entscheiden selbst, wie weit sie ihren Run treiben, bevor sie sich zurückziehen und möglicherweise nicht gesicherte Ressourcen verlieren.'
+        },
+        gameConcept: {
+            en: 'A dark first-person dungeon crawler built around exploration, risk-versus-reward decisions and player-driven build creation.\n\nPlayers collect Pages, currencies and upgrades while combining weapons, abilities and Socket upgrades to create different playstyles across multiple runs.\n\nThe core gameplay is built around the Insanity System. Increasing Insanity makes the dungeon more dangerous, but also provides access to greater rewards, hidden areas and special events.',
+            de: 'Ein düsterer First-Person-Dungeon-Crawler rund um Erkundung, Risiko-versus-Belohnung-Entscheidungen und spielergetriebene Build-Erstellung.\n\nSpieler sammeln Pages, Währungen und Upgrades und kombinieren Waffen, Fähigkeiten und Socket-Upgrades zu unterschiedlichen Spielstilen über mehrere Runs hinweg.\n\nDas Kern-Gameplay basiert auf dem Insanity-System: Steigende Insanity macht den Dungeon gefährlicher, eröffnet aber zugleich Zugang zu größeren Belohnungen, versteckten Bereichen und besonderen Events.'
+        },
+        duration: { en: '6 weeks', de: '6 Wochen' },
+        team: { en: '4 members', de: '4 Mitglieder' },
+        cover: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_1_cover.png',
+        /* Cover komplett zeigen (kein Crop) -> Logo/Titel bleibt auf Karten lesbar.
+           Das Cover-Image ist ein Hochformat-Schnitt (1040x1300, Ratio 0.8) des
+           Original-Screenshots G_D_GS_1.png, generiert via tools/make_gothica_cover.ps1.
+           Ratio passt exakt zur Desktop-Portal-Karte (320x400). */
+        coverFit: 'contain',
         media: [
-            { type: 'image', src: 'assets/Picture/Project1.png', thumb: 'assets/Picture/Project1.png' }
+            { type: 'youtube', id: 'Ck4srNe2HZo', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_1.png' },
+            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_1.png', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_1.png' },
+            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_2.png', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_2.png' },
+            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_3.png', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_3.png' },
+            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_4.png', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_4.png' },
+            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_5.png', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_5.png' },
+            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_6.png', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_6.png' },
+            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_7.png', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_7.png' },
+            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_8.png', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_8.png' },
+            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_9.png', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_9.png' },
+            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_10.png', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_10.png' }
         ],
         contribution: {
             en: [
-                'Designed and implemented the core tower-defense gameplay loop',
-                'Programmed enemy waves, resource economy and balancing',
-                'Built level layouts and tower placement mechanics'
+                { group: 'Gameplay & Systems', items: [
+                    'Component-based gameplay systems',
+                    'Inventory, Loot, Insanity and Currency systems',
+                    'AI and combat implementation'
+                ] },
+                { group: 'Level Design', items: [
+                    'Dungeon layout, exploration paths and secret areas',
+                    'Gameplay triggers and environment integration'
+                ] },
+                { group: '3D Art', items: [
+                    'Weapons, enemies and environmental props',
+                    'Textures, materials, rigging and animation'
+                ] },
+                { group: 'Game Design & Documentation', items: [
+                    'Core gameplay loop and Insanity System',
+                    'Story, world and enemy concepts',
+                    'GDD and development documentation'
+                ] }
             ],
             de: [
-                'Design & Implementierung des Tower-Defense-Gameplay-Loops',
-                'Programmierung der Gegnerwellen, Ressourcenwirtschaft und des Balancings',
-                'Erstellung der Level-Layouts und Turm-Platzierungs-Mechaniken'
+                { group: 'Gameplay & Systeme', items: [
+                    'Komponentenbasierte Gameplay-Systeme',
+                    'Inventar-, Loot-, Insanity- und Währungssystem',
+                    'KI- und Kampf-Implementierung'
+                ] },
+                { group: 'Level Design', items: [
+                    'Dungeon-Layout, Erkundungspfade und Geheimbereiche',
+                    'Gameplay-Trigger und Umgebungsintegration'
+                ] },
+                { group: '3D Art', items: [
+                    'Waffen, Gegner und Umgebungsprops',
+                    'Texturen, Materialien, Rigging und Animation'
+                ] },
+                { group: 'Game Design & Dokumentation', items: [
+                    'Kern-Gameplay-Loop und Insanity-System',
+                    'Story-, Welt- und Gegnerkonzepte',
+                    'GDD und Entwicklerdokumentation'
+                ] }
             ]
         },
         tools: [
-            { name: { en: 'Unreal Engine 5', de: 'Unreal Engine 5' }, icon: 'bx-code-alt' },
-            { name: { en: 'Blueprints', de: 'Blueprints' }, icon: 'bx-edit' },
-            { name: { en: 'C++', de: 'C++' }, icon: 'bx-code' }
+            { name: { en: 'Godot', de: 'Godot' }, icon: 'bx-game' },
+            { name: { en: 'C#', de: 'C#' }, icon: 'bx-code' },
+            { name: { en: 'Blender', de: 'Blender' }, icon: 'bx-cube' },
+            { name: { en: 'Ableton', de: 'Ableton' }, icon: 'bx-music' },
+            { name: { en: 'FMOD', de: 'FMOD' }, icon: 'bx-headphone' }
+        ],
+        links: [
+            { label: { en: 'GitHub Repository', de: 'GitHub-Repository' }, url: 'https://github.com/PascalHaegele/Project3' }
         ]
     },
 
@@ -288,7 +347,8 @@ const projects = [
         tools: [
             { name: { en: 'Sound Design', de: 'Sounddesign' }, icon: 'bx-volume-full' },
             { name: { en: 'Godot Engine (C#)', de: 'Godot Engine (C#)' }, icon: 'bx-code-alt' },
-            { name: { en: 'Ableton Live', de: 'Ableton Live' }, icon: 'bx-music' }
+            { name: { en: 'Ableton Live', de: 'Ableton Live' }, icon: 'bx-music' },
+            { name: { en: 'FMOD', de: 'FMOD' }, icon: 'bx-headphone' }
         ]
     },
 
@@ -343,29 +403,50 @@ const projects = [
 
     /* Index 6 - Game Dev (second project) */ {
         category: 'gamedev',
-        title: { en: 'Puzzle Prototype', de: 'Puzzle Prototype' },
-        subtitle: { en: 'UE5 Puzzle Mechanics Prototype', de: 'UE5 Puzzle-Mechanik-Prototyp' },
-        description: { en: 'A prototype exploring grid-based puzzle mechanics and player affordances in Unreal Engine 5. Built with Blueprints and C++, focusing on tight interaction feedback and clean rule systems.', de: 'Ein Prototyp zur Erkundung rasterbasierter Puzzle-Mechaniken und Player-Affordanzen in Unreal Engine 5. Mit Blueprints und C++ entwickelt, Fokus auf präzise Interaktions-Feedbacks und saubere Regelsysteme.' },
-        cover: 'assets/Picture/Project7.png',
+        title: { en: 'Average Goblin Game', de: 'Average Goblin Game' },
+        subtitle: { en: 'Third-Person Tower Defense Action (UE5)', de: 'Third-Person-Tower-Defense-Action (UE5)' },
+        description: {
+            en: 'A third-person tower defense action game developed in Unreal Engine 5. The story follows Manni Meh, a knight whose legendary party is attacked by the furious Goblin King Goober after being denied an invitation.\n\nPlayers must control Manni, defeat invading goblins to earn gold, build archer towers with the help of Manni\'s friends, and successfully defend the fortress gate across 10 intense waves.',
+            de: 'Ein Third-Person-Tower-Defense-Actionspiel, entwickelt in der Unreal Engine 5. Die Geschichte folgt Manni Meh, einem Ritter, dessen legendäre Party vom wütenden Goblinkönig Goober angegriffen wird, nachdem man ihm eine Einladung verweigert hat.\n\nDie Spieler steuern Manni, besiegen einfallende Goblins, um Gold zu verdienen, bauen mit Hilfe von Mannis Freunden Bogentürme und verteidigen das Festungstor über 10 intensive Wellen hinweg.'
+        },
+        gameConcept: {
+            en: 'A balanced mix of action gameplay and strategic tower defense, designed around a self-created Game Design Document (GDD). Instead of passively watching defenses, players actively fight alongside their archer towers, combining direct combat with smart resource management.\n\nDefeated goblins drop gold that is used to build and place new defensive towers — each one costs 100 gold, making every kill and every investment a meaningful decision. With each successfully defended wave, more and stronger goblins attack, resulting in a steady rise in difficulty that keeps the action intense from start to finish.',
+            de: 'Eine ausgewogene Mischung aus Action-Gameplay und strategischem Tower Defense, entworfen rund um ein selbst erstelltes Game Design Document (GDD). Statt passiv zuzusehen, kämpfen die Spieler aktiv Seite an Seite mit ihren Bogentürmen und verbinden direkten Kampf mit klugem Ressourcenmanagement.\n\nBesiegte Goblins lassen Gold fallen, mit dem neue Abwehrtürme gebaut und platziert werden – jeder Turm kostet 100 Gold, wodurch jeder Kill und jede Investition zu einer bedeutsamen Entscheidung wird. Mit jeder erfolgreich verteidigten Welle greifen mehr und stärkere Goblins an, was für einen stetigen Schwierigkeitsanstieg sorgt, der die Action von Anfang bis Ende intensiv hält.'
+        },
+        duration: { en: '2 weeks', de: '2 Wochen' },
+        team: { en: '5 members', de: '5 Mitglieder' },
+        cover: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_1.png',
         media: [
-            { type: 'image', src: 'assets/Picture/Project7.png', thumb: 'assets/Picture/Project7.png' }
+            { type: 'youtube', id: 'eomk8vSr40o', start: 95, thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_1.png' },
+            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_1.png', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_1.png' },
+            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_2.png', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_2.png' },
+            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_3.png', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_3.png' },
+            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_4.png', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_4.png' },
+            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_5.png', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_5.png' },
+            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_6.JPG', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_6.JPG' },
+            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_7.JPG', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_7.JPG' },
+            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_8.JPG', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_8.JPG' },
+            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_9.JPG', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_9.JPG' },
+            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_10.JPG', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_10.JPG' }
         ],
         contribution: {
             en: [
-                'Prototyped the core grid-locking and rule system in Blueprints',
-                'Implemented player interaction and visual feedback (C++)',
-                'Balanced puzzle pacing and difficulty progression'
+                'Concept development and game design',
+                'Enemy AI & Animation implementation',
+                'Tower mechanics and balancing',
+                'Core game mechanics & overall balancing',
+                'Sound design and audio integration'
             ],
             de: [
-                'Prototypisierung des Kern-Gitter- und Regelsystems in Blueprints',
-                'Implementierung der Spielerinteraktion und visueller Feedbacks (C++)',
-                'Balancing von Puzzle-Pacing und Schwierigkeitskurve'
+                'Konzeptentwicklung und Game Design',
+                'Gegner-KI & Animations-Umsetzung',
+                'Turm-Mechaniken und Balancing',
+                'Kern-Spielmechaniken und Gesamt-Balancing',
+                'Sounddesign und Audio-Integration'
             ]
         },
         tools: [
-            { name: { en: 'Unreal Engine 5', de: 'Unreal Engine 5' }, icon: 'bx-code-alt' },
-            { name: { en: 'Blueprints', de: 'Blueprints' }, icon: 'bx-edit' },
-            { name: { en: 'C++', de: 'C++' }, icon: 'bx-code' }
+            { name: { en: 'Unreal Engine 5', de: 'Unreal Engine 5' }, icon: 'bx-game' }
         ]
     },
 
@@ -705,6 +786,126 @@ const projects = [
             { name: { en: 'HTML', de: 'HTML' }, icon: 'bxl-html5' },
             { name: { en: 'CSS', de: 'CSS' }, icon: 'bxl-css3' },
             { name: { en: 'JavaScript', de: 'JavaScript' }, icon: 'bxl-javascript' }
+        ]
+    },
+
+    /* Index 16 - Game Dev (Projekt 3 - Godot Island Generator) */
+    {
+        category: 'gamedev',
+        title: { en: 'Godot Island Generator', de: 'Godot Island Generator' },
+        subtitle: { en: 'Procedural Island Generation in Godot', de: 'Prozedurale Insel-Generierung in Godot' },
+        description: {
+            en: 'A procedural island generation project built in Godot, featuring dynamically generated terrain, biome-based texturing, animated water and stylized toon shading.\n\nThe project focuses on procedural environment generation and real-time customization, allowing terrain dimensions, height, noise, biome colors and water properties to be adjusted directly through the Godot Inspector.',
+            de: 'Ein prozedurales Insel-Generierungsprojekt in Godot mit dynamisch generiertem Terrain, biome-basiertem Texturing, animiertem Wasser und stilisiertem Toon-Shading.\n\nDer Fokus liegt auf prozeduraler Umgebungs-Generierung und Echtzeit-Anpassung: Terrainedimensionen, Höhe, Noise, Biomfarben und Wassereigenschaften lassen sich direkt über den Godot-Inspector anpassen.'
+        },
+        gameConcept: {
+            en: 'The goal of the project was to create a fully procedural island environment that combines generated terrain with dynamic water and a stylized visual approach.\n\nTerrain geometry is generated procedurally and automatically receives different biome textures based on height and slope. A custom water shader adds animated waves, depth-based coloring and Fresnel reflections, while a toon outline creates the stylized low-poly look.',
+            de: 'Ziel des Projekts war eine vollständig prozedurale Insel-Umgebung, die generiertes Terrain mit dynamischem Wasser und einem stilisierten visuellen Ansatz verbindet.\n\nDie Terrain-Geometrie wird prozedural erzeugt und erhält automatisch verschiedene Biome-Texturen basierend auf Höhe und Neigung. Ein eigener Water-Shader sorgt für animierte Wellen, tiefenbasierte Färbung und Fresnel-Reflexionen, während ein Toon-Outline den stilisierten Low-Poly-Look erzeugt.'
+        },
+        duration: { en: '1 week', de: '1 Woche' },
+        team: { en: 'Worked alone', de: 'Allein gearbeitet' },
+        links: [
+            { label: { en: 'GitHub Repository', de: 'GitHub-Repository' }, url: 'https://github.com/DavidZ1407/Terrain-Generator' }
+        ],
+        cover: 'assets/Game_Dev/Terrain/G_D_Terrain_2.png',
+        media: [
+            { type: 'video', src: 'assets/Game_Dev/Terrain/G_D_Terrain_1.mp4', thumb: 'assets/Game_Dev/Terrain/G_D_Terrain_2.png' },
+            { type: 'image', src: 'assets/Game_Dev/Terrain/G_D_Terrain_2.png', thumb: 'assets/Game_Dev/Terrain/G_D_Terrain_2.png' },
+            { type: 'image', src: 'assets/Game_Dev/Terrain/G_D_Terrain_3.png', thumb: 'assets/Game_Dev/Terrain/G_D_Terrain_3.png' },
+            { type: 'image', src: 'assets/Game_Dev/Terrain/G_D_Terrain_4.png', thumb: 'assets/Game_Dev/Terrain/G_D_Terrain_4.png' },
+            { type: 'image', src: 'assets/Game_Dev/Terrain/G_D_Terrain_5.png', thumb: 'assets/Game_Dev/Terrain/G_D_Terrain_5.png' }
+        ],
+        contribution: {
+            en: [
+                { group: 'Procedural Generation', items: [
+                    'Procedural island mesh generation',
+                    'Noise-based terrain shaping',
+                    'Automatic biome mapping based on height and slope',
+                    'Configurable terrain generation parameters'
+                ] },
+                { group: 'Shaders & Visuals', items: [
+                    'Custom terrain shader',
+                    'Biome-based terrain texturing',
+                    'Dynamic water shader',
+                    'Animated waves and depth-based water coloring',
+                    'Fresnel reflections',
+                    'Stylized toon shading and outlines'
+                ] }
+            ],
+            de: [
+                { group: 'Prozedurale Generierung', items: [
+                    'Prozedurale Insel-Mesh-Generierung',
+                    'Noise-basierte Terrain-Formung',
+                    'Automatisches Biome-Mapping nach Höhe und Neigung',
+                    'Konfigurierbare Generierungsparameter'
+                ] },
+                { group: 'Shaders & Visuals', items: [
+                    'Eigener Terrain-Shader',
+                    'Biome-basiertes Terrain-Texturing',
+                    'Dynamischer Water-Shader',
+                    'Animierte Wellen und tiefenbasierte Wasserfärbung',
+                    'Fresnel-Reflexionen',
+                    'Stilisiertes Toon-Shading und Outlines'
+                ] }
+            ]
+        },
+        tools: [
+            { name: { en: 'Godot', de: 'Godot' }, icon: 'bx-game' },
+            { name: { en: 'GDScript', de: 'GDScript' }, icon: 'bx-code' },
+            { name: { en: 'Shader Programming', de: 'Shader-Programmierung' }, icon: 'bx-code-block' }
+        ]
+    },
+
+    /* Index 17 - Game Dev (Projekt 4 - Fartnite, 48h Game Jam) */
+    {
+        category: 'gamedev',
+        title: { en: 'Fartnite', de: 'Fartnite' },
+        subtitle: { en: 'Chaotic 48-Hour Game Jam FPS', de: 'Chaotischer 48-Stunden-Game-Jam-Egoshooter' },
+        description: {
+            en: 'Fartnite is a fast-paced first-person shooter developed during a 48-hour game jam by a 3-member team.\n\nThe game takes place in a satirical world where an evil milk factory has conspired to make all of humanity lactose intolerant, causing everyone to constantly flatulate. Players take on the role of a hero fighting back against this dairy tyranny by vacuuming up farts from the environment and shooting them back as projectiles.',
+            de: 'Fartnite ist ein schneller First-Person-Shooter, der während eines 48-Stunden-Game-Jams in einem 3-köpfigen Team entwickelt wurde.\n\nDas Spiel spielt in einer satirischen Welt, in der eine böse Milchfabrik sich verschworen hat, die gesamte Menschheit laktoseintolerant zu machen, sodass alle ständig flatulieren. Die Spieler schlüpfen in die Rolle eines Helden, der sich gegen diese Milch-Tyrannei zur Wehr setzt, indem er Furts aus der Umgebung einsaugt und sie als Projektile zurückschießt.'
+        },
+        gameConcept: {
+            en: 'A chaotic and humorous first-person shooter centered around unique mechanics, fast-paced action, and arcade-style gameplay.\n\nPlayers explore a compact, custom-built level, utilizing a vacuum-style mechanic to absorb farts and turn them into weaponized ammunition against the factory\'s minions.',
+            de: 'Ein chaotischer, humorvoller First-Person-Shooter rund um einzigartige Mechaniken, schnelle Action und Arcade-Gameplay.\n\nDie Spieler erkunden ein kompaktes, selbst gebautes Level und nutzen eine Vakuum-Mechanik, um Furts einzusaugen und sie als waffengerichtete Munition gegen die Lakaien der Fabrik einzusetzen.'
+        },
+        duration: { en: '48 hours (Game Jam)', de: '48 Stunden (Game Jam)' },
+        team: { en: '3 members', de: '3 Mitglieder' },
+        cover: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_2.png',
+        media: [
+            { type: 'video', src: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_1.mp4', thumb: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_2.png' },
+            { type: 'image', src: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_2.png', thumb: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_2.png' },
+            { type: 'image', src: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_3.png', thumb: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_3.png' },
+            { type: 'image', src: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_4.png', thumb: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_4.png' },
+            { type: 'image', src: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_5.png', thumb: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_5.png' },
+            { type: 'image', src: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_6.png', thumb: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_6.png' }
+        ],
+        contribution: {
+            en: [
+                { group: '3D Art & Animation', items: [
+                    'Creation of 3D assets and environment props for the level in Blender',
+                    'Character and creature modeling, rigging, and custom animations'
+                ] },
+                { group: 'Game Integration', items: [
+                    'Importing and setting up all 3D assets and animations within the Godot Engine',
+                    'Assembling and polishing the compact game level'
+                ] }
+            ],
+            de: [
+                { group: '3D-Art & Animation', items: [
+                    'Erstellung von 3D-Assets und Umgebungsprops für das Level in Blender',
+                    'Charakter- und Kreatur-Modeling, Rigging und eigene Animationen'
+                ] },
+                { group: 'Game-Integration', items: [
+                    'Import und Setup aller 3D-Assets und Animationen in der Godot Engine',
+                    'Zusammenbau und Feinschliff des kompakten Levels'
+                ] }
+            ]
+        },
+        tools: [
+            { name: { en: 'Godot', de: 'Godot' }, icon: 'bx-game' },
+            { name: { en: 'Blender', de: 'Blender' }, icon: 'bx-cube' },
+            { name: { en: 'Ableton Live', de: 'Ableton Live' }, icon: 'bx-music' }
         ]
     }
 

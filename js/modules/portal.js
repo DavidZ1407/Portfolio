@@ -5,7 +5,7 @@
 
 import { cleanupRegistry, debounce, sizeCanvas, bindHorizontalSwipe } from '../utils/helpers.js';
 import { registerAnimation } from '../utils/animation_manager.js';
-import { projects, getProjectSubtitle, getProjectCover, getProjectTitle, getCategories, getCategoryLabel, getFirstProjectOfCategory, getOrderedProjectIndices, applyImageFallback } from '../constants/projects.js?v=5';
+import { projects, getProjectSubtitle, getProjectCover, getProjectTitle, getCategories, getCategoryLabel, getFirstProjectOfCategory, getOrderedProjectIndices, applyImageFallback } from '../constants/projects.js?v=6';
 import { getCurrentLang } from './language.js';
 
 let modalOpenCallback = null;
@@ -63,6 +63,8 @@ function buildPortalSlides() {
         img.alt = getProjectTitle(projectIdx, lang) || '';
         img.loading = 'lazy';
         img.decoding = 'async';
+        // Optional: Cover komplett zeigen (coverFit: 'contain'), kein Crop
+        if (project.coverFit === 'contain') img.classList.add('fit-contain');
         // Fallback: fehlendes Cover -> Kategorie-Platzhalter
         applyImageFallback(img, project.category);
         slide.appendChild(img);

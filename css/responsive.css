@@ -1146,6 +1146,27 @@ section {
     .portal-slide .tilt-inner { transform: none !important; }
     .portal-slide .tilt-shine { display: none !important; }
     .portal-slide.tilt-lift { transform: none !important; }
+
+    /* Kompakte Karte: Bildbereich kleiner, mehr Raum fuer das Textfeld.
+       (pos-center-Selektoren wegen Spezifitaet mitgriffen) */
+    .portal-slide img,
+    .portal-slide .tilt-inner img { top: 4%; height: 65%; }
+    .slide-overlay,
+    .portal-slide.pos-center .slide-overlay {
+        height: 31%;
+        padding: 2px 10px 6px;
+        gap: 4px;
+    }
+    .slide-overlay h2,
+    .portal-slide.pos-center .slide-overlay h2 {
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+        margin-bottom: 0;
+    }
+    .slide-overlay p,
+    .portal-slide.pos-center .slide-overlay p {
+        font-size: 0.6rem;
+    }
 }
 
 @media (max-width: 550px) {
@@ -1169,8 +1190,14 @@ section {
     .carousel-controls { bottom: -30px; gap: 10px; }
     .c-dot { width: 6px; height: 6px; }
     .c-dot.active { width: 12px; height: 12px; }
-    .slide-overlay h2 { font-size: 0.8rem; }
-    .slide-overlay p { font-size: 0.65rem; }
+    .portal-slide img,
+    .portal-slide .tilt-inner img { height: 64%; }
+    .slide-overlay,
+    .portal-slide.pos-center .slide-overlay { height: 32%; padding: 2px 8px 5px; }
+    .slide-overlay h2,
+    .portal-slide.pos-center .slide-overlay h2 { font-size: 0.72rem; }
+    .slide-overlay p,
+    .portal-slide.pos-center .slide-overlay p { font-size: 0.58rem; }
     .light-ray { display: none; }
 }
 
@@ -1476,6 +1503,22 @@ section {
     .hero_showcase_container {
         padding-top: 10px !important;
         gap: 8px !important;
+    }
+
+    /* Hero-Carousel Mini-Modus: Bild bleibt dominant, Infozeile sehr kompakt */
+    .carousel_slide img {
+        padding: 4px 4px 0 !important;
+    }
+    .carousel_info {
+        padding: 3px 8px 4px !important;
+    }
+    .carousel_info h4 {
+        font-size: 0.55rem !important;
+        margin-bottom: 2px !important;
+    }
+    .carousel_info p {
+        font-size: 0.45rem !important;
+        letter-spacing: 0 !important;
     }
     .arsenal_grid {
         gap: 3px !important;

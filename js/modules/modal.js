@@ -25,7 +25,7 @@ import {
     getProjectTitle,
     getProjectTools,
     getProjectLinks,
-} from '../constants/projects.js?v=5';
+} from '../constants/projects.js?v=6';
 import { initModalShader } from './modal_shader.js';
 
 let modalOverlay = null;
@@ -103,6 +103,7 @@ function createModalElements() {
                 <div class="modal_media_stage">
                     <img class="modal_media_image" src="" alt="">
                     <video class="modal_media_video" playsinline preload="metadata"></video>
+                    <div class="modal_media_youtube" hidden></div>
                     <button class="modal_media_play" aria-label="Play video">▶</button>
                 </div>
                 <button class="modal_media_prev" aria-label="Previous media">‹</button>
@@ -767,7 +768,33 @@ function populateModal(project) {
     const contributionList = modalContainer.querySelector('.modal_contribution_list');
     const contributions = getProjectContribution(currentProjectIndex, lang);
     contributionList.innerHTML = '';
+    // Unterstuetzt zwei Formate (rueckwaertskompatibel):
+    //  - String           -> normaler Listenpunkt
+    //  - { intro: ... }   -> Einleitungspatz ohne Bullet
+    //  - { group, items } -> Gruppenueberschrift + eigene Punktliste
     contributions.forEach(item => {
+        if (item && typeof item === 'object') {
+            if (item.intro) {
+                const p = document.createElement('p');
+                p.className = 'modal_contribution_intro';
+                p.textContent = item.intro;
+                contributionList.appendChild(p);
+            } else if (item.group) {
+                const h5 = document.createElement('h5');
+                h5.className = 'modal_contribution_group_title';
+                h5.textContent = item.group;
+                const subList = document.createElement('ul');
+                subList.className = 'modal_contribution_list modal_contribution_sublist';
+                (item.items || []).forEach(text => {
+                    const li = document.createElement('li');
+                    li.textContent = text;
+                    subList.appendChild(li);
+                });
+                contributionList.appendChild(h5);
+                contributionList.appendChild(subList);
+            }
+            return;
+        }
         const li = document.createElement('li');
         li.textContent = item;
         contributionList.appendChild(li);
@@ -865,6 +892,38 @@ function buildThumbnails(project) {
  * @param {string} category - Projekt-Kategorie (fuer Fallback-Bilder)
  */
 function renderMediaItem(imageEl, videoEl, item, opts, altText, category) {
+    // YouTube-Embed handling
+    const stage = videoEl ? videoEl.parentElement : null;
+    const ytEl = stage ? stage.querySelector('.modal_media_youtube, .modal_lightbox_youtube') : null;
+
+    if (item.type === 'youtube') {
+        // Bild + Video ausblenden, YouTube einblenden
+        imageEl.style.display = 'none';
+        videoEl.style.display = 'none';
+        if (opts.showControls) videoEl.removeAttribute('controls');
+        if (opts.playBtn) opts.playBtn.style.display = 'none';
+        if (ytEl) {
+            const id = item.id || '';
+            ytEl.innerHTML = '';
+            if (id) {
+                // Lazy-Load: iframe erst beim Aktivieren erzeugen (keine parallelen Embeds)
+                // Optionaler Startzeitpunkt in Sekunden (item.start, z. B. fuer YouTube-Links mit &t=95s)
+                const startParam = Number.isFinite(item.start) && item.start > 0 ? `&start=${Math.floor(item.start)}` : '';
+                const iframe = document.createElement('iframe');
+                iframe.setAttribute('src', `https://www.youtube-nocookie.com/embed/${id}?rel=0${startParam}`);
+                iframe.setAttribute('title', altText || 'YouTube video');
+                iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+                iframe.setAttribute('allowfullscreen', '');
+                iframe.setAttribute('frameborder', '0');
+                iframe.classList.add('modal_youtube_frame');
+                ytEl.appendChild(iframe);
+            }
+            ytEl.style.display = 'block';
+            ytEl.hidden = false;
+        }
+        return;
+    }
+
     if (item.type === 'video') {
         imageEl.style.display = 'none';
         videoEl.style.display = 'block';
@@ -890,6 +949,7 @@ function renderMediaItem(imageEl, videoEl, item, opts, altText, category) {
         imageEl.alt = altText;
         imageEl.style.display = 'block';
     }
+    if (ytEl) { ytEl.innerHTML = ''; ytEl.style.display = 'none'; ytEl.hidden = true; }
 }
 
 /**
@@ -1014,6 +1074,7 @@ function createLightbox() {
             <button class="modal_lightbox_next" aria-label="Next media">›</button>
             <img class="modal_lightbox_image" src="" alt="">
             <video class="modal_lightbox_video" playsinline preload="metadata" controls></video>
+            <div class="modal_lightbox_youtube" hidden></div>
         </div>
     `;
 

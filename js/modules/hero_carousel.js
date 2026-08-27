@@ -2,7 +2,7 @@
 /* MODULE - CAROUSEL */
 /* ========================================= */
 
-import { projects, getProjectSubtitle, getProjectCover, getProjectTitle, getProjectTools, getOrderedProjectIndices, applyImageFallback } from "../constants/projects.js?v=5";
+import { projects, getProjectSubtitle, getProjectCover, getProjectTitle, getProjectTools, getOrderedProjectIndices, applyImageFallback } from "../constants/projects.js?v=6";
 import { getCurrentLang } from "./language.js";
 import { cleanupRegistry, bindHorizontalSwipe } from '../utils/helpers.js';
 
@@ -38,6 +38,8 @@ function buildCarouselSlides() {
         img.alt = getProjectTitle(projectIdx, lang) || '';
         img.loading = 'lazy';
         img.decoding = 'async';
+        // Optional: Cover komplett zeigen (coverFit: 'contain'), kein Crop
+        if (project.coverFit === 'contain') img.classList.add('fit-contain');
         // Fallback fuer fehlendes Cover
         applyImageFallback(img, project.category);
         slide.appendChild(img);
