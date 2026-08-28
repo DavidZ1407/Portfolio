@@ -148,10 +148,6 @@
     border-color: var(--gold-accent, #c9a861);
     color: var(--gold-accent, #c9a861);
     background: rgba(201, 168, 97, 0.14);
-    box-shadow:
-        0 0 0 2px rgba(201, 168, 97, 0.5),
-        0 0 16px rgba(201, 168, 97, 0.45),
-        inset 0 0 6px rgba(201, 168, 97, 0.3);
 }
 
 .main-cat-item.active:hover {
@@ -193,21 +189,17 @@
     height: 400px;
     margin-left: -160px;
     margin-top: -200px;
-    border: 2px solid rgba(201, 168, 97, 0.3);
+    /* Kein dunkler Kasten-Hintergrund: nur die kreisrunde Wasserform
+       (Vortex-Canvas) und ggf. das freigelegte Bild sind sichtbar */
     overflow: hidden;
     cursor: pointer;
     transform-style: preserve-3d;
     /* Nur transform + opacity in transition – kein box-shadow (verursacht Jitter) */
     transition: transform 1.2s cubic-bezier(0.25, 0.1, 0.25, 1),
                 opacity 0.8s cubic-bezier(0.25, 0.1, 0.25, 1),
-                border-color 0.6s ease,
                 z-index 0s;
     backface-visibility: hidden;
     will-change: transform, opacity;
-    box-shadow:
-        0 0 20px rgba(201, 168, 97, 0.08),
-        0 0 40px rgba(73, 146, 154, 0.04),
-        inset 0 0 15px rgba(201, 168, 97, 0.04);
 }
 
 .portal-slide img {
@@ -233,12 +225,6 @@
 .portal-slide.pos-center {
     transform: translateX(0) translateZ(100px) scale(1.12);
     z-index: 10;
-    border-color: rgba(201, 168, 97, 0.5);
-    box-shadow:
-        0 0 40px rgba(201, 168, 97, 0.15),
-        0 0 80px rgba(73, 146, 154, 0.08),
-        0 0 120px rgba(201, 168, 97, 0.05),
-        inset 0 0 30px rgba(201, 168, 97, 0.06);
 }
 
 .portal-slide.pos-center img {
@@ -310,58 +296,11 @@
 }
 
 /* Lift shadow when tilting */
-.portal-slide.pos-center.tilt-lift {
-    box-shadow:
-        0 0 60px rgba(201, 168, 97, 0.25),
-        0 0 100px rgba(73, 146, 154, 0.12),
-        0 0 150px rgba(201, 168, 97, 0.08),
-        inset 0 0 30px rgba(201, 168, 97, 0.06);
-}
 
-/* Specular Light Shine - gleitender Lichtstrahl */
-.portal-slide::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 6;
-    pointer-events: none;
-    background: linear-gradient(
-        105deg,
-        transparent 0%,
-        transparent 30%,
-        rgba(255, 255, 255, 0.1) 45%,
-        rgba(255, 255, 255, 0.25) 50%,
-        rgba(255, 255, 255, 0.1) 55%,
-        transparent 70%,
-        transparent 100%
-    );
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    /* mix-blend-mode entfernt für Firefox-Performance */
-}
-
-.portal-slide:hover::after {
-    opacity: 1;
-    animation: specularSweep 1.5s ease-in-out forwards;
-}
-
-@keyframes specularSweep {
-    0% {
-        transform: translateX(-100%) translateY(-100%) skewX(-15deg);
-        opacity: 0;
-    }
-    20% {
-        opacity: 1;
-    }
-    60% {
-        transform: translateX(0%) translateY(10%) skewX(-15deg);
-        opacity: 0.6;
-    }
-    100% {
-        transform: translateX(100%) translateY(100%) skewX(-15deg);
-        opacity: 0;
-    }
-}
+/* Weisser Specular-Sweep beim Hover ENTFERNT: Der Hover "energized" das
+   Portal jetzt als kurzen Farbblitz in der Kategorie-Farbe des Projekts
+   (Uniform uFlash im Vortex-Shader, js/modules/portal.js) – kein generischer
+   Weiss-Glow mehr. */
 
 /* ---- LEFT POSITION ---- */
 .portal-slide.pos-left {
@@ -369,9 +308,6 @@
     z-index: 2;
     opacity: 0.65;
     border-color: rgba(201, 168, 97, 0.15);
-    box-shadow:
-        0 0 15px rgba(201, 168, 97, 0.05),
-        inset 0 0 10px rgba(201, 168, 97, 0.02);
 }
 
 .portal-slide.pos-left img {
@@ -381,10 +317,6 @@
 .portal-slide.pos-left:hover {
     opacity: 1;
     border-color: rgba(201, 168, 97, 0.6);
-    box-shadow:
-        0 0 40px rgba(201, 168, 97, 0.25),
-        0 0 80px rgba(73, 146, 154, 0.12),
-        inset 0 0 30px rgba(201, 168, 97, 0.08);
 }
 
 .portal-slide.pos-left:hover img {
@@ -397,9 +329,6 @@
     z-index: 2;
     opacity: 0.65;
     border-color: rgba(201, 168, 97, 0.15);
-    box-shadow:
-        0 0 15px rgba(201, 168, 97, 0.05),
-        inset 0 0 10px rgba(201, 168, 97, 0.02);
 }
 
 .portal-slide.pos-right img {
@@ -409,10 +338,6 @@
 .portal-slide.pos-right:hover {
     opacity: 1;
     border-color: rgba(201, 168, 97, 0.6);
-    box-shadow:
-        0 0 40px rgba(201, 168, 97, 0.25),
-        0 0 80px rgba(73, 146, 154, 0.12),
-        inset 0 0 30px rgba(201, 168, 97, 0.08);
 }
 
 .portal-slide.pos-right:hover img {
@@ -431,63 +356,6 @@
 /* SLIDE ELEMENTS */
 /* ========================================= */
 
-/* Glow effect behind card */
-.slide-glow {
-    position: absolute;
-    inset: -20px;
-    background: conic-gradient(
-        from 0deg,
-        transparent,
-        rgba(73, 146, 154, 0.15),
-        transparent,
-        rgba(201, 168, 97, 0.15),
-        transparent
-    );
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    z-index: -1;
-    pointer-events: none;
-    animation: glowSpin 8s linear infinite;
-}
-
-.portal-slide.pos-center .slide-glow {
-    opacity: 1;
-}
-
-@keyframes glowSpin {
-    to { transform: rotate(360deg); }
-}
-
-/* Frame corners */
-.slide-frame {
-    position: absolute;
-    inset: 0;
-    z-index: 5;
-    pointer-events: none;
-}
-
-.slide-frame span {
-    position: absolute;
-    width: 24px;
-    height: 24px;
-    border-color: var(--gold-accent);
-    border-style: solid;
-    border-width: 0;
-    opacity: 0.5;
-    transition: all 0.5s ease;
-}
-
-.slide-frame .fc-tl { top: 6px; left: 6px; border-top-width: 2px; border-left-width: 2px; }
-.slide-frame .fc-tr { top: 6px; right: 6px; border-top-width: 2px; border-right-width: 2px; }
-.slide-frame .fc-bl { bottom: 6px; left: 6px; border-bottom-width: 2px; border-left-width: 2px; }
-.slide-frame .fc-br { bottom: 6px; right: 6px; border-bottom-width: 2px; border-right-width: 2px; }
-
-.portal-slide.pos-center .slide-frame span {
-    opacity: 1;
-    width: 32px;
-    height: 32px;
-    filter: drop-shadow(0 0 6px rgba(201, 168, 97, 0.5));
-}
 
 /* Slide overlay text – eigene Zone UNTER dem Bild (untere 24% der Karte).
    Kein Ueberlappen mehr: Das Bild endet bei 76% (top 3.5% + height 72.5%),
@@ -506,10 +374,15 @@
     text-align: center;
     padding: 4px 14px 8px;
     border-top: 1px solid rgba(201, 168, 97, 0.25);
+    /* Scrim hinter dem Text: dunkler & weicher als zuvor, damit Titel und
+       Untertitel kontraststark bleiben (auch ueber dem hellen Wasser-Ring
+       des offenen Portals). Ganz unten etwas offen, damit der Ring leuchtet. */
     background: linear-gradient(
         to bottom,
-        rgba(3, 8, 9, 0.45),
-        rgba(3, 8, 9, 0.9)
+        rgba(3, 8, 9, 0.55) 0%,
+        rgba(3, 8, 9, 0.78) 40%,
+        rgba(3, 8, 9, 0.92) 70%,
+        rgba(3, 8, 9, 0.62) 100%
     );
     z-index: 4;
     transition: all 0.5s ease;
@@ -521,7 +394,10 @@
     font-size: 1.1rem;
     letter-spacing: 2px;
     text-transform: uppercase;
-    text-shadow: 0 0 10px rgba(201, 168, 97, 0.3);
+    text-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.95),
+        0 0 10px rgba(0, 0, 0, 0.8),
+        0 0 12px rgba(201, 168, 97, 0.35);
     margin-bottom: 6px;
     transition: all 0.5s ease;
 }
@@ -531,13 +407,20 @@
     font-size: 0.8rem;
     letter-spacing: 1px;
     text-transform: uppercase;
-    opacity: 0.7;
+    opacity: 0.85;
+    /* Dunkler Kontrast-Schatten: bleibt auf hellem Wasser/Nebel lesbar */
+    text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.95),
+        0 0 8px rgba(0, 0, 0, 0.85);
     transition: all 0.5s ease;
 }
 
 .portal-slide.pos-center .slide-overlay h2 {
     font-size: 1.3rem;
-    text-shadow: 0 0 20px rgba(201, 168, 97, 0.5);
+    text-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.95),
+        0 0 14px rgba(0, 0, 0, 0.8),
+        0 0 22px rgba(201, 168, 97, 0.55);
     transform: translateY(-3px);
 }
 
@@ -548,6 +431,10 @@
 
 .portal-slide.pos-center .slide-overlay {
     padding: 4px 18px 10px;
+    /* Offene Karte: Textzone UEBER dem Vortex-Canvas (z-index 8) legen,
+       damit Scrim + Text auf dem Wasser-Ring liegen statt darunter.
+       Geschlossene Karten bleiben unberuehrt (Wasser deckt weiter alles). */
+    z-index: 9;
 }
 
 /* FIX: Titel im Overlay brechen sauber um statt hart am Rand zu wirken
@@ -587,16 +474,6 @@
     animation: pearl-morph 10s ease-in-out infinite;
 
     /* Volumetric glow layers */
-    box-shadow:
-        /* inner core glow */
-        inset 0 0 8px rgba(201, 168, 97, 0.15),
-        inset 0 0 16px rgba(201, 168, 97, 0.08),
-        /* mid glow */
-        0 0 6px rgba(201, 168, 97, 0.12),
-        0 0 14px rgba(201, 168, 97, 0.06),
-        /* outer volumetric spread */
-        0 0 30px rgba(201, 168, 97, 0.04),
-        0 0 50px rgba(73, 146, 154, 0.02);
 
     /* Translucent sphere surface */
     background:
@@ -685,18 +562,6 @@
 
 /* ---- HOVER: Energized State ---- */
 .carousel-arrow:hover {
-    box-shadow:
-        /* intensified inner core */
-        inset 0 0 10px rgba(73, 146, 154, 0.25),
-        inset 0 0 22px rgba(73, 146, 154, 0.12),
-        /* bright mid glow */
-        0 0 10px rgba(73, 146, 154, 0.35),
-        0 0 22px rgba(73, 146, 154, 0.2),
-        /* volumetric spread */
-        0 0 40px rgba(73, 146, 154, 0.1),
-        0 0 70px rgba(73, 146, 154, 0.05),
-        /* cyan accent bloom */
-        0 0 15px rgba(150, 230, 240, 0.1);
 
     background:
         radial-gradient(ellipse 120% 80% at 30% 25%,
@@ -762,7 +627,9 @@
     justify-content: center;
     gap: 20px;
     position: absolute;
-    bottom: -50px;
+    /* Weiter nach unten gerueckt: mehr Luft zwischen Karten-Unterkante
+       und der Pfeile/Dots-Reihe */
+    bottom: -78px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 20;

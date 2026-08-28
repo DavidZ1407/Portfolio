@@ -3,7 +3,7 @@
 /* Automatically generates indicator dots based on projects.length */
 /* ========================================= */
 
-import { getOrderedProjectIndices } from '../constants/projects.js?v=6';
+import { getOrderedProjectIndices } from '../constants/projects.js?v=7';
 
 export function generateCarouselDots() {
     // Anzahl = eine Karte je Kategorie (gleiche Reihenfolge wie Portal/Hero)

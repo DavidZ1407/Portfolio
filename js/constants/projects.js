@@ -129,11 +129,10 @@ const projects = [
         },
         duration: { en: '6 weeks', de: '6 Wochen' },
         team: { en: '4 members', de: '4 Mitglieder' },
-        cover: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_1_cover.png',
-        /* Cover komplett zeigen (kein Crop) -> Logo/Titel bleibt auf Karten lesbar.
-           Das Cover-Image ist ein Hochformat-Schnitt (1040x1300, Ratio 0.8) des
-           Original-Screenshots G_D_GS_1.png, generiert via tools/make_gothica_cover.ps1.
-           Ratio passt exakt zur Desktop-Portal-Karte (320x400). */
+        cover: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_1.png',
+        /* Cover komplett zeigen (kein Crop) -> der gothica-solaris-Schriftzug
+           im Original-Screenshot bleibt voll lesbar. Das Bildbereich-Layout
+           der Karte (91% x 72.5%, nahezu Querformat) passt zum Original. */
         coverFit: 'contain',
         media: [
             { type: 'youtube', id: 'Ck4srNe2HZo', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_1.png' },

@@ -5,7 +5,7 @@
 
 import { cleanupRegistry, debounce, sizeCanvas, bindHorizontalSwipe } from '../utils/helpers.js';
 import { registerAnimation } from '../utils/animation_manager.js';
-import { projects, getProjectSubtitle, getProjectCover, getProjectTitle, getCategories, getCategoryLabel, getFirstProjectOfCategory, getOrderedProjectIndices, applyImageFallback } from '../constants/projects.js?v=6';
+import { projects, getProjectSubtitle, getProjectCover, getProjectTitle, getCategories, getCategoryLabel, getFirstProjectOfCategory, getOrderedProjectIndices, applyImageFallback } from '../constants/projects.js?v=7';
 import { getCurrentLang } from './language.js';
 
 let modalOpenCallback = null;
@@ -19,7 +19,20 @@ const AUTO_INTERVAL = 9000;         // Auto-Rotation nach 9s ohne Interaktion
 const AUTO_RESUME_DELAY_MS = 8000;  // Auto-Rotation nach Pause wieder aufnehmen
 const RESIZE_BOOT_DELAY_MS = 100;   // Erster Canvas-Resize nach dem Laden
 const BUBBLE_COUNT = 30;            // Blasen im Portal-Canvas
-const PARTICLE_COUNT = 40;          // Schwebepartikel im Portal-Canvas
+const PARTICLE_COUNT = 40;
+
+/* Kategorie-Akzent-Tints fuer den Wasser-Swirl (Bild-Rahmen-Vignette).
+ * Farben = fgColor des Modal-Voronoi-Shaders (modal_shader.js, Schemes 0-5),
+ * sodass jede Kategorie im Portal exakt die Farbe ihres Modal-Hintergrunds
+ * traegt (z.B. 3d -> lila). Mix + Luminanz-Erhalt im Fragment-Shader unten. */
+const CATEGORY_TINTS = {
+    gamedev:  [0.550, 0.750, 1.000], /* modal fg: blue (scheme 0) */
+    coding:   [0.400, 0.850, 0.800], /* modal fg: teal (scheme 1) */
+    "3d":     [0.700, 0.550, 0.900], /* modal fg: purple (scheme 2) */
+    concept:  [0.450, 0.800, 0.550], /* modal fg: green (scheme 3) */
+    sound:    [1.000, 0.780, 0.400], /* modal fg: amber/gold (scheme 4) */
+    other:    [0.950, 0.400, 0.600]  /* modal fg: rose (scheme 5) */
+};
 
 /* ---- 3D Tilt state ---- */
 let tiltActive = false;
@@ -69,19 +82,6 @@ function buildPortalSlides() {
         applyImageFallback(img, project.category);
         slide.appendChild(img);
 
-        const glow = document.createElement('div');
-        glow.className = 'slide-glow';
-        slide.appendChild(glow);
-
-        const frame = document.createElement('div');
-        frame.className = 'slide-frame';
-        ['fc-tl', 'fc-tr', 'fc-bl', 'fc-br'].forEach(c => {
-            const s = document.createElement('span');
-            s.className = c;
-            frame.appendChild(s);
-        });
-        slide.appendChild(frame);
-
         const overlay = document.createElement('div');
         overlay.className = 'slide-overlay';
         const h2 = document.createElement('h2');
@@ -128,6 +128,10 @@ export function initPortal(onOpenModal) {
     initBubbles();
     initCarousel();
     setupTiltStructure();
+// Wasserstrudel-Medallions auf allen Karten (nicht-aktiv = geschlossen,
+    // aktiv/hover = geoeffnet -> Bild sichtbar)
+    initVortexShader();
+    vortexSyncOpen();
 
     // Aktiven Kategorie-Tab mit dem zentrierten Slide synchronisieren
     syncMainCategoryTab();
@@ -279,6 +283,8 @@ function attachTilt() {
 
     if (!tiltInner || !tiltShine) return;
 
+tiltSlide.addEventListener('focusin', onPortalFocusIn, { passive: true });
+    tiltSlide.addEventListener('focusout', onPortalFocusOut, { passive: true });
     tiltSlide.addEventListener('mousemove', onTiltMove, { passive: true });
     tiltSlide.addEventListener('mouseleave', onTiltLeave, { passive: true });
     tiltSlide.addEventListener('mouseenter', onTiltEnter, { passive: true });
@@ -292,6 +298,8 @@ function detachTilt() {
         tiltSlide.removeEventListener('mousemove', onTiltMove);
         tiltSlide.removeEventListener('mouseleave', onTiltLeave);
         tiltSlide.removeEventListener('mouseenter', onTiltEnter);
+tiltSlide.removeEventListener('focusin', onPortalFocusIn);
+        tiltSlide.removeEventListener('focusout', onPortalFocusOut);
     }
 
     // Reset visual state
@@ -316,6 +324,19 @@ function detachTilt() {
     tiltSlide = null;
     tiltInner = null;
     tiltShine = null;
+}
+/** Tastatur-Fokus oeffnet den Strudel der fokussierten Karte (Bild-Reveal). */
+function onPortalFocusIn() {
+    const inst = vortexInstances.find(i => i.slide === tiltSlide);
+    if (inst) inst.openTarget = 1;
+}
+
+/** Verlaesst der Fokus, schliessen sich nicht-aktive Karten wieder. */
+function onPortalFocusOut() {
+    const inst = vortexInstances.find(i => i.slide === tiltSlide);
+    if (inst) {
+        inst.openTarget = (tiltSlide && tiltSlide.classList.contains('pos-center')) ? 1 : 0;
+    }
 }
 
 function onTiltEnter() {
@@ -392,6 +413,314 @@ function onTiltLeave() {
     }
 }
 
+/* ========================================= */
+/* PORTAL VORTEX SHADER (WebGL)              */
+/* Realistischer Wasserstrudel statt flachem */
+/* CSS-Muster: organische Turbulenz (fbm),   */
+/* Kausik, Schaumringe, dunkler Trichter,    */
+/* driftende Partikel. Geschlossen deckt das */
+/* Wasser die Karte; Hover/Fokus oeffnet und */
+/* loest es nach aussen auf -> Bild sichtbar.*/
+/* ========================================= */
+
+const vortexVertexShader = `
+    varying vec2 vUv;
+    void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+`;
+
+const vortexFragmentShader = `
+    precision highp float;
+    uniform float uTime;
+    uniform vec2  uResolution;
+    uniform float uOpen;
+    uniform vec3  uCategoryTint;
+    uniform float uFlash;
+    varying vec2 vUv;
+
+    float hash(vec2 p) {
+        return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+    }
+    float noise(vec2 p) {
+        vec2 i = floor(p);
+        vec2 f = fract(p);
+        f = f * f * (3.0 - 2.0 * f);
+        return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x),
+                   mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x), f.y);
+    }
+    float fbm(vec2 p) {
+        float v = 0.0;
+        float a = 0.5;
+        for (int i = 0; i < 4; i++) {
+            v += a * noise(p);
+            p *= 2.03;
+            a *= 0.5;
+        }
+        return v;
+    }
+
+    void main() {
+        float aspect = uResolution.x / max(uResolution.y, 1.0);
+        float t = uTime;
+        float open = uOpen;
+
+        // Mittelpunkt atmet sanft -> der Strudel wirkt nie statisch
+        vec2 center = vec2(0.5, 0.5) + vec2(sin(t * 0.21) * 0.012, cos(t * 0.27) * 0.012);
+        vec2 p = (vUv - center) * vec2(aspect, 1.0);
+
+        float r = length(p);
+        float ang = atan(p.y, p.x);
+
+        // Palette: dunkles Tiefblau -> Teal -> Aqua -> Schaum
+        vec3 deep = vec3(0.006, 0.028, 0.052);
+        vec3 body = vec3(0.022, 0.110, 0.150);
+        vec3 teal = vec3(0.052, 0.270, 0.305);
+        vec3 aqua = vec3(0.170, 0.540, 0.560);
+        vec3 foam = vec3(0.730, 0.945, 0.960);
+
+        // Wirbel: geschlossen langsam, beim Oeffnen schneller & weiter
+        float spin    = 0.20 + open * 0.55;
+        float winding = 3.40 - open * 2.10;
+
+        // Organische Turbulenz im Wirbelraum (kein Speichenmuster)
+        vec2 swirlBase = vec2(cos(ang), sin(ang)) * (0.8 + r * 3.0);
+        float turb = fbm(swirlBase * 0.85 + vec2(t * 0.11, -t * 0.08)) - 0.5;
+
+        float spiral = ang + t * spin + r * winding + turb * 1.7;
+
+        // Dunkler Trichter in der Mitte, weitet sich beim Oeffnen
+        float funnelR = 0.15 + open * 0.50;
+        float funnel  = smoothstep(funnelR, 0.02, r);
+        vec3 col = mix(body, deep, funnel);
+
+        // Konzentrische Ringe, die nach innen fliessen
+        float rings = sin(r * 26.0 - t * 1.05 + spiral * 2.0 + turb * 4.0);
+        col += teal * (0.5 + 0.5 * rings) * 0.13 * (1.0 - r * 0.6);
+
+        // Kausik (Lichtflecken im Wasser)
+        float cq = fbm(vec2(cos(spiral), sin(spiral)) * 3.4 + vec2(r * 8.0 - t * 0.7, t * 0.5));
+        float caustic = smoothstep(0.52, 0.80, cq);
+        col += aqua * caustic * 0.32;
+        col += foam * caustic * 0.10;
+
+        // Schaumkronen-Ringe an der Trichterlippe, organisch wabbelnd
+        float c1 = smoothstep(0.045, 0.0, abs(r - (0.24 + 0.020 * sin(t * 0.7)  + turb * 0.05)));
+        float c2 = smoothstep(0.070, 0.0, abs(r - (0.44 + 0.028 * sin(t * 0.45 + 2.0) + turb * 0.06)));
+        col += aqua * (c1 * 0.42 + c2 * 0.20);
+        col += foam * (c1 * 0.24 + c2 * 0.09);
+
+        // Glimmen tief im Schlund
+        float throat = exp(-r * 7.5);
+        col += aqua * throat * 0.60;
+        col += foam * throat * 0.10 * (0.5 + 0.5 * sin(t * 1.3));
+
+        // Driftende Partikel / Blasen, die nach innen sinken
+        float sp = noise(vec2(cos(spiral) * 5.0 + t * 0.18, r * 4.0 - t * 0.7));
+        float sparkle = pow(sp, 16.0);
+        col += foam * sparkle * 0.30;
+
+        // ---- Farbton pro Kategorie: leuchtender, farbiger Wasser-Swirl ----
+        vec3 tint = uCategoryTint;
+        float lumA = dot(col, vec3(0.2126, 0.7152, 0.0722));
+        vec3 tinted = mix(col, tint, 0.5);   // Modal-Shader-Palette als Akzent
+        float lumB = dot(tinted, vec3(0.2126, 0.7152, 0.0722));
+        col = tinted * (lumA / max(lumB, 0.0001));   // Helligkeit/Glow erhalten
+
+        // ---- Weiche Radial-Vignettierung: kein harter Schnitt ----
+        // col verliert in die Ecken hinein an Leuchtkraft -> natuerliche
+        // Adaequung in die dunkle Karte, keine 4 separaten Eck-Spuren.
+        float vignette = 1.0 - smoothstep(0.40, 0.66, r);
+        col *= 0.60 + 0.40 * vignette;
+
+        // ---- Bild-Rahmen-Vignette: Wasser nur am RAND (keine Mitte) ----
+        // KreisVignette: Mitte klar (Alpha ~ 0), Energie/Swirl im aeusseren Rand,
+        // wird am Rand (r ~ 0.48-0.52) staerker und gegen die Ecken abgeblendet,
+        // sodass keine 4ecken-Konzentration entsteht (rund statt eckig).
+        float edgeGlow  = smoothstep(0.30, 0.48, r) * (1.0 - smoothstep(0.52, 0.72, r));
+        // Rahmen/Ecken solide: Beim Oeffnen darf NUR die Bild-Mitte frei
+        // bleiben. Radial zu den 4 Ecken hin sowie entlang des oberen und
+        // seitlichen Kartenrahmens wird das Wasser voll opak (Vignette) -
+        // keine durchsichtigen Ecken mehr, hinter denen der Seitenhintergrund
+        // aufscheint. Unten bleibt die Textzone in der Mitte frei (lesbar).
+        vec2  qRect       = abs(vUv - vec2(0.5)) * 2.0;   // 0 Mitte -> 1 Kartenrand
+        float cornerSolid = smoothstep(0.52, 0.62, r);
+        float frameSolid  = max(
+            smoothstep(0.925, 0.995, qRect.x),                     // seitlicher Rahmen
+            smoothstep(0.925, 0.995, qRect.y) * step(0.5, vUv.y)   // oberer Rahmen
+        );
+        float openBorder = max(0.75 * edgeGlow, max(cornerSolid, frameSolid));
+        // ---- Hover-Farbblitz: Portal "energized" kurz in seiner Kategorie-Farbe ----
+        // (ersetzt den entfernten weissen Specular-Glow). uFlash wird per JS
+        // bei mouseenter auf 1 gesetzt und klingt dort exponentiell ab (~0.8s).
+        float ringBoost = 0.35 + 0.65 * edgeGlow + 0.55 * throat;
+        col = mix(col, uCategoryTint * (0.85 + 0.40 * caustic), uFlash * 0.45);
+        col += uCategoryTint * uFlash * 0.50 * ringBoost;
+
+        // geschlossen (open=0): Wasser vollstaendig deckend (Bild versteckt);
+        // geoeffnet (open=1):   Wasser nur am Rand, Mitte klar (Bild sichtbar)
+        float alpha = mix(1.0, openBorder, open);
+        gl_FragColor = vec4(col, alpha);
+
+    }
+`;
+
+let vortexInstances = [];
+let vortexUnregisterAnim = null;
+let vortexSectionVisible = true;
+
+/**
+ * Erzeugt fuer EINE Karte ein eigenes Wasserstrudel-Medallion.
+ * Nicht-aktive Karten zeigen den geschlossenen Wirbel; Hover oder
+ * Zentral-Position oeffnet ihn (Wasser zieht sich von den Kanten her
+ * in die Mitte zurueck -> Bild wird sichtbar). Seamless: keilrunde,
+ * weiche Ausblendung statt harter Kasten-Kante.
+ */
+function createVortexInstance(slide) {
+    const THREE = window.THREE;
+    if (!THREE || !slide) return null;
+
+    const renderer = new THREE.WebGLRenderer({
+        alpha: true, antialias: true, powerPreference: 'high-performance'
+    });
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+    renderer.setPixelRatio(pixelRatio);
+    renderer.setClearColor(0x000000, 0);
+
+    const canvas = renderer.domElement;
+    canvas.className = 'portal-vortex-canvas';
+    // KEIN Rahmen/Kasten, KEINE runde Maske, KEIN screen-Blend:
+    // - ohne runde Maske deckt das Wasser geschlossen die ganze Karte
+    //   (auch die 4 Ecken) -> kein rechteckiger Rahmen mehr sichtbar
+    // - ohne mix-blend-mode bleibt das dunkle Wasser undurchsichtig,
+    //   sodass Bild/Text der geschlossenen Karte vollständig verdeckt ist
+    // - weiche, kreisende Öffnungskante entsteht ausschließlich im Shader
+    //   (siehe edgeGlow-Vignette), was beim Oeffnen von den Kanten her
+    //   aufloest (seamless)
+    canvas.style.cssText = [
+        'position:absolute;top:0;left:0;width:100%;height:100%;',
+        'z-index:8;pointer-events:none;'
+    ].join('');
+
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    const scene = new THREE.Scene();
+    scene.background = null;
+
+    const uniforms = {
+        uTime: { value: Math.random() * 100 },
+        uResolution: { value: [1, 1] },
+        uOpen: { value: slide.classList.contains('pos-center') ? 1 : 0 },
+        uFlash: { value: 0 }
+    };
+    const _pIdx = parseInt(slide.dataset.project);
+    const _cat  = (projects[_pIdx] && projects[_pIdx].category) || "other";
+    uniforms.uCategoryTint = { value: CATEGORY_TINTS[_cat] || CATEGORY_TINTS.other || [1, 1, 1] };
+
+    const material = new THREE.ShaderMaterial({
+        vertexShader: vortexVertexShader,
+        fragmentShader: vortexFragmentShader,
+        uniforms,
+        transparent: true,
+        depthWrite: false
+    });
+    scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material));
+
+    slide.appendChild(canvas);
+
+    function size() {
+        const w = slide.clientWidth || 1;
+        const h = slide.clientHeight || 1;
+        if (w > 0 && h > 0) {
+            renderer.setSize(w, h, false);
+            uniforms.uResolution.value = [w * pixelRatio, h * pixelRatio];
+        }
+    }
+    size();
+    const ro = new ResizeObserver(size);
+    ro.observe(slide);
+
+    const inst = {
+        slide, renderer, canvas, uniforms, material, scene, camera, ro,
+        openTarget: slide.classList.contains('pos-center') ? 1 : 0,
+        flashV: 0
+    };
+
+    // Hover = kurzer Farbblitz in der Kategorie-Farbe (kein weisser Glow mehr)
+    slide.addEventListener('mouseenter', () => { inst.flashV = 1; }, { passive: true });
+
+    vortexInstances.push(inst);
+    return inst;
+}
+
+/** Initialisiert die Vortex-Medallions auf allen Karten. */
+function initVortexShader() {
+    if (vortexInstances.length) return;
+
+    const THREE = window.THREE;
+    if (!THREE) {
+        console.warn('[portal-vortex] Three.js not loaded – ohne Wasserstrudel.');
+        return;
+    }
+    let reduced = false;
+    try {
+        reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    } catch (e) { /* ignore */ }
+    if (reduced) return; // Bild bleibt dauerhaft sichtbar
+
+    document.querySelectorAll('.portal-slide').forEach(createVortexInstance);
+    if (!vortexInstances.length) return;
+
+    vortexUnregisterAnim = registerAnimation((now, dt) => {
+        const delta = dt || 1 / 60;
+        for (const inst of vortexInstances) {
+            if (!vortexSectionVisible) continue;
+            if (!inst.canvas.isConnected) continue;
+            inst.uniforms.uTime.value += delta;
+            const ease = 1 - Math.exp(-delta * 3.5);
+            inst.uniforms.uOpen.value += (inst.openTarget - inst.uniforms.uOpen.value) * ease;
+            // Farbblitz-Puls: sofort voll (mouseenter), exponentiell abklingend
+            if (inst.flashV > 0.002) {
+                inst.flashV *= Math.exp(-delta * 3.4);
+            } else {
+                inst.flashV = 0;
+            }
+            inst.uniforms.uFlash.value = inst.flashV;
+            inst.renderer.render(inst.scene, inst.camera);
+        }
+    });
+
+    const section = document.querySelector('.archives_section');
+    if (section) {
+        const obs = new IntersectionObserver((entries) => {
+            vortexSectionVisible = entries[0].isIntersecting;
+        }, { threshold: 0.05 });
+        obs.observe(section);
+    }
+
+    cleanupRegistry.register(() => {
+        vortexSectionVisible = false;
+        if (vortexUnregisterAnim) { vortexUnregisterAnim(); vortexUnregisterAnim = null; }
+        vortexInstances.forEach(inst => {
+            inst.ro.disconnect();
+            if (inst.canvas.parentNode) inst.canvas.parentNode.removeChild(inst.canvas);
+            inst.renderer.dispose();
+        });
+        vortexInstances = [];
+    });
+}
+
+/** Synchronisiert den Oeffnungsgrad nach jedem Kartenwechsel:
+ *  NUR die zentrierte (aktive) Karte ist offen -> Bild sichtbar.
+ *  Alle anderen Karten sind komplett geschlossen (Wasserstrudel oben). */
+function vortexSyncOpen() {
+    document.querySelectorAll('.portal-slide').forEach(slide => {
+        const inst = vortexInstances.find(i => i.slide === slide);
+        if (inst) {
+            inst.openTarget = slide.classList.contains('pos-center') ? 1 : 0;
+        }
+    });
+}
 /* ========================================= */
 /* CAROUSEL */
 /* ========================================= */
@@ -661,6 +990,8 @@ function updatePositions(slides, dots) {
             attachTilt();
         });
     });
+// Wasserstrudel-Synchronisation: neue zentrierte Karte bleibt offen (Bild)
+    vortexSyncOpen();
 }
 
 /* ---- Auto-cycle ---- */

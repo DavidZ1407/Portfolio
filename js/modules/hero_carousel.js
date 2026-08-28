@@ -2,7 +2,7 @@
 /* MODULE - CAROUSEL */
 /* ========================================= */
 
-import { projects, getProjectSubtitle, getProjectCover, getProjectTitle, getProjectTools, getOrderedProjectIndices, applyImageFallback } from "../constants/projects.js?v=6";
+import { projects, getProjectSubtitle, getProjectCover, getProjectTitle, getProjectTools, getOrderedProjectIndices, applyImageFallback } from "../constants/projects.js?v=7";
 import { getCurrentLang } from "./language.js";
 import { cleanupRegistry, bindHorizontalSwipe } from '../utils/helpers.js';
 

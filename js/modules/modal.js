@@ -25,7 +25,7 @@ import {
     getProjectTitle,
     getProjectTools,
     getProjectLinks,
-} from '../constants/projects.js?v=6';
+} from '../constants/projects.js?v=7';
 import { initModalShader } from './modal_shader.js';
 
 let modalOverlay = null;

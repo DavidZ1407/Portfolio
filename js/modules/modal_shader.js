@@ -80,9 +80,9 @@ const fragmentShader = `
         v += voronoi(uv, t * 2.0, 0.5, 2.5 - sizeDistortion);
         v += voronoi(uv, t * 4.0, 0.0, 4.0 - sizeDistortion) / 2.0;
 
-        // Color schemes (eine pro Kategorie):
-        // 0=GameDev(blau), 1=3D(teal), 2=2D/Concept(purple),
-        // 3=Coding(gruen), 4=Sound(amber/gold), 5=Other(rose)
+        // Color schemes (eine pro Kategorie), Index = getCategorySchemeIndex(category)
+        // 0=gamedev(blue), 1=coding(teal), 2=3d(purple/indigo),
+        // 3=concept(green/emerald), 4=sound(amber/gold), 5=other(rose)
         vec3 fgColor;
         vec3 bgColor;
 
@@ -91,15 +91,15 @@ const fragmentShader = `
             fgColor = vec3(0.55, 0.75, 1.0);
             bgColor = vec3(0.0, 0.3, 0.5);
         } else if (uColorScheme < 2.0) {
-            // Scheme 1 - 3D (teal/cyan)
+            // Scheme 1 - Coding (teal/cyan)
             fgColor = vec3(0.4, 0.85, 0.8);
             bgColor = vec3(0.0, 0.35, 0.4);
         } else if (uColorScheme < 3.0) {
-            // Scheme 2 - 2D & Concept (purple/indigo)
+            // Scheme 2 - 3d (purple/indigo)
             fgColor = vec3(0.7, 0.55, 0.9);
             bgColor = vec3(0.15, 0.1, 0.3);
         } else if (uColorScheme < 4.0) {
-            // Scheme 3 - Coding (green/emerald)
+            // Scheme 3 - Concept (green/emerald)
             fgColor = vec3(0.45, 0.8, 0.55);
             bgColor = vec3(0.05, 0.25, 0.15);
         } else if (uColorScheme < 5.0) {

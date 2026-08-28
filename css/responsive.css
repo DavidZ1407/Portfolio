@@ -1,6 +1,6 @@
 /* ========================================= */
 /* UNIFIED RESPONSIVE SYSTEM */
-/* Large → Desktop → Laptop → Tablet → Mobile */
+/* Large â†’ Desktop â†’ Laptop â†’ Tablet â†’ Mobile */
 /* All elements resize smoothly */
 /* ========================================= */
 
@@ -229,7 +229,7 @@ section {
     }
 }
 
-/* Punkt 2: backdrop-filter früher reduzieren (ab HD+) für Firefox-Performance */
+/* Punkt 2: backdrop-filter frÃ¼her reduzieren (ab HD+) fÃ¼r Firefox-Performance */
 @media (min-width: 1600px) {
     .header {
         backdrop-filter: blur(6px) !important;
@@ -548,12 +548,12 @@ section {
 }
 
 /* ========================================= */
-/* HERO-KARUSSELL-INDIKATOREN – sehr große Screens (2056px+)
-   Es gibt in CSS/JS keinen Code, der die Punkte ausblendet – die absoluten
-   Hero-Overlays (hero_scene/hero_overlay + Bottom-Fade) liegen aber ÜBER dem
-   unpositionierten Punkte-Container. Damit die Punkte auf 2560–4K zuverlässig
-   sichtbar bleiben, werden sie über die Overlays gehoben (nur Positionierung,
-   keine Änderung an Größe/Layout/Abstand des Karussells). */
+/* HERO-KARUSSELL-INDIKATOREN â€“ sehr groÃŸe Screens (2056px+)
+   Es gibt in CSS/JS keinen Code, der die Punkte ausblendet â€“ die absoluten
+   Hero-Overlays (hero_scene/hero_overlay + Bottom-Fade) liegen aber ÃœBER dem
+   unpositionierten Punkte-Container. Damit die Punkte auf 2560â€“4K zuverlÃ¤ssig
+   sichtbar bleiben, werden sie Ã¼ber die Overlays gehoben (nur Positionierung,
+   keine Ã„nderung an GrÃ¶ÃŸe/Layout/Abstand des Karussells). */
 @media (min-width: 2056px) {
     .carousel_indicators {
         position: relative;
@@ -813,7 +813,7 @@ section {
     .portal-slide.pos-center { transform: translateX(0) translateZ(30px) scale(1.05); }
     .portal-slide.pos-left { transform: translateX(-200px) translateZ(-80px) rotateY(20deg) scale(0.55); opacity: 0.3; }
     .portal-slide.pos-right { transform: translateX(200px) translateZ(-80px) rotateY(-20deg) scale(0.55); opacity: 0.3; }
-    .carousel-controls { bottom: -35px; gap: 12px; }
+    .carousel-controls { bottom: -55px; gap: 12px; }
     .c-dot { width: 8px; height: 8px; }
     .c-dot.active { width: 14px; height: 14px; }
     /* disable 3D tilt on mobile/tablet to prevent jitter */
@@ -1096,7 +1096,7 @@ section {
     .carousel-next { right: 30px; }
     .c-dot { width: 14px; height: 14px; }
     .c-dot.active { width: 20px; height: 20px; }
-    .carousel-controls { gap: 20px; bottom: -50px; }
+    .carousel-controls { gap: 20px; bottom: -84px; }
 }
 
 @media (max-width: 1200px) {
@@ -1139,7 +1139,7 @@ section {
     .carousel-arrow { width: 36px; height: 36px; font-size: 1.6rem; }
     .carousel-prev { left: 8px !important; }
     .carousel-next { right: 8px !important; }
-    .carousel-controls { bottom: -35px; gap: 12px; }
+    .carousel-controls { bottom: -55px; gap: 12px; }
     .c-dot { width: 8px; height: 8px; }
     .c-dot.active { width: 14px; height: 14px; }
     /* disable 3D tilt on mobile/tablet to prevent jitter */
@@ -1181,7 +1181,6 @@ section {
         opacity: 0;
         pointer-events: none;
     }
-    .portal-slide.pos-center {
         transform: translateX(0) translateZ(0) scale(1);
     }
     .carousel-arrow { width: 30px; height: 30px; font-size: 1.3rem; }
@@ -1486,7 +1485,7 @@ section {
         letter-spacing: 0.5px !important;
     }
 
-    /* ===== Sektion-Abstände reduzieren ===== */
+    /* ===== Sektion-AbstÃ¤nde reduzieren ===== */
     section {
         padding: 50px 3% !important;
     }
@@ -1580,8 +1579,7 @@ section {
     
     /* Simplify box-shadow on hover states */
     .about_profile_box:hover,
-    .skill_item_box:hover,
-    .portal-slide.pos-center {
+    .skill_item_box:hover {
         box-shadow: 
             0 0 20px rgba(73, 146, 154, 0.15),
             0 0 40px rgba(73, 146, 154, 0.08) !important;
