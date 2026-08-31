@@ -1,17 +1,8 @@
-﻿/* ========================================= */
-/* CONSTANTS - PROJECTS                        */
-/*                                           */
-/* Struktur:                                   */
-/*   projects[] -> Array von Projekt-Objekten   */
-/*   Jedes Projekt hat: category, title,       */
-/*   subtitle, description, media[],           */
-/*   contribution[], tools[]                  */
-/*                                           */
-/* Zusätzlich:                                 */
-/*   categoryProjects -> Objekt, pro Kategorie */
-/*   die Indices der projekte in projects[]    */
-/*   erlaeht "mehrere Projekte pro Kategorie"  */
-/* ========================================= */
+/**
+ * File: projects.js
+ * Description: Project data: bilingual titles/descriptions, categories, media lists, and project-skill relations.
+ */
+import { skills } from './skills.js?v=4';
 
 /* ---- Kategorien (Label) ---- */
 const CATEGORY_LABELS = {
@@ -32,7 +23,7 @@ function pickLang(value, lang) {
     return value !== undefined && value !== null ? value : '';
 }
 
-/* ---- Exporte für das Modal ---- */
+/* ---- Exporte fuer das Modal ---- */
 export { CATEGORY_LABELS };
 export function getProjectTitle(index, lang = 'en') {
     const p = projects[index];
@@ -74,6 +65,38 @@ export function getProjectTools(index, lang = 'en') {
     if (!p || !Array.isArray(p.tools)) return [];
     return p.tools.map(t => ({ name: pickLang(t.name, lang), icon: t.icon || '' }));
 }
+
+/* ---- Skill-Registry-Helper (Projekt <-> Skill Verbindung) ---- */
+const SKILL_BY_ID = {};
+skills.forEach(s => { SKILL_BY_ID[s.id] = s; });
+
+/** Ids der Skills, die das Projekt tatsaechlich genutzt hat */
+export function getProjectSkillIds(index) {
+    const p = projects[index];
+    if (!p || !Array.isArray(p.skills)) return [];
+    return p.skills;
+}
+
+/** Skills des Projekts (aus der Registry aufgeloest): [{ id, name, icon, logo }] */
+export function getProjectSkills(index) {
+    return getProjectSkillIds(index)
+        .map(id => SKILL_BY_ID[id])
+        .filter(Boolean)
+        .map(s => ({ id: s.id, name: s.name, icon: s.icon || '', logo: s.logo || '' }));
+}
+
+/** (Lowercase) Tool-Namen, die durch die Skills des Projekts bereits
+    abgedeckt sind - verhindert Doppel-Anzeige von Skills + Tools im Modal. */
+export function getProjectCoveredToolNames(index) {
+    const covered = new Set();
+    getProjectSkillIds(index).forEach(id => {
+        const s = SKILL_BY_ID[id];
+        if (s && Array.isArray(s.toolAliases)) {
+            s.toolAliases.forEach(a => covered.add(a));
+        }
+    });
+    return covered;
+}
 export function getProjectLinks(index, lang = 'en') {
     const p = projects[index];
     if (!p || !Array.isArray(p.links)) return [];
@@ -91,7 +114,7 @@ export function getProjectCountInCategory(category) {
     return indices.length;
 }
 
-/* ---- Kategories-Ordnung (Definition des Shader-Color-Schemes) ---- */
+/* ---- Kategorie-Ordnung (Definition des Shader-Color-Schemes) ---- */
 /* Reihenfolge bestimmt die Register-Tabs, das Portal und das Hero-Carousel. */
 const CATEGORY_ORDER = ['gamedev', 'coding', '3d', 'concept', 'sound', 'other'];
 export {
@@ -112,7 +135,7 @@ export {
 };
 
 /* ---- Projekt-Daten ---- */
-/* Hinweis: cover/image -> assets/Picture/ProjectX.png ist die Konvention aus STRUKTUR.md */
+/* Note: cover/image -> assets/Picture/ProjectX.png ist die Konvention aus STRUKTUR.md */
 const projects = [
 
     /* Index 0 - Game Dev */ {
@@ -120,8 +143,8 @@ const projects = [
         title: { en: 'Gothica Solaris', de: 'Gothica Solaris' },
         subtitle: { en: 'First-Person Roguelite Dungeon Crawler', de: 'First-Person-Roguelite-Dungeon-Crawler' },
         description: {
-            en: 'Gothic Solaris is a first-person roguelite dungeon crawler set in a dark Victorian world where reality is slowly collapsing under the influence of a mysterious forbidden Book.\n\nPlayers take on the role of Victor, a bounty hunter searching for a missing loved one while exploring corrupted realms connected to the Book.\n\nThe game combines challenging first-person combat, exploration and permanent progression through a Risk-versus-Reward system centered around the Insanity Meter. As Insanity increases, enemies become more dangerous and the dungeon becomes increasingly unstable, while also revealing hidden paths, events and valuable rewards.\n\nPlayers must decide how far they are willing to push their run before extracting and potentially losing unsecured resources.',
-            de: 'Gothic Solaris ist ein First-Person-Roguelite-Dungeon-Crawler in einer düsteren viktorianischen Welt, in der die Realität unter dem Einfluss eines mysteriösen, verbotenen Buchs langsam zerfällt.\n\nDie Spieler schlüpfen in die Rolle von Victor, einem Kopfgeldjäger, der eine vermisste geliebte Person sucht und dabei korrupte Bereiche erkundet, die mit dem Buch verbunden sind.\n\nDas Spiel kombiniert anspruchsvollen First-Person-Combat, Erkundung und permanente Progression durch ein Risk-versus-Reward-System rund um die Insanity-Anzeige. Mit steigender Insanity werden Gegner gefährlicher und der Dungeon zunehmend instabiler – es öffnen sich dabei auch versteckte Pfade, Events und wertvolle Belohnungen.\n\nDie Spieler entscheiden selbst, wie weit sie ihren Run treiben, bevor sie sich zurückziehen und möglicherweise nicht gesicherte Ressourcen verlieren.'
+            en: 'Gothica Solaris is a first-person roguelite dungeon crawler set in a dark Victorian world where reality is slowly collapsing under the influence of a mysterious forbidden Book.\n\nPlayers take on the role of Victor, a bounty hunter searching for a missing loved one while exploring corrupted realms connected to the Book.\n\nThe game combines challenging first-person combat, exploration and permanent progression through a Risk-versus-Reward system centered around the Insanity Meter. As Insanity increases, enemies become more dangerous and the dungeon becomes increasingly unstable, while also revealing hidden paths, events and valuable rewards.\n\nPlayers must decide how far they are willing to push their run before extracting and potentially losing unsecured resources.',
+            de: 'Gothica Solaris ist ein First-Person-Roguelite-Dungeon-Crawler in einer düsteren viktorianischen Welt, in der die Realität unter dem Einfluss eines mysteriösen, verbotenen Buchs langsam zerfällt.\n\nDie Spieler schlüpfen in die Rolle von Victor, einem Kopfgeldjäger, der eine vermisste geliebte Person sucht und dabei korrupte Bereiche erkundet, die mit dem Buch verbunden sind.\n\nDas Spiel kombiniert anspruchsvollen First-Person-Combat, Erkundung und permanente Progression durch ein Risk-versus-Reward-System rund um die Insanity-Anzeige. Mit steigender Insanity werden Gegner gefährlicher und der Dungeon zunehmend instabiler – es öffnen sich dabei auch versteckte Pfade, Events und wertvolle Belohnungen.\n\nDie Spieler entscheiden selbst, wie weit sie ihren Run treiben, bevor sie sich zurückziehen und möglicherweise nicht gesicherte Ressourcen verlieren.'
         },
         gameConcept: {
             en: 'A dark first-person dungeon crawler built around exploration, risk-versus-reward decisions and player-driven build creation.\n\nPlayers collect Pages, currencies and upgrades while combining weapons, abilities and Socket upgrades to create different playstyles across multiple runs.\n\nThe core gameplay is built around the Insanity System. Increasing Insanity makes the dungeon more dangerous, but also provides access to greater rewards, hidden areas and special events.',
@@ -193,9 +216,10 @@ const projects = [
             { name: { en: 'Godot', de: 'Godot' }, icon: 'bx-game' },
             { name: { en: 'C#', de: 'C#' }, icon: 'bx-code' },
             { name: { en: 'Blender', de: 'Blender' }, icon: 'bx-cube' },
-            { name: { en: 'Ableton', de: 'Ableton' }, icon: 'bx-music' },
+            { name: { en: 'Ableton Live', de: 'Ableton Live' }, icon: 'bx-music' },
             { name: { en: 'FMOD', de: 'FMOD' }, icon: 'bx-headphone' }
         ],
+        skills: ['godot', 'csharp', 'blender', 'fmod'],
         links: [
             { label: { en: 'GitHub Repository', de: 'GitHub-Repository' }, url: 'https://github.com/PascalHaegele/Project3' }
         ]
@@ -234,7 +258,8 @@ const projects = [
             { name: { en: 'Character Design', de: 'Charakterdesign' }, icon: 'bx-user' },
             { name: { en: 'Concept Art', de: 'Konzeptkunst' }, icon: 'bx-palette' },
             { name: { en: 'Logo Design', de: 'Logodesign' }, icon: 'bx-shape-square' }
-        ]
+        ],
+        skills: ['krita']
     },
 
     /* Index 2 - 3D (3D Modeling) */ {
@@ -271,7 +296,8 @@ const projects = [
         },
         tools: [
             { name: { en: 'Blender', de: 'Blender' }, icon: 'bx-cube' }
-        ]
+        ],
+        skills: ['blender']
     },
 
     /* Index 3 - Coding (Projekt 1 - Physics & Shader) */
@@ -312,7 +338,8 @@ const projects = [
             { name: { en: 'JavaScript', de: 'JavaScript' }, icon: 'bxl-javascript' },
             { name: { en: 'WebGL', de: 'WebGL' }, icon: 'bx-code-block' },
             { name: { en: 'HTML/CSS', de: 'HTML/CSS' }, icon: 'bxl-html5' }
-        ]
+        ],
+        skills: ['web', 'webgl']
     },
 
     /* Index 4 - Sound (Projekt 1 - Space_Balls) */
@@ -320,7 +347,7 @@ const projects = [
         category: 'sound',
         title: { en: 'Space Balls', de: 'Space Balls' },
         subtitle: { en: 'Sci-Fi Rhythm Game – Sound Design & Audio Integration', de: 'Sci-Fi-Rhythmusspiel – Sounddesign & Audio-Integration' },
-        description: { en: 'An exciting sci-fi rhythm game developed in the Godot Engine (C#). The project focused entirely on sound design: all sound effects were created from scratch in Ableton — from futuristic sci-fi weapons, drives and UI elements to crisp rhythm cues — and independently integrated into Godot via C#, perfectly synchronized with the gameplay and the rhythm of the game. Final video editing & sync realized with DaVinci Resolve.', de: 'Ein aufregendes Sci-Fi-Rhythmusspiel, entwickelt in der Godot Engine (C#). Das Projekt legte den Fokus komplett auf Sounddesign: Alle Soundeffekte entstanden von Grund auf in Ableton – von futuristischen Sci-Fi-Waffen, Antrieben und UI-Elementen bis hin zu knackigen Rhythmus-Cues – und wurden eigenständig per C# in Godot integriert, perfekt synchron zu Gameplay und Rhythmus des Spiels. Videoschnitt & Sync final umgesetzt mit DaVinci Resolve.' },
+        description: { en: 'An exciting sci-fi rhythm game developed in the Godot Engine (C#). The project focused entirely on sound design: all sound effects were created from scratch in Ableton Live — from futuristic sci-fi weapons, drives and UI elements to crisp rhythm cues — and independently integrated into Godot via C#, perfectly synchronized with the gameplay and the rhythm of the game. Final video editing & sync realized with DaVinci Resolve.', de: 'Ein aufregendes Sci-Fi-Rhythmusspiel, entwickelt in der Godot Engine (C#). Das Projekt legte den Fokus komplett auf Sounddesign: Alle Soundeffekte entstanden von Grund auf in Ableton Live – von futuristischen Sci-Fi-Waffen, Antrieben und UI-Elementen bis hin zu knackigen Rhythmus-Cues – und wurden eigenständig per C# in Godot integriert, perfekt synchron zu Gameplay und Rhythmus des Spiels. Videoschnitt & Sync final umgesetzt mit DaVinci Resolve.' },
         gameConcept: { en: 'Two players each control a ball ("Odd Balls"), charging a power meter to the beat by rhythmically shaking their controller. Once the meter is full, players can shoot and destroy UFOs.', de: 'Zwei Spieler steuern jeweils einen Ball ("Odd Balls") und laden einen Energie-Balken im Takt auf, indem sie ihren Controller rhythmisch schütteln. Ist der Balken voll, können die Spieler UFOs abschießen und zerstören.' },
         duration: { en: '2 weeks', de: '2 Wochen' },
         cover: 'assets/Sound/Space_Balls/Sound_2.png',
@@ -331,13 +358,13 @@ const projects = [
         ],
         contribution: {
             en: [
-                'Complete sound design & creation of all audio assets from scratch in Ableton',
+                'Complete sound design & creation of all audio assets from scratch in Ableton Live',
                 'Programming & integration of sounds in Godot via C#',
                 'Rhythm & timing coordination for the special two-player gameplay',
                 'Video editing & sync (realized with DaVinci Resolve)'
             ],
             de: [
-                'Komplettes Sounddesign & Erstellung aller Audio-Assets von Grund auf in Ableton',
+                'Komplettes Sounddesign & Erstellung aller Audio-Assets von Grund auf in Ableton Live',
                 'Programmierung & Integration der Sounds in Godot per C#',
                 'Rhythmus- & Timing-Koordination für das besondere Zwei-Spieler-Gameplay',
                 'Videoschnitt & Sync (umgesetzt mit DaVinci Resolve)'
@@ -348,7 +375,8 @@ const projects = [
             { name: { en: 'Godot Engine (C#)', de: 'Godot Engine (C#)' }, icon: 'bx-code-alt' },
             { name: { en: 'Ableton Live', de: 'Ableton Live' }, icon: 'bx-music' },
             { name: { en: 'FMOD', de: 'FMOD' }, icon: 'bx-headphone' }
-        ]
+        ],
+        skills: ['godot', 'csharp', 'fmod']
     },
 
     /* Index 5 - Other (Projekt 1 - Other_PJ_1) */
@@ -397,7 +425,8 @@ const projects = [
             { name: { en: 'Map & Tile Design', de: 'Karten- & Tile-Design' }, icon: 'bx-map' },
             { name: { en: 'Rulebook Writing', de: 'Regelbuch schreiben' }, icon: 'bx-book-open' },
             { name: { en: 'Playtesting', de: 'Playtesting' }, icon: 'bx-play-circle' }
-        ]
+        ],
+        skills: ['blender', 'krita']
     },
 
     /* Index 6 - Game Dev (second project) */ {
@@ -446,7 +475,8 @@ const projects = [
         },
         tools: [
             { name: { en: 'Unreal Engine 5', de: 'Unreal Engine 5' }, icon: 'bx-game' }
-        ]
+        ],
+        skills: ['unreal']
     },
 
     /* Index 7 - Other (Projekt 2 - Other_PJ_2) */
@@ -491,7 +521,8 @@ const projects = [
             { name: { en: 'Krita', de: 'Krita' }, icon: 'bx-edit' },
             { name: { en: 'Figma', de: 'Figma' }, icon: 'bx-layout' },
             { name: { en: 'DaVinci Resolve', de: 'DaVinci Resolve' }, icon: 'bx-video' }
-        ]
+        ],
+        skills: ['krita']
     },
 
     /* Index 8 - Concept (2D_Draw) */
@@ -528,7 +559,9 @@ const projects = [
             { name: { en: 'Pencil & Paper', de: 'Bleistift & Papier' }, icon: 'bx-pencil' },
             { name: { en: 'Character Design', de: 'Charakterdesign' }, icon: 'bx-user' },
             { name: { en: 'Anatomy Studies', de: 'Anatomiestudien' }, icon: 'bx-brush' }
-        ]
+        ],
+        /* Kein Registry-Skill: traditionelle Bleistiftskizzen */
+        skills: []
     },
 
     /* Index 9 - Concept (2D_VID) */
@@ -563,7 +596,8 @@ const projects = [
         },
         tools: [
             { name: { en: 'Blender', de: 'Blender' }, icon: 'bx-cube' }
-        ]
+        ],
+        skills: ['blender']
     },
 
     /* Index 10 - 3D (3D_VID) */
@@ -597,7 +631,8 @@ const projects = [
         tools: [
             { name: { en: 'Blender', de: 'Blender' }, icon: 'bx-cube' },
             { name: { en: 'Godot', de: 'Godot' }, icon: 'bx-code-alt' }
-        ]
+        ],
+        skills: ['blender', 'godot']
     },
 
     /* Index 11 - 3D (3D_Pj) */
@@ -631,7 +666,7 @@ const projects = [
             ],
             de: [
                 'Raumschiff-Modellierung und Asset-Erstellung',
-                'Animations-Szendesign und Layout',
+                'Animations-Design und Layout',
                 'Konzeptentwicklung und Storyboard',
                 'Schauspielerei / Live-Action-Integration'
             ]
@@ -639,7 +674,8 @@ const projects = [
         tools: [
             { name: { en: 'Blender', de: 'Blender' }, icon: 'bx-cube' },
             { name: { en: 'DaVinci Resolve', de: 'DaVinci Resolve' }, icon: 'bx-video' }
-        ]
+        ],
+        skills: ['blender']
     },
 
     /* Index 12 - Sound (Projekt 2 - Glow_Pods) */
@@ -647,7 +683,7 @@ const projects = [
         category: 'sound',
         title: { en: 'Glow Pods', de: 'Glow Pods' },
         subtitle: { en: 'Atmospheric 3D Game – Environmental Audio & Immersion', de: 'Atmosphärisches 3D-Spiel – Umgebungsaudio & Immersion' },
-        description: { en: 'An atmospheric 3D game set in a dark, icy world where players must collect glowing pods to illuminate and navigate their path. The goal was to give this small 3D world a distinct, immersive acoustic identity using Godot and Ableton: dynamic ambient soundscapes and realistic environmental audio tailored to each environment, organic effects, foley and echoing orb interactions that reinforce distance, scale and mystery.', de: 'Ein atmosphärisches 3D-Spiel in einer dunklen, eisigen Welt, in der Spieler leuchtende Pods einsammeln müssen, um ihren Weg zu beleuchten und zu finden. Das Ziel war es, dieser kleinen 3D-Welt mit Godot und Ableton eine eigenständige, immersive akustische Identität zu geben: dynamische Ambient-Klanglandschaften und realistisches Umgebungsaudio, zugeschnitten auf jede Umgebung, dazu organische Effekte, Foley und hallende Orb-Interaktionen, die Distanz, Größe und Geheimnis verstärken.' },
+        description: { en: 'An atmospheric 3D game set in a dark, icy world where players must collect glowing pods to illuminate and navigate their path. The goal was to give this small 3D world a distinct, immersive acoustic identity using Godot and Ableton Live: dynamic ambient soundscapes and realistic environmental audio tailored to each environment, organic effects, foley and echoing orb interactions that reinforce distance, scale and mystery.', de: 'Ein atmosphärisches 3D-Spiel in einer dunklen, eisigen Welt, in der Spieler leuchtende Pods einsammeln müssen, um ihren Weg zu beleuchten und zu finden. Das Ziel war es, dieser kleinen 3D-Welt mit Godot und Ableton Live eine eigenständige, immersive akustische Identität zu geben: dynamische Ambient-Klanglandschaften und realistisches Umgebungsaudio, zugeschnitten auf jede Umgebung, dazu organische Effekte, Foley und hallende Orb-Interaktionen, die Distanz, Größe und Geheimnis verstärken.' },
         gameConcept: { en: 'The world is divided into two contrasting environments: The Snow Field — vast, cold and isolated, shaped by ice crackling, wind and wide reverb — and The Cave — dark, enigmatic and enclosed, defined by water drips, abstract tones and deep hall reverb.', de: 'Die Welt ist in zwei kontrastierende Umgebungen geteilt: Das Schneefeld – weit, kalt und isoliert, geprägt von knisterndem Eis, Wind und weitem Hall – und Die Höhle – dunkel, rätselhaft und eng, definiert durch Wassertropfen, abstrakte Töne und tiefen Hallenklang.' },
         duration: { en: '2 weeks', de: '2 Wochen' },
         cover: 'assets/Sound/Glow_Pods/Sound_5.png',
@@ -660,19 +696,20 @@ const projects = [
                 'Concept & creation of ambient soundscapes for snow and cave environments',
                 'Organic sound effects & foley art (ice crackling, wind, water drips)',
                 'Acoustic finishing & deep reverb/spatial design for all visual elements',
-                'Final audio mixing & game integration (Godot & Ableton)'
+                'Final audio mixing & game integration (Godot & Ableton Live)'
             ],
             de: [
                 'Konzeption & Erstellung von Ambient-Klanglandschaften für Schneefeld und Höhle',
                 'Organische Soundeffekte & Foley-Arbeit (knisterndes Eis, Wind, Wassertropfen)',
                 'Akustischer Feinschliff & tiefe Raum-/Klangraum-Gestaltung für alle visuellen Elemente',
-                'Abschließendes Audio-Mixing & Spiel-Integration (Godot & Ableton)'
+                'Abschließendes Audio-Mixing & Spiel-Integration (Godot & Ableton Live)'
             ]
         },
         tools: [
             { name: { en: 'Godot Engine', de: 'Godot Engine' }, icon: 'bx-code-alt' },
             { name: { en: 'Ableton Live', de: 'Ableton Live' }, icon: 'bx-music' }
-        ]
+        ],
+        skills: ['godot']
     },
 
     /* Index 13 - Sound (Projekt 3 - Lifted) */
@@ -680,7 +717,7 @@ const projects = [
         category: 'sound',
         title: { en: 'Lifted', de: 'Lifted' },
         subtitle: { en: 'Complete Sound Redesign & Synchronization', de: 'Komplettes Sound-Redesign & Synchronisation' },
-        description: { en: 'A dedicated sound redesign project in which an existing scene was fully re-scored and synchronized from scratch. The main focus was on breathing acoustic life into the visuals using a hybrid approach of custom-made sounds and professionally edited library assets.', de: 'Ein dediziertes Sound-Redesign-Projekt, bei dem eine bestehende Szene von Grund auf neu vertont und synchronisiert wurde. Der Hauptfokus lag darauf, den Bildern akustisches Leben einzuhauchen – mit einem hybriden Ansatz aus selbst erstellen Sounds und professionell bearbeiteten Bibliotheks-Sounds.' },
+        description: { en: 'A dedicated sound redesign project in which an existing scene was fully re-scored and synchronized from scratch. The main focus was on breathing acoustic life into the visuals using a hybrid approach of custom-made sounds and professionally edited library assets.', de: 'Ein dediziertes Sound-Redesign-Projekt, bei dem eine bestehende Szene von Grund auf neu vertont und synchronisiert wurde. Der Hauptfokus lag darauf, den Bildern akustisches Leben einzuhauchen – mit einem hybriden Ansatz aus selbst erstellten Sounds und professionell bearbeiteten Bibliotheks-Sounds.' },
         duration: { en: '1 week', de: '1 Woche' },
         cover: 'assets/Picture/placeholders/sound.svg',
         media: [
@@ -702,14 +739,16 @@ const projects = [
         },
         tools: [
             { name: { en: 'DaVinci Resolve', de: 'DaVinci Resolve' }, icon: 'bx-video' }
-        ]
+        ],
+        /* Kein Registry-Skill: reines Video-Editing-Projekt */
+        skills: []
     },
 
     /* Index 14 - Coding (Projekt 2 - Website) */
     {
         category: 'coding',
         title: { en: 'Coding: Website', de: 'Coding: Website' },
-        subtitle: { en: 'Web Development – Interactive Websites & Experimente', de: 'Webentwicklung – interaktive Websites & Experimente' },
+        subtitle: { en: 'Web Development – Interactive Websites & Experiments', de: 'Webentwicklung – interaktive Websites & Experimente' },
         description: { en: 'A collection of web development projects built with HTML, CSS, JavaScript and TypeScript — from an interactive markdown page and an older portfolio website to browser-based canvas games with animations. Focus on clean front-end structure, interactive elements and a smooth user experience.', de: 'Eine Sammlung von Webentwicklungsprojekten mit HTML, CSS, JavaScript und TypeScript – von einer interaktiven Markdown-Seite und einer älteren Portfolio-Website bis zu browserbasierten Canvas-Spielen und Animationen. Fokus auf saubere Frontend-Struktur, interaktive Elemente und eine flüssige User Experience.' },
         links: [
             { label: { en: 'Markdown Page – Live Website', de: 'Markdown-Seite – Live-Website' }, url: 'https://davidz1407.github.io/Code1/Markdown_page/' },
@@ -747,7 +786,8 @@ const projects = [
             { name: { en: 'CSS', de: 'CSS' }, icon: 'bxl-css3' },
             { name: { en: 'JavaScript', de: 'JavaScript' }, icon: 'bxl-javascript' },
             { name: { en: 'TypeScript', de: 'TypeScript' }, icon: 'bxl-typescript' }
-        ]
+        ],
+        skills: ['web', 'typescript']
     },
 
     /* Index 15 - Coding (Projekt 3 - Jump) */
@@ -785,7 +825,8 @@ const projects = [
             { name: { en: 'HTML', de: 'HTML' }, icon: 'bxl-html5' },
             { name: { en: 'CSS', de: 'CSS' }, icon: 'bxl-css3' },
             { name: { en: 'JavaScript', de: 'JavaScript' }, icon: 'bxl-javascript' }
-        ]
+        ],
+        skills: ['web']
     },
 
     /* Index 16 - Game Dev (Projekt 3 - Godot Island Generator) */
@@ -852,7 +893,8 @@ const projects = [
             { name: { en: 'Godot', de: 'Godot' }, icon: 'bx-game' },
             { name: { en: 'GDScript', de: 'GDScript' }, icon: 'bx-code' },
             { name: { en: 'Shader Programming', de: 'Shader-Programmierung' }, icon: 'bx-code-block' }
-        ]
+        ],
+        skills: ['godot']
     },
 
     /* Index 17 - Game Dev (Projekt 4 - Fartnite, 48h Game Jam) */
@@ -862,11 +904,11 @@ const projects = [
         subtitle: { en: 'Chaotic 48-Hour Game Jam FPS', de: 'Chaotischer 48-Stunden-Game-Jam-Egoshooter' },
         description: {
             en: 'Fartnite is a fast-paced first-person shooter developed during a 48-hour game jam by a 3-member team.\n\nThe game takes place in a satirical world where an evil milk factory has conspired to make all of humanity lactose intolerant, causing everyone to constantly flatulate. Players take on the role of a hero fighting back against this dairy tyranny by vacuuming up farts from the environment and shooting them back as projectiles.',
-            de: 'Fartnite ist ein schneller First-Person-Shooter, der während eines 48-Stunden-Game-Jams in einem 3-köpfigen Team entwickelt wurde.\n\nDas Spiel spielt in einer satirischen Welt, in der eine böse Milchfabrik sich verschworen hat, die gesamte Menschheit laktoseintolerant zu machen, sodass alle ständig flatulieren. Die Spieler schlüpfen in die Rolle eines Helden, der sich gegen diese Milch-Tyrannei zur Wehr setzt, indem er Furts aus der Umgebung einsaugt und sie als Projektile zurückschießt.'
+            de: 'Fartnite ist ein schneller First-Person-Shooter, der während eines 48-Stunden-Game-Jams in einem 3-köpfigen Team entwickelt wurde.\n\nDas Spiel spielt in einer satirischen Welt, in der eine böse Milchfabrik sich verschworen hat, die gesamte Menschheit laktoseintolerant zu machen, sodass alle ständig flatulieren. Die Spieler schlüpfen in die Rolle eines Helden, der sich gegen diese Milch-Tyrannei zur Wehr setzt, indem er Furze aus der Umgebung einsaugt und sie als Projektile zurückschießt.'
         },
         gameConcept: {
             en: 'A chaotic and humorous first-person shooter centered around unique mechanics, fast-paced action, and arcade-style gameplay.\n\nPlayers explore a compact, custom-built level, utilizing a vacuum-style mechanic to absorb farts and turn them into weaponized ammunition against the factory\'s minions.',
-            de: 'Ein chaotischer, humorvoller First-Person-Shooter rund um einzigartige Mechaniken, schnelle Action und Arcade-Gameplay.\n\nDie Spieler erkunden ein kompaktes, selbst gebautes Level und nutzen eine Vakuum-Mechanik, um Furts einzusaugen und sie als waffengerichtete Munition gegen die Lakaien der Fabrik einzusetzen.'
+            de: 'Ein chaotischer, humorvoller First-Person-Shooter rund um einzigartige Mechaniken, schnelle Action und Arcade-Gameplay.\n\nDie Spieler erkunden ein kompaktes, selbst gebautes Level und nutzen eine Vakuum-Mechanik, um Furze einzusaugen und sie als waffengerichtete Munition gegen die Lakaien der Fabrik einzusetzen.'
         },
         duration: { en: '48 hours (Game Jam)', de: '48 Stunden (Game Jam)' },
         team: { en: '3 members', de: '3 Mitglieder' },
@@ -905,7 +947,8 @@ const projects = [
             { name: { en: 'Godot', de: 'Godot' }, icon: 'bx-game' },
             { name: { en: 'Blender', de: 'Blender' }, icon: 'bx-cube' },
             { name: { en: 'Ableton Live', de: 'Ableton Live' }, icon: 'bx-music' }
-        ]
+        ],
+        skills: ['godot', 'blender']
     }
 
     /*
@@ -932,7 +975,7 @@ export function getProjectCover(index) {
  * Wird verwendet, wenn ein echtes Cover/Medium fehlt, damit alle
  * Blasen/Slides auf der Hauptseite und im Modal sichtbar bleiben.
  *
- * ACHTUNG: Es wird absichtlich EIN gemeinsamer, neutraler Platzhalter
+ * Caution: Es wird absichtlich EIN gemeinsamer, neutraler Platzhalter
  * fuer ALLE Kategorien zurueckgegeben (nicht ein kategorie-spezifisches
  * Icon/Text-Bild). So erscheinen alle 6 Karten im Hero-Carousel und im
  * Portal konsistent - bis echte Projekt-Screenshots vorhanden sind.
@@ -943,7 +986,7 @@ export function getCategoryPlaceholder(category) {
 
 /**
  * Haengt einen Bild-Fallback an ein <img>: Wenn das Laden fehlschlaegt
- * (z.B. fehlende Datei), wird das Kategorie-Platzhalter-Bild gesetzt.
+ * (e.g. fehlende Datei), wird das Kategorie-Platzhalter-Bild gesetzt.
  */
 export function applyImageFallback(img, category) {
     if (!img) return;
@@ -957,7 +1000,6 @@ export function applyImageFallback(img, category) {
         }
     };
 }
-
 
 /**
  * Liefert die Indizes aller Projekte einer Kategorie (aus categoryProjects).
@@ -995,7 +1037,7 @@ export function getOrderedProjectIndices() {
 }
 
 /**
- * Wechsel zwischen Projekten DERS SELBEN Kategorie.
+ * Wechsel zwischen Projekten DERSELBEN Kategorie.
  * direction: 'prev' | 'next'  (wrap-around)
  * Gibt null zurueck, wenn die Kategorie nur ein Projekt hat.
  */
@@ -1031,7 +1073,7 @@ export function getAdjacentCategoryProject(currentIndex, direction) {
 }
 
 /**
- * Farb-Schema-Index einer Kategorie fuer den Voronoi-Shadert.
+ * Farb-Schema-Index einer Kategorie fuer den Voronoi-Shader.
  * Reihenfolge entspricht CATEGORY_ORDER (0=gamedev, 1=coding, 2=3d, 3=concept, 4=sound, 5=other).
  */
 export function getCategorySchemeIndex(category) {

@@ -1,23 +1,21 @@
-﻿/* ========================================= */
-/* MODULE - FULL-PAGE DEPTH EXPERIENCE */
-/* Immersive underwater gothic scroll */
-/* ========================================= */
+/**
+ * File: depth_experience.js
+ * Description: Depth experience controller: fog/vignette intensity based on scroll depth.
+ */
 import { initUnifiedParticles } from './unified_particles.js';
 
 export function initDepthExperience() {
-    // EIN gemeinsames Partikel-System (fuehrt beide alten Systeme zusammen):
-    // back (z3: Fische + Parallax-Partikel/-Bubbles) + front (z7: Depth-)
-    // Partikel/-Bubbles werden in EINEM registerAnimation-Loop in
-    // unified-particles.js gezeichnet (Firefox-Performance, Punkt 1).
+    // ONE shared particle system (merges both old systems):
+    // back (z3: fish + parallax particles/bubbles) + front (z7: depth)
+    // particles/bubbles are drawn in ONE registerAnimation loop in
+    // unified-particles.js (Firefox performance, item 1).
     initUnifiedParticles();
     createFogOverlay();
     createVignette();
     initScrollHandlers();
 }
 
-/* ========================================= */
 /* FOG OVERLAY */
-/* ========================================= */
 function createFogOverlay() {
     const fog = document.createElement('div');
     fog.className = 'depth-fog-overlay';
@@ -33,18 +31,14 @@ function createFogOverlay() {
     document.body.appendChild(fog);
 }
 
-/* ========================================= */
 /* VIGNETTE */
-/* ========================================= */
 function createVignette() {
     const vignette = document.createElement('div');
     vignette.className = 'depth-vignette';
     document.body.appendChild(vignette);
 }
 
-/* ========================================= */
 /* SCROLL HANDLERS */
-/* ========================================= */
 function initScrollHandlers() {
     let lastScrollPercent = 0;
     let ticking = false;
@@ -52,14 +46,14 @@ function initScrollHandlers() {
     const fog = document.querySelector('.depth-fog-overlay');
     const vignette = document.querySelector('.depth-vignette');
 
-/* ---- Scroll-Starke (normalisiert 0..1) - Schwellwerte & Rampen ---- */
-    const FOG_ACTIVE_AT = 0.02;       // ab diesem Fortschritt wird der Fog sichtbar
-    const FOG_FULL_AT = 0.62;         // (0.02 + 0.6) ab hier ist der Fog voll da
-    const VIGNETTE_ACTIVE_AT = 0.03;  // ab diesem Fortschritt wird die Vignette sichtbar
-    const VIGNETTE_FULL_AT = 0.35;    // (0.03 + 0.32) ab hier ist die Vignette voll da
+/* ---- Scroll strength (normalized 0..1) - thresholds & ramps ---- */
+    const FOG_ACTIVE_AT = 0.02;       // fog becomes visible from this progress on
+    const FOG_FULL_AT = 0.62;         // (0.02 + 0.6) fog is fully on from here
+    const VIGNETTE_ACTIVE_AT = 0.03;  // vignette becomes visible from this progress on
+    const VIGNETTE_FULL_AT = 0.35;    // (0.03 + 0.32) vignette is fully on from here
     const FOG_MAX_OPACITY = 0.7;
-    const BODY_BLUE_BASE = 9;         // Blau-Basiswert des Hintergrund-Farbverlaufs
-    const BODY_BLUE_RANGE = 30;       // Zuwachs pro 1.0 Scroll-Fortschritt
+    const BODY_BLUE_BASE = 9;         // blue base value of the background gradient
+    const BODY_BLUE_RANGE = 30;       // increase per 1.0 scroll progress
 
     function onScroll() {
         if (!ticking) {

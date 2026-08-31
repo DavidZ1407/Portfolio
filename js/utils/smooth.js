@@ -1,29 +1,23 @@
-/* ========================================= */
-/* SMOOTH ANIMATION UTILITIES */
-/* Inspired by lusion.co - ultra-smooth transitions */
-/* ========================================= */
+//File: smooth.js 
+// Description: Smooth scrolling utilities for anchor navigation.
 
-/**
- * Custom Easing Functions
- * Für seidig-weiche Übergänge statt linearer Bewegung
- */
 export const Easing = {
-    /** Decelerates smoothly to zero (ease-out quad) */
+    //Decelerates smoothly to zero (ease-out quad) 
     outQuad: t => t * (2 - t),
     
-    /** Smooth deceleration (ease-out cubic) */
+    //Smooth deceleration (ease-out cubic) 
     outCubic: t => 1 - Math.pow(1 - t, 3),
     
-    /** Very smooth deceleration (ease-out quart) */
+    //Very smooth deceleration (ease-out quart) 
     outQuart: t => 1 - Math.pow(1 - t, 4),
     
-    /** Extra smooth landing (ease-out quint) */
+    //Extra smooth landing (ease-out quint) 
     outQuint: t => 1 - Math.pow(1 - t, 5),
     
-    /** Expo out - ultra smooth, lusion-like landing */
+    //Expo out - ultra smooth, lusion-like landing 
     outExpo: t => t === 1 ? 1 : 1 - Math.pow(2, -10 * t),
     
-    /** Expo in-out - smooth start and landing */
+    //Expo in-out - smooth start and landing 
     inOutExpo: t => {
         if (t === 0 || t === 1) return t;
         return t < 0.5 
@@ -31,14 +25,14 @@ export const Easing = {
             : (2 - Math.pow(2, -10 * (t * 2 - 1))) / 2;
     },
     
-    /** Soft spring overshoot (ease-out back) */
+    //Soft spring overshoot (ease-out back) 
     outBack: t => {
         const c1 = 1.70158;
         const c3 = c1 + 1;
         return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
     },
     
-    /** Elastic bounce (subtle) */
+    //Elastic bounce (subtle) 
     outElastic: t => {
         if (t === 0 || t === 1) return t;
         return Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * (2 * Math.PI / 3)) + 1;

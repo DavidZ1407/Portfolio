@@ -1,26 +1,36 @@
-import { CANVAS_BACKING_MAX_WIDTH, DEBOUNCE_DELAY_MS, THROTTLE_INTERVAL_MS } from '../constants/ui.js';
+//File: helpers.js
+//Description: Shared utilities: debounce/throttle, canvas sizing/quality helpers, and a cleanup registry for animations.
 
-/* ========================================= */
-/* SHARED UTILITY HELPERS */
-/* Debounce, Cleanup Registry, etc. */
-/* ========================================= */
 
-/** Mindest-Distanz (px) fuer eine als Swipe gewertete horizontale Geste */
+import { CANVAS_BACKING_MAX_WIDTH, DEBOUNCE_DELAY_MS, THROTTLE_INTERVAL_MS, LARGE_BREAKPOINT_PX, XLARGE_BREAKPOINT_PX } from '../constants/ui.js';
+
+//SHARED UTILITY HELPERS 
+///Minimum distance (px) for a horizontal gesture to count as a swipe
 const SWIPE_THRESHOLD_PX = 60;
 
 /**
- * Bindet horizontale Swipe-Gesten an ein Element (fuer Touch/Handy).
- * Vertikales Scrollen bleibt moeglich: Es wird nur ausgeloest, wenn die
- * horizontale Bewegung dominant ist und die Distanz bemerkbar.
+ * Viewport-based quality tier for canvas effects.
+ * On large viewports (2056px+) low-resolution buffering is used,
+ * on extra-large ones (3000px+) reduced even further (performance).
  *
- * Swipe nach links -> onSwipeNext; Swipe nach rechts -> onSwipePrev.
- * Liefert eine Cleanup-Funktion zum Entfernen der Listener zurueck.
+ * @returns {{ isLarge: boolean, isXLarge: boolean, scale: number }}
+ *   scale = internal render scale (< 1 on large viewports, otherwise 1).
+ */
+export function getCanvasQuality() {
+    const vw = window.innerWidth;
+    const isLarge = vw >= LARGE_BREAKPOINT_PX;
+    const isXLarge = vw >= XLARGE_BREAKPOINT_PX;
+    const scale = isXLarge ? 0.35 : isLarge ? 0.5 : 1.0;
+    return { isLarge, isXLarge, scale };
+}
+
+/**
  *
- * @param {Element} el - Ziel-Element (Carousel-Container/Track)
- * @param {Function} onSwipeNext - Wird bei Wisch nach links aufgerufen
- * @param {Function} onSwipePrev - Wird bei Wisch nach rechts aufgerufen
- * @param {Function} [onSwipeDone] - Optionaler Callback nach einem erkannten Swipe
- * @returns {Function} Cleanup-Funktion
+ * @param {Element} el - 
+ * @param {Function} onSwipeNext 
+ * @param {Function} onSwipePrev 
+ * @param {Function} [onSwipeDone] 
+ * @returns {Function} 
  */
 export function bindHorizontalSwipe(el, onSwipeNext, onSwipePrev, onSwipeDone) {
     if (!el || typeof el.addEventListener !== 'function') return () => {};
@@ -35,6 +45,7 @@ export function bindHorizontalSwipe(el, onSwipeNext, onSwipePrev, onSwipeDone) {
         swiping = true;
     };
 
+    //Swip Horizontal and Vertical
     const onTouchEnd = (e) => {
         if (!swiping) return;
         swiping = false;
@@ -42,8 +53,6 @@ export function bindHorizontalSwipe(el, onSwipeNext, onSwipePrev, onSwipeDone) {
         if (!touch) return;
         const dx = touch.clientX - startX;
         const dy = touch.clientY - startY;
-        // Nur horizontale Swipes mit bemerkenswerter Distanz ausloesen.
-        // Vertikale Gesten werden ignoriert (Seiten-Scroll).
         if (Math.abs(dx) > SWIPE_THRESHOLD_PX && Math.abs(dx) > Math.abs(dy) * 1.5) {
             if (dx < 0) onSwipeNext();
             else onSwipePrev();

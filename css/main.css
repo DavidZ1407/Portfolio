@@ -1,6 +1,7 @@
-/* ========================================= */
-/* ROOT VARIABLES */
-/* ========================================= */
+/* ==========================================
+ * File: main.css
+ * Description: Root CSS variables, global element resets, typography, section base styles, and footer.
+ * ========================================== */
 :root {
     /* Original Colors */
     --abyss-deep: #030809;
@@ -22,21 +23,16 @@
     --mist: rgba(73, 146, 154, 0.1);
 
     /* Layout */
-    --section-pad-y: 140px;      /* vertikaler Abstand der Sektionen */
-    --section-pad-x: 10%;        /* horizontaler Abstand der Sektionen */
-    --footer-pad-y: 60px;        /* vertikaler Abstand des Footers */
-    --footer-pad-x: 10%;         /* horizontaler Abstand des Footers */
+    --section-pad-y: 140px;
+    --section-pad-x: 10%;
+    --footer-pad-y: 60px;
+    --footer-pad-x: 10%;
     --base-line-height: 1.6;
     --text-line-height: 1.8;
-
-    /* Transitions (einheitlich fuer UI-Elemente) */
     --transition-fast: 0.3s ease;
     --transition-med: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* ========================================= */
-/* GLOBAL STYLES */
-/* ========================================= */
 * {
     margin: 0;
     padding: 0;
@@ -94,9 +90,22 @@ p {
     line-height: var(--text-line-height);
 }
 
-/* ========================================= */
+/* Inline skill icon SVGs from js/constants/skills.js */
+.skill_icon_svg {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.skill_icon_svg svg {
+    display: block;
+    width: 1em;
+    height: 1em;
+    pointer-events: none;
+}
+
 /* SECTION BASE STYLES (shared) */
-/* ========================================= */
 section {
     padding: var(--section-pad-y) var(--section-pad-x);
     min-height: 100vh;
@@ -116,25 +125,16 @@ section:not(#home):not(.archives_section) {
         );
 }
 
-/* Smooth section transitions – each section gets a subtle top/bottom fade */
-/* Fades via box-shadow – funktioniert auch wenn ::before/::after von Components belegt sind */
+/* Smooth section transitions via box-shadow - works even when ::before/::after are occupied by components */
 section:not(#home) {
     box-shadow: 
         inset 0 80px 60px -40px var(--abyss-deep),
         inset 0 -80px 60px -40px var(--abyss-deep);
 }
 
-/* Hero bottom fade – weicher Übergang zum Archives */
-.hero_section {
-    box-shadow: inset 0 -80px 60px -40px var(--abyss-deep);
-}
+.hero_section { box-shadow: inset 0 -80px 60px -40px var(--abyss-deep); } /* Hero bottom fade */
+.site_footer { box-shadow: inset 0 60px 40px -30px var(--abyss-deep); } /* Footer top fade */
 
-/* Footer top fade – weicher Übergang vom Contact */
-.site_footer {
-    box-shadow: inset 0 60px 40px -30px var(--abyss-deep);
-}
-
-/* Section Title & Subtitle */
 .section_title {
     font-size: 2.5rem;
     animation: section-float 7s ease-in-out infinite;
@@ -150,23 +150,6 @@ section:not(#home) {
     50% { transform: translateY(-4px); }
 }
 
-.section_title {
-    margin-bottom: 20px;
-    color: var(--gold-accent);
-    text-transform: uppercase;
-    letter-spacing: 3px;
-}
-
-.section_subtitle {
-    font-size: 0.85rem;
-    color: #8b7542;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 60px;
-}
-
-/* ========================================= */
-/* FOOTER */
 /* ========================================= */
 .site_footer {
     padding: var(--footer-pad-y) var(--footer-pad-x);
@@ -228,6 +211,4 @@ section:not(#home) {
     font-family: monospace;
 }
 
-/* ========================================= */
 /* COMPONENT IMPORTS - loaded via <link> in index.html */
-/* ========================================= */

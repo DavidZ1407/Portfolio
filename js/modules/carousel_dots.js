@@ -1,12 +1,11 @@
-/* ========================================= */
-/* MODULE - GENERATE CAROUSEL DOTS */
-/* Automatically generates indicator dots based on projects.length */
-/* ========================================= */
-
-import { getOrderedProjectIndices } from '../constants/projects.js?v=7';
+/**
+ * File: carousel_dots.js
+ * Description: Generates and manages the dot indicators for the hero and portal carousels.
+ */
+import { getOrderedProjectIndices } from '../constants/projects.js?v=9';
 
 export function generateCarouselDots() {
-    // Anzahl = eine Karte je Kategorie (gleiche Reihenfolge wie Portal/Hero)
+    // Count = one card per category (same order as portal/hero)
     const projectCount = getOrderedProjectIndices().length;
 
     // Generate Hero Carousel Indicators

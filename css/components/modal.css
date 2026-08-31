@@ -1,12 +1,9 @@
-/* ========================================= */
-/* PROJECT MODAL - UNDERWATER ARCHIVE         */
-/* Wasser-Hintergrund + Effekte              */
-/* ========================================= */
-
-/* Timing-Konstanten (mit modal.js synchron halten):
-   --water-close-duration     entspricht WATER_ANIMATION_MS (1000ms)
-   --media-nav-glow-duration  entspricht PROJECT_GLOW_MS (420ms) */
+/* ==========================================
+ * File: modal.css
+ * Description: Project modal overlay, underwater background effects, media viewer, lightbox, and modal-specific animations.
+ * ========================================== */
 :root {
+    /* Keep these durations in sync with WATER_ANIMATION_MS (1s) and PROJECT_GLOW_MS (0.42s) in modal.js */
     --water-close-duration: 1s;
     --media-nav-glow-duration: 0.42s;
 }
@@ -57,7 +54,7 @@
 }
 
 /* Water caustics overlay - animated, on top of shader.
-   Deutlich abgeschwächt: soll nur noch einen subtilen, blauen Reflex geben. */
+   Toned down significantly: adds only a subtle blue reflection. */
 .project_modal::before {
     content: '';
     position: absolute;
@@ -73,10 +70,10 @@
     animation: water-caustics 6s ease-in-out infinite;
 }
 
-/* Dunkler, halbtransparenter Content-Overlay.
-   Schichtung: Wasser/Shader (z1) + Caustics (z2) -> dieser dunkle Schleier (::after, z2)
-   -> dann der Inhalt (z3, .modal_content). Macht das animierte Wasser viel dezenteren
-   Hintergrund, ohne es komplett zu verstecken. Kein Filter/Blur - nur RGBA, performant. */
+/* Dark, semi-transparent content overlay.
+   Layering: water/shader (z1) + caustics (z2) -> this dark veil (::after, z2)
+   -> then the content (z3, .modal_content). Makes the animated water a much subtler
+   background without hiding it completely. No filter/blur - RGBA only, performant. */
 .project_modal::after {
     content: '';
     position: absolute;
@@ -105,9 +102,9 @@
     -webkit-filter: url(#water_emerge);
 }
 
-/* Water Close Animation - reverse of emerge, mit starkem Distortion-Filter.
-   Gilt für Modal UND Lightbox (gleicher Keyframe + gleicher Filter; dadurch
-   entfällt eine separate .modal_lightbox.water_close-Regel). */
+/* Water close animation - reverse of emerge, with a strong distortion filter.
+   Applies to modal AND lightbox (same keyframe + filter;
+   no separate .modal_lightbox.water_close rule needed). */
 .project_modal.water_close,
 .modal_lightbox.water_close {
     animation: modal_close_water var(--water-close-duration) cubic-bezier(0.4, 0, 0.2, 1) forwards;
@@ -511,8 +508,8 @@
 .modal_project_title {
     font-family: 'Cinzel', serif;
     font-size: 1.5rem;
-    /* Haupt-Titel: warmes, fast weißes Hellelfenbein für maximalen Kontrast.
-       Gold bleibt Akzentfarbe für Labels, nicht für den Haupttitel. */
+    /* Haupt-Titel: warmes, fast weisses Hellelfenbein fuer maximalen Kontrast.
+       Gold bleibt Akzentfarbe fuer Labels, nicht fuer den Haupttitel. */
     color: #f3ebd9;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
     margin-bottom: 8px;
@@ -633,7 +630,7 @@
     text-transform: uppercase;
     line-height: 1.3;
     /* Projektname in inaktiven Karten: hell & lesbar (warmes Off-White).
-       Der aktive (goldene) Zustand bleibt unverändert als Akzent. */
+       Der aktive (goldene) Zustand bleibt unveraendert als Akzent. */
     color: rgba(238, 231, 215, 0.92);
     text-align: center;
     white-space: nowrap;
@@ -681,10 +678,9 @@
     text-shadow: 0 0 10px rgba(139, 224, 232, 0.6);
 }
 
-
 /* Projekt-Umschalter: nur sichtbar, wenn Kategorie mehrere Projekte hat */
 .modal_project_switch {
-    display: none; /* wird per JS auf 'flex' gesetzt */
+    display: none; /* wird via JS auf 'flex' gesetzt */
     align-items: center;
     justify-content: center;
     gap: 10px;
@@ -738,7 +734,7 @@
     background: rgba(201, 168, 97, 0.03);
 }
 
-/* KATEGORIE-Pfeile (zwischen den Bereichen, z.B. Game Dev -> Sound).
+/* KATEGORIE-Pfeile (zwischen den Bereichen, e.g. Game Dev -> Sound).
    Deutlich unterscheidbar von den Projekt-Pfeilen: cyan/teal statt gold,
    doppelter Chevron, etwas weitere Positionierung am Rand. */
 .modal_cat_prev,
@@ -802,7 +798,7 @@
     max-width: 65ch;
     position: relative;
     z-index: 3;
-    /* Absatzumbrüche im Beschreibungstext erhalten (mehrzeilige Beschreibungen) */
+    /* Absatzumbrueche im Beschreibungstext erhalten (mehrzeilige Beschreibungen) */
     white-space: pre-line;
 }
 
@@ -822,7 +818,7 @@
     text-transform: uppercase;
 }
 
-/* LABEL ÜBER DER PROJEKT-AUSWAHL-LEISTE (sichtbar nur, wenn Projekte existieren) */
+/* LABEL UeBER DER PROJEKT-AUSWAHL-LEISTE (sichtbar nur, wenn Projekte existieren) */
 .modal_project_bar_label {
     font-family: 'Cinzel', serif;
     font-size: 1rem;
@@ -934,9 +930,7 @@
     scrollbar-color: var(--gold-accent) rgba(10, 22, 40, 0.8);
 }
 
-/* ========================================= */
-/* WATER THEMED BACKGROUNDS PER PROJECT     */
-/* ========================================= */
+/* WATER THEMED BACKGROUNDS PER PROJECT */
 
 .modal_bg_abyss {
     background: linear-gradient(to bottom,
@@ -986,9 +980,7 @@
     );
 }
 
-/* ========================================= */
 /* VIEWPORT-RESPONSIVE SIZING (inline in JS) */
-/* ========================================= */
 
 @media (min-width: 2056px) {
     .modal_project_title { font-size: 2rem; letter-spacing: 3px; }
@@ -1119,6 +1111,58 @@
     display: block;
 }
 
+/* YouTube-Facade: leichtgewichtiges Vorschaubild + Play-Button,
+   der eigentliche iframe-Player wird erst beim Klick geladen */
+.modal_youtube_facade {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background: #030a10;
+    cursor: pointer;
+    display: block;
+    text-align: center;
+    overflow: hidden;
+}
+
+.modal_youtube_thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    pointer-events: none;
+}
+
+.modal_youtube_play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 3px solid rgba(201, 168, 97, 0.85);
+    background:
+        radial-gradient(circle at 35% 30%, rgba(201, 168, 97, 0.35) 0%, transparent 60%),
+        linear-gradient(145deg, #8a7340 0%, #6b5828 50%, #4a3d1a 100%);
+    color: #c9a861;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 25px rgba(201, 168, 97, 0.35);
+    pointer-events: none;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.modal_youtube_facade:hover .modal_youtube_play {
+    transform: translate(-50%, -50%) scale(1.08);
+    box-shadow: 0 0 35px rgba(201, 168, 97, 0.55);
+}
+
 /* Zentrierter Play-Button-Overlay */
 .modal_media_play {
     position: absolute;
@@ -1135,7 +1179,7 @@
     color: #c9a861;
     font-size: 1.6rem;
     font-family: 'Cinzel', serif;
-    display: none; /* nur bei Videos per JS sichtbar */
+    display: none; /* nur bei Videos via JS sichtbar */
     align-items: center;
     justify-content: center;
     cursor: pointer;
@@ -1272,7 +1316,7 @@
     max-width: none;
 }
 
-/* Game Concept + Project Details - lesbar gestaltet, passend zu den übrigen Überschriften */
+/* Game concept + project details - readable, matching the other headings */
 .modal_game_concept,
 .modal_project_details {
     margin-top: 22px;
@@ -1295,7 +1339,7 @@
     line-height: 1.7;
     color: var(--text-light, #b8d0d8);
     max-width: 65ch;
-    /* Absatzumbrüche erhalten (wie bei .modal_project_description) */
+    /* Preserve paragraph breaks (like .modal_project_description) */
     white-space: pre-line;
 }
 
@@ -1448,12 +1492,12 @@
     .modal_project_item { width: 100px; }
     .modal_project_item img,
     .modal_project_item video { height: 56px; }
-    /* Lightbox-Größe (Steuerelement-Positionierung siehe Lightbox-Abschnitt) */
+    /* Lightbox-Groesse (Steuerelement-Positionierung siehe Lightbox-Abschnitt) */
     .modal_lightbox { max-width: 95vw; max-height: 80vh; }
 }
 
 /* ========================================= */
-/* LIGHTBOX FÜR DEN MEDIA-VIEWER (Vollbild)   */
+/* LIGHTBOX FUeR DEN MEDIA-VIEWER (Vollbild)   */
 /* Dunkler, leicht transparenter Overlay mit   */
 /* goldenen Rahmen-/Pfeil-Styles (wie im Modal) */
 /* ========================================= */
@@ -1478,8 +1522,8 @@
 
 .modal_lightbox {
     position: relative;
-    /* Feste, komfortable Bildfläche – auch für kleine Platzhalter-/Realbilder
-       groß genug. Das Medium wächst per object-fit in diese Fläche. */
+    /* Feste, komfortable Bildflaeche - auch fuer kleine Platzhalter-/Realbilder
+       gross genug. Das Medium waechst per object-fit in diese Flaeche. */
     width: min(86vw, 1040px);
     height: min(78vh, 760px);
     background: #02080c;
@@ -1517,6 +1561,7 @@
 /* YouTube-Embed in der Lightbox */
 .modal_lightbox_youtube {
     display: none;
+    position: relative; /* Containment fuer die YouTube-Facade (absolute Fuellung) */
     align-items: center;
     justify-content: center;
     width: 100%;
@@ -1534,8 +1579,8 @@
     border-radius: 6px;
 }
 
-/* X-Button oben rechts – nutzt dieselbe modal_close_btn-Klasse
-   wie das Haupt-Modal für visuelle Konsistenz */
+/* X-Button oben rechts - nutzt dieselbe modal_close_btn-Klasse
+   wie das Haupt-Modal fuer visuelle Konsistenz */
 
 /* Runde Pfeil-Buttons in der Lightbox (identischer Stil zum Media-Viewer) */
 .modal_lightbox_prev,
@@ -1567,13 +1612,13 @@
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Pfeile zentriert AUF der goldenen Kante der Lightbox-Box (nicht innen über dem Bild).
-   Halber Button ragt über die Kante hinaus - gleicht dem Media-Viewer-Rand-Design. */
+/* Pfeile zentriert AUF der goldenen Kante der Lightbox-Box (nicht innen ueber dem Bild).
+   Halber Button ragt ueber die Kante hinaus - gleicht dem Media-Viewer-Rand-Design. */
 .modal_lightbox_prev { left: -23px; }
 .modal_lightbox_next { right: -23px; }
 
 /* X-Button (Lightbox): zentriert auf der oberen rechten Kante der Box.
-   Eigene Größe, damit die Kanten-Zentrierung (halber Button auf dem Rahmen)
+   Eigene Groesse, damit die Kanten-Zentrierung (halber Button auf dem Rahmen)
    in allen Breakpoints stimmig bleibt. */
 .modal_lightbox_overlay .modal_close_btn {
     width: 36px;
@@ -1590,7 +1635,7 @@
     transform: translateY(-50%) scale(1.1);
 }
 
-/* Größere Pfeile auf hohen Auflösungen */
+/* Groessere Pfeile auf hohen Aufloesungen */
 @media (min-width: 1756px) {
     .modal_lightbox_prev,
     .modal_lightbox_next {
@@ -1602,7 +1647,7 @@
     .modal_lightbox_next { right: -27px; }
 }
 
-/* Lightbox-Steuerelemente an der Kante – Tablet (Breakpoints 768–1200px) */
+/* Lightbox-Steuerelemente an der Kante - Tablet (Breakpoints 768-1200px) */
 @media (max-width: 1200px) {
     .modal_lightbox_prev,
     .modal_lightbox_next {
@@ -1621,7 +1666,7 @@
     }
 }
 
-/* Lightbox-Steuerelemente an der Kante – Mobile */
+/* Lightbox-Steuerelemente an der Kante - Mobile */
 @media (max-width: 768px) {
     .modal_lightbox_prev,
     .modal_lightbox_next {
@@ -1641,21 +1686,21 @@
 }
 
 /* =========================================================
-   NAVIGATION-FEEDBACK  (Approach A – performant)
+   NAVIGATION-FEEDBACK  (Approach A - performant)
    Kurzer, performanter "Wasser"-Glow + Fade bei jedem Wechsel:
      - Bild (Media-Viewer + Lightbox): .media_nav_glow
      - Projekt (Auswahl-Leiste): .project_nav_glow
-   Wird per JS-Klasse umgeschaltet; nutzt @keyframes (one-shot)
-   bzw. die vorhandene 0.3s-Transition von .modal_project_item.
+   Wird via JS-Klasse umgeschaltet; nutzt @keyframes (one-shot)
+   or die vorhandene 0.3s-Transition von .modal_project_item.
    KEINE neuen feTurbulence-/feDisplacementMap-Filter,
-   KEINE JS-Animations-Loops – im Sinne der Firefox-Performance.
+   KEINE JS-Animations-Loops - im Sinne der Firefox-Performance.
    ========================================================= */
 
 /* Media-Viewer / Lightbox-Bild: sanfter Fade-in aus dem "Wasser" + blauer Halo */
 .modal_media_image.media_nav_glow,
 .modal_lightbox_image.media_nav_glow {
     animation: navMediaGlow var(--media-nav-glow-duration) ease-out forwards;
-    /* Wasser-Distortion-Effekt beim Bildwechsel (wird per JS-Klasse entfernt) */
+    /* Wasser-Distortion-Effekt beim Bildwechsel (wird via JS-Klasse entfernt) */
     filter: url(#water_distort_hover);
     -webkit-filter: url(#water_distort_hover);
 }
@@ -1665,7 +1710,7 @@
     100% { opacity: 1;   box-shadow: 0 0 0 0 rgba(0, 0, 0, 0), 0 0 0 rgba(0, 0, 0, 0); }
 }
 
-/* Projekt-Karte: kurzer cyan-blaßer Glow – die vorhandene Transition übernimmt das Ausblenden */
+/* Projekt-Karte: kurzer cyan-blasser Glow - die vorhandene Transition uebernimmt das Ausblenden */
 .modal_project_item.project_nav_glow {
     border-color: rgba(139, 224, 232, 0.9);
     box-shadow:

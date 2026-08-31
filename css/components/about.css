@@ -1,8 +1,8 @@
-/* ========================================= */
-/* ABOUT COMPONENT */
-/* ========================================= */
+/* ==========================================
+ * File: about.css
+ * Description: Styles for the About Me section including profile box, content text, skills grid, and CV download.
+ * ========================================== */
 
-/* Expedition Container (Two Column Layout) */
 .expedition_container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -11,14 +11,18 @@
     padding: 0 50px;
 }
 
-/* About Profile Box */
+#about .section_title { text-align: center; }
 .about_profile_box {
     background: rgba(5, 13, 14, 0.85);
-    border: 2px solid var(--stone-border);
-    padding: 40px;
+    border: 1px solid var(--stone-border);
+    padding: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: fit-content;
+    max-width: 100%;
+    justify-self: center;
+    align-self: start;
     transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 
@@ -32,6 +36,7 @@
 
 .profile_image {
     width: 100%;
+    max-width: 300px;
     height: auto;
     border-radius: 8px;
     box-shadow: 0 0 30px rgba(73, 146, 154, 0.3);
@@ -45,7 +50,6 @@
         0 0 80px rgba(73, 146, 154, 0.15);
 }
 
-/* About Content Box */
 .about_content_box {
     display: flex;
     flex-direction: column;
@@ -58,13 +62,10 @@
     line-height: 1.8;
     letter-spacing: 0.5px;
     text-transform: none;
-    /* Lesbarkeit: Zeilenlänge begrenzen (Wall-of-Text vermeiden) */
-    max-width: 65ch;
-    /* Abstand zwischen den Absätzen */
+    max-width: 65ch; /* Limit line length for readability */
     margin-bottom: 1rem;
 }
 
-/* Skills Section */
 .skills_title {
     color: var(--gold-accent);
     font-size: 1.3rem;
@@ -88,7 +89,6 @@
     width: 100%;
 }
 
-/* Skill Item Box */
 .skill_item_box {
     background: rgba(3, 8, 9, 0.6);
     border: 1px solid var(--stone-border);
@@ -137,7 +137,6 @@
     color: var(--cyan-glow);
 }
 
-/* CV Download Button (matches the site's button design) */
 .cv_download_btn {
     display: inline-flex;
     align-items: center;
@@ -178,7 +177,6 @@
     transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
-/* Hover uses the water_distortion effect like the other site elements */
 .cv_download_btn:hover {
     border-color: var(--cyan-glow);
     filter: url(#water_distort_hover);
@@ -199,28 +197,10 @@
     text-shadow: 0 0 8px rgba(73, 146, 154, 0.2);
 }
 
-/* ========================================= */
-/* UNDERWATER FLOATING ANIMATIONS - ABOUT */
-/* ========================================= */
-
-/* Profile box floats */
-.about_profile_box {
-    animation: about-float 8s ease-in-out infinite;
-}
-
-/* Content box floats with delay */
-.about_content_box {
-    animation: about-float 9s ease-in-out infinite;
-    animation-delay: 0.5s;
-}
-
-/* Skills title floats */
-.skills_title {
-    animation: about-float 7s ease-in-out infinite;
-    animation-delay: 0.3s;
-}
-
-/* Skill items float with staggered timing */
+/* Staggered floating animations for About section elements */
+.about_profile_box { animation: about-float 8s ease-in-out infinite; }
+.about_content_box { animation: about-float 9s ease-in-out infinite; animation-delay: 0.5s; }
+.skills_title { animation: about-float 7s ease-in-out infinite; animation-delay: 0.3s; }
 .skill_item_box:nth-child(1) { animation: about-float 6s ease-in-out infinite; animation-delay: 0s; }
 .skill_item_box:nth-child(2) { animation: about-float 7s ease-in-out infinite; animation-delay: 0.4s; }
 .skill_item_box:nth-child(3) { animation: about-float 6.5s ease-in-out infinite; animation-delay: 0.8s; }
@@ -247,5 +227,3 @@
         animation-iteration-count: infinite !important;
     }
 }
-
-/* Responsive layout moved to css/responsive.css */

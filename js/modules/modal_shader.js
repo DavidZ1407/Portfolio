@@ -1,9 +1,9 @@
-/* ========================================= */
-/* MODAL VORONOI SHADER BACKGROUND            */
-/* Animierter Voronoi-Hintergrund für Modal   */
-/* ========================================= */
-
+/**
+ * File: modal_shader.js
+ * Description: WebGL Voronoi shader background for the project modal, tinted per project category color.
+ */
 import { cleanupRegistry } from '../utils/helpers.js';
+import { FRAME_TIMESTEP, SHADER_MAX_PIXEL_RATIO } from '../constants/ui.js';
 
 const vertexShader = `
     varying vec2 vUv;
@@ -80,7 +80,7 @@ const fragmentShader = `
         v += voronoi(uv, t * 2.0, 0.5, 2.5 - sizeDistortion);
         v += voronoi(uv, t * 4.0, 0.0, 4.0 - sizeDistortion) / 2.0;
 
-        // Color schemes (eine pro Kategorie), Index = getCategorySchemeIndex(category)
+        // Color schemes (one per category), index = getCategorySchemeIndex(category)
         // 0=gamedev(blue), 1=coding(teal), 2=3d(purple/indigo),
         // 3=concept(green/emerald), 4=sound(amber/gold), 5=other(rose)
         vec3 fgColor;
@@ -115,9 +115,9 @@ const fragmentShader = `
         vec3 col = v * fgColor;
         col += (1.0 - v) * bgColor;
 
-        // Gedämpfte Wasser-Atmosphäre: abgedunkelt + halbtransparent, damit der
+        // Gedaempfte Wasser-Atmosphaere: abgedunkelt + halbtransparent, damit der
         // dunkle Navy-Gradient (modal-bg-*) darunter durchscheint und der
-        // Voronoi-Shader nur noch eine dezente, atmosphärische Ebene bildet.
+        // Voronoi-Shader nur noch eine dezente, atmosphaerische Ebene bildet.
         col *= 0.5;
         gl_FragColor = vec4(col, 0.62);
     }
@@ -146,7 +146,7 @@ export function initModalShader(container) {
     });
     renderer.setSize(container.clientWidth, container.clientHeight);
     // Cap pixel ratio to prevent excessive GPU load at very large viewports
-    const pixelRatio = Math.min(window.devicePixelRatio, 2, 1.5);
+    const pixelRatio = Math.min(window.devicePixelRatio, SHADER_MAX_PIXEL_RATIO);
     renderer.setPixelRatio(pixelRatio);
     renderer.setClearColor(0x000000, 0);
 
@@ -197,7 +197,7 @@ export function initModalShader(container) {
             animFrame = requestAnimationFrame(animate);
             return;
         }
-        uniforms.uTime.value += 0.016;
+        uniforms.uTime.value += FRAME_TIMESTEP;
         renderer.render(scene, camera);
         animFrame = requestAnimationFrame(animate);
     }
@@ -213,7 +213,7 @@ export function initModalShader(container) {
     }
 
     function start(scheme) {
-        // Auch bei laufendem Shader die Farbe aktualisieren
+        // Update the color even while the shader is running
         if (scheme !== undefined) setColorScheme(scheme);
         if (isActive) return;
         isActive = true;

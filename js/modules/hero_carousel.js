@@ -1,8 +1,8 @@
-/* ========================================= */
-/* MODULE - CAROUSEL */
-/* ========================================= */
-
-import { projects, getProjectSubtitle, getProjectCover, getProjectTitle, getProjectTools, getOrderedProjectIndices, applyImageFallback } from "../constants/projects.js?v=7";
+/**
+ * File: hero_carousel.js
+ * Description: Hero works carousel: slide rendering from project data, autoplay, and navigation controls.
+ */
+import { projects, getProjectSubtitle, getProjectCover, getProjectTitle, getProjectSkillIds, getOrderedProjectIndices, applyImageFallback } from "../constants/projects.js?v=9";
 import { getCurrentLang } from "./language.js";
 import { cleanupRegistry, bindHorizontalSwipe } from '../utils/helpers.js';
 
@@ -13,7 +13,7 @@ const AUTO_PLAY_DELAY = 5000; // 5 seconds per slide
 
 /**
  * Build carousel slides dynamically from projects.js
- * (eine Kategorie = ein Portal-Slide, gleiche Reihenfolge wie das Portal)
+ * (one category = one portal slide, same order as the portal)
  */
 function buildCarouselSlides() {
     const track = document.querySelector('.carousel_track');
@@ -29,7 +29,7 @@ function buildCarouselSlides() {
 
         const slide = document.createElement('div');
         slide.className = 'carousel_slide';
-        // data-index = Position im Carousel; data-project = Index in projects[]
+        // data-index = position in the carousel; data-project = index in projects[]
         slide.setAttribute('data-index', slideIndex);
         slide.setAttribute('data-project', projectIdx);
 
@@ -38,9 +38,9 @@ function buildCarouselSlides() {
         img.alt = getProjectTitle(projectIdx, lang) || '';
         img.loading = 'lazy';
         img.decoding = 'async';
-        // Optional: Cover komplett zeigen (coverFit: 'contain'), kein Crop
+        // Optional: show the cover completely (coverFit: 'contain'), no crop
         if (project.coverFit === 'contain') img.classList.add('fit-contain');
-        // Fallback fuer fehlendes Cover
+        // Fallback for a missing cover
         applyImageFallback(img, project.category);
         slide.appendChild(img);
 
@@ -59,7 +59,7 @@ function buildCarouselSlides() {
 }
 
 /**
- * Update Titel/Untertitel der Hero-Slides (bei Sprachwechsel)
+ * Update titles/subtitles of the hero slides (on language change)
  */
 function renderCarouselLabels() {
     const lang = getCurrentLang();
@@ -78,17 +78,17 @@ function renderCarouselLabels() {
  * Initialize the hero carousel
  */
 export function initCarousel() {
-    // Slides dynamisch aus projects.js erzeugen
+    // Build slides dynamically from projects.js
     buildCarouselSlides();
 
     const indicators = document.querySelectorAll('.indicator');
     const slides = document.querySelectorAll('.carousel_slide');
 
-    // Labels bei Sprachwechsel aktualisieren
+    // Update labels on language change
     const onLangChanged = renderCarouselLabels;
     document.addEventListener('languageChanged', onLangChanged);
 
-    // Touch-Swipe: nach links/ueber die naechste Karte, nach rechts zur vorherigen
+    // Touch swipe: left goes to the next card, right to the previous one
     const track = document.querySelector('.carousel_track');
     if (track) {
         const cleanupSwipe = bindHorizontalSwipe(
@@ -208,22 +208,18 @@ function goToSlide(index) {
 }
 
 export function highlightHeroSkills(projectIndex) {
-    // Highlight skills for current project using static projects import
+    // Highlights the arsenal skills used by the currently shown project.
+    // Compares skill registry ids (skills.js) with the items' data-skill.
+    const projectSkillIds = getProjectSkillIds(projectIndex);
 
-        const project = projects[projectIndex];
-        if (!project) return;
-        // Tools sprachunabhaengig auf EN-Basis vergleichen (data-skill ist englisch)
-        const projectTools = getProjectTools(projectIndex, 'en');
-        
-        const skillItems = document.querySelectorAll('.arsenal_grid .skill_item');
-        const toolNames = projectTools.map(s => (s.name || s).toLowerCase());
-        
-        skillItems.forEach(item => {
-            const skillName = item.getAttribute('data-skill') || '';
-            const isMatch = toolNames.includes(skillName.toLowerCase());
-            item.classList.toggle('skill-active', isMatch);
-        });
-    }
+    const skillItems = document.querySelectorAll('.arsenal_grid .skill_item');
+
+    skillItems.forEach(item => {
+        const skillId = item.getAttribute('data-skill') || '';
+        const isMatch = projectSkillIds.includes(skillId);
+        item.classList.toggle('skill-active', isMatch);
+    });
+}
 window.highlightHeroSkills = highlightHeroSkills;
 
 /**

@@ -1,11 +1,7 @@
-﻿/* ========================================= */
-/* PARALLAX MODULE */
-/* ========================================= */
-
-/* Parallax-Layer (bg, mid, castle etc.) werden NUR beim Scrollen
-   transformiert. Die Partikel/Blasen/Fische-Canvases wurden in das
-   gemeinsame System unified-particles.js ausgelagert (Punkt 1). */
-
+/**
+ * File: parallax.js
+ * Description: Scroll-driven parallax background: layer transforms, underwater transitions, and ambient elements.
+ */
 let parallaxRafId = null;
 let parallaxRunning = false;
 
@@ -21,10 +17,10 @@ export function initParallax() {
     const UNDERWATER_THRESHOLD = 0.3;
     const CASTLE_THRESHOLD = 0.5;
 
-    const WATER_SURFACE_WINDOW = 0.1;   // +0.1 oberhalb des Schwellwerts
-    const WATER_SURFACE_LEAD = 0.05;    // Wasseroberflaeche erscheint etwas vor dem Uebergang
-    const LERP_SMOOTHING = 0.08;        // Easing-Faktor der Scroll-Naeherung
-    const SNAP_EPSILON = 0.5;           // Abstand (px), ab dem die Naeherung einrastet
+    const WATER_SURFACE_WINDOW = 0.1;   // +0.1 above the threshold
+    const WATER_SURFACE_LEAD = 0.05;    // water surface appears slightly before the transition
+    const LERP_SMOOTHING = 0.08;        // easing factor of the scroll approach
+    const SNAP_EPSILON = 0.5;           // distance (px) at which the approach snaps
 
     let currentScroll = 0;
     let targetScroll = 0;

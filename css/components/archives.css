@@ -1,10 +1,7 @@
-/* ========================================= */
-/* PROJECTS COMPONENT - 3D PORTAL CAROUSEL */
-/* ========================================= */
-
-/* ========================================= */
-/* ARCHIVES SECTION */
-/* ========================================= */
+/* ==========================================
+ * File: archives.css
+ * Description: Archives/projects section with 3D portal carousel, underwater atmosphere, light rays, caustics, bubbles, and skill-project highlighting.
+ * ========================================== */
 .archives_section {
     padding: 140px 5% 100px;
     background: 
@@ -29,9 +26,7 @@
     z-index: 5;
 }
 
-/* ========================================= */
 /* UNDERWATER ATMOSPHERE */
-/* ========================================= */
 .portal-room-atmosphere {
     position: absolute;
     inset: 0;
@@ -98,9 +93,7 @@
     height: 100%;
 }
 
-/* ========================================= */
 /* SECTION TITLE */
-/* ========================================= */
 .archives_section .section_title {
     position: relative;
     z-index: 3;
@@ -112,7 +105,7 @@
     margin-bottom: 30px;
 }
 
-/* MAIN-PAGE CATEGORY TABS (Kategorie-Register ueber dem Portal) */
+/* MAIN-PAGE CATEGORY TABS (register above the portal) */
 .main-cat-tabs {
     display: flex;
     flex-wrap: wrap;
@@ -157,10 +150,7 @@
     -webkit-filter: url(#water_distort_hover);
 }
 
-
-/* ========================================= */
 /* 3D PORTAL CAROUSEL */
-/* ========================================= */
 .portal-carousel {
     position: relative;
     width: 100%;
@@ -178,9 +168,7 @@
     50% { transform: translateY(-8px); }
 }
 
-/* ========================================= */
 /* PORTAL SLIDE */
-/* ========================================= */
 .portal-slide {
     position: absolute;
     left: 50%;
@@ -190,11 +178,11 @@
     margin-left: -160px;
     margin-top: -200px;
     /* Kein dunkler Kasten-Hintergrund: nur die kreisrunde Wasserform
-       (Vortex-Canvas) und ggf. das freigelegte Bild sind sichtbar */
+       (Vortex-Canvas) und if needed das freigelegte Bild sind sichtbar */
     overflow: hidden;
     cursor: pointer;
     transform-style: preserve-3d;
-    /* Nur transform + opacity in transition – kein box-shadow (verursacht Jitter) */
+    /* Nur transform + opacity in transition - kein box-shadow (verursacht Jitter) */
     transition: transform 1.2s cubic-bezier(0.25, 0.1, 0.25, 1),
                 opacity 0.8s cubic-bezier(0.25, 0.1, 0.25, 1),
                 z-index 0s;
@@ -205,7 +193,7 @@
 .portal-slide img {
     position: absolute;
     /* Bildbereich mit Luft zum Rahmen (Padding-Optik); unten sind 24%
-       fuer das Textfeld (slide-overlay) reserviert – kein Ueberlappen. */
+       fuer das Textfeld (slide-overlay) reserviert - kein Ueberlappen. */
     top: 3.5%;
     left: 4.5%;
     width: 91%;
@@ -215,7 +203,7 @@
     transition: filter 0.9s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* Cover komplett zeigen (kein Crop) – z. B. Gothic-Solaris-Startscreen mit Logo */
+/* Cover komplett zeigen (kein Crop) - e.g. Gothic-Solaris-Startscreen mit Logo */
 .portal-slide img.fit-contain {
     object-fit: contain;
     background: radial-gradient(circle at 50% 45%, rgba(10, 30, 45, 0.55) 0%, rgba(3, 8, 9, 0.9) 100%);
@@ -231,9 +219,7 @@
     filter: grayscale(10%) brightness(0.9) saturate(1.1);
 }
 
-/* ========================================= */
 /* 3D MOUSE TILT EFFECT (on center slide) */
-/* ========================================= */
 
 /* Tilt container - allows child image to tilt independently */
 .portal-slide .tilt-inner {
@@ -263,10 +249,10 @@
     transition: filter 0.3s ease;
 }
 
-/* Cover komplett zeigen (kein Crop) – auch innerhalb des Tilt-Wrappers.
+/* Cover komplett zeigen (kein Crop) - auch innerhalb des Tilt-Wrappers.
    Hoehere Specificity als ".portal-slide .tilt-inner img", sonst gewinnt
    dort das object-fit: cover und schneidet bei Querformat-Covern
-   (z. B. Gothica Solaris) den Titel an den Seiten ab. */
+   (e.g. Gothica Solaris) den Titel an den Seiten ab. */
 .portal-slide .tilt-inner img.fit-contain {
     object-fit: contain;
     background: radial-gradient(circle at 50% 45%, rgba(10, 30, 45, 0.55) 0%, rgba(3, 8, 9, 0.9) 100%);
@@ -299,7 +285,7 @@
 
 /* Weisser Specular-Sweep beim Hover ENTFERNT: Der Hover "energized" das
    Portal jetzt als kurzen Farbblitz in der Kategorie-Farbe des Projekts
-   (Uniform uFlash im Vortex-Shader, js/modules/portal.js) – kein generischer
+   (Uniform uFlash im Vortex-Shader, js/modules/portal.js) - kein generischer
    Weiss-Glow mehr. */
 
 /* ---- LEFT POSITION ---- */
@@ -352,12 +338,9 @@
     z-index: 0;
 }
 
-/* ========================================= */
 /* SLIDE ELEMENTS */
-/* ========================================= */
 
-
-/* Slide overlay text – eigene Zone UNTER dem Bild (untere 24% der Karte).
+/* Slide overlay text - eigene Zone UNTER dem Bild (untere 24% der Karte).
    Kein Ueberlappen mehr: Das Bild endet bei 76% (top 3.5% + height 72.5%),
    das Textfeld beginnt exakt dort und ist per Trennlinie abgesetzt. */
 .slide-overlay {
@@ -438,7 +421,7 @@
 }
 
 /* FIX: Titel im Overlay brechen sauber um statt hart am Rand zu wirken
-   (z. B. skaliertes "GOTHIC SOLARIS" auf der Mittel-Karte). Kein Design-Token geaendert. */
+   (e.g. skaliertes "GOTHIC SOLARIS" auf der Mittel-Karte). Kein Design-Token geaendert. */
 .slide-overlay {
     left: 0;
     right: 0;
@@ -455,9 +438,7 @@
     text-wrap: balance;
 }
 
-/* ========================================= */
 /* CAROUSEL NAVIGATION - Energy Pearl Arrow */
-/* ========================================= */
 .carousel-arrow {
     z-index: 20;
     width: 38px;
@@ -618,9 +599,7 @@
         0 0 35px rgba(73, 146, 154, 0.08);
 }
 
-/* ========================================= */
 /* CAROUSEL CONTROLS (Arrows + Dots) */
-/* ========================================= */
 .carousel-controls {
     display: flex;
     align-items: center;
@@ -703,9 +682,7 @@
     box-shadow: 0 0 6px rgba(73, 146, 154, 0.3);
 }
 
-/* ========================================= */
 /* AMBIENT PARTICLES (CSS only) */
-/* ========================================= */
 .archives_section::before {
     content: '';
     position: absolute;
@@ -730,9 +707,7 @@
     50% { transform: translateY(-12px); opacity: 0.8; }
 }
 
-/* ========================================= */
 /* WATER BUBBLES - Different colors */
-/* ========================================= */
 .water-bubble {
     position: absolute;
     border-radius: 50%;
@@ -805,9 +780,7 @@
     75% { transform: translateX(-5px); }
 }
 
-/* ========================================= */
 /* UNDERWATER FLOATING ANIMATIONS - PROJECTS */
-/* ========================================= */
 
 /* Section title floats */
 .archives_section .section_title {
@@ -854,4 +827,25 @@
     }
 }
 
-/* Responsive layout moved to css/responsive.css */
+
+/* Skill <-> project highlight (hero arsenal hover, driven by skill_link.js):
+   matching portal cards get a golden glow, a brighter and more saturated
+   look; non-matching cards are subtly dimmed. */
+
+.portal-slide.skill-highlight {
+    filter: brightness(1.08) saturate(1.15) drop-shadow(0 0 16px rgba(201, 168, 97, 0.4));
+}
+
+.portal-slide.skill-dim {
+    filter: brightness(0.55) saturate(0.7);
+}
+
+/* Fade filters in/out smoothly (existing transform/opacity
+   transitions of the portal stay unchanged) */
+.portal-slide.skill-highlight,
+.portal-slide.skill-dim {
+    transition: transform 1.2s cubic-bezier(0.25, 0.1, 0.25, 1),
+                opacity 0.8s cubic-bezier(0.25, 0.1, 0.25, 1),
+                filter 0.6s ease,
+                z-index 0s;
+}

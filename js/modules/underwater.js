@@ -1,18 +1,13 @@
-/* ========================================= */
-/* MODULE - UNDERWATER ATMOSPHERE */
-/* Deep Sea Anomaly - Procedural energy      */
-/* sphere with simplex noise deformation,     */
-/* fresnel glow, wireframe overlay,           */
-/* flow map distortion, bioluminescence       */
-/* ========================================= */
-
-import { debounce, cleanupRegistry, sizeCanvas } from '../utils/helpers.js';
+/**
+ * File: underwater.js
+ * Description: Underwater ambient effects: bubbles and caustic overlays.
+ */
+import { cleanupRegistry, debounce, sizeCanvas } from '../utils/helpers.js';
 import { smoothLerp } from '../utils/smooth.js';
 import { registerAnimation } from '../utils/animation_manager.js';
+import { MAX_FRAME_DELTA_SECONDS, INTERSECTION_THRESHOLD, DEBOUNCE_DELAY_MS, BOOT_DELAY_MS } from '../constants/ui.js';
 
-/* ========================================= */
 /* SIMPLEX NOISE 3D (compact implementation) */
-/* ========================================= */
 const SimplexNoise = (() => {
     const F3 = 1 / 3;
     const G3 = 1 / 6;
@@ -145,7 +140,7 @@ export function initUnderwater() {
     let bubbles = [];
     let currentNodeIndex = -1;
 
-    // Shared line path function — returns X position of the energy line at a given Y
+    // Shared line path function - returns X position of the energy line at a given Y
     function getLineXAtY(y, nodes) {
         if (nodes.length < 2) return 130;
         const startY = nodes[0].y;
@@ -198,7 +193,7 @@ export function initUnderwater() {
                 }
             }
         });
-    }, { threshold: 0.05 });
+    }, { threshold: INTERSECTION_THRESHOLD });
 
     observer.observe(section);
 
@@ -210,9 +205,9 @@ export function initUnderwater() {
         canvas.style.height = rect.height + 'px';
     }
 
-    const debouncedResize = debounce(resize, 150);
+    const debouncedResize = debounce(resize, DEBOUNCE_DELAY_MS);
     window.addEventListener('resize', debouncedResize);
-    setTimeout(resize, 50);
+    setTimeout(resize, BOOT_DELAY_MS);
 
     function initParticles() {
         particles = [];
@@ -275,7 +270,7 @@ export function initUnderwater() {
     function animate(now) {
         if (!isActive) return;
         if (!lastFrameTime) lastFrameTime = now;
-        const dt = Math.min((now - lastFrameTime) / 1000, 0.05);
+        const dt = Math.min((now - lastFrameTime) / 1000, MAX_FRAME_DELTA_SECONDS);
         lastFrameTime = now;
         time += dt;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -303,17 +298,17 @@ export function initUnderwater() {
         const segments = 90;
 
         // === ANCIENT RUIN CABLE / PIPE ===
-        // Build the path with heavy, ancient sway — like a corroded pipe
+        // Build the path with heavy, ancient sway - like a corroded pipe
         const points = [];
         for (let i = 0; i <= segments; i++) {
             const t = i / segments;
             const y = (startY - 30) + t * totalHeight;
             
-            // Heavy, slow sway — old pipe sagging under its own weight
+            // Heavy, slow sway - old pipe sagging under its own weight
             const sag = Math.sin(t * Math.PI) * 3; // natural droop in the middle
             const sway1 = Math.sin(t * Math.PI * 1.3 + time * 0.08) * 5;
             const sway2 = Math.sin(t * Math.PI * 2.7 + time * 0.05 + 1.5) * 2.5;
-            // Very slow drift — ancient structure barely moving
+            // Very slow drift - ancient structure barely moving
             const drift = Math.sin(time * 0.04 + t * 1.5) * 1.5;
             const x = centerX + sag + sway1 + sway2 + drift;
             points.push({ x, y, t });
@@ -339,29 +334,29 @@ export function initUnderwater() {
         ctx.lineWidth = 8;
         ctx.stroke();
 
-        // Layer 3: Main pipe body — thick, segmented, corroded look
+        // Layer 3: Main pipe body - thick, segmented, corroded look
         for (let i = 0; i < points.length - 1; i++) {
             const p0 = points[i];
             const p1 = points[i + 1];
             const t = p0.t;
             
-            // Corroded texture — width varies along the pipe
+            // Corroded texture - width varies along the pipe
             const corrWidth = Math.sin(t * Math.PI * 18) * 0.3 
                             + Math.sin(t * Math.PI * 30 + 2) * 0.15;
             const pipeWidth = 2.2 + corrWidth;
             
-            // Corrosion pattern — alternating darker/lighter segments
+            // Corrosion pattern - alternating darker/lighter segments
             const segment = Math.sin(t * Math.PI * 25);
             const isDark = segment > 0.3;
             
-            // Base pipe color — dark teal patina
+            // Base pipe color - dark teal patina
             let r, g, b, alpha;
             if (isDark) {
-                // Corroded section — darker, more opaque
+                // Corroded section - darker, more opaque
                 r = 45; g = 100; b = 110;
                 alpha = 0.12 + Math.sin(t * Math.PI * 40 + time * 0.1) * 0.03;
             } else {
-                // Less corroded — slightly brighter
+                // Less corroded - slightly brighter
                 r = 65; g = 130; b = 140;
                 alpha = 0.08 + Math.sin(t * Math.PI * 40 + time * 0.1) * 0.02;
             }
@@ -380,7 +375,7 @@ export function initUnderwater() {
             const p1 = points[i + 1];
             const t = p0.t;
             
-            // Faint highlight — like light catching the edge of a metal pipe
+            // Faint highlight - like light catching the edge of a metal pipe
             const highlight = Math.sin(t * Math.PI * 8 + time * 0.06) * 0.5 + 0.5;
             const alpha = 0.03 + highlight * 0.04;
             
@@ -392,7 +387,7 @@ export function initUnderwater() {
             ctx.stroke();
         }
 
-        // Layer 5: Barnacle / growth nodes — small bumps along the pipe
+        // Layer 5: Barnacle / growth nodes - small bumps along the pipe
         for (let i = 0; i < points.length; i += 3) {
             const p = points[i];
             const t = p.t;
@@ -412,14 +407,14 @@ export function initUnderwater() {
             }
         }
 
-        // Layer 6: Energy leak points — faint glow spots where the pipe is cracked
+        // Layer 6: Energy leak points - faint glow spots where the pipe is cracked
         const leakCount = 4;
         for (let s = 0; s < leakCount; s++) {
             const leakT = (s + 0.5) / leakCount;
             const leakIdx = Math.floor(leakT * (points.length - 1));
             const p = points[leakIdx];
             
-            // Pulsing energy leak — very subtle
+            // Pulsing energy leak - very subtle
             const leakPulse = Math.sin(time * 0.7 + s * 2.5) * 0.5 + 0.5;
             const leakSize = 6 + leakPulse * 4;
             
@@ -439,7 +434,7 @@ export function initUnderwater() {
             ctx.fill();
         }
 
-        // Caustic light patches at node positions — underwater light pooling
+        // Caustic light patches at node positions - underwater light pooling
         for (let i = 0; i < nodes.length; i++) {
             const nodeY = nodes[i].y;
             const size = 25 + Math.sin(time * 0.6 + i * 3.5) * 10;
@@ -511,9 +506,7 @@ export function initUnderwater() {
         return closest;
     }
 
-    /* ========================================= */
-    /* PROCEDURAL SPHERE with simplex noise      */
-    /* ========================================= */
+    /* PROCEDURAL SPHERE with simplex noise */
     function drawProceduralSphere(centerX) {
         const bobY = Math.sin(time * 0.7) * 1.5;
         const cy = sphereY + bobY;

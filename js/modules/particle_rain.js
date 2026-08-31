@@ -1,13 +1,10 @@
-/* ========================================= */
-/* MODULE - CONTACT SECTION LIGHT RAYS */
-/* Dynamische Lichtstrahlen wie Unterwasser */
-/* + Biolumineszente Partikel mit Lifecycle */
-/* 60fps garantiert via Low-Res Buffering     */
-/* für große Viewports (2056px-4000px)        */
-/* ========================================= */
-
-import { sizeCanvas } from '../utils/helpers.js';
+/**
+ * File: particle_rain.js
+ * Description: Canvas particle rain effect for the underwater depth experience.
+ */
+import { sizeCanvas, getCanvasQuality } from '../utils/helpers.js';
 import { registerAnimation } from '../utils/animation_manager.js';
+import { RESIZE_BOOT_DELAY_MS } from '../constants/ui.js';
 
 export function initContactRain() {
     const section = document.querySelector('.contact_section');
@@ -30,15 +27,13 @@ export function initContactRain() {
     section.style.position = 'relative';
     section.prepend(canvas);
 
-        const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d');
     let isVisible = false;
     let isAnimating = false;
     let time = 0;
     let unregisterAnim = null;
     // ---- VIEWPORT DETECTION ----
-    const vw = window.innerWidth;
-    const isLarge = vw >= 2056;
-    const isXLarge = vw >= 3000;
+    const { isLarge, isXLarge, scale: SCALE } = getCanvasQuality();
 
     /* 
      * PERFORMANCE STRATEGY for 2056px-4000px:
@@ -47,7 +42,6 @@ export function initContactRain() {
      * we render at 50% scale internally, then draw scaled-up.
      * This cuts pixel fill rate by 4x = smooth 60fps.
      */
-    const SCALE = isXLarge ? 0.35 : isLarge ? 0.5 : 1.0;
     const useBuffer = SCALE < 1.0;
 
     // Adaptive quality
@@ -345,13 +339,12 @@ export function initContactRain() {
     setTimeout(() => {
         resize();
         if (isVisible && !isAnimating) startAnimation();
-    }, 100);
+    }, RESIZE_BOOT_DELAY_MS);
 
-        return () => {
+    return () => {
         observer.disconnect();
         window.removeEventListener('resize', resize);
         canvas.remove();
     };
 }
-
 

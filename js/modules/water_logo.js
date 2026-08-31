@@ -1,12 +1,19 @@
-/* ========================================= */
-/* MODULE - WATER TEXT SHADER                */
-/* "DAVID ZAHN" mit WebGL Wasser-Shader:     */
-/* Caustics, Specular, Fresnel, Foam.        */
-/* Lesbar + Wasser-Effekt.                   */
-/* ========================================= */
-
+/**
+ * File: water_logo.js
+ * Description: WebGL water-effect canvas rendering the AETHERTECH logo text in the hero.
+ */
 import { cleanupRegistry } from '../utils/helpers.js';
-import { MOBILE_BREAKPOINT } from '../constants/ui.js';
+import { MOBILE_BREAKPOINT, LARGE_BREAKPOINT_PX, MOBILE_SMALL_BREAKPOINT_PX, INTERSECTION_THRESHOLD } from '../constants/ui.js';
+
+/* ---- Canvas text sizes (screen-dependent) ---- */
+const LOGO_TEXT_WIDTH_DEFAULT = 600;   // desktop default width of the text canvas (px)
+const LOGO_TEXT_HEIGHT_DEFAULT = 120;  // desktop default height of the text canvas (px)
+const LOGO_TEXT_HEIGHT_RATIO = 0.2;    // height as a fraction of the width (mobile/tablet)
+const LOGO_TEXT_WIDTH_MIN = 180;       // absolute minimum width (smallest screens)
+const LOGO_TEXT_VIEWPORT_FRACTION = 0.85;     // width fraction of the viewport (smallest screens)
+const LOGO_TEXT_VIEWPORT_FRACTION_TABLET = 0.7; // width fraction of the viewport (tablet)
+const LOGO_TEXT_WIDTH_LARGE = 1200;    // large screens (>2056px)
+const LOGO_TEXT_HEIGHT_LARGE = 240;    // large screens (>2056px)
 
 const vertSrc = `#version 300 es
 in vec2 aPosition;
@@ -73,7 +80,7 @@ void main() {
     float caustic2 = sin(waterUV.x * 35.0 - waterUV.y * 20.0 + uTime * 1.5);
     float caustic = caustic1 * caustic2 * 0.5 + 0.5;
 
-    // Text texture – sampled with MINIMAL distortion for readability
+    // Text texture - sampled with MINIMAL distortion for readability
     float textDistort = 0.003;
     vec2 textUV = uv + vec2(
         wave1 * textDistort + wave2 * textDistort * 0.3,
@@ -81,10 +88,10 @@ void main() {
     );
     vec4 texColor = texture(uTexture, textUV);
 
-    // Keep text bright and readable – water effect as subtle overlay only
+    // Keep text bright and readable - water effect as subtle overlay only
     vec3 finalColor = texColor.rgb;
 
-    // Gentle brightness ripple – text stays bright (range 0.85–1.0)
+    // Gentle brightness ripple - text stays bright (range 0.85-1.0)
     finalColor *= (0.88 + waveHeight * 0.12);
 
     // Subtle light caustics on text (very faint)
@@ -93,7 +100,7 @@ void main() {
     // Subtle specular highlights on text (very faint)
     finalColor += spec * vec3(1.0, 0.97, 0.9) * 0.08;
 
-    // Very light water color tint – text stays white/bright
+    // Very light water color tint - text stays white/bright
     finalColor = mix(finalColor, finalColor * (waterColor + 0.6), 0.18);
 
     float alpha = texColor.a;
@@ -107,7 +114,7 @@ function createTextCanvas(text, w, h) {
     const ctx = c.getContext('2d');
     ctx.clearRect(0, 0, w, h);
     ctx.fillStyle = '#ffffff';
-    // Schrift dynamisch an Canvas-Größe anpassen
+    // Fit the font dynamically to the canvas size
     const fontSize = Math.round(h * 0.55);
     ctx.font = `bold ${fontSize}px Cinzel, serif`;
     ctx.textAlign = 'center';
@@ -123,7 +130,7 @@ export function initWaterLogo() {
     const h1 = heroContent.querySelector('h1');
     if (!h1) return;
 
-    // H1 unsichtbar machen, Canvas daneben platzieren
+    // Hide the h1 and place the canvas next to it
     h1.style.opacity = '0';
     h1.style.position = 'relative';
 
@@ -138,19 +145,19 @@ export function initWaterLogo() {
 
     const canvas = document.createElement('canvas');
     canvas.className = 'water-text-canvas';
-    // Dynamische Größe: auf kleinen Bildschirmen am Viewport orientiert
+    // Dynamic size: on small screens, oriented to the viewport
     const vw = window.innerWidth;
-    let textWidth = 600;
-    let textHeight = 120;
-    if (vw <= 480) {
-        textWidth = Math.max(180, Math.round(vw * 0.85));
-        textHeight = Math.round(textWidth * 0.2);
+    let textWidth = LOGO_TEXT_WIDTH_DEFAULT;
+    let textHeight = LOGO_TEXT_HEIGHT_DEFAULT;
+    if (vw <= MOBILE_SMALL_BREAKPOINT_PX) {
+        textWidth = Math.max(LOGO_TEXT_WIDTH_MIN, Math.round(vw * LOGO_TEXT_VIEWPORT_FRACTION));
+        textHeight = Math.round(textWidth * LOGO_TEXT_HEIGHT_RATIO);
     } else if (vw <= MOBILE_BREAKPOINT) {
-        textWidth = Math.min(vw * 0.7, 600);
-        textHeight = Math.round(textWidth * 0.2);
-    } else if (vw > 2056) {
-        textWidth = 1200;
-        textHeight = 240;
+        textWidth = Math.min(vw * LOGO_TEXT_VIEWPORT_FRACTION_TABLET, LOGO_TEXT_WIDTH_DEFAULT);
+        textHeight = Math.round(textWidth * LOGO_TEXT_HEIGHT_RATIO);
+    } else if (vw > LARGE_BREAKPOINT_PX) {
+        textWidth = LOGO_TEXT_WIDTH_LARGE;
+        textHeight = LOGO_TEXT_HEIGHT_LARGE;
     }
     canvas.width = textWidth;
     canvas.height = textHeight;
@@ -198,7 +205,7 @@ export function initWaterLogo() {
     }
     gl.useProgram(prog);
 
-    // Fullscreen quad – flip Y for texture (canvas 2D origin is top-left)
+    // Fullscreen quad - flip Y for texture (canvas 2D origin is top-left)
     const verts = new Float32Array([-1,-1, 0,1, 1,-1, 1,1, -1,1, 0,0, 1,1, 1,0]);
     const buf = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buf);
@@ -234,7 +241,7 @@ export function initWaterLogo() {
 
     function render() {
         if (!isActive) return;
-        // Punkt 4: WebGL-Render überspringen, solange das Logo off-screen ist
+        // Item 4: skip WebGL rendering while the logo is off-screen
         if (!isVisible) { animFrame = requestAnimationFrame(render); return; }
         const t = (performance.now() - startTime) / 1000.0;
         gl.uniform1f(uTime, t);
@@ -246,10 +253,10 @@ export function initWaterLogo() {
 
     animFrame = requestAnimationFrame(render);
 
-    // Punkt 4: pausieren, wenn nicht sichtbar (wie particle-rain.js)
+    // Item 4: pause when not visible (like particle-rain.js)
     const heroObserver = new IntersectionObserver((entries) => {
         isVisible = entries[0].isIntersecting;
-    }, { threshold: 0.05 });
+    }, { threshold: INTERSECTION_THRESHOLD });
     heroObserver.observe(container);
 
     cleanupRegistry.register(() => {

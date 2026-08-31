@@ -1,12 +1,12 @@
-/* ========================================= */
-/* MODULE - 3D PORTAL CAROUSEL */
-/* Auto-rotate + click + bubbles + 3D Tilt */
-/* ========================================= */
-
+/**
+ * File: portal.js
+ * Description: 3D portal carousel for the archives section: slide transforms, drag navigation, and water-open effect.
+ */
 import { cleanupRegistry, debounce, sizeCanvas, bindHorizontalSwipe } from '../utils/helpers.js';
 import { registerAnimation } from '../utils/animation_manager.js';
-import { projects, getProjectSubtitle, getProjectCover, getProjectTitle, getCategories, getCategoryLabel, getFirstProjectOfCategory, getOrderedProjectIndices, applyImageFallback } from '../constants/projects.js?v=7';
+import { projects, getProjectSubtitle, getProjectCover, getProjectTitle, getCategories, getCategoryLabel, getFirstProjectOfCategory, getOrderedProjectIndices, applyImageFallback } from '../constants/projects.js?v=9';
 import { getCurrentLang } from './language.js';
+import { TWO_PI, DEBOUNCE_DELAY_MS, RESIZE_BOOT_DELAY_MS, INTERSECTION_THRESHOLD, PORTAL_MAX_PIXEL_RATIO } from '../constants/ui.js';
 
 let modalOpenCallback = null;
 let currentCenter = 0;
@@ -15,16 +15,27 @@ let isAutoCycling = false;
 let isPaused = false;
 let activeMainCategory = null;
 let TOTAL_SLIDES = 0;
-const AUTO_INTERVAL = 9000;         // Auto-Rotation nach 9s ohne Interaktion
-const AUTO_RESUME_DELAY_MS = 8000;  // Auto-Rotation nach Pause wieder aufnehmen
-const RESIZE_BOOT_DELAY_MS = 100;   // Erster Canvas-Resize nach dem Laden
-const BUBBLE_COUNT = 30;            // Blasen im Portal-Canvas
+const AUTO_INTERVAL = 9000;         // Auto-rotate after 9s with no interaction
+const AUTO_RESUME_DELAY_MS = 8000;  // Resume auto-rotation after pause
+const BUBBLE_COUNT = 30;            // Bubbles in the portal canvas
 const PARTICLE_COUNT = 40;
 
-/* Kategorie-Akzent-Tints fuer den Wasser-Swirl (Bild-Rahmen-Vignette).
- * Farben = fgColor des Modal-Voronoi-Shaders (modal_shader.js, Schemes 0-5),
- * sodass jede Kategorie im Portal exakt die Farbe ihres Modal-Hintergrunds
- * traegt (z.B. 3d -> lila). Mix + Luminanz-Erhalt im Fragment-Shader unten. */
+/* ---- 3D positions of the portal slides (base values in archives.css
+   .portal-slide.pos-left/.pos-right; inline styles here override these
+   per slide so that all projects are visible simultaneously) ---- */
+const SLIDE_OFFSET_X_PX = 520;      // Horizontal distance of neighbor slides from center
+const SLIDE_OFFSET_Z_PX = -80;      // Depth distance of neighbor slides (backward)
+const SLIDE_ROTATE_Y_DEG = 25;      // Y-rotation of neighbor slides
+const SLIDE_SCALE_SIDE = 0.78;      // Scale of neighbor slides
+const SLIDE_SCALE_CENTER_Z_PX = 100;  // translateZ of the centered slide (slightly forward)
+const SLIDE_SCALE_CENTER = 1.12;      // Scale of the centered slide
+const SLIDE_HIDDEN_Z_PX = -200;       // translateZ of further away slides
+const SLIDE_SCALE_HIDDEN = 0.65;      // Scale of further away slides
+
+/* Category accent tints for the water swirl (image frame vignette).
+ * Colors = fgColor of the modal Voronoi shader (modal_shader.js, schemes 0-5),
+ * so that each category in the portal carries exactly the color of its modal
+ * background (e.g. 3d -> purple). Mix + luminance preservation in the fragment shader below. */
 const CATEGORY_TINTS = {
     gamedev:  [0.550, 0.750, 1.000], /* modal fg: blue (scheme 0) */
     coding:   [0.400, 0.850, 0.800], /* modal fg: teal (scheme 1) */
@@ -50,15 +61,15 @@ function buildPortalSlides() {
     const carousel = document.querySelector('.portal-carousel');
     if (!carousel) return;
 
-    // Bereits vorhandene Slides entfernen (Controls bleiben unberuehrt)
+    // Remove existing slides (controls stay untouched)
     carousel.querySelectorAll(':scope > .portal-slide').forEach(s => s.remove());
 
     const controls = carousel.querySelector('.carousel-controls');
     const lang = getCurrentLang();
 
-    // Projekt-Karten kategorie-geordnet aufbauen (gleiche Reihenfolge wie im
-    // Kategorie-Register: Game Dev -> Coding Web -> 3D -> Concept -> Sound -> Other).
-    // Pro Kategorie wird nur das ERSTE Projekt angezeigt (ein Projekt je Bereich).
+    // Build project cards, ordered by category (same order as the
+    // category registry: Game Dev -> Coding Web -> 3D -> Concept -> Sound -> Other).
+    // Only the FIRST project per category is shown (one project per area).
     const orderedProjectIndices = getOrderedProjectIndices();
 
     orderedProjectIndices.forEach((projectIdx, slideIndex) => {
@@ -67,7 +78,7 @@ function buildPortalSlides() {
 
         const slide = document.createElement('div');
         slide.className = 'portal-slide';
-        // data-index = Position im Carousel; data-project = Index in projects[]
+        // data-index = position in carousel; data-project = index in projects[]
         slide.dataset.index = String(slideIndex);
         slide.dataset.project = String(projectIdx);
 
@@ -234,11 +245,7 @@ export function goToPortalSlide(projectIndex) {
 }
 window.goToPortalSlide = goToPortalSlide;
 
-
-
-/* ========================================= */
 /* 3D MOUSE TILT SETUP */
-/* ========================================= */
 
 /**
  * Add .tilt-inner and .tilt-shine elements to each slide
@@ -584,7 +591,7 @@ function createVortexInstance(slide) {
     const renderer = new THREE.WebGLRenderer({
         alpha: true, antialias: true, powerPreference: 'high-performance'
     });
-    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, PORTAL_MAX_PIXEL_RATIO);
     renderer.setPixelRatio(pixelRatio);
     renderer.setClearColor(0x000000, 0);
 
@@ -594,8 +601,8 @@ function createVortexInstance(slide) {
     // - ohne runde Maske deckt das Wasser geschlossen die ganze Karte
     //   (auch die 4 Ecken) -> kein rechteckiger Rahmen mehr sichtbar
     // - ohne mix-blend-mode bleibt das dunkle Wasser undurchsichtig,
-    //   sodass Bild/Text der geschlossenen Karte vollständig verdeckt ist
-    // - weiche, kreisende Öffnungskante entsteht ausschließlich im Shader
+    //   sodass Bild/Text der geschlossenen Karte vollstaendig verdeckt ist
+    // - weiche, kreisende Oeffnungskante entsteht ausschliesslich im Shader
     //   (siehe edgeGlow-Vignette), was beim Oeffnen von den Kanten her
     //   aufloest (seamless)
     canvas.style.cssText = [
@@ -694,7 +701,7 @@ function initVortexShader() {
     if (section) {
         const obs = new IntersectionObserver((entries) => {
             vortexSectionVisible = entries[0].isIntersecting;
-        }, { threshold: 0.05 });
+        }, { threshold: INTERSECTION_THRESHOLD });
         obs.observe(section);
     }
 
@@ -721,9 +728,7 @@ function vortexSyncOpen() {
         }
     });
 }
-/* ========================================= */
 /* CAROUSEL */
-/* ========================================= */
 
 function initCarousel() {
     const slides = document.querySelectorAll('.portal-slide');
@@ -814,25 +819,25 @@ function initCarousel() {
         cleanupListeners.push(() => dot.removeEventListener('click', onDotClick));
     });
 
-    // Click on side slides → bring to center
+    // Click on side slides -> bring to center
     slides.forEach((slide) => {
         const onSlideClick = (e) => {
             const idx = parseInt(slide.dataset.index);
 
             if (idx === currentCenter) {
-                // Center clicked → open modal
+                // Center clicked -> open modal
                 e.preventDefault();
                 e.stopPropagation();
                 pauseAuto();
                 if (modalOpenCallback) {
                     modalOpenCallback(slide);
                 } else {
-                    // Kein Callback gesetzt – nichts tun
+                    // Kein Callback gesetzt - nichts tun
                 }
                 return;
             }
 
-            // Side clicked → bring to center
+            // Side clicked -> bring to center
             e.preventDefault();
             e.stopPropagation();
             pauseAuto();
@@ -951,13 +956,13 @@ function updatePositions(slides, dots) {
             // Centered project - emphasized and enlarged
             slide.classList.add("pos-center");
             slide.setAttribute("aria-current", "true");
-            slide.style.transform = `translateX(0) translateZ(100px) scale(1.12)`;
+            slide.style.transform = `translateX(0) translateZ(${SLIDE_SCALE_CENTER_Z_PX}px) scale(${SLIDE_SCALE_CENTER})`;
             slide.style.opacity = '1';
         } else if (rel === -1 || rel === 1) {
             // Neighboring projects - medium visibility with 3D positioning
             slide.classList.add("pos-" + (rel === -1 ? "left" : "right"));
             slide.setAttribute("aria-current", "false");
-            slide.style.transform = `translateX(${rel === -1 ? -520 : 520}px) translateZ(-80px) rotateY(${rel === -1 ? 25 : -25}deg) scale(0.78)`;
+            slide.style.transform = `translateX(${rel === -1 ? -SLIDE_OFFSET_X_PX : SLIDE_OFFSET_X_PX}px) translateZ(${SLIDE_OFFSET_Z_PX}px) rotateY(${rel === -1 ? SLIDE_ROTATE_Y_DEG : -SLIDE_ROTATE_Y_DEG}deg) scale(${SLIDE_SCALE_SIDE})`;
             slide.style.opacity = '0.7';
         } else {
             // Further projects - reduced visibility but still visible
@@ -966,7 +971,7 @@ function updatePositions(slides, dots) {
             // Inline styles override CSS defaults for visibility
             slide.style.opacity = '0.4';
             slide.style.pointerEvents = 'auto';
-            slide.style.transform = `translateX(0) translateZ(-200px) scale(0.65)`;
+            slide.style.transform = `translateX(0) translateZ(${SLIDE_HIDDEN_Z_PX}px) scale(${SLIDE_SCALE_HIDDEN})`;
         }
     });
 
@@ -980,7 +985,6 @@ function updatePositions(slides, dots) {
             dot.removeAttribute('aria-current');
         }
     });
-
 
     // Kategorie-Register aktualisieren (aktiver Tab folgt dem zentrierten Slide)
     syncMainCategoryTab();
@@ -1039,9 +1043,7 @@ function resumeAutoAfterDelay() {
     }, AUTO_RESUME_DELAY_MS);
 }
 
-/* ========================================= */
 /* BUBBLES */
-/* ========================================= */
 
 function initBubbles() {
     const canvas = document.querySelector('.portal-bubbles-canvas');
@@ -1049,7 +1051,9 @@ function initBubbles() {
 
     const ctx = canvas.getContext('2d');
     const section = document.querySelector('.archives_section');
-    let animFrame;
+    // Ohne Section gibt es nichts zu animieren; verhindert Crash in
+    // observer.observe(section) und resize() (vgl. initCarousel/initVortexShader)
+    if (!section) return;
     let bubbles = [];
     let particles = [];
     let isActive = false;
@@ -1077,19 +1081,24 @@ function initBubbles() {
                 }
             }
         });
-    }, { threshold: 0.05 });
+    }, { threshold: INTERSECTION_THRESHOLD });
 
     observer.observe(section);
 
     function resize() {
-        const rect = section.getBoundingClientRect();
+        // offsetWidth/offsetHeight instead of getBoundingClientRect(): stable
+        // layout size, unaffected by CSS transforms (consistent with
+        // the other canvas modules particle_rain/flood/swarm).
+        const w = section.offsetWidth;
+        const h = section.offsetHeight;
+        if (w === 0 || h === 0) return; // Section not yet rendered/hidden
         // Cap backing store at 2560px to prevent explosion on large viewports
-        const result = sizeCanvas(canvas, rect.width, rect.height);
-        canvas.style.width = rect.width + 'px';
-        canvas.style.height = rect.height + 'px';
+        sizeCanvas(canvas, w, h);
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
     }
 
-    const debouncedResize = debounce(resize, 150);
+    const debouncedResize = debounce(resize, DEBOUNCE_DELAY_MS);
     window.addEventListener('resize', debouncedResize);
     setTimeout(resize, RESIZE_BOOT_DELAY_MS);
 
@@ -1157,12 +1166,12 @@ function initBubbles() {
             // Glow halo
             ctx.fillStyle = `rgba(${p.color}, ${alpha * 0.1})`;
             ctx.beginPath();
-            ctx.arc(p.x, floatY, p.r + 5, 0, 6.2832);
+            ctx.arc(p.x, floatY, p.r + 5, 0, TWO_PI);
             ctx.fill();
             // Main particle
             ctx.fillStyle = `rgba(${p.color}, ${alpha})`;
             ctx.beginPath();
-            ctx.arc(p.x, floatY, p.r, 0, 6.2832);
+            ctx.arc(p.x, floatY, p.r, 0, TWO_PI);
             ctx.fill();
         });
         // Animation loop managed by AnimationManager

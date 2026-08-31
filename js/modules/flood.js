@@ -1,8 +1,10 @@
-/* ========================================= */
-/* MODULE - FLOOD EFFECT */
-/* ========================================= */
+/**
+ * File: flood.js
+ * Description: Canvas water flood effect with rising liquid fill and splash details.
+ */
 import { registerAnimation } from '../utils/animation_manager.js';
-import { sizeCanvas } from '../utils/helpers.js';
+import { sizeCanvas, getCanvasQuality } from '../utils/helpers.js';
+import { MAX_FRAME_DELTA_SECONDS, INTERSECTION_THRESHOLD, TWO_PI } from '../constants/ui.js';
 
 export function initFlood() {
     const section = document.querySelector('.journey_section');
@@ -34,10 +36,7 @@ export function initFlood() {
     let isAnimating = false;
 
     /* ---- Large viewport low-res buffering (2056px+) ---- */
-    const vw = window.innerWidth;
-    const isLarge = vw >= 2056;
-    const isXLarge = vw >= 3000;
-    const SCALE = isXLarge ? 0.35 : isLarge ? 0.5 : 1.0;
+    const { scale: SCALE } = getCanvasQuality();
 
     function resize() {
         const w = section.offsetWidth;
@@ -89,7 +88,7 @@ export function initFlood() {
         const waterTop = h - waterH;
         if (waterH <= 2) return;
 
-        // Wasser-Gradient
+        // Water gradient
         const grad = ctx.createLinearGradient(0, waterTop, 0, h);
         grad.addColorStop(0, 'rgba(10, 22, 40, 0.15)');
         grad.addColorStop(0.2, 'rgba(10, 22, 40, 0.45)');
@@ -100,7 +99,7 @@ export function initFlood() {
         ctx.fillStyle = grad;
         ctx.fillRect(0, waterTop, w, waterH);
 
-        // Wellenlinie
+        // Wave line
         ctx.beginPath();
         ctx.moveTo(0, waterTop);
         for (let x = 0; x <= w; x += 4) {
@@ -113,7 +112,7 @@ export function initFlood() {
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        // Bl�schen - GR�SSER und MIT GLOW
+        // Bubbles - larger and with glow
         particles.forEach(p => {
             p.wobble += p.wobbleSpeed;
             p.y -= p.speed;
@@ -126,26 +125,26 @@ export function initFlood() {
                 // Glow-Halo (no shadowBlur - use large semi-transparent circle instead)
                 ctx.fillStyle = `rgba(73, 146, 154, ${alpha * 0.08})`;
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r + p.glow, 0, 6.2832);
+                ctx.arc(p.x, p.y, p.r + p.glow, 0, TWO_PI);
                 ctx.fill();
 
-                // �u�erer Rand
+                // Aeusserer Rand
                 ctx.fillStyle = `rgba(73, 146, 154, ${alpha * 0.15})`;
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r, 0, 6.2832);
+                ctx.arc(p.x, p.y, p.r, 0, TWO_PI);
                 ctx.fill();
 
                 // Helle Kontur
                 ctx.strokeStyle = `rgba(150, 220, 220, ${alpha * 0.8})`;
                 ctx.lineWidth = 1.5;
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r, 0, 6.2832);
+                ctx.arc(p.x, p.y, p.r, 0, TWO_PI);
                 ctx.stroke();
 
                 // Highlight-Spot
                 ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.5})`;
                 ctx.beginPath();
-                ctx.arc(p.x - p.r * 0.3, p.y - p.r * 0.3, p.r * 0.3, 0, 6.2832);
+                ctx.arc(p.x - p.r * 0.3, p.y - p.r * 0.3, p.r * 0.3, 0, TWO_PI);
                 ctx.fill();
             }
         });
@@ -156,7 +155,7 @@ export function initFlood() {
     function animate(now) {
         if (!isAnimating) return;
         if (!lastFrameTime) lastFrameTime = now;
-        const dt = Math.min((now - lastFrameTime) / 1000, 0.05);
+        const dt = Math.min((now - lastFrameTime) / 1000, MAX_FRAME_DELTA_SECONDS);
         lastFrameTime = now;
         time += dt;
         waterLevel += (targetLevel - waterLevel) * 0.12;
@@ -180,7 +179,7 @@ export function initFlood() {
                 }
             }
         });
-    }, { threshold: 0.05 });
+    }, { threshold: INTERSECTION_THRESHOLD });
     observer.observe(section);
 
     window.addEventListener('scroll', updateWater, { passive: true });

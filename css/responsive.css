@@ -1,24 +1,26 @@
-/* ========================================= */
-/* UNIFIED RESPONSIVE SYSTEM */
-/* Large â†’ Desktop â†’ Laptop â†’ Tablet â†’ Mobile */
-/* All elements resize smoothly */
-/* ========================================= */
+/* ==========================================
+ * File: responsive.css
+ * Description: Unified responsive system - font sizing, section padding, and component breakpoints (mobile to 4K).
+ * ========================================== */
 
 /* ========================================= */
 /* BREAKPOINTS:
- *   4K:       > 3840px
- *   X-Large:  2560px - 3840px
- *   Large:    1980px - 2560px
- *   Desktop:  1400px - 1980px
- *   Laptop:   1200px - 1400px
- *   Tablet:   768px - 1200px
- *   Mobile:   < 768px
- *   Small:    < 480px
+ *   4K:        > 3840px
+ *   Ultra:     3440px - 3840px   (Firefox-Performance-Modus)
+ *   X-Large:   2560px - 3840px
+ *   Large:     1980px - 2560px   (zusaetzl. Feintuning ab 2056px)
+ *   HD+:       1600px            (Firefox-Performance / Font-Scale)
+ *   Desktop:   1400px - 1980px
+ *   Laptop:    1200px - 1400px
+ *   Tablet:    768px - 1200px    (Portal-Feintuning bei 1000px)
+ *   Mini:      1024px            (kompakter Header / Navbar / Hero)
+ *   Mobile:    < 768px
+ *   Portal-Small: < 550px        (nur Center-Karte sichtbar)
+ *   Small:     < 480px
+ *   Tiny:      < 425px           (uebersteuert 480px)
  * ========================================= */
 
-/* ========================================= */
 /* BASE SIZING - uses rem for smooth scaling */
-/* ========================================= */
 html {
     font-size: 16px;
 }
@@ -63,9 +65,7 @@ html {
     html { font-size: 28px; }
 }
 
-/* ========================================= */
 /* SECTION PADDING */
-/* ========================================= */
 /* Basiswerte via :root-Variablen aus main.css - hier nur die Overrides je Breakpoint */
 section {
     padding: var(--section-pad-y) var(--section-pad-x);
@@ -104,9 +104,7 @@ section {
     section { padding: 60px 4%; }
 }
 
-/* ========================================= */
 /* SECTION TITLES */
-/* ========================================= */
 .section_title {
     font-size: 2.5rem;
     transition: font-size 0.3s ease;
@@ -157,9 +155,7 @@ section {
     .section_subtitle { font-size: 0.75rem; margin-bottom: 40px; }
 }
 
-/* ========================================= */
 /* HEADER / NAVBAR */
-/* ========================================= */
 .header {
     padding: 30px 10%;
     transition: padding 0.3s ease;
@@ -229,7 +225,7 @@ section {
     }
 }
 
-/* Punkt 2: backdrop-filter frÃ¼her reduzieren (ab HD+) fÃ¼r Firefox-Performance */
+/* Punkt 2: backdrop-filter frueher reduzieren (ab HD+) fuer Firefox-Performance */
 @media (min-width: 1600px) {
     .header {
         backdrop-filter: blur(6px) !important;
@@ -265,10 +261,7 @@ section {
     }
 }
 
-
-/* ========================================= */
 /* NAV LINKS */
-/* ========================================= */
 .navbar {
     gap: 40px;
     transition: gap 0.3s ease;
@@ -323,9 +316,7 @@ section {
     .navbar { gap: 8px; }
 }
 
-/* ========================================= */
 /* SIDEBAR SOCIALS */
-/* ========================================= */
 .sidebar_socials {
     transition: padding 0.3s ease, gap 0.3s ease, background 0.3s ease;
 }
@@ -362,9 +353,7 @@ section {
     }
 }
 
-/* ========================================= */
 /* HERO SECTION */
-/* ========================================= */
 .hero_section {
     transition: padding 0.3s ease;
 }
@@ -388,9 +377,7 @@ section {
     }
 }
 
-/* ========================================= */
 /* HOVER FIXES */
-/* ========================================= */
 @media (max-width: 768px) {
     .skill_item:hover {
         transform: translateY(-2px);
@@ -416,9 +403,7 @@ section {
     }
 }
 
-/* ========================================= */
 /* HERO TYPOGRAPHY - Base */
-/* ========================================= */
 .hero_content h1 {
     font-size: 3.2rem;
     transition: font-size 0.3s ease;
@@ -437,9 +422,7 @@ section {
     max-width: 520px;
 }
 
-/* ========================================= */
 /* HERO TYPOGRAPHY - Large screens (1980px+) */
-/* ========================================= */
 @media (min-width: 1980px) {
     .hero_content h1 { font-size: 3.5rem; }
     .hero_content { max-width: 500px; }
@@ -548,12 +531,12 @@ section {
 }
 
 /* ========================================= */
-/* HERO-KARUSSELL-INDIKATOREN â€“ sehr groÃŸe Screens (2056px+)
-   Es gibt in CSS/JS keinen Code, der die Punkte ausblendet â€“ die absoluten
-   Hero-Overlays (hero_scene/hero_overlay + Bottom-Fade) liegen aber ÃœBER dem
-   unpositionierten Punkte-Container. Damit die Punkte auf 2560â€“4K zuverlÃ¤ssig
-   sichtbar bleiben, werden sie Ã¼ber die Overlays gehoben (nur Positionierung,
-   keine Ã„nderung an GrÃ¶ÃŸe/Layout/Abstand des Karussells). */
+/* HERO-KARUSSELL-INDIKATOREN - sehr grosse Screens (2056px+)
+   Es gibt in CSS/JS keinen Code, der die Punkte ausblendet - die absoluten
+   Hero-Overlays (hero_scene/hero_overlay + Bottom-Fade) liegen aber UeBER dem
+   unpositionierten Punkte-Container. Damit die Punkte auf 2560-4K zuverlaessig
+   sichtbar bleiben, werden sie ueber die Overlays gehoben (nur Positionierung,
+   keine Aenderung an Groesse/Layout/Abstand des Karussells). */
 @media (min-width: 2056px) {
     .carousel_indicators {
         position: relative;
@@ -582,9 +565,7 @@ section {
     }
 }
 
-/* ========================================= */
 /* 1024px BREAKPOINT */
-/* ========================================= */
 @media (max-width: 1024px) {
     .hero_section {
         padding-left: 5%;
@@ -660,9 +641,7 @@ section {
     }
 }
 
-/* ========================================= */
 /* HERO - Tablet 768px */
-/* ========================================= */
 @media (max-width: 768px) {
     .hero_section {
         display: block !important;
@@ -822,9 +801,7 @@ section {
     .portal-slide.tilt-lift { transform: none !important; }
 }
 
-/* ========================================= */
 /* HERO - Small Mobile (425px / 480px) */
-/* ========================================= */
 @media (max-width: 480px) {
     html, body {
         overflow-x: hidden !important;
@@ -957,9 +934,7 @@ section {
     }
 }
 
-/* ========================================= */
 /* ARSENAL SKILLS GRID */
-/* ========================================= */
 .arsenal_grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -989,9 +964,7 @@ section {
     }
 }
 
-/* ========================================= */
 /* ABOUT - EXPEDITION */
-/* ========================================= */
 .expedition_container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1022,9 +995,21 @@ section {
     }
 }
 
+/* ABOUT - TEXT & ELEMENT CENTERING (Tablet) */
 /* ========================================= */
+@media (max-width: 768px) {
+    /* Center the profile box + content box within the single-column grid */
+    #about .expedition_container {
+        justify-items: center;
+    }
+    /* Center every flex child: paragraphs, headings, skills grid, CV button */
+    .about_content_box {
+        align-items: center;
+        text-align: center;
+    }
+}
+
 /* SKILLS GRID (About) */
-/* ========================================= */
 .skills_grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1054,9 +1039,7 @@ section {
     }
 }
 
-/* ========================================= */
 /* PORTAL CAROUSEL */
-/* ========================================= */
 .portal-carousel {
     transition: height 0.3s ease;
     will-change: transform;
@@ -1109,7 +1092,7 @@ section {
     }
     .portal-slide.pos-center { transform: translateX(0) translateZ(80px) scale(1.1); }
     .portal-slide.pos-left { transform: translateX(-460px) translateZ(-70px) rotateY(24deg) scale(0.76); }
-    .portal-slide.pos-right { transform: translateX(460px) translateZ(-70px) rotateY(24deg) scale(0.76); }
+    .portal-slide.pos-right { transform: translateX(460px) translateZ(-70px) rotateY(-24deg) scale(0.76); }
 }
 
 @media (max-width: 1000px) {
@@ -1122,7 +1105,7 @@ section {
     }
     .portal-slide.pos-center { transform: translateX(0) translateZ(60px) scale(1.08); }
     .portal-slide.pos-left { transform: translateX(-400px) translateZ(-60px) rotateY(22deg) scale(0.75); }
-    .portal-slide.pos-right { transform: translateX(400px) translateZ(-60px) rotateY(22deg) scale(0.75); }
+    .portal-slide.pos-right { transform: translateX(400px) translateZ(-60px) rotateY(-22deg) scale(0.75); }
 }
 
 @media (max-width: 768px) {
@@ -1181,6 +1164,7 @@ section {
         opacity: 0;
         pointer-events: none;
     }
+    .portal-slide.pos-center {
         transform: translateX(0) translateZ(0) scale(1);
     }
     .carousel-arrow { width: 30px; height: 30px; font-size: 1.3rem; }
@@ -1200,9 +1184,7 @@ section {
     .light-ray { display: none; }
 }
 
-/* ========================================= */
 /* CAROUSEL (Hero) */
-/* ========================================= */
 .carousel_container {
     transition: border 0.3s ease;
 }
@@ -1220,9 +1202,7 @@ section {
     .carousel_indicators { gap: 8px; }
 }
 
-/* ========================================= */
 /* JOURNEY / TIMELINE */
-/* ========================================= */
 .water_timeline {
     transition: gap 0.3s ease;
 }
@@ -1272,9 +1252,7 @@ section {
     }
 }
 
-/* ========================================= */
 /* CONTACT SECTION */
-/* ========================================= */
 .contact_section {
     transition: padding 0.3s ease;
 }
@@ -1297,9 +1275,7 @@ section {
         overflow-x: hidden;
     }
 }
-/* ========================================= */
 /* FOOTER */
-/* ========================================= */
 .site_footer {
     padding: 60px 10%;
     transition: padding 0.3s ease;
@@ -1317,9 +1293,7 @@ section {
     .site_footer { padding: 30px 4%; }
 }
 
-/* ========================================= */
 /* DEPTH EXPERIENCE LAYERS */
-/* ========================================= */
 .depth-fog-overlay,
 .depth-vignette {
     transition: opacity 0.5s ease;
@@ -1365,9 +1339,7 @@ section {
     .modal_next_btn { right: -20px; }
 }
 
-/* ========================================= */
 /* PARALLAX */
-/* ========================================= */
 @media (max-width: 768px) {
     .parallax-container { opacity: 0.3; }
     .underwater-layer, .water-surface { opacity: 0.5; }
@@ -1381,9 +1353,7 @@ section {
     .parallax-container { opacity: 1; }
 }
 
-/* ========================================= */
 /* MOBILE 425px - OVERRIDES 480px */
-/* ========================================= */
 @media (max-width: 425px) {
     /* ===== Header / Navigation kompakt ===== */
     .header {
@@ -1485,7 +1455,7 @@ section {
         letter-spacing: 0.5px !important;
     }
 
-    /* ===== Sektion-AbstÃ¤nde reduzieren ===== */
+    /* ===== Sektion-Abstaende reduzieren ===== */
     section {
         padding: 50px 3% !important;
     }

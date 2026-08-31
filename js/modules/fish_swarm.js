@@ -1,11 +1,9 @@
-/* ========================================= */
-/* MODULE - FISH SWARM TRANSITION            */
-/* Fish + bubbles rise from deep when        */
-/* scrolling. Gothic underwater atmosphere.  */
-/* ========================================= */
-
-import { debounce, cleanupRegistry, sizeCanvas } from '../utils/helpers.js';
-import { MOBILE_BREAKPOINT } from '../constants/ui.js';
+/**
+ * File: fish_swarm.js
+ * Description: Canvas fish swarm simulation that reacts to scroll direction and the active section.
+ */
+import { debounce, cleanupRegistry, sizeCanvas, getCanvasQuality } from '../utils/helpers.js';
+import { MOBILE_BREAKPOINT, FOUR_K_BREAKPOINT_PX, MOBILE_SMALL_BREAKPOINT_PX, TABLET_DESKTOP_BREAKPOINT_PX, CANVAS_BACKING_MAX_WIDTH, TWO_PI } from '../constants/ui.js';
 import { registerAnimation } from '../utils/animation_manager.js';
 
 /* ----------------------------------------- */
@@ -30,14 +28,14 @@ const CREATURE_DRAW = {
         ctx.lineTo(-s * 0.5 + tw, s * 0.1 + bw);
         ctx.closePath();
         ctx.fill();
-        // Spine (kein Gradient – einfacher Stroke)
+        // Spine (no gradient - simple stroke)
         ctx.strokeStyle = `rgba(73,146,154,${0.2 + glow * 0.15})`;
         ctx.lineWidth = 0.6;
         ctx.beginPath();
         ctx.moveTo(s * 0.3, bw);
         ctx.quadraticCurveTo(0, s * 0.05 + bw, -s * 0.3, bw);
         ctx.stroke();
-        // Eye (einfacher Punkt statt Gradient)
+        // Eye (simple dot instead of gradient)
         ctx.fillStyle = `rgba(150,220,220,${0.5 + glow * 0.2})`;
         ctx.beginPath(); ctx.arc(s * 0.2, -s * 0.01 + bw, s * 0.03, 0, Math.PI * 2); ctx.fill();
     },
@@ -67,14 +65,14 @@ const CREATURE_DRAW = {
         ctx.moveTo(s * 0.15, s * 0.05 + bw);
         ctx.quadraticCurveTo(s * 0.05, s * 0.18 + Math.sin(time * 4) * s * 0.04 + bw, -s * 0.05, s * 0.12 + bw);
         ctx.fill();
-        // Spine (kein Gradient)
+        // Spine (no gradient)
         ctx.strokeStyle = `rgba(73,146,154,${0.25 + glow * 0.15})`;
         ctx.lineWidth = 1.2;
         ctx.beginPath();
         ctx.moveTo(s * 0.45, bw);
         ctx.quadraticCurveTo(s * 0.15, -s * 0.05 + bw, -s * 0.4, bw);
         ctx.stroke();
-        // Eye (einfacher Punkt)
+        // Eye (simple dot)
         ctx.fillStyle = `rgba(150,220,220,${0.6 + glow * 0.2})`;
         ctx.beginPath(); ctx.arc(s * 0.35, -s * 0.02 + bw, s * 0.04, 0, Math.PI * 2); ctx.fill();
     },
@@ -144,10 +142,7 @@ export function initFishSwarm() {
     /* viewports while keeping fish, bubbles and   */
     /* trails fully enabled and visible.           */
     /* ----------------------------------------- */
-    const vw = window.innerWidth;
-    const isLarge = vw >= 2056;
-    const isXLarge = vw >= 3000;
-    const SCALE = isXLarge ? 0.35 : isLarge ? 0.5 : 1.0;
+    const { scale: SCALE } = getCanvasQuality();
 
     // Logical (CSS-pixel) viewport size. The simulation runs in this space;
     // a SCALE transform maps it onto the reduced backing store.
@@ -165,7 +160,7 @@ export function initFishSwarm() {
     window.addEventListener('resize', debounce(resize, 200));
 
     /* ---- Section Tracking ---- */
-    const sections = document.querySelectorAll('section[id]');
+    const sections = document.querySelectorAll('main[id], section[id]');
     if (sections.length > 0) lastSectionId = sections[0].id;
 
     const observer = new IntersectionObserver((entries) => {
@@ -238,11 +233,11 @@ export function initFishSwarm() {
 
     /* ---- Determine swarm size based on viewport ---- */
     function getSwarmSize() {
-        if (window.innerWidth <= 480) return 8;
+        if (window.innerWidth <= MOBILE_SMALL_BREAKPOINT_PX) return 8;
         if (window.innerWidth <= MOBILE_BREAKPOINT) return 12;
-        if (window.innerWidth <= 1200) return 18;
-        if (window.innerWidth <= 2560) return 25;
-        if (window.innerWidth <= 3840) return 20;
+        if (window.innerWidth <= TABLET_DESKTOP_BREAKPOINT_PX) return 18;
+        if (window.innerWidth <= CANVAS_BACKING_MAX_WIDTH) return 25;
+        if (window.innerWidth <= FOUR_K_BREAKPOINT_PX) return 20;
         return 15;
     }
 
@@ -377,9 +372,9 @@ export function initFishSwarm() {
             const a = p.opacity * (1 - p.age / p.life);
             if (a <= 0) return false;
             ctx.fillStyle = `rgba(73,146,154,${a * 0.15})`;
-            ctx.beginPath(); ctx.arc(p.x, p.y, p.r + 3, 0, 6.28); ctx.fill();
+            ctx.beginPath(); ctx.arc(p.x, p.y, p.r + 3, 0, TWO_PI); ctx.fill();
             ctx.fillStyle = `rgba(73,146,154,${a})`;
-            ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.28); ctx.fill();
+            ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, TWO_PI); ctx.fill();
             return true;
         });
         if (trailParticles.length > 200) trailParticles = trailParticles.slice(-200);

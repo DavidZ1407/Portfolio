@@ -1,7 +1,7 @@
-/* ========================================= */
-/* TRANSLATIONS - English (default) & German */
-/* ========================================= */
-
+/**
+ * File: translations.js
+ * Description: Bilingual (EN/DE) translation strings for all UI text, keyed by data-i18n attributes.
+ */
 export const translations = {
     en: {
         // Sidebar
@@ -16,45 +16,40 @@ export const translations = {
         'nav-journey': 'EDUCATION',
         'nav-contact': 'CONTACT',
 
-        // Hero
-        'hero-subtitle': 'GAMES & IMMERSIVE MEDIA CREATOR',
-        'hero-name': 'DAVID ZAHN',
-        'hero-role': 'AETHERTTECT',
-        'hero-desc': 'Passionate about gameplay systems and core mechanics. I love building and refining systems that turn ideas into smooth, engaging experiences.',
-        'hero-btn': 'EXPLORE MY WORK',
+        // Home (Hero)
+        'home-subtitle': 'GAMES & IMMERSIVE MEDIA CREATOR',
+        'home-name': 'DAVID ZAHN',
+        'home-role': 'AETHERTECH',
+        'home-i-am': 'I am',
+        'home-studying': 'studying Games & Immersive Media at HFU Furtwangen. My interest lies in:',
+        'home-subtitle-cycle-1': 'Game Design',
+        'home-subtitle-cycle-2': 'Audio Design',
+        'home-subtitle-cycle-3': '3D Modeling',
+        'home-subtitle-cycle-4': 'Animation',
+        'home-subtitle-cycle-5': 'Coding',
+        'home-desc': 'Passionate about gameplay systems and core mechanics. I love building and refining systems that turn ideas into smooth, engaging experiences.',
+        'home-btn': 'EXPLORE MY WORK',
 
         // Hero Carousel
         'carousel-title': 'MY PROJECTS',
-        'carousel-1-title': 'UNREAL TOWER DEFENSE',
-        'carousel-1-desc': 'Action Gameplay & Strategy',
-        'carousel-2-title': 'CHARACTER DESIGN',
-        'carousel-2-desc': 'Dark Fantasy Concept Art',
-        'carousel-3-title': '3D SPACE SCENE',
-        'carousel-3-desc': 'Blender Environment',
 
         // Hero Skills
         'arsenal-title': 'SKILLS & TOOLS',
 
-        // Skills names (used in hero + about)
-        'skill-unreal': 'UNREAL ENGINE 5',
-        'skill-gamesystems': 'GAME SYSTEMS',
-        'skill-leveldesign': 'LEVEL DESIGN',
-        'skill-narrative': 'NARRATIVE WEAVING',
-        'skill-3dmodeling': '3D MODELING',
-        'skill-vfx': 'VFX SHADERS',
-        'skill-soundscapes': 'SOUNDSCAPES',
-        'skill-audio': 'IMMERSIVE AUDIO',
-        'skill-pixelart': 'PIXEL ART',
+        // Skills (Hero-Arsenal) - Skill-Registry (skills.js)
+        'skill-blender': 'BLENDER',
+        'skill-godot': 'GODOT',
+        'skill-csharp': 'C#',
+        'skill-unreal': 'UNREAL ENGINE',
+        'skill-web': 'HTML / CSS / JAVASCRIPT',
+        'skill-typescript': 'TYPESCRIPT',
+        'skill-webgl': 'WEBGL / OPENGL',
+        'skill-krita': 'KRITA',
+        'skill-fmod': 'FMOD',
 
         // Archives
         'archives-title': 'WORK',
         'archives-subtitle': 'A SELECTION OF PROJECTS, PROTOTYPES AND DESIGNS',
-        'portal-1-title': 'UNREAL TOWER DEFENSE',
-        'portal-1-desc': 'Action Gameplay & Strategy',
-        'portal-2-title': 'CHARACTER DESIGN',
-        'portal-2-desc': 'Dark Fantasy Concept Art',
-        'portal-3-title': '3D SPACE SCENE',
-        'portal-3-desc': 'Blender Environment',
 
         // About
         'about-title': 'ABOUT ME',
@@ -63,14 +58,6 @@ export const translations = {
         'about-text-3': "My goal is simple: to combine smart, responsive mechanics with engaging design to create experiences that feel meaningful and fun. I love experimenting with crazy, unconventional ideas, testing how far mechanics can go, and embracing the occasional failure to learn and make things better. I believe the best projects come from curiosity, bold experiments, and a lot of passion along the way.",
         'about-skills-title': 'SKILLS & TOOLS',
         'about-skills-subtitle': 'Skills and tools I work with.',
-        'about-skill-1': 'GAME DESIGN',
-        'about-skill-2': 'LEVEL DESIGN',
-        'about-skill-3': 'SYSTEMS DESIGN',
-        'about-skill-4': 'NARRATIVE DESIGN',
-        'about-skill-5': 'UI/UX DESIGN',
-        'about-skill-6': 'PIXEL ART DIRECTION',
-        'about-skill-7': 'PROTOTYPING',
-        'about-skill-8': 'DOCUMENTATION',
         'about-cv': 'DOWNLOAD CV',
 
         // Journey
@@ -128,61 +115,48 @@ export const translations = {
         'nav-journey': 'WERDEGANG',
         'nav-contact': 'KONTAKT',
 
-        // Hero
-        'hero-subtitle': 'GAMES & IMMERSIVE MEDIA CREATOR',
-        'hero-name': 'DAVID ZAHN',
-        'hero-role': 'AETHERTTECT',
-        'hero-desc': 'Leidenschaft für Gameplay-Systeme und Kernmechaniken. Ich liebe es, Systeme zu entwickeln und zu verfeinern, die Ideen in flüssige, fesselnde Erlebnisse verwandeln.',
-        'hero-btn': 'MEINE ARBEIT ENTDECKEN',
+        // Home (Hero)
+        'home-subtitle': 'CREATOR FÜR SPIELE & IMMERSIVE MEDIEN',
+        'home-name': 'DAVID ZAHN',
+        'home-role': 'AETHERTECH',
+        'home-i-am': 'Ich bin',
+        'home-studying': 'und studiere Games & Immersive Media an der HFU Furtwangen. Meine Interessen liegen in:',
+        'home-subtitle-cycle-1': 'Game-Design',
+        'home-subtitle-cycle-2': 'Audio-Design',
+        'home-subtitle-cycle-3': '3D-Modellierung',
+        'home-subtitle-cycle-4': 'Animation',
+        'home-subtitle-cycle-5': 'Coding',
+        'home-desc': 'Leidenschaft für Gameplay-Systeme und Kernmechaniken. Ich liebe es, Systeme zu entwickeln und zu verfeinern, die Ideen in flüssige, fesselnde Erlebnisse verwandeln.',
+        'home-btn': 'MEINE ARBEIT ENTDECKEN',
 
         // Hero Carousel
         'carousel-title': 'MEINE PROJEKTE',
-        'carousel-1-title': 'UNREAL TOWER DEFENSE',
-        'carousel-1-desc': 'Action Gameplay & Strategie',
-        'carousel-2-title': 'CHARACTER DESIGN',
-        'carousel-2-desc': 'Dark Fantasy Konzeptkunst',
-        'carousel-3-title': '3D SPACE SCENE',
-        'carousel-3-desc': 'Blender Umgebung',
 
         // Hero Skills
         'arsenal-title': 'FÄHIGKEITEN & WERKZEUGE',
 
-        // Skills names (used in hero + about)
-        'skill-unreal': 'UNREAL ENGINE 5',
-        'skill-gamesystems': 'GAME SYSTEMS',
-        'skill-leveldesign': 'LEVEL DESIGN',
-        'skill-narrative': 'NARRATIVES WEBEN',
-        'skill-3dmodeling': '3D MODELLING',
-        'skill-vfx': 'VFX SHADER',
-        'skill-soundscapes': 'SOUNDSCAPES',
-        'skill-audio': 'IMMERSIVER AUDIO',
-        'skill-pixelart': 'PIXEL ART',
+        // Skills (Hero-Arsenal) - Skill-Registry (skills.js)
+        'skill-blender': 'BLENDER',
+        'skill-godot': 'GODOT',
+        'skill-csharp': 'C#',
+        'skill-unreal': 'UNREAL ENGINE',
+        'skill-web': 'HTML / CSS / JAVASCRIPT',
+        'skill-typescript': 'TYPESCRIPT',
+        'skill-webgl': 'WEBGL / OPENGL',
+        'skill-krita': 'KRITA',
+        'skill-fmod': 'FMOD',
 
         // Archives
         'archives-title': 'WORK',
         'archives-subtitle': 'Eine Auswahl von Projekten, Prototypen und Designs.',
-        'portal-1-title': 'UNREAL TOWER DEFENSE',
-        'portal-1-desc': 'Action Gameplay & Strategie',
-        'portal-2-title': 'CHARACTER DESIGN',
-        'portal-2-desc': 'Dark Fantasy Konzeptkunst',
-        'portal-3-title': '3D SPACE SCENE',
-        'portal-3-desc': 'Blender Szene',
 
         // About
         'about-title': 'ÜBER MICH',
-        'about-text-1': "Mich hat schon immer fasziniert, wie Spiele unter der Haube funktionieren – wie Gameplay-Systeme, Mechaniken und Storytelling zusammenwirken, um wahrhaft immersive Erlebnisse zu schaffen. Obwoohl ich große Atmosphäre und erzählerische Tiefe sehr schätze, bin ich im Kern ein Gameplay-Typ, der es liebt, die zentralen Interaktionen zu entwickeln, die eine Welt zum Leben erwecken.",
+        'about-text-1': "Mich hat schon immer fasziniert, wie Spiele unter der Haube funktionieren – wie Gameplay-Systeme, Mechaniken und Storytelling zusammenwirken, um wahrhaft immersive Erlebnisse zu schaffen. Obwohl ich große Atmosphäre und erzählerische Tiefe sehr schätze, bin ich im Kern ein Gameplay-Typ, der es liebt, die zentralen Interaktionen zu entwickeln, die eine Welt zum Leben erwecken.",
         'about-text-2': "Wenn ich nicht gerade tief in der Entwicklung von Systemen stecke oder Spiele spiele, um zu analysieren, was sie zum Funktionieren bringt, lasse ich mich oft von anderen Spielen, Filmen und Büchern inspirieren, um zu sehen, was eine Erfahrung unvergesslich macht.",
         'about-text-3': "Mein Ziel ist einfach: kluge, reaktionsfreudige Mechaniken mit ansprechendem Design zu verbinden, um Erlebnisse zu schaffen, die sich bedeutungsvoll und unterhaltsam anfühlen. Ich liebe es, mit verrückten, unkonventionellen Ideen zu experimentieren, zu testen, wie weit Mechaniken gehen können, und gelegentliches Scheitern anzunehmen, um daraus zu lernen und besser zu werden. Ich glaube, die besten Projekte entstehen aus Neugier, mutigen Experimenten und einer Menge Leidenschaft auf dem Weg.",
         'about-skills-title': 'FÄHIGKEITEN & WERKZEUGE',
         'about-skills-subtitle': 'Fähigkeiten und Werkzeuge, mit denen ich arbeite.',
-        'about-skill-1': 'GAME DESIGN',
-        'about-skill-2': 'LEVEL DESIGN',
-        'about-skill-3': 'SYSTEM DESIGN',
-        'about-skill-4': 'NARRATIVES DESIGN',
-        'about-skill-5': 'UI/UX DESIGN',
-        'about-skill-6': 'PIXEL ART DIRECTION',
-        'about-skill-7': 'PROTOTYPING',
-        'about-skill-8': 'DOKUMENTATION',
         'about-cv': 'LEBENSLAUF HERUNTERLADEN',
 
         // Journey
@@ -218,8 +192,6 @@ export const translations = {
         'contact-subtitle': 'KONTAKTIERE MICH ÜBER EINES DIESER KANÄLE',
 
         // Footer
-        'footer-text': '© 2025 DAVID ZAHN — ALLE RECHTE VORBEHALTEN',
-        'footer-subtext': 'GESCHMIEDET IN DER TIEFE',
         'footer-back': 'ZURÜCK ZUR STARTSEITE',
 
         // Language switch

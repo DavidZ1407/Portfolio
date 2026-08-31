@@ -1,6 +1,7 @@
-/* ========================================= */
-/* NAVBAR COMPONENT */
-/* ========================================= */
+/* ==========================================
+ * File: navbar.css
+ * Description: Navbar header, sidebar social links, language toggle, and mobile menu styling.
+ * ========================================== */
 
 .sidebar_socials {
     position: fixed;
@@ -72,12 +73,12 @@
     z-index: 2;
 }
 
-/* Verbindungslinien entfernt */
+/* Connection lines removed */
 .sidebar_socials a::after {
     display: none;
 }
 
-/* Nur der gehoverte Link leuchtet blau */
+/* Only the hovered link glows blue */
 .sidebar_socials a:hover i {
     color: var(--cyan-glow);
     text-shadow: 
@@ -89,7 +90,6 @@
 .sidebar_socials a:hover span {
     color: var(--cyan-glow);
 }
-
 
 .sidebar_socials a span {
     font-family: monospace;
@@ -118,14 +118,20 @@
     box-sizing: border-box;
 }
 
-/* Solange ein Projekt-Modal offen ist, bleibt die Haupt-Navbar über dem
-   Modal-Overlay (z-index 1000) und dem Modal-Container (z-index 1001) –
-   damit Nav-Links, Logo und DE/EN-Umschalter sichtbar und klickbar bleiben. */
+/* While a project modal is open, the main navbar stays above the
+   modal overlay (z-index 1000) and the modal container (z-index 1001) so
+   nav links, logo, and the DE/EN toggle stay visible and clickable. */
 body.modal-open .header {
     z-index: 1100;
 }
 
-/* Punkt 2: backdrop-filter ab HD+ (1600px) reduzieren für Firefox-Performance */
+/* Same for the right sidebar (Email/GitHub/LinkedIn/Phone) -
+   sie soll auch bei geoeffnetem Modal sichtbar und anklickbar bleiben. */
+body.modal-open .sidebar_socials {
+    z-index: 1100;
+}
+
+/* Punkt 2: backdrop-filter ab HD+ (1600px) reduzieren fuer Firefox-Performance */
 @media (min-width: 1600px) {
     .header {
         backdrop-filter: blur(6px);
@@ -175,7 +181,7 @@ body.modal-open .header {
 }
 
 /* Phone Icon in Navbar: Element existiert nicht mehr (kein HTML-Knoten, keine
-   JS-Referenz) → Regeln wurden entfernt. */
+   JS-Referenz) -> Regeln wurden entfernt. */
 
 /* Language Toggle Button */
 .lang-toggle-btn {
@@ -502,4 +508,3 @@ body.modal-open .header {
     }
 }
 
-/* Responsive layout moved to css/responsive.css */

@@ -1,7 +1,7 @@
-/* ========================================= */
-/* MODULE - NAVIGATION */
-/* ========================================= */
-
+/**
+ * File: navigation.js
+ * Description: Navbar behavior: scrollspy section highlighting, active link updates, and anchor scrolling.
+ */
 import { closeProjectModal, isProjectModalOpen } from './modal.js';
 
 /**
@@ -9,13 +9,13 @@ import { closeProjectModal, isProjectModalOpen } from './modal.js';
  */
 export function initNavigation() {
     const navLinks = document.querySelectorAll('.nav_link');
-    const sections = document.querySelectorAll('section[id]');
+    const sections = document.querySelectorAll('main[id], section[id]');
     
     if (navLinks.length === 0 || sections.length === 0) return;
 
-    /* Wenn eine Haupt-Navbar-Position geklickt wird, während ein Projekt-Modal
-       geöffnet ist, das Modal zuerst schließen und den Scroll-Lock freigeben,
-       damit der Browser normal zur Ziel-Sektion springen kann. */
+    /* When a main navbar link is clicked while a project modal
+       is open, close the modal first and release the scroll lock so
+       the browser can jump to the target section normally. */
     document.addEventListener('click', (e) => {
         const link = e.target.closest('.nav_link, .logo');
         if (!link) return;
@@ -24,9 +24,9 @@ export function initNavigation() {
         }
     });
 
-    /* Offset oberhalb einer Sektion (px), ab dem sie als "aktiv" gilt */
+    /* Offset above a section (px) from which it counts as "active" */
     const SCROLL_ACTIVE_OFFSET = 200;
-    /* Abstand zum Seitenende (px), ab dem die letzte Sektion aktiviert wird */
+    /* Distance to page end (px) from which the last section is activated */
     const BOTTOM_DETECT_OFFSET = 100;
 
     let ticking = false;

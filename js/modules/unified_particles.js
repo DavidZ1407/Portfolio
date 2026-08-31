@@ -1,13 +1,10 @@
-﻿/* ========================================= */
-/* MODULE - UNIFIED FULL-SCREEN PARTICLES     */
-/* Fuhrt die beiden redundanten Vollbild-     */
-/* Canvas-Partikelsysteme (depth-experience   */
-/* + parallax) in EINEN registerAnimation-    */
-/* Loop zusammen (Firefox-Performance).       */
-/* ========================================= */
-
+/**
+ * File: unified_particles.js
+ * Description: Unified particle system: one render loop for background fish/parallax and depth particles.
+ */
 import { registerAnimation } from '../utils/animation_manager.js';
 import { sizeCanvas, cleanupRegistry } from '../utils/helpers.js';
+import { TWO_PI, MAX_FRAME_DELTA_SECONDS } from '../constants/ui.js';
 
 export function initUnifiedParticles() {
     /* ZWEI uberlagerte Canvases, um die urspruengliche Schichtung 1:1 zu erhalten:
@@ -46,7 +43,6 @@ export function initUnifiedParticles() {
     ];
     const COLORS_GOLD = [201, 168, 97];
     const COLORS_CYAN = [73, 146, 154];
-    const TWO_PI = 6.2832;
 
     /* Anzahlen bewusst reduziert: Die beiden alten Systeme hatten zusammen
        25+30=55 Partikel und 12+12=24 Bubbles. Aufgeteilt wird jetzt auf das
@@ -322,7 +318,7 @@ export function initUnifiedParticles() {
     /* ---- EIN gemeinsamer rAF-Loop fuer beide Canvases ---- */
     function frame(now) {
         if (!lastTime) lastTime = now;
-        const dt = Math.min((now - lastTime) / 1000, 0.05);
+        const dt = Math.min((now - lastTime) / 1000, MAX_FRAME_DELTA_SECONDS);
         lastTime = now;
         time += dt;
 

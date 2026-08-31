@@ -1,8 +1,8 @@
-/* ========================================= */
-/* MODULE - LANGUAGE SWITCH (EN/DE) */
-/* ========================================= */
-
-import { translations } from '../constants/translations.js';
+/**
+ * File: language.js
+ * Description: Language switching (EN/DE): applies translations to data-i18n elements and re-renders dynamic content.
+ */
+import { translations } from '../constants/translations.js?v=2';
 import { cleanupRegistry } from '../utils/helpers.js';
 
 const STORAGE_KEY = 'portfolio-lang';
@@ -10,8 +10,8 @@ const DEFAULT_LANG = 'en';
 
 /**
  * CV file paths per language
- * en → David_Zahn_CV.pdf (English)
- * de → David_Zahn_CV_de.pdf (German)
+ * en -> David_Zahn_CV.pdf (English)
+ * de -> David_Zahn_CV_de.pdf (German)
  */
 const CV_PATHS = {
     en: { href: 'assets/CV/David_Zahn_CV.pdf', download: 'David_Zahn_CV.pdf', aria: 'Download CV' },
@@ -41,7 +41,6 @@ export function initLanguage() {
     // Setup toggle button
     setupToggle();
 }
-
 
 /**
  * Get current language code

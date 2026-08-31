@@ -1,6 +1,7 @@
-/* ========================================= */
-/* CONTACT COMPONENT */
-/* ========================================= */
+/* ==========================================
+ * File: contact.css
+ * Description: Contact section layout including contact icons, floating animations, and back-to-top link.
+ * ========================================== */
 
 /* Contact Section */
 .contact_section {
@@ -159,9 +160,7 @@
     text-shadow: 0 0 8px rgba(73, 146, 154, 0.2);
 }
 
-/* ========================================= */
 /* UNDERWATER FLOATING ANIMATIONS - CONTACT */
-/* ========================================= */
 
 /* Contact icons float with staggered timing */
 .contact_icon_link:nth-child(1) { animation: contact-float 6s ease-in-out infinite; animation-delay: 0s; }
@@ -189,4 +188,3 @@
     }
 }
 
-/* Responsive layout moved to css/responsive.css */

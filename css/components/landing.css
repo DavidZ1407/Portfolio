@@ -1,8 +1,7 @@
-/* ========================================= */
-/* HERO COMPONENT */
-/* ========================================= */
-
-/* Hero Section Layout */
+/* ==========================================
+ * File: landing.css
+ * Description: Hero/landing section layout including hero panel, titles, water subtitle, skill highlighting, and floating animations.
+ * ========================================== */
 .hero_section {
     position: relative;
     min-height: 100vh;
@@ -222,8 +221,8 @@
 
 .carousel_container {
     position: relative;
-    /* Horizontale Zentrierung unter der Überschrift – nur Positionierung.
-       (änderung nur links/rechts via auto; top/bottom bleiben 0) */
+    /* Horizontale Zentrierung unter der Ueberschrift - nur Positionierung.
+       (aenderung nur links/rechts via auto; top/bottom bleiben 0) */
     margin: 0 auto;
     overflow: hidden;
     border: 1.5px solid rgba(201, 168, 97, 0.3);
@@ -255,7 +254,7 @@
     position: relative;
     overflow: hidden;
     display: flex;
-    flex-direction: column; /* Bild oben, Info unten – keine Ueberlappung */
+    flex-direction: column; /* Bild oben, Info unten - keine Ueberlappung */
     min-width: 100%;
 }
 
@@ -269,7 +268,7 @@
     transition: filter 0.6s ease, transform 0.6s ease;
 }
 
-/* Cover komplett zeigen (kein Crop) – passend zum Portal-Carousel */
+/* Cover komplett zeigen (kein Crop) - passend zum Portal-Carousel */
 .carousel_slide img.fit-contain {
     object-fit: contain;
     background: radial-gradient(circle at 50% 45%, rgba(10, 30, 45, 0.55) 0%, rgba(3, 8, 9, 0.9) 100%);
@@ -299,7 +298,7 @@
     );
     opacity: 0;
     transition: opacity 0.4s ease;
-    /* mix-blend-mode entfernt für Firefox-Performance */
+    /* mix-blend-mode entfernt fuer Firefox-Performance */
 }
 
 .carousel_slide:hover::after {
@@ -674,4 +673,28 @@
         max-width: 750px;
         height: 90px;
     }
+}
+
+/* Skill <-> project highlight (hero arsenal hover, driven by skill_link.js):
+   matching hero carousel slides get a golden inset frame + glow, a brighter
+   image and a slight zoom; non-matching slides are subtly dimmed. */
+
+.carousel_slide {
+    transition: box-shadow 0.6s ease;
+}
+
+.carousel_slide.skill-highlight {
+    box-shadow:
+        inset 0 0 0 1px rgba(201, 168, 97, 0.55),
+        inset 0 0 30px rgba(201, 168, 97, 0.18);
+}
+
+.carousel_slide.skill-highlight img {
+    filter: grayscale(0%) brightness(1.02) saturate(1.15);
+    transform: scale(1.04);
+}
+
+.carousel_slide.skill-dim img {
+    filter: grayscale(75%) brightness(0.45) saturate(0.6);
+    transform: scale(1.0);
 }

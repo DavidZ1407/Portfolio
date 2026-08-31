@@ -1,11 +1,7 @@
-/* ========================================= */
-/* FULL-PAGE UNDERWATER GOTHIC EXPERIENCE */
-/* Immersive scroll through the deep */
-/* ========================================= */
-
-/* ========================================= */
-/* DEPTH FOG OVERLAY - Gets denser as you go */
-/* ========================================= */
+/* ==========================================
+ * File: depth-experience.css
+ * Description: Full-page underwater experience with depth fog, vignette overlay, and unified particle canvas rendering.
+ * ========================================== */
 .depth-fog-overlay {
     position: fixed;
     inset: 0;
@@ -19,9 +15,7 @@
     opacity: 1;
 }
 
-/* ========================================= */
 /* VIGNETTE - Deep water darkness at edges */
-/* ========================================= */
 .depth-vignette {
     position: fixed;
     inset: 0;
@@ -41,23 +35,16 @@
     opacity: 1;
 }
 
-/* ========================================= */
-/* PARTICLE CANVAS - Full viewport           */
-/* Punkt 1: Das vollflächige Partikel-System */
-/* liegt jetzt in unified-particles.js:      */
-/* .unified-particles-canvas-back (z3, Fische+ */
-/* Parallax) + -front (z7, Depth) in EINEM   */
-/* registerAnimation-Loop.                   */
-/* ========================================= */
+/* Particle canvas (full viewport): the full-page particle system lives in
+   unified_particles.js - canvas-back (z3, fish + parallax) and canvas-front
+   (z7, depth) render in ONE registerAnimation loop. */
 
-/* ========================================= */
 /* RESPONSIVE */
-/* ========================================= */
 @media (prefers-reduced-motion: reduce) {
     .scroll-ripple {
         display: none;
     }
-    /* Einziges verbleibendes Partikel-System ausblenden (back + front) */
+    /* Hide the only remaining particle system (back + front) */
     .unified-particles-canvas-back,
     .unified-particles-canvas-front {
         display: none;

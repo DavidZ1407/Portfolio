@@ -1,12 +1,9 @@
-/* ========================================= */
-/* MODULE - BIOLUMINESCENT SWARM             */
-/* Deep sea creature shadows on the          */
-/* timeline section background. Persistent   */
-/* atmospheric effect with organic movement. */
-/* ========================================= */
-
-import { debounce, cleanupRegistry, sizeCanvas } from '../utils/helpers.js';
-import { MOBILE_BREAKPOINT } from '../constants/ui.js';
+/**
+ * File: bioluminescent_swarm.js
+ * Description: Bioluminescent particle swarm canvas effect for the journey section.
+ */
+import { debounce, cleanupRegistry, sizeCanvas, getCanvasQuality } from '../utils/helpers.js';
+import { MOBILE_BREAKPOINT, TWO_PI, MOBILE_SMALL_BREAKPOINT_PX, TABLET_DESKTOP_BREAKPOINT_PX, INTERSECTION_THRESHOLD, DEBOUNCE_DELAY_LARGE_MS, BOOT_DELAY_MS } from '../constants/ui.js';
 import { registerAnimation } from '../utils/animation_manager.js';
 
 /* ----------------------------------------- */
@@ -28,7 +25,7 @@ const CREATURE_TYPES = {
             ctx.fillStyle = `rgba(5, 15, 30, ${0.5 + glow * 0.2})`;
             ctx.fill();
 
-            // Tentacles — using pre-computed seed for stable lengths
+            // Tentacles - using pre-computed seed for stable lengths
             for (let i = 0; i < 5; i++) {
                 const tx = -size * 0.3 + (i / 4) * size * 0.6;
                 const tentSeed = seed ? seed.tentLens[i] : 0.5;
@@ -96,12 +93,12 @@ const CREATURE_TYPES = {
             ctx.fillStyle = `rgba(3, 8, 15, ${0.35 + glow * 0.15})`;
             ctx.fill();
 
-            // Tentacles — using pre-computed seed for stable lengths
+            // Tentacles - using pre-computed seed for stable lengths
             for (let i = 0; i < 6; i++) {
                 const tx = -size * 0.2 + (i / 5) * size * 0.4;
                 const tentSeed = seed ? seed.tentLens[i] : 0.5;
                 const tentLen = size * (0.5 + tentSeed * 0.2);
-                // Smooth organic sway — continuous sine waves, no randomness
+                // Smooth organic sway - continuous sine waves, no randomness
                 const sway1 = Math.sin(glow * 1.2 + i * 0.8 + seed.offset) * size * 0.2;
                 const sway2 = Math.sin(glow * 0.7 + i * 1.1 + seed.offset * 1.5) * size * 0.25;
                 ctx.beginPath();
@@ -258,9 +255,9 @@ export function initBioluminescentSwarm() {
 
     // Dynamic creature count based on viewport
     function getCreatureCount() {
-        if (window.innerWidth <= 480) return 4;
+        if (window.innerWidth <= MOBILE_SMALL_BREAKPOINT_PX) return 4;
         if (window.innerWidth <= MOBILE_BREAKPOINT) return 6;
-        if (window.innerWidth <= 1200) return 9;
+        if (window.innerWidth <= TABLET_DESKTOP_BREAKPOINT_PX) return 9;
         return 12;
     }
     
@@ -268,10 +265,7 @@ export function initBioluminescentSwarm() {
     const CREATURE_COUNT = getCreatureCount();
 
     /* ---- Large viewport low-res buffering (2056px+) ---- */
-    const vw = window.innerWidth;
-    const isLarge = vw >= 2056;
-    const isXLarge = vw >= 3000;
-    const SCALE = isXLarge ? 0.35 : isLarge ? 0.5 : 1.0;
+    const { scale: SCALE } = getCanvasQuality();
 
     /* ---- IntersectionObserver ---- */
     const observer = new IntersectionObserver((entries) => {
@@ -301,7 +295,7 @@ export function initBioluminescentSwarm() {
                 }
             }
         });
-    }, { threshold: 0.05 });
+    }, { threshold: INTERSECTION_THRESHOLD });
 
     observer.observe(section);
 
@@ -314,9 +308,9 @@ export function initBioluminescentSwarm() {
         canvas.style.height = h + 'px';
     }
 
-    const debouncedResize = debounce(resize, 200);
+    const debouncedResize = debounce(resize, DEBOUNCE_DELAY_LARGE_MS);
     window.addEventListener('resize', debouncedResize);
-    setTimeout(resize, 50);
+    setTimeout(resize, BOOT_DELAY_MS);
 
     /* ---- Spawn Creatures ---- */
     function spawnCreatures() {

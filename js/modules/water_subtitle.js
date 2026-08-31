@@ -1,20 +1,29 @@
-/* ========================================= */
-/* MODULE - WATER SUBTITLE (CYCLING TEXT)     */
-/* Cycles through "Game Design", "Audio       */
-/* Design", "3D Modeling", "animation",       */
-/* "coding" with the same WebGL water shader  */
-/* as the "DAVID ZAHN" logo.                  */
-/* ========================================= */
-
+/**
+ * File: water_subtitle.js
+ * Description: WebGL water-effect canvas rendering the cycling, localized subtitle text in the hero.
+ */
+import { translations } from '../constants/translations.js?v=2';
+import { getCurrentLang } from './language.js';
 import { cleanupRegistry } from '../utils/helpers.js';
+import { INTERSECTION_THRESHOLD } from '../constants/ui.js';
 
-const SUBTITLES = [
-    'Game Design',
-    'Audio Design',
-    '3D Modeling',
-    'animation',
-    'coding'
+/* Cycling terms displayed (EN/DE via translations.js). */
+const SUBTITLE_KEYS = [
+    'home-subtitle-cycle-1',
+    'home-subtitle-cycle-2',
+    'home-subtitle-cycle-3',
+    'home-subtitle-cycle-4',
+    'home-subtitle-cycle-5',
 ];
+
+/* Canvas size of the cycling subtitle text (px). */
+const SUBTITLE_CANVAS_WIDTH = 520;
+const SUBTITLE_CANVAS_HEIGHT = 65;
+
+function getSubtitles(lang) {
+    const texts = translations[lang] || translations.en;
+    return SUBTITLE_KEYS.map(key => texts[key] || translations.en[key]);
+}
 
 // Reuse the same shaders from water-logo (slightly adapted for smaller text)
 const vertSrc = `#version 300 es
@@ -83,7 +92,7 @@ void main() {
     float caustic2 = sin(waterUV.x * 35.0 - waterUV.y * 20.0 + uTime * 1.5);
     float caustic = caustic1 * caustic2 * 0.5 + 0.5;
 
-    // Text texture – minimal distortion for readability
+    // Text texture - minimal distortion for readability
     float textDistort = 0.003;
     vec2 textUV = uv + vec2(
         wave1 * textDistort + wave2 * textDistort * 0.3,
@@ -119,7 +128,10 @@ export function initWaterSubtitle() {
     const heroContent = document.querySelector('.hero_content');
     if (!heroContent) return;
 
-    // Remove old h2 if it exists (AETHERTTECT)
+    // Translated cycling terms in the current language
+    const SUBTITLES = getSubtitles(getCurrentLang());
+
+    // Remove old h2 if it exists (AETHERTECH)
     const oldH2 = heroContent.querySelector('h2');
     if (oldH2) {
         oldH2.style.display = 'none';
@@ -130,14 +142,14 @@ export function initWaterSubtitle() {
     // ==============================================
     const iAmText = document.createElement('p');
     iAmText.className = 'hero_i_am';
-    iAmText.textContent = 'I am';
+    iAmText.textContent = translations[getCurrentLang()]['home-i-am'] || 'I am';
 
     // ==============================================
     // 2. "studying Games & Immersive Media ..." - AFTER David Zahn
     // ==============================================
     const studyingText = document.createElement('p');
     studyingText.className = 'hero_studying';
-    studyingText.textContent = 'studying Games & Immersive Media at HFU Furtwangen. My interest lies in:';
+    studyingText.textContent = translations[getCurrentLang()]['home-studying'] || 'studying Games & Immersive Media at HFU Furtwangen. My interest lies in:';
 
     // ==============================================
     // 3. CYCLING WATER TEXT
@@ -147,15 +159,15 @@ export function initWaterSubtitle() {
 
     const canvas = document.createElement('canvas');
     canvas.className = 'water-subtitle-canvas';
-    const textWidth = 520;
-    const textHeight = 65;
+    const textWidth = SUBTITLE_CANVAS_WIDTH;
+    const textHeight = SUBTITLE_CANVAS_HEIGHT;
     canvas.width = textWidth;
     canvas.height = textHeight;
 
     container.appendChild(canvas);
 
     // Insert into DOM in correct order:
-    // "I am" → water-text-container (DAVID ZAHN) → "studying..." → cycling subtitle
+    // "I am" -> water-text-container (DAVID ZAHN) -> "studying..." -> cycling subtitle
     const waterContainer = heroContent.querySelector('.water-text-container');
     const insertAfter = waterContainer || heroContent.querySelector('h1');
 
@@ -229,7 +241,7 @@ export function initWaterSubtitle() {
     gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 16, 0);
     gl.vertexAttribPointer(aTex, 2, gl.FLOAT, false, 16, 8);
 
-    // Text texture – initial
+    // Text texture - initial
     let currentIndex = 0;
     const textCanvas = createTextCanvas(SUBTITLES[currentIndex], textWidth, textHeight);
     const tex = gl.createTexture();
@@ -266,7 +278,7 @@ export function initWaterSubtitle() {
 
     function render() {
         if (!isActive) return;
-        // Punkt 4: WebGL-Render überspringen, solange das Subtitle off-screen ist
+        // Item 4: skip WebGL render while the subtitle is off-screen
         if (!isVisible) { animFrame = requestAnimationFrame(render); return; }
         const t = (performance.now() - startTime) / 1000.0;
         const now = performance.now();
@@ -308,10 +320,10 @@ export function initWaterSubtitle() {
 
     animFrame = requestAnimationFrame(render);
 
-    // Punkt 4: pausieren, wenn nicht sichtbar (wie particle-rain.js)
+    // Item 4: pause when not visible (like particle-rain.js)
     const heroObserver = new IntersectionObserver((entries) => {
         isVisible = entries[0].isIntersecting;
-    }, { threshold: 0.05 });
+    }, { threshold: INTERSECTION_THRESHOLD });
     heroObserver.observe(container);
 
     cleanupRegistry.register(() => {

@@ -1,7 +1,11 @@
-/* ========================================= */
-/* JOURNEY/TIMELINE COMPONENT - GOTHIC UNDERWATER HALL */
-/* Ancient Abyssal Relic - Navigation Beacon */
-/* ========================================= */
+/* ==========================================
+ * File: journey.css
+ * Description: Journey/timeline section with underwater hall background, timeline items, relic beacon canvas, and staggered float animations.
+ * ========================================== */
+.journey_section .section_title,
+.journey_section .section_subtitle {
+    text-align: center;
+}
 
 /* Journey Section - Underwater Hall Background */
 .journey_section {
@@ -24,7 +28,7 @@
         );
 }
 
-/* Weicher dunkler Nebel am oberen Rand – ragt in About hinein */
+/* Soft dark fog at the top - blends into the About section */
 .journey_section::after {
     content: '';
     position: absolute;
@@ -42,7 +46,7 @@
     pointer-events: none;
 }
 
-/* Subtle light ray overlay – entfernt, erzeugt ungewollte Flächen */
+/* Light ray overlay - removed, it produced unwanted surfaces */
 .journey_section::before {
     display: none;
 }
@@ -56,9 +60,7 @@
     z-index: 1;
 }
 
-/* ========================================= */
 /* CANVAS - Relic Beacon */
-/* ========================================= */
 .water_timeline .underwater-canvas {
     position: absolute;
     left: 50%;
@@ -71,9 +73,7 @@
     pointer-events: none;
 }
 
-/* ========================================= */
 /* TIMELINE ITEMS - Alternating Left/Right */
-/* ========================================= */
 .timeline_item {
     display: flex;
     align-items: center;
@@ -116,14 +116,12 @@
     }
 }
 
-/* ========================================= */
 /* ANCIENT RELIC NODE - Organic Bioluminescent Growth */
-/* ========================================= */
 .timeline_item::before {
     display: none;
 }
 
-/* Organic morphing shape — slow, living movement */
+/* Organic morphing shape - slow, living movement */
 @keyframes relic-morph {
     0%, 100% { border-radius: 60% 40% 55% 45% / 45% 55% 40% 60%; }
     20% { border-radius: 50% 50% 40% 60% / 55% 45% 55% 45%; }
@@ -132,7 +130,7 @@
     80% { border-radius: 40% 60% 50% 50% / 45% 55% 60% 40%; }
 }
 
-/* Subtle organic breathing — size and glow */
+/* Subtle organic breathing - size and glow */
 @keyframes relic-breathe-subtle {
     0%, 100% {
         box-shadow: 
@@ -162,9 +160,7 @@
     display: none;
 }
 
-/* ========================================= */
 /* ANCIENT RELIC ANIMATIONEN */
-/* ========================================= */
 
 /* Water pearl breathing with ripple effect */
 @keyframes relic-breathe {
@@ -335,7 +331,7 @@
     transform: translateY(-50%);
 }
 
-/* Occasional glow — line brightens briefly */
+/* Occasional glow - line brightens briefly */
 @keyframes line-glow-pulse {
     0%, 70%, 100% {
         background: linear-gradient(
@@ -382,9 +378,7 @@
     margin-bottom: 0;
 }
 
-/* ========================================= */
 /* TIMELINE CONTENT - Gothic Panels */
-/* ========================================= */
 .timeline_content {
     display: inline-block;
     width: auto;
@@ -407,9 +401,7 @@
     -webkit-filter: url(#water_distort_hover);
 }
 
-/* ========================================= */
 /* YEAR - On a line with separator */
-/* ========================================= */
 .timeline_year {
     color: rgba(73, 146, 154, 0.9);
     font-family: monospace;
@@ -426,9 +418,7 @@
     margin-right: 6px;
 }
 
-/* ========================================= */
 /* TITLE */
-/* ========================================= */
 .timeline_title {
     color: var(--text-light);
     font-size: 1.3rem;
@@ -440,9 +430,7 @@
     margin-bottom: 6px;
 }
 
-/* ========================================= */
 /* ORGANIZATION */
-/* ========================================= */
 .timeline_org {
     color: rgba(201, 168, 97, 0.6);
     font-size: 1.05rem;
@@ -450,9 +438,7 @@
     white-space: nowrap;
 }
 
-/* ========================================= */
 /* DESCRIPTION LIST */
-/* ========================================= */
 .timeline_desc {
     margin-top: 10px;
     padding-left: 6px;
@@ -478,16 +464,12 @@
     line-height: 1;
 }
 
-/* ========================================= */
 /* ICON */
-/* ========================================= */
 .timeline_icon {
     display: none;
 }
 
-/* ========================================= */
 /* AMBIENT TOP ORNAMENT */
-/* ========================================= */
 .water_timeline::after {
     content: '';
     position: absolute;
@@ -514,9 +496,7 @@
     }
 }
 
-/* ========================================= */
 /* UNDERWATER FLOATING ANIMATIONS - JOURNEY */
-/* ========================================= */
 
 /* Timeline items float with staggered timing */
 .timeline_item:nth-child(1) { animation: journey-float 7s ease-in-out infinite; animation-delay: 0s; }
@@ -539,4 +519,3 @@
     }
 }
 
-/* Responsive layout moved to css/responsive.css */

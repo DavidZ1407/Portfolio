@@ -1,11 +1,8 @@
-/* ========================================= */
-/* CENTRALIZED ANIMATION MANAGER            */
-/* Single rAF loop for ALL canvas modules   */
-/* ========================================= */
-
-/* Max. DeltaTime (Sekunden) pro Frame. Verhindert grosse Zeitspruenge
-   (z.B. nach Tab-Wechsel), die die Simulation "explodieren" lassen. */
-const MAX_FRAME_DELTA_SECONDS = 0.05;
+/**
+ * File: animation_manager.js
+ * Description: Central animation manager: registers canvas/WebGL animations and pauses them when off-screen.
+ */
+import { MAX_FRAME_DELTA_SECONDS } from '../constants/ui.js';
 
 /**
  * AnimationManager - Single requestAnimationFrame loop
