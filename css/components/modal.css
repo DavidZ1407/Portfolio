@@ -1072,6 +1072,8 @@
         radial-gradient(circle at 50% 50%, rgba(10, 30, 45, 0.6) 0%, transparent 70%),
         #030a10;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Allow vertical scrolling while a horizontal swipe/drag gesture is in progress */
+    touch-action: pan-y;
 }
 
 .modal_media_image {

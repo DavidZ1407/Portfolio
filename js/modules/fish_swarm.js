@@ -179,11 +179,19 @@ export function initFishSwarm() {
     }, { threshold: 0.15, rootMargin: '-5% 0px -5% 0px' });
     sections.forEach(s => observer.observe(s));
 
-    // Track scroll position continuously
+    // Track scroll position continuously - throttled via rAF
+    // so the scroll listener never runs more than once per frame on mobile.
+    let scrollTicking = false;
     window.addEventListener('scroll', () => {
-        const cy = window.scrollY;
-        scrollDirection = cy > lastScrollY ? 'down' : 'up';
-        lastScrollY = cy;
+        if (!scrollTicking) {
+            requestAnimationFrame(() => {
+                const cy = window.scrollY;
+                scrollDirection = cy > lastScrollY ? 'down' : 'up';
+                lastScrollY = cy;
+                scrollTicking = false;
+            });
+            scrollTicking = true;
+        }
     }, { passive: true });
 
     // Also listen for hashchange (nav clicks)

@@ -646,11 +646,10 @@ function closePopup(immediate = false) {
 
     const closeBtn = modalContainer.querySelector('.modal_close_btn');
 
-    // Release scroll lock + modal-open class immediately (navigation should scroll right away).
-    unlockBodyScroll();
-
     if (immediate) {
         // Hide immediately without the close animation (e.g. when clicking a navbar link).
+        // Release scroll lock immediately so the user can scroll right away.
+        unlockBodyScroll();
         modalOverlay.style.display = 'none';
         modalContainer.style.display = 'none';
         modalContainer.classList.remove('water_close');
@@ -675,8 +674,13 @@ function closePopup(immediate = false) {
     modalOverlay.style.transition = 'opacity 0.35s ease';
     modalOverlay.style.opacity = '0';
 
-    // Wait for animation to complete before hiding
+    // Wait for animation to complete before hiding.
+    // Scroll lock stays engaged during the water-close animation so the
+    // SVG filter animation gets the GPU to itself on mobile - releasing it
+    // mid-animation is what caused the close jank. It is unlocked here,
+    // once the modal is hidden and the animation is finished.
     setTimeout(() => {
+        unlockBodyScroll();
         modalOverlay.style.display = 'none';
         modalContainer.style.display = 'none';
         modalContainer.classList.remove('water_close');
@@ -1145,8 +1149,17 @@ function setupMediaEvents() {
 function bindMediaDragGesture(el, onNext, onPrev) {
     if (!el) return;
 
-    const DRAG_START_DISTANCE = 14;  // px of horizontal intent before dragging starts
+        const DRAG_START_DISTANCE = 14;  // px of horizontal intent before dragging starts
     const SWIPE_THRESHOLD = 55;      // px required for a swipe to count
+
+    /*
+     * Mobile UX fix (Issue 1): keep the image pinned inside its frame while the
+     * user swipes, instead of letting it follow the finger. Set to `true` to
+     * restore the old "drag-follows-finger" behaviour, or leave `false` for a
+     * clean hard-switch between images once the swipe threshold is crossed.
+     * Either way the threshold/tap/scroll detection is identical.
+     */
+    const FOLLOW_DURING_DRAG = false;
     const WHEEL_THRESHOLD = 30;      // px (trackpad horizontal delta)
     const WHEEL_COOLDOWN_MS = 700;
 
@@ -1199,11 +1212,16 @@ function bindMediaDragGesture(el, onNext, onPrev) {
         }
 
         lastDX = dx;
-        const media = getMedia();
-        if (media) {
-            // The image/video gently follows the finger/hand
-            media.style.transform = `translate3d(${dx}px, 0, 0)`;
+        if (FOLLOW_DURING_DRAG) {
+            const media = getMedia();
+            if (media) {
+                // The image/video gently follows the finger/hand
+                media.style.transform = `translate3d(${dx}px, 0, 0)`;
+            }
         }
+        // When FOLLOW_DURING_DRAG is false the image stays pinned in its
+        // frame; the actual prev/next switch happens in endDrag() once the
+        // swipe threshold is crossed.
     }, { passive: true });
 
     function endDrag(e) {
