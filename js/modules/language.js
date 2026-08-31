@@ -10,12 +10,12 @@ const DEFAULT_LANG = 'en';
 
 /**
  * CV file paths per language
- * en -> David_Zahn_CV.pdf (English)
- * de -> David_Zahn_CV_de.pdf (German)
+ * en -> CV_David_Zahn_EN.pdf (English)
+ * de -> CV_David_Zahn_DE.pdf (German)
  */
 const CV_PATHS = {
-    en: { href: 'assets/CV/David_Zahn_CV.pdf', download: 'David_Zahn_CV.pdf', aria: 'Download CV' },
-    de: { href: 'assets/CV/David_Zahn_CV_de.pdf', download: 'David_Zahn_CV_de.pdf', aria: 'Lebenslauf herunterladen' }
+    en: { href: 'assets/CV/CV_David_Zahn_EN.pdf', download: 'CV_David_Zahn_EN.pdf', aria: 'Download CV' },
+    de: { href: 'assets/CV/CV_David_Zahn_DE.pdf', download: 'CV_David_Zahn_DE.pdf', aria: 'Lebenslauf herunterladen' }
 };
 
 let currentLang = DEFAULT_LANG;
