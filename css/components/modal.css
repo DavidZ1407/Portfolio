@@ -1721,3 +1721,38 @@
     transform: scale(1.05);
 }
 
+/* =========================================================
+   MOBILE MODAL LAYOUT + GALLERY GESTURES
+   (mobile UX: sidebar clearance, on-screen arrows, swipe/drag support)
+   ========================================================= */
+
+/* On screens < 768px the fixed right-side social sidebar floats above the
+   modal (z-index 1100). The modal itself is additionally inset from the right
+   edge by JS (MODAL_SIDEBAR_RESERVE_PX). These rules pull the viewer arrows
+   inside the frame so they never sit under the sidebar or off-screen. */
+@media (max-width: 768px) {
+    .modal_media_prev { left: 6px; }
+    .modal_media_next { right: 6px; }
+}
+
+/* Gesture support: native vertical scrolling inside the modal stays untouched
+   (pan-y), horizontal swipes/drags are handled by JS. */
+.modal_media_stage,
+.modal_lightbox {
+    touch-action: pan-y;
+}
+
+/* Subtle, responsive drag feedback - the active media follows the pointer */
+.modal_media_stage.is_dragging,
+.modal_lightbox.is_dragging {
+    cursor: grabbing;
+}
+.modal_media_stage.is_dragging .modal_media_image,
+.modal_media_stage.is_dragging .modal_media_video,
+.modal_media_stage.is_dragging .modal_youtube_thumb,
+.modal_lightbox.is_dragging .modal_lightbox_image,
+.modal_lightbox.is_dragging .modal_lightbox_video {
+    transition: none;
+    will-change: transform;
+}
+

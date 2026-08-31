@@ -3,7 +3,7 @@
  * Description: Project modal: open/close water animations, media viewer, lightbox, thumbnails, and keyboard navigation.
  */
 import { getCurrentLang } from './language.js';
-import { LARGE_BREAKPOINT_PX, XLARGE_BREAKPOINT_PX, FOUR_K_BREAKPOINT_PX, CANVAS_BACKING_MAX_WIDTH } from '../constants/ui.js';
+import { LARGE_BREAKPOINT_PX, XLARGE_BREAKPOINT_PX, FOUR_K_BREAKPOINT_PX, CANVAS_BACKING_MAX_WIDTH, MOBILE_BREAKPOINT } from '../constants/ui.js';
 import {
     getProjectDescription,
     getProjectContribution,
@@ -57,6 +57,12 @@ const MODAL_SIZE_PRESETS = [
 const MODAL_DEFAULT_SIZE = { minWidth: 0, width: 900, height: 800 };
 const MODAL_VIEWPORT_MARGIN_X = 60;   // modal distance to the viewport edge (horizontal)
 const MODAL_VIEWPORT_MARGIN_Y = 80;   // modal distance to the viewport edge (vertical)
+
+// On mobile the fixed right-side social bar (.sidebar_socials, z-index 1100)
+// floats above the modal. Reserve a right-side gap on screens < 768px so the
+// modal frame AND its hanging prev/next arrows never touch the sidebar.
+const MODAL_SIDEBAR_RESERVE_PX = 56;
+const MOBILE_MODAL_BREAKPOINT_PX = MOBILE_BREAKPOINT;
 
 /**
  * Initialize modal system
@@ -148,6 +154,14 @@ function createModalElements() {
 
     // Wire up media events (play button/video) once
     setupMediaEvents();
+
+    // Unified touch/mouse/stylus swipe & drag navigation for the main viewer.
+    // (Arrows + keyboard stay fully functional - this is purely additive.)
+    bindMediaDragGesture(
+        modalContainer.querySelector('.modal_media_stage'),
+        () => navigateMedia(1),
+        () => navigateMedia(-1)
+    );
 
     // Create and wire up the lightbox for the large media viewer (fullscreen)
     createLightbox();
@@ -469,14 +483,17 @@ export function showPopupAtCard(project, card) {
     if (currentProjectIndex === -1) currentProjectIndex = 0;
     currentProject = project;
 
-    // Set modal size - viewport-responsive for large screens (2056px+)
-    const vw = window.innerWidth;
+    // Set modal size - viewport-responsive for large screens (2056px+).
+    // On mobile (< 768px) the fixed social sidebar on the right edge floats
+    // above the modal (z-index 1100), so reserve extra room for it.
+    const vw = document.documentElement.clientWidth || window.innerWidth;
     const sizePreset = MODAL_SIZE_PRESETS.find(p => vw >= p.minWidth) || MODAL_DEFAULT_SIZE;
     const maxModalW = sizePreset.width;
     const maxModalH = sizePreset.height;
-    const modalWidth = Math.min(maxModalW, vw - MODAL_VIEWPORT_MARGIN_X);
+    const sidebarReserve = vw <= MOBILE_MODAL_BREAKPOINT_PX ? MODAL_SIDEBAR_RESERVE_PX : 0;
+    const modalWidth = Math.min(maxModalW, vw - MODAL_VIEWPORT_MARGIN_X - sidebarReserve);
     const modalHeight = Math.min(maxModalH, window.innerHeight - MODAL_VIEWPORT_MARGIN_Y);
-    const left = (vw - modalWidth) / 2;
+    const left = Math.max((vw - modalWidth) / 2, 12);
 
     // Position the modal below the fixed main navbar so the title/X button
     // are never covered by the navbar when it sits above the overlay.
@@ -539,9 +556,10 @@ export function showPopupAtCard(project, card) {
     // The shader is started here with the matching category color
     populateModal(project);
 
-    // Set scroll lock + modal-open state on body (navbar stays above the overlay via CSS)
-    document.body.style.overflow = 'hidden';
-    document.body.classList.add('modal-open');
+    // Set scroll lock + modal-open state on body (navbar stays above the overlay via CSS).
+    // Compensating for the disappearing scrollbar keeps the page behind the modal
+    // layout-stable, so opening/closing never shifts or jumps the page.
+    lockBodyScroll();
 }
 
 /**
@@ -568,12 +586,25 @@ function restartWaterCloseAnimation(closeBtn) {
 }
 
 /**
+ * Prevents body scrolling while the modal is open.
+ * Also compensates for the disappearing vertical scrollbar so the page behind
+ * the modal keeps its exact width (no horizontal jump when opening/closing).
+ */
+function lockBodyScroll() {
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = scrollbarWidth > 0 ? `${scrollbarWidth}px` : '';
+    document.body.classList.add('modal-open');
+}
+
+/**
  * ALWAYS reset body scroll + modal-open state.
  * Executed synchronously (even during the close animation) so
  * navigation/scrolling work again immediately - never a "scroll-locked" state.
  */
 function unlockBodyScroll() {
     document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
     document.body.classList.remove('modal-open');
 }
 
@@ -638,6 +669,11 @@ function closePopup(immediate = false) {
 
     // Trigger water close animation
     modalContainer.classList.add('water_close');
+
+    // Fade the dark backdrop out in sync with the water-close animation so it
+    // never snaps away abruptly when the overlay is hidden at the end.
+    modalOverlay.style.transition = 'opacity 0.35s ease';
+    modalOverlay.style.opacity = '0';
 
     // Wait for animation to complete before hiding
     setTimeout(() => {
@@ -1096,6 +1132,127 @@ function setupMediaEvents() {
     });
 }
 
+/**
+ * Unified swipe/drag navigation for the media viewer + lightbox.
+ * Uses Pointer Events so touch, mouse and stylus share ONE implementation:
+ *   - drag/swipe LEFT  -> next media item
+ *   - drag/swipe RIGHT -> previous media item
+ *   - vertical movement is left untouched (native vertical scrolling keeps working)
+ *   - a tap without movement is NOT treated as a swipe (clicks keep working)
+ *   - horizontal trackpad two-finger swipes (wheel) are supported on desktop
+ * Purely additive - the existing arrow buttons and keyboard arrows keep working.
+ */
+function bindMediaDragGesture(el, onNext, onPrev) {
+    if (!el) return;
+
+    const DRAG_START_DISTANCE = 14;  // px of horizontal intent before dragging starts
+    const SWIPE_THRESHOLD = 55;      // px required for a swipe to count
+    const WHEEL_THRESHOLD = 30;      // px (trackpad horizontal delta)
+    const WHEEL_COOLDOWN_MS = 700;
+
+    let pointerId = null;
+    let startX = 0;
+    let startY = 0;
+    let lastDX = 0;
+    let dragging = false;
+    let suppressClick = false;
+
+    function getMedia() {
+        return el.querySelector('img, video');
+    }
+
+    function resetTransform() {
+        const media = getMedia();
+        if (media) media.style.transform = '';
+        el.classList.remove('is_dragging');
+    }
+
+    el.addEventListener('dragstart', (e) => {
+        // Never start the browser's native image drag from the media area
+        e.preventDefault();
+    });
+
+    el.addEventListener('pointerdown', (e) => {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        if (!e.isPrimary) return;
+        pointerId = e.pointerId;
+        startX = e.clientX;
+        startY = e.clientY;
+        lastDX = 0;
+        dragging = false;
+        suppressClick = false;
+        try { el.setPointerCapture(e.pointerId); } catch (err) { /* noop */ }
+    }, true);
+
+    el.addEventListener('pointermove', (e) => {
+        if (e.pointerId !== pointerId) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+
+        if (!dragging) {
+            // Need convincing horizontal intent before engaging, so tiny moves,
+            // taps and vertical scrolling never trigger a swipe.
+            if (Math.abs(dx) < DRAG_START_DISTANCE) return;
+            if (Math.abs(dx) < Math.abs(dy) * 1.2) return;
+            dragging = true;
+            el.classList.add('is_dragging');
+        }
+
+        lastDX = dx;
+        const media = getMedia();
+        if (media) {
+            // The image/video gently follows the finger/hand
+            media.style.transform = `translate3d(${dx}px, 0, 0)`;
+        }
+    }, { passive: true });
+
+    function endDrag(e) {
+        if (e && e.pointerId !== undefined && e.pointerId !== pointerId) return;
+        const wasDragging = dragging;
+        dragging = false;
+        pointerId = null;
+
+        resetTransform();
+
+        if (!wasDragging) return;
+
+        const dx = lastDX;
+        if (Math.abs(dx) >= SWIPE_THRESHOLD) {
+            if (dx < 0) onNext(); else onPrev();
+            suppressClick = true;
+        }
+    }
+
+    el.addEventListener('pointerup', endDrag, true);
+    el.addEventListener('pointercancel', endDrag, true);
+    el.addEventListener('lostpointercapture', () => {
+        pointerId = null;
+        if (dragging) { dragging = false; resetTransform(); }
+    });
+
+    // After a real drag a synthetic click fires - swallow it so the lightbox
+    // does not open right after swiping the media.
+    el.addEventListener('click', (e) => {
+        if (suppressClick) {
+            suppressClick = false;
+            e.stopPropagation();
+            e.preventDefault();
+        }
+    }, true);
+
+    // Desktop trackpads: two-finger horizontal swipe = prev/next
+    let lastWheelTime = 0;
+    el.addEventListener('wheel', (e) => {
+        const dx = e.deltaX;
+        const dy = e.deltaY;
+        if (Math.abs(dx) < WHEEL_THRESHOLD || Math.abs(dx) < Math.abs(dy)) return;
+        const now = Date.now();
+        if (now - lastWheelTime < WHEEL_COOLDOWN_MS) return;
+        lastWheelTime = now;
+        if (dx < 0) onNext(); else onPrev();
+    }, { passive: true });
+}
+
 /* LIGHTBOX FOR THE MEDIA VIEWER (FULLSCREEN) */
 
 /**
@@ -1161,6 +1318,13 @@ function setupLightbox() {
         e.stopPropagation();
         navigateMedia(1);
     });
+
+    // Unified swipe/drag (touch + mouse + trackpad) inside the lightbox
+    bindMediaDragGesture(
+        lightboxContainer,
+        () => navigateMedia(1),
+        () => navigateMedia(-1)
+    );
 }
 
 /**

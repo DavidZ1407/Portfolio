@@ -36,7 +36,10 @@ function buildCarouselSlides() {
         const img = document.createElement('img');
         img.src = getProjectCover(projectIdx) || '';
         img.alt = getProjectTitle(projectIdx, lang) || '';
-        img.loading = 'lazy';
+        // The first slide sits inside the initial viewport (hero) and is the
+        // closest thing to an LCP image on this page - load it eagerly.
+        // Every other slide is a candidate for lazy loading.
+        img.loading = slideIndex === 0 ? 'eager' : 'lazy';
         img.decoding = 'async';
         // Optional: show the cover completely (coverFit: 'contain'), no crop
         if (project.coverFit === 'contain') img.classList.add('fit-contain');
@@ -134,6 +137,19 @@ export function initCarousel() {
 
     // Start auto-play
     startAutoPlay();
+
+    // Pause auto-play whenever the hero section leaves the viewport.
+    // The slide transform itself is cheap, but skipping a timer-driven
+    // animation for an off-screen carousel is a free win on mobile.
+    const heroSection = document.querySelector('.hero_section');
+    if (heroSection && 'IntersectionObserver' in window) {
+        const heroObserver = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) startAutoPlay();
+            else stopAutoPlay();
+        }, { threshold: 0.05 });
+        heroObserver.observe(heroSection);
+        cleanupFunctions.push(() => heroObserver.disconnect());
+    }
 
     // Register cleanup
     cleanupRegistry.register(() => {

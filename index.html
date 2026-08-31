@@ -11,26 +11,9 @@
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/Picture/favicon.svg?v=3">
 
-    <!-- Preload critical assets -->
-    <link rel="preload" href="css/main.css" as="style">
-    <link rel="preload" href="css/components/landing.css" as="style">
-
-    <!-- Main CSS -->
-    <link rel="stylesheet" href="css/main.css">
-
-    <!-- Component CSS Files -->
-    <link rel="stylesheet" href="css/components/navbar.css">
-    <link rel="stylesheet" href="css/components/landing.css">
-    <link rel="stylesheet" href="css/components/archives.css">
-    <link rel="stylesheet" href="css/components/about.css">
-    <link rel="stylesheet" href="css/components/journey.css">
-    <link rel="stylesheet" href="css/components/contact.css">
-    <link rel="stylesheet" href="css/components/parallax.css">
-    <link rel="stylesheet" href="css/components/modal.css">
-    <link rel="stylesheet" href="css/components/depth-experience.css">
-
-    <!-- Unified Responsive System (overrides component-specific MQs) -->
-    <link rel="stylesheet" href="css/responsive.css">
+    <!-- Production CSS bundle (single minified file, generated via: node tools\build_css.js) -->
+    <link rel="preload" href="dist/style.min.css?v=1" as="style">
+    <link rel="stylesheet" href="dist/style.min.css?v=1">
 
     <!-- SVG filters for water distortion effects -->
     <svg style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
@@ -81,8 +64,9 @@
         </filter>
     </svg>
 
-    <!-- Three.js must load before main.js, otherwise window.THREE is undefined -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous"></script>
+    <!-- Three.js must load before main.js, otherwise window.THREE is undefined.
+         defer: downloads in parallel, still executes before the deferred ES module (main.js). -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous" defer></script>
 
     <!-- Main JavaScript (ES Module - imports all modules and constants) -->
     <script defer type="module" src="js/main.js?v=9"></script>

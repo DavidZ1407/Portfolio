@@ -1,0 +1,9 @@
+{
+  "name": "david-zahn-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Personal portfolio - Games & Immersive Media creator. CSS build: node tools/build_css.js",
+  "scripts": {
+    "build_css": "node tools/build_css.js"
+  }
+}
