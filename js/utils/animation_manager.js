@@ -1,19 +1,10 @@
-/**
- * File: animation_manager.js
- * Description: Central animation manager: registers canvas/WebGL animations and pauses them when off-screen.
- */
+//File: animation_manager.js
+//Description: Central animation manager: registers canvas/WebGL animations and pauses them when off-screen.
 import { MAX_FRAME_DELTA_SECONDS } from '../constants/ui.js';
 
-/**
- * AnimationManager - Single requestAnimationFrame loop
- * that drives all canvas/webgl animations.
- * 
- * Benefits:
- * - ONE rAF callback instead of 14+
- * - Shared timestamp (performance.now())
- * - Automatic pause on tab hidden
- * - Centralized cleanup
- */
+
+//AnimationManager - Single requestAnimationFrame loop
+//that drives all canvas/webgl animations.
 
 class AnimationManager {
     constructor() {
@@ -36,20 +27,19 @@ class AnimationManager {
         if (typeof fn !== 'function') return -1;
         const id = ++this.callbackId;
         this.callbacks.set(id, fn);
-        
+
         // Auto-start on first registration
         if (!this._started) {
             this._started = true;
             document.addEventListener('visibilitychange', this._boundVisibility);
             this.start();
         }
-        
+
         return id;
     }
 
-    /**
-     * Unregister a callback by ID
-     */
+
+    //Unregister a callback by ID
     unregister(id) {
         this.callbacks.delete(id);
         if (this.callbacks.size === 0) {
@@ -57,9 +47,8 @@ class AnimationManager {
         }
     }
 
-    /**
-     * Start the animation loop
-     */
+
+    //Start the animation loop
     start() {
         if (this.isRunning) return;
         this.isRunning = true;
@@ -67,9 +56,8 @@ class AnimationManager {
         this.animFrameId = requestAnimationFrame(this._boundAnimate);
     }
 
-    /**
-     * Stop the animation loop
-     */
+
+     //Stop the animation loop
     stop() {
         this.isRunning = false;
         if (this.animFrameId) {
@@ -78,9 +66,8 @@ class AnimationManager {
         }
     }
 
-    /**
-     * Pause all callbacks (e.g. tab hidden)
-     */
+
+     //Pause all callbacks (e.g. tab hidden)
     pause() {
         this.isRunning = false;
         if (this.animFrameId) {
@@ -90,9 +77,7 @@ class AnimationManager {
         this.lastFrameTime = 0; // Prevent time jump on resume
     }
 
-    /**
-     * Resume after pause
-     */
+     // Resume after pause
     resume() {
         if (this.isRunning) return;
         this.isRunning = true;
@@ -100,12 +85,11 @@ class AnimationManager {
         this.animFrameId = requestAnimationFrame(this._boundAnimate);
     }
 
-    /**
-     * Internal animation loop
-     */
+
+     // Internal animation loop
     _animate(now) {
         if (!this.isRunning) return;
-        
+
         // Calculate delta time (capped at 50ms to prevent spiral of death)
         if (!this.lastFrameTime) this.lastFrameTime = now;
         const dt = Math.min((now - this.lastFrameTime) / 1000, MAX_FRAME_DELTA_SECONDS);
@@ -123,9 +107,8 @@ class AnimationManager {
         this.animFrameId = requestAnimationFrame(this._boundAnimate);
     }
 
-    /**
-     * Handle tab visibility change
-     */
+
+     // Handle tab visibility change
     _onVisibilityChange() {
         if (document.hidden) {
             this.pause();
@@ -134,9 +117,8 @@ class AnimationManager {
         }
     }
 
-    /**
-     * Destroy the manager (cleanup)
-     */
+
+     //Destroy the manager (cleanup)
     destroy() {
         this.stop();
         document.removeEventListener('visibilitychange', this._boundVisibility);
@@ -148,10 +130,9 @@ class AnimationManager {
 // Singleton instance
 export const animationManager = new AnimationManager();
 
-/**
- * Helper: wrap a module's render function to register with the animation manager.
- * Returns a cleanup function.
- */
+
+ //Helper: wrap a module's render function to register with the animation manager.
+ //Returns a cleanup function.
 export function registerAnimation(fn) {
     const id = animationManager.register(fn);
     return () => animationManager.unregister(id);

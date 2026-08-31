@@ -1,20 +1,19 @@
-/**
- * File: underwater.js
- * Description: Underwater ambient effects: bubbles and caustic overlays.
- */
+//File: underwater.js
+//Description: Underwater ambient effects: bubbles and caustic overlays.
+
 import { cleanupRegistry, debounce, sizeCanvas } from '../utils/helpers.js';
 import { smoothLerp } from '../utils/smooth.js';
 import { registerAnimation } from '../utils/animation_manager.js';
 import { MAX_FRAME_DELTA_SECONDS, INTERSECTION_THRESHOLD, DEBOUNCE_DELAY_MS, BOOT_DELAY_MS } from '../constants/ui.js';
 
-/* SIMPLEX NOISE 3D (compact implementation) */
+// SIMPLEX NOISE 3D 
 const SimplexNoise = (() => {
     const F3 = 1 / 3;
     const G3 = 1 / 6;
     const grad3 = [
-        [1,1,0],[-1,1,0],[1,-1,0],[-1,-1,0],
-        [1,0,1],[-1,0,1],[1,0,-1],[-1,0,-1],
-        [0,1,1],[0,-1,1],[0,1,-1],[0,-1,-1]
+        [1, 1, 0], [-1, 1, 0], [1, -1, 0], [-1, -1, 0],
+        [1, 0, 1], [-1, 0, 1], [1, 0, -1], [-1, 0, -1],
+        [0, 1, 1], [0, -1, 1], [0, 1, -1], [0, -1, -1]
     ];
 
     class SimplexNoise {
@@ -47,18 +46,18 @@ const SimplexNoise = (() => {
 
             let i1, j1, k1, i2, j2, k2;
             if (x0 >= y0) {
-                if (y0 >= z0) { i1=1; j1=0; k1=0; i2=1; j2=1; k2=0; }
-                else if (x0 >= z0) { i1=1; j1=0; k1=0; i2=1; j2=0; k2=1; }
-                else { i1=0; j1=0; k1=1; i2=1; j2=0; k2=1; }
+                if (y0 >= z0) { i1 = 1; j1 = 0; k1 = 0; i2 = 1; j2 = 1; k2 = 0; }
+                else if (x0 >= z0) { i1 = 1; j1 = 0; k1 = 0; i2 = 1; j2 = 0; k2 = 1; }
+                else { i1 = 0; j1 = 0; k1 = 1; i2 = 1; j2 = 0; k2 = 1; }
             } else {
-                if (y0 < z0) { i1=0; j1=0; k1=1; i2=0; j2=1; k2=1; }
-                else if (x0 < z0) { i1=0; j1=1; k1=0; i2=0; j2=1; k2=1; }
-                else { i1=0; j1=1; k1=0; i2=1; j2=1; k2=0; }
+                if (y0 < z0) { i1 = 0; j1 = 0; k1 = 1; i2 = 0; j2 = 1; k2 = 1; }
+                else if (x0 < z0) { i1 = 0; j1 = 1; k1 = 0; i2 = 0; j2 = 1; k2 = 1; }
+                else { i1 = 0; j1 = 1; k1 = 0; i2 = 1; j2 = 1; k2 = 0; }
             }
 
             const x1 = x0 - i1 + G3, y1 = y0 - j1 + G3, z1 = z0 - k1 + G3;
-            const x2 = x0 - i2 + 2*G3, y2 = y0 - j2 + 2*G3, z2 = z0 - k2 + 2*G3;
-            const x3 = x0 - 1 + 3*G3, y3 = y0 - 1 + 3*G3, z3 = z0 - 1 + 3*G3;
+            const x2 = x0 - i2 + 2 * G3, y2 = y0 - j2 + 2 * G3, z2 = z0 - k2 + 2 * G3;
+            const x3 = x0 - 1 + 3 * G3, y3 = y0 - 1 + 3 * G3, z3 = z0 - 1 + 3 * G3;
 
             const ii = i & 255, jj = j & 255, kk = k & 255;
             const gi0 = this.permMod12[ii + this.perm[jj + this.perm[kk]]];
@@ -67,19 +66,18 @@ const SimplexNoise = (() => {
             const gi3 = this.permMod12[ii + 1 + this.perm[jj + 1 + this.perm[kk + 1]]];
 
             let n0, n1, n2, n3;
-            let t0 = 0.6 - x0*x0 - y0*y0 - z0*z0;
-            n0 = t0 < 0 ? 0 : (t0 *= t0, t0 * t0 * (grad3[gi0][0]*x0 + grad3[gi0][1]*y0 + grad3[gi0][2]*z0));
-            let t1 = 0.6 - x1*x1 - y1*y1 - z1*z1;
-            n1 = t1 < 0 ? 0 : (t1 *= t1, t1 * t1 * (grad3[gi1][0]*x1 + grad3[gi1][1]*y1 + grad3[gi1][2]*z1));
-            let t2 = 0.6 - x2*x2 - y2*y2 - z2*z2;
-            n2 = t2 < 0 ? 0 : (t2 *= t2, t2 * t2 * (grad3[gi2][0]*x2 + grad3[gi2][1]*y2 + grad3[gi2][2]*z2));
-            let t3 = 0.6 - x3*x3 - y3*y3 - z3*z3;
-            n3 = t3 < 0 ? 0 : (t3 *= t3, t3 * t3 * (grad3[gi3][0]*x3 + grad3[gi3][1]*y3 + grad3[gi3][2]*z3));
+            let t0 = 0.6 - x0 * x0 - y0 * y0 - z0 * z0;
+            n0 = t0 < 0 ? 0 : (t0 *= t0, t0 * t0 * (grad3[gi0][0] * x0 + grad3[gi0][1] * y0 + grad3[gi0][2] * z0));
+            let t1 = 0.6 - x1 * x1 - y1 * y1 - z1 * z1;
+            n1 = t1 < 0 ? 0 : (t1 *= t1, t1 * t1 * (grad3[gi1][0] * x1 + grad3[gi1][1] * y1 + grad3[gi1][2] * z1));
+            let t2 = 0.6 - x2 * x2 - y2 * y2 - z2 * z2;
+            n2 = t2 < 0 ? 0 : (t2 *= t2, t2 * t2 * (grad3[gi2][0] * x2 + grad3[gi2][1] * y2 + grad3[gi2][2] * z2));
+            let t3 = 0.6 - x3 * x3 - y3 * y3 - z3 * z3;
+            n3 = t3 < 0 ? 0 : (t3 *= t3, t3 * t3 * (grad3[gi3][0] * x3 + grad3[gi3][1] * y3 + grad3[gi3][2] * z3));
 
             return 32 * (n0 + n1 + n2 + n3);
         }
 
-        // Fractal Brownian Motion (octaves)
         fbm(x, y, z, octaves = 4, lacunarity = 2.0, gain = 0.5) {
             let value = 0, amplitude = 1, frequency = 1, max = 0;
             for (let i = 0; i < octaves; i++) {
@@ -175,7 +173,7 @@ export function initUnderwater() {
                     resize();
                     initParticles();
                     lastFrameTime = 0;
-                    
+
                     // Register with centralized animation manager
                     unregisterAnim = registerAnimation((now) => {
                         if (!isActive) return;
@@ -244,16 +242,15 @@ export function initUnderwater() {
 
     let cachedNodePositions = [];
     let lastNodePositionsUpdate = 0;
-    const NODE_POSITION_UPDATE_INTERVAL = 200; // Update positions max every 200ms
-    
+    const NODE_POSITION_UPDATE_INTERVAL = 200;
+
     function getNodePositions() {
         const now = performance.now();
-        // Only recalculate positions periodically to avoid layout thrashing
         if (now - lastNodePositionsUpdate < NODE_POSITION_UPDATE_INTERVAL) {
             return cachedNodePositions;
         }
         lastNodePositionsUpdate = now;
-        
+
         const nodes = container.querySelectorAll('.timeline_item');
         const containerRect = container.getBoundingClientRect();
         cachedNodePositions = [];
@@ -287,7 +284,6 @@ export function initUnderwater() {
         drawTrail(centerX);
         drawParticles();
         drawBubbles();
-        // Animation loop managed by AnimationManager
     }
 
     function drawEnergyLine(centerX, nodes) {
@@ -297,24 +293,19 @@ export function initUnderwater() {
         const totalHeight = endY - startY + 60;
         const segments = 90;
 
-        // === ANCIENT RUIN CABLE / PIPE ===
-        // Build the path with heavy, ancient sway - like a corroded pipe
+        // CABLE 
         const points = [];
         for (let i = 0; i <= segments; i++) {
             const t = i / segments;
             const y = (startY - 30) + t * totalHeight;
-            
-            // Heavy, slow sway - old pipe sagging under its own weight
-            const sag = Math.sin(t * Math.PI) * 3; // natural droop in the middle
+            const sag = Math.sin(t * Math.PI) * 3;
             const sway1 = Math.sin(t * Math.PI * 1.3 + time * 0.08) * 5;
             const sway2 = Math.sin(t * Math.PI * 2.7 + time * 0.05 + 1.5) * 2.5;
-            // Very slow drift - ancient structure barely moving
             const drift = Math.sin(time * 0.04 + t * 1.5) * 1.5;
             const x = centerX + sag + sway1 + sway2 + drift;
             points.push({ x, y, t });
         }
 
-        // Layer 1: Deep underwater ambient glow (widest, faintest)
         ctx.beginPath();
         for (let i = 0; i < points.length; i++) {
             if (i === 0) ctx.moveTo(points[i].x, points[i].y);
@@ -324,7 +315,6 @@ export function initUnderwater() {
         ctx.lineWidth = 18;
         ctx.stroke();
 
-        // Layer 2: Corroded pipe shadow / depth
         ctx.beginPath();
         for (let i = 0; i < points.length; i++) {
             if (i === 0) ctx.moveTo(points[i].x, points[i].y);
@@ -333,34 +323,24 @@ export function initUnderwater() {
         ctx.strokeStyle = 'rgba(30, 60, 70, 0.04)';
         ctx.lineWidth = 8;
         ctx.stroke();
-
-        // Layer 3: Main pipe body - thick, segmented, corroded look
         for (let i = 0; i < points.length - 1; i++) {
             const p0 = points[i];
             const p1 = points[i + 1];
             const t = p0.t;
-            
-            // Corroded texture - width varies along the pipe
-            const corrWidth = Math.sin(t * Math.PI * 18) * 0.3 
-                            + Math.sin(t * Math.PI * 30 + 2) * 0.15;
+            const corrWidth = Math.sin(t * Math.PI * 18) * 0.3
+                + Math.sin(t * Math.PI * 30 + 2) * 0.15;
             const pipeWidth = 2.2 + corrWidth;
-            
-            // Corrosion pattern - alternating darker/lighter segments
             const segment = Math.sin(t * Math.PI * 25);
             const isDark = segment > 0.3;
-            
-            // Base pipe color - dark teal patina
             let r, g, b, alpha;
             if (isDark) {
-                // Corroded section - darker, more opaque
                 r = 45; g = 100; b = 110;
                 alpha = 0.12 + Math.sin(t * Math.PI * 40 + time * 0.1) * 0.03;
             } else {
-                // Less corroded - slightly brighter
                 r = 65; g = 130; b = 140;
                 alpha = 0.08 + Math.sin(t * Math.PI * 40 + time * 0.1) * 0.02;
             }
-            
+
             ctx.beginPath();
             ctx.moveTo(p0.x, p0.y);
             ctx.lineTo(p1.x, p1.y);
@@ -369,16 +349,13 @@ export function initUnderwater() {
             ctx.stroke();
         }
 
-        // Layer 4: Pipe highlight edge (thin bright line on one side)
         for (let i = 0; i < points.length - 1; i++) {
             const p0 = points[i];
             const p1 = points[i + 1];
             const t = p0.t;
-            
-            // Faint highlight - like light catching the edge of a metal pipe
             const highlight = Math.sin(t * Math.PI * 8 + time * 0.06) * 0.5 + 0.5;
             const alpha = 0.03 + highlight * 0.04;
-            
+
             ctx.beginPath();
             ctx.moveTo(p0.x - 0.5, p0.y);
             ctx.lineTo(p1.x - 0.5, p1.y);
@@ -387,19 +364,16 @@ export function initUnderwater() {
             ctx.stroke();
         }
 
-        // Layer 5: Barnacle / growth nodes - small bumps along the pipe
         for (let i = 0; i < points.length; i += 3) {
             const p = points[i];
             const t = p.t;
-            
-            // Pseudo-random barnacle placement
             const barnacle = Math.sin(t * 99.7 + 42) * 0.5 + 0.5;
             if (barnacle > 0.6) {
                 const side = Math.sin(t * 77.3) > 0 ? 1 : -1;
                 const bx = p.x + side * (2 + barnacle * 2);
                 const by = p.y;
                 const bSize = 1 + barnacle * 1.5;
-                
+
                 ctx.beginPath();
                 ctx.arc(bx, by, bSize, 0, Math.PI * 2);
                 ctx.fillStyle = `rgba(60, 110, 120, ${0.04 + barnacle * 0.03})`;
@@ -407,17 +381,14 @@ export function initUnderwater() {
             }
         }
 
-        // Layer 6: Energy leak points - faint glow spots where the pipe is cracked
         const leakCount = 4;
         for (let s = 0; s < leakCount; s++) {
             const leakT = (s + 0.5) / leakCount;
             const leakIdx = Math.floor(leakT * (points.length - 1));
             const p = points[leakIdx];
-            
-            // Pulsing energy leak - very subtle
             const leakPulse = Math.sin(time * 0.7 + s * 2.5) * 0.5 + 0.5;
             const leakSize = 6 + leakPulse * 4;
-            
+
             const leakGrad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, leakSize);
             leakGrad.addColorStop(0, `rgba(100, 200, 215, ${0.03 + leakPulse * 0.02})`);
             leakGrad.addColorStop(0.5, `rgba(73, 146, 154, ${0.015})`);
@@ -426,19 +397,15 @@ export function initUnderwater() {
             ctx.beginPath();
             ctx.arc(p.x, p.y, leakSize, 0, Math.PI * 2);
             ctx.fill();
-            
-            // Tiny bright core at leak point
             ctx.fillStyle = `rgba(160, 230, 240, ${0.06 + leakPulse * 0.04})`;
             ctx.beginPath();
             ctx.arc(p.x, p.y, 0.8, 0, Math.PI * 2);
             ctx.fill();
         }
 
-        // Caustic light patches at node positions - underwater light pooling
         for (let i = 0; i < nodes.length; i++) {
             const nodeY = nodes[i].y;
             const size = 25 + Math.sin(time * 0.6 + i * 3.5) * 10;
-            
             const grad = ctx.createRadialGradient(centerX, nodeY, 0, centerX, nodeY, size);
             grad.addColorStop(0, `rgba(50, 100, 110, ${0.03 + Math.sin(time * 0.4 + i) * 0.01})`);
             grad.addColorStop(0.4, `rgba(73, 146, 154, ${0.015})`);
@@ -451,40 +418,30 @@ export function initUnderwater() {
     }
 
     function updateSpherePosition(nodes) {
-        // Use scroll progress through the section to determine target node
         const sectionRect = section.getBoundingClientRect();
         const sectionHeight = section.offsetHeight;
         const sectionTop = sectionRect.top;
-        
-        // Calculate scroll progress: 0 = section just entered viewport, 1 = section leaving
-        const scrollProgress = Math.max(0, Math.min(1, 
+        const scrollProgress = Math.max(0, Math.min(1,
             -sectionTop / (sectionHeight - window.innerHeight)
         ));
-        
-        // Map scroll progress to node index
         const nodeCount = nodes.length;
         const rawIndex = scrollProgress * (nodeCount - 1);
         const targetIndex = Math.round(rawIndex);
-        
+
         if (targetIndex >= 0 && targetIndex < nodeCount) {
             sphereTargetY = nodes[targetIndex].y;
-            
+
             if (targetIndex !== currentNodeIndex) {
                 currentNodeIndex = targetIndex;
                 sphereEnergy = 1.5;
             }
         }
-        
-        // Slow, smooth lerp for that beautiful traveling effect
         sphereY = smoothLerp(sphereY, sphereTargetY, 0.03);
         if (sphereEnergy > 0) sphereEnergy -= 0.01;
         trail.push({ y: sphereY, opacity: 0.2, age: 0 });
         if (trail.length > 25) trail.shift();
-
-        // Update sphere-near class on timeline items
-        // Pearl nodes only illuminate when sphere is actually close
         const items = container.querySelectorAll('.timeline_item');
-        const sphereScreenY = sphereY; // relative to container
+        const sphereScreenY = sphereY;
         items.forEach((item, i) => {
             if (i < nodes.length) {
                 const dist = Math.abs(nodes[i].y - sphereScreenY);
@@ -506,34 +463,24 @@ export function initUnderwater() {
         return closest;
     }
 
-    /* PROCEDURAL SPHERE with simplex noise */
-    function drawProceduralSphere(centerX) {
+    function drawProceduralSphere(_centerX) {
         const bobY = Math.sin(time * 0.7) * 1.5;
         const cy = sphereY + bobY;
-        // Follow the line's X position at the sphere's Y
         const cx = getLineXAtY(sphereY, getNodePositions());
 
         const energy = Math.max(0, sphereEnergy);
         const breathe = 0.5 + Math.sin(time * 1.5) * 0.15;
         const radius = SPHERE_RADIUS + energy * 3 + Math.sin(time * 1.2) * 1.5;
-
-        // Rotation
         const rotY = time * 0.25;
         const rotX = time * 0.12 + Math.sin(time * 0.3) * 0.1;
-
-        // Generate vertices with simplex noise displacement
         const vertices = [];
         for (let lat = 0; lat <= LAT_LINES; lat++) {
             const theta = (lat / LAT_LINES) * Math.PI;
             for (let lon = 0; lon <= LON_LINES; lon++) {
                 const phi = (lon / LON_LINES) * Math.PI * 2;
-
-                // Base position
                 let px = radius * Math.sin(theta) * Math.cos(phi);
                 let py = radius * Math.cos(theta);
                 let pz = radius * Math.sin(theta) * Math.sin(phi);
-
-                // Simplex noise displacement (multi-octave)
                 const nx = px * NOISE_SCALE;
                 const ny = py * NOISE_SCALE;
                 const nz = pz * NOISE_SCALE;
@@ -544,44 +491,30 @@ export function initUnderwater() {
                     4, 2.0, 0.5
                 );
                 const disp = noiseVal * DISPLACEMENT_AMOUNT * (1 + energy * 0.6);
-
-                // Flow map distortion (vertices drift along surface)
                 const flowX = noise.noise3D(px * 0.5 + time * FLOW_SPEED, py * 0.5, pz * 0.5) * 1.5;
                 const flowY = noise.noise3D(px * 0.5, py * 0.5 + time * FLOW_SPEED, pz * 0.5) * 1.5;
                 const flowZ = noise.noise3D(px * 0.5, py * 0.5, pz * 0.5 + time * FLOW_SPEED) * 1.5;
-
-                // Apply displacement along normal + flow
                 const len = Math.sqrt(px * px + py * py + pz * pz) || 1;
                 px += (px / len) * disp + flowX;
                 py += (py / len) * disp + flowY;
                 pz += (pz / len) * disp + flowZ;
-
-                // Rotate Y
                 const cosRy = Math.cos(rotY), sinRy = Math.sin(rotY);
                 let rx = px * cosRy - pz * sinRy;
                 let rz = px * sinRy + pz * cosRy;
                 let ry = py;
-
-                // Tilt X
                 const cosRx = Math.cos(rotX), sinRx = Math.sin(rotX);
                 let ty = ry * cosRx - rz * sinRx;
                 let tz = ry * sinRx + rz * cosRx;
-
-                // Perspective projection
                 const fov = 130;
                 const z = tz + fov + 40;
                 const scale = fov / z;
                 const sx = cx + rx * scale;
                 const sy = cy + ty * scale;
-
-                // Normal for fresnel
                 const normalX = px / len, normalY = py / len, normalZ = pz / len;
-                // View direction (simplified: toward camera)
                 const viewX = 0, viewY = 0, viewZ = -1;
                 const dot = normalX * viewX + normalY * viewY + normalZ * viewZ;
                 const fresnel = 1 - Math.abs(dot);
-                const fresnelPow = fresnel * fresnel; // squared for sharper edge glow
-
+                const fresnelPow = fresnel * fresnel;
                 vertices.push({
                     x: sx, y: sy, z: tz,
                     lat, lon,
@@ -590,27 +523,17 @@ export function initUnderwater() {
                 });
             }
         }
-
-        // ---- TRANSLUCENT SURFACE FILL ----
-        // Draw filled quads between vertices for translucent surface
         for (let lat = 0; lat < LAT_LINES; lat++) {
             for (let lon = 0; lon < LON_LINES; lon++) {
                 const i00 = lat * (LON_LINES + 1) + lon;
                 const i01 = lat * (LON_LINES + 1) + lon + 1;
                 const i10 = (lat + 1) * (LON_LINES + 1) + lon;
                 const i11 = (lat + 1) * (LON_LINES + 1) + lon + 1;
-
                 const v00 = vertices[i00], v01 = vertices[i01];
                 const v10 = vertices[i10], v11 = vertices[i11];
-
-                // Average depth for this quad
                 const avgZ = (v00.z + v01.z + v10.z + v11.z) / 4;
                 const depthFactor = Math.max(0, Math.min(1, (avgZ + 40) / 200));
-
-                // Average fresnel for this quad
                 const avgFresnel = (v00.fresnel + v01.fresnel + v10.fresnel + v11.fresnel) / 4;
-
-                // Translucent fill
                 const fillAlpha = (0.015 + avgFresnel * 0.04 + energy * 0.01) * depthFactor;
                 ctx.beginPath();
                 ctx.moveTo(v00.x, v00.y);
@@ -623,8 +546,6 @@ export function initUnderwater() {
             }
         }
 
-        // ---- WIREFRAME OVERLAY ----
-        // Longitude lines
         for (let lon = 0; lon < LON_LINES; lon++) {
             ctx.beginPath();
             for (let lat = 0; lat <= LAT_LINES; lat++) {
@@ -638,7 +559,6 @@ export function initUnderwater() {
             ctx.stroke();
         }
 
-        // Latitude lines
         for (let lat = 1; lat < LAT_LINES; lat++) {
             ctx.beginPath();
             for (let lon = 0; lon <= LON_LINES; lon++) {
@@ -652,7 +572,6 @@ export function initUnderwater() {
             ctx.stroke();
         }
 
-        // ---- VERTEX DOTS with fresnel ----
         for (let lat = 0; lat <= LAT_LINES; lat++) {
             for (let lon = 0; lon <= LON_LINES; lon++) {
                 const v = vertices[lat * (LON_LINES + 1) + lon];
@@ -667,8 +586,6 @@ export function initUnderwater() {
             }
         }
 
-        // ---- FRESNEL GLOW (edge glow ring) ----
-        // Draw a ring of glow around the sphere edges
         const fresnelGlowRadius = radius + 4 + energy * 3;
         const fresnelGrad = ctx.createRadialGradient(cx, cy, radius * 0.6, cx, cy, fresnelGlowRadius);
         fresnelGrad.addColorStop(0, 'rgba(0, 0, 0, 0)');
@@ -680,10 +597,7 @@ export function initUnderwater() {
         ctx.arc(cx, cy, fresnelGlowRadius, 0, Math.PI * 2);
         ctx.fill();
 
-        // ---- GLOWING CYAN CORE ----
         const coreRadius = 5 + Math.sin(time * 2) * 0.8 + energy * 2;
-
-        // Outer glow
         const outerGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius + 12 + energy * 8);
         outerGlow.addColorStop(0, `rgba(73, 146, 154, ${0.07 * breathe + energy * 0.04})`);
         outerGlow.addColorStop(0.35, `rgba(100, 200, 215, ${0.035 * breathe})`);
@@ -694,7 +608,6 @@ export function initUnderwater() {
         ctx.arc(cx, cy, radius + 12 + energy * 8, 0, Math.PI * 2);
         ctx.fill();
 
-        // Core glow
         const coreGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, coreRadius + 6);
         coreGrad.addColorStop(0, `rgba(180, 240, 250, ${0.5 * breathe + energy * 0.2})`);
         coreGrad.addColorStop(0.3, `rgba(100, 200, 215, ${0.3 * breathe + energy * 0.1})`);
@@ -705,7 +618,6 @@ export function initUnderwater() {
         ctx.arc(cx, cy, coreRadius + 6, 0, Math.PI * 2);
         ctx.fill();
 
-        // Inner bright core
         const innerGrad = ctx.createRadialGradient(cx - 0.5, cy - 0.8, 0, cx, cy, coreRadius);
         innerGrad.addColorStop(0, `rgba(220, 250, 255, ${0.85 * breathe + energy * 0.15})`);
         innerGrad.addColorStop(0.4, `rgba(150, 230, 240, ${0.55 * breathe})`);
@@ -725,7 +637,6 @@ export function initUnderwater() {
         ctx.arc(cx - 0.3, cy - 0.5, 2.5, 0, Math.PI * 2);
         ctx.fill();
 
-        // ---- PULSE WAVE ----
         if (energy > 0.4) {
             const waveRadius = (1.8 - energy) * 50 + radius;
             const waveOpacity = (energy - 0.4) * 0.12;
@@ -736,7 +647,6 @@ export function initUnderwater() {
             ctx.stroke();
         }
 
-        // ---- EMIT SURFACE PARTICLES ----
         if (sphereEnergy > 0.15) {
             for (let i = 0; i < 2; i++) {
                 const angle = Math.random() * Math.PI * 2;

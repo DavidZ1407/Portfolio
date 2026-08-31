@@ -1,7 +1,7 @@
-/**
- * File: translations.js
- * Description: Bilingual (EN/DE) translation strings for all UI text, keyed by data-i18n attributes.
- */
+
+ //File: translations.js
+ //Description: Bilingual (EN/DE) translation strings for all UI text, keyed by data-i18n attributes.
+
 export const translations = {
     en: {
         // Sidebar
