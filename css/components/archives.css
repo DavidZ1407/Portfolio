@@ -177,12 +177,12 @@
     height: 400px;
     margin-left: -160px;
     margin-top: -200px;
-    /* Kein dunkler Kasten-Hintergrund: nur die kreisrunde Wasserform
-       (Vortex-Canvas) und if needed das freigelegte Bild sind sichtbar */
+    /* No dark box background: only the circular water shape (vortex canvas)
+       and, if needed, the revealed image are visible */
     overflow: hidden;
     cursor: pointer;
     transform-style: preserve-3d;
-    /* Nur transform + opacity in transition - kein box-shadow (verursacht Jitter) */
+    /* Only transition transform + opacity - box-shadow transitions cause jitter */
     transition: transform 1.2s cubic-bezier(0.25, 0.1, 0.25, 1),
                 opacity 0.8s cubic-bezier(0.25, 0.1, 0.25, 1),
                 z-index 0s;
@@ -192,8 +192,8 @@
 
 .portal-slide img {
     position: absolute;
-    /* Bildbereich mit Luft zum Rahmen (Padding-Optik); unten sind 24%
-       fuer das Textfeld (slide-overlay) reserviert - kein Ueberlappen. */
+    /* Image area with breathing room from the frame; the bottom 24%
+       is reserved for the text zone (slide-overlay) - no overlapping. */
     top: 3.5%;
     left: 4.5%;
     width: 91%;
@@ -203,7 +203,7 @@
     transition: filter 0.9s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* Cover komplett zeigen (kein Crop) - e.g. Gothic-Solaris-Startscreen mit Logo */
+/* Show the full cover uncropped - e.g. the Gothica Solaris start screen with its logo */
 .portal-slide img.fit-contain {
     object-fit: contain;
     background: radial-gradient(circle at 50% 45%, rgba(10, 30, 45, 0.55) 0%, rgba(3, 8, 9, 0.9) 100%);
@@ -235,9 +235,9 @@
     transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* Image inside tilt inner for independent transforms
-   (gleicher Bildbereich wie .portal-slide img: Luft zum Rahmen,
-   unten Platz fuer das Textfeld) */
+/* Image inside tilt-inner for independent transforms
+   (same image area as .portal-slide img: breathing room from the frame,
+   bottom space for the text zone) */
 .portal-slide .tilt-inner img {
     position: absolute;
     top: 3.5%;
@@ -249,10 +249,10 @@
     transition: filter 0.3s ease;
 }
 
-/* Cover komplett zeigen (kein Crop) - auch innerhalb des Tilt-Wrappers.
-   Hoehere Specificity als ".portal-slide .tilt-inner img", sonst gewinnt
-   dort das object-fit: cover und schneidet bei Querformat-Covern
-   (e.g. Gothica Solaris) den Titel an den Seiten ab. */
+/* Show the full cover uncropped - also inside the tilt wrapper.
+   Higher specificity than ".portal-slide .tilt-inner img", otherwise
+   object-fit: cover wins there and crops landscape covers
+   (e.g. Gothica Solaris) at the sides. */
 .portal-slide .tilt-inner img.fit-contain {
     object-fit: contain;
     background: radial-gradient(circle at 50% 45%, rgba(10, 30, 45, 0.55) 0%, rgba(3, 8, 9, 0.9) 100%);
@@ -283,10 +283,10 @@
 
 /* Lift shadow when tilting */
 
-/* Weisser Specular-Sweep beim Hover ENTFERNT: Der Hover "energized" das
-   Portal jetzt als kurzen Farbblitz in der Kategorie-Farbe des Projekts
-   (Uniform uFlash im Vortex-Shader, js/modules/portal.js) - kein generischer
-   Weiss-Glow mehr. */
+/* White specular sweep on hover removed: hovering now "energizes" the
+   portal with a short color flash in the project's category color
+   (uFlash uniform in the vortex shader, js/modules/portal.js) -
+   no generic white glow anymore. */
 
 /* ---- LEFT POSITION ---- */
 .portal-slide.pos-left {
@@ -340,9 +340,9 @@
 
 /* SLIDE ELEMENTS */
 
-/* Slide overlay text - eigene Zone UNTER dem Bild (untere 24% der Karte).
-   Kein Ueberlappen mehr: Das Bild endet bei 76% (top 3.5% + height 72.5%),
-   das Textfeld beginnt exakt dort und ist per Trennlinie abgesetzt. */
+/* Slide overlay text - its own zone BELOW the image (bottom 24% of the card).
+   No more overlapping: the image ends at 76% (top 3.5% + height 72.5%),
+   the text zone starts exactly there and is separated by a divider line. */
 .slide-overlay {
     position: absolute;
     bottom: 0;
@@ -357,9 +357,9 @@
     text-align: center;
     padding: 4px 14px 8px;
     border-top: 1px solid rgba(201, 168, 97, 0.25);
-    /* Scrim hinter dem Text: dunkler & weicher als zuvor, damit Titel und
-       Untertitel kontraststark bleiben (auch ueber dem hellen Wasser-Ring
-       des offenen Portals). Ganz unten etwas offen, damit der Ring leuchtet. */
+    /* Scrim behind the text: darker and softer than before so the title and
+       subtitle keep strong contrast (also over the bright water ring of an
+       open portal). Left slightly open at the very bottom so the ring glows. */
     background: linear-gradient(
         to bottom,
         rgba(3, 8, 9, 0.55) 0%,
@@ -391,7 +391,7 @@
     letter-spacing: 1px;
     text-transform: uppercase;
     opacity: 0.85;
-    /* Dunkler Kontrast-Schatten: bleibt auf hellem Wasser/Nebel lesbar */
+    /* Dark contrast shadow: keeps the text readable on light water/mist */
     text-shadow:
         0 1px 2px rgba(0, 0, 0, 0.95),
         0 0 8px rgba(0, 0, 0, 0.85);
@@ -414,14 +414,14 @@
 
 .portal-slide.pos-center .slide-overlay {
     padding: 4px 18px 10px;
-    /* Offene Karte: Textzone UEBER dem Vortex-Canvas (z-index 8) legen,
-       damit Scrim + Text auf dem Wasser-Ring liegen statt darunter.
-       Geschlossene Karten bleiben unberuehrt (Wasser deckt weiter alles). */
+    /* Open card: raise the text zone above the vortex canvas (z-index 8)
+       so scrim + text sit on the water ring instead of underneath.
+       Closed cards are unaffected (water still covers everything). */
     z-index: 9;
 }
 
-/* FIX: Titel im Overlay brechen sauber um statt hart am Rand zu wirken
-   (e.g. skaliertes "GOTHIC SOLARIS" auf der Mittel-Karte). Kein Design-Token geaendert. */
+/* Fix: overlay titles wrap cleanly instead of clipping hard at the edge
+   (e.g. the scaled "GOTHIC SOLARIS" on the center card). No design tokens changed. */
 .slide-overlay {
     left: 0;
     right: 0;
@@ -606,8 +606,8 @@
     justify-content: center;
     gap: 20px;
     position: absolute;
-    /* Weiter nach unten gerueckt: mehr Luft zwischen Karten-Unterkante
-       und der Pfeile/Dots-Reihe */
+    /* Moved further down: more breathing room between the card bottom edge
+       and the arrows/dots row */
     bottom: -78px;
     left: 50%;
     transform: translateX(-50%);

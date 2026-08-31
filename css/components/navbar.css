@@ -126,12 +126,12 @@ body.modal-open .header {
 }
 
 /* Same for the right sidebar (Email/GitHub/LinkedIn/Phone) -
-   sie soll auch bei geoeffnetem Modal sichtbar und anklickbar bleiben. */
+   it should also stay visible and clickable while a modal is open. */
 body.modal-open .sidebar_socials {
     z-index: 1100;
 }
 
-/* Punkt 2: backdrop-filter ab HD+ (1600px) reduzieren fuer Firefox-Performance */
+/* Reduce backdrop-filter from HD+ (1600px) for Firefox performance */
 @media (min-width: 1600px) {
     .header {
         backdrop-filter: blur(6px);
@@ -180,8 +180,8 @@ body.modal-open .sidebar_socials {
     padding-top: 0;
 }
 
-/* Phone Icon in Navbar: Element existiert nicht mehr (kein HTML-Knoten, keine
-   JS-Referenz) -> Regeln wurden entfernt. */
+/* Phone icon in the navigation: the element no longer exists
+   (no HTML node, no JS reference) -> its rules were removed. */
 
 /* Language Toggle Button */
 .lang-toggle-btn {

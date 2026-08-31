@@ -508,8 +508,8 @@
 .modal_project_title {
     font-family: 'Cinzel', serif;
     font-size: 1.5rem;
-    /* Haupt-Titel: warmes, fast weisses Hellelfenbein fuer maximalen Kontrast.
-       Gold bleibt Akzentfarbe fuer Labels, nicht fuer den Haupttitel. */
+    /* Main title: warm, almost white ivory for maximum contrast.
+       Gold stays an accent color for labels, not for the main title. */
     color: #f3ebd9;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
     margin-bottom: 8px;
@@ -523,7 +523,7 @@
     text-transform: uppercase;
 }
 
-/* Kategorie-Reiter (Tabs) oben im Modal - zeigen klar die aktuelle Kategorie */
+/* Category tabs at the top of the modal - clearly show the current category */
 .modal_cat_tabs {
     display: flex;
     flex-wrap: wrap;
@@ -539,9 +539,9 @@
     padding: 6px 12px;
     border: 1px solid rgba(73, 146, 154, 0.4);
     border-radius: 20px;
-    /* Dunkler, leicht transparenter Hintergrund-Chip fuer bessere Lesbarkeit
-       auf dem bewegten Wasser-Shader-Hintergrund (nur inaktive Reiter).
-       Der aktive Reiter wird durch .modal_cat_tab.active uebergangen. */
+    /* Dark, slightly transparent background chip for better readability
+       on the moving water shader background (inactive tabs only).
+       The active tab overrides this via .modal_cat_tab.active. */
     background: rgba(6, 20, 31, 0.9);
     color: rgba(139, 224, 232, 0.75);
     font-size: 0.68rem;
@@ -557,7 +557,7 @@
     text-shadow: 0 0 20px rgba(73, 146, 154, 0.6), 0 0 40px rgba(73, 146, 154, 0.3);
 }
 
-/* Aktiver Reiter = aktuelle Kategorie (gold hervorgehoben) */
+/* Active tab = current category (highlighted in gold) */
 .modal_cat_tab.active {
     border-color: var(--gold-accent, #c9a861);
     color: var(--gold-accent, #c9a861);
@@ -572,10 +572,10 @@
     color: var(--cyan-glow);
     text-shadow: 0 0 20px rgba(73, 146, 154, 0.6), 0 0 40px rgba(73, 146, 154, 0.3);
 }
-/* PROJEKT-AUSWAHL-LEISTE (Ebene 2): Projekte innerhalb der aktuellen Kategorie.
-   Optisch klar von den Kategorie-Reitern (Ebene 1) und den Thumbnails (Ebene 3)
-   unterscheidbar: rechteckige Karten in dunkel-blauem Panel mit Teal-Rahmen,
-   aktiv mit goldenem Rahmen + Glow. */
+/* PROJECT SELECTION BAR (level 2): projects within the current category.
+   Visually distinct from the category tabs (level 1) and the thumbnails
+   (level 3): rectangular cards on a dark blue panel with teal borders,
+   active with a golden border + glow. */
 .modal_project_bar {
     display: flex;
     gap: 10px;
@@ -629,8 +629,8 @@
     letter-spacing: 1px;
     text-transform: uppercase;
     line-height: 1.3;
-    /* Projektname in inaktiven Karten: hell & lesbar (warmes Off-White).
-       Der aktive (goldene) Zustand bleibt unveraendert als Akzent. */
+    /* Project name on inactive cards: bright & readable (warm off-white).
+       The active (golden) state stays unchanged as the accent. */
     color: rgba(238, 231, 215, 0.92);
     text-align: center;
     white-space: nowrap;
@@ -646,7 +646,7 @@
     -webkit-filter: url(#water_distort_hover);
 }
 
-/* Aktives Projekt in der Auswahl-Leiste: goldener Rahmen + Glow (kein Wasser-Filter) */
+/* Active project in the selection bar: golden border + glow (no water filter) */
 .modal_project_item.active {
     border-color: var(--gold-accent, #c9a861);
     box-shadow:
@@ -655,7 +655,7 @@
         inset 0 0 8px rgba(201, 168, 97, 0.3);
 }
 
-/* Aktives Projekt beim Hover: blau (cyan) wie die Navbar-Hover-Effekte */
+/* Active project on hover: cyan, matching the navigation hover effects */
 .modal_project_item.active:hover {
     border-color: rgba(73, 146, 154, 0.7);
     box-shadow:
@@ -678,9 +678,9 @@
     text-shadow: 0 0 10px rgba(139, 224, 232, 0.6);
 }
 
-/* Projekt-Umschalter: nur sichtbar, wenn Kategorie mehrere Projekte hat */
+/* Project switcher: only visible when the category has multiple projects */
 .modal_project_switch {
-    display: none; /* wird via JS auf 'flex' gesetzt */
+    display: none; /* set to 'flex' via JS */
     align-items: center;
     justify-content: center;
     gap: 10px;
@@ -722,7 +722,7 @@
     transform: translateY(-1px);
 }
 
-/* Deaktiviert, wenn in der Kategorie nur EIN Projekt existiert */
+/* Disabled when the category contains only ONE project */
 .modal_project_prev:disabled,
 .modal_project_next:disabled,
 .modal_project_prev.disabled,
@@ -734,9 +734,9 @@
     background: rgba(201, 168, 97, 0.03);
 }
 
-/* KATEGORIE-Pfeile (zwischen den Bereichen, e.g. Game Dev -> Sound).
-   Deutlich unterscheidbar von den Projekt-Pfeilen: cyan/teal statt gold,
-   doppelter Chevron, etwas weitere Positionierung am Rand. */
+/* CATEGORY arrows (between areas, e.g. Game Dev -> Sound).
+   Clearly distinguishable from the project arrows: cyan/teal instead of gold,
+   double chevron, positioned slightly further out at the edge. */
 .modal_cat_prev,
 .modal_cat_next {
     width: 32px;
@@ -798,7 +798,7 @@
     max-width: 65ch;
     position: relative;
     z-index: 3;
-    /* Absatzumbrueche im Beschreibungstext erhalten (mehrzeilige Beschreibungen) */
+    /* Preserve paragraph breaks in the description text (multi-line descriptions) */
     white-space: pre-line;
 }
 
@@ -818,7 +818,7 @@
     text-transform: uppercase;
 }
 
-/* LABEL UeBER DER PROJEKT-AUSWAHL-LEISTE (sichtbar nur, wenn Projekte existieren) */
+/* LABEL ABOVE THE PROJECT SELECTION BAR (visible only when projects exist) */
 .modal_project_bar_label {
     font-family: 'Cinzel', serif;
     font-size: 1rem;
@@ -1031,10 +1031,10 @@
 }
 /* ========================================= */
 /* NEW MODAL CONTENT - MEDIA GALLERY          */
-/* (gleiche Farbpalette / Gold-Akzente)       */
+/* (same color palette / gold accents)        */
 /* ========================================= */
 
-/* Kategorie-Pill im Header */
+/* Category pill in the header */
 .modal_project_category {
     display: inline-block;
     margin-bottom: 10px;
@@ -1050,7 +1050,7 @@
     z-index: 3;
 }
 
-/* HAUPT-MEDIA-VIEWER */
+/* MAIN MEDIA VIEWER */
 .modal_media_viewer {
     position: relative;
     margin-bottom: 18px;
@@ -1093,7 +1093,7 @@
     background: #030a10;
 }
 
-/* YouTube-Embed im Media-Viewer */
+/* YouTube embed in the media viewer */
 .modal_media_youtube {
     position: absolute;
     inset: 0;
@@ -1111,8 +1111,8 @@
     display: block;
 }
 
-/* YouTube-Facade: leichtgewichtiges Vorschaubild + Play-Button,
-   der eigentliche iframe-Player wird erst beim Klick geladen */
+/* YouTube facade: lightweight thumbnail + play button;
+   the actual iframe player is only loaded on click */
 .modal_youtube_facade {
     position: absolute;
     inset: 0;
@@ -1163,7 +1163,7 @@
     box-shadow: 0 0 35px rgba(201, 168, 97, 0.55);
 }
 
-/* Zentrierter Play-Button-Overlay */
+/* Centered play button overlay */
 .modal_media_play {
     position: absolute;
     top: 50%;
@@ -1179,7 +1179,7 @@
     color: #c9a861;
     font-size: 1.6rem;
     font-family: 'Cinzel', serif;
-    display: none; /* nur bei Videos via JS sichtbar */
+    display: none; /* only visible for videos via JS */
     align-items: center;
     justify-content: center;
     cursor: pointer;
@@ -1197,7 +1197,7 @@
     border-color: rgba(139, 224, 232, 0.7);
 }
 
-/* Runde Pfeil-Buttons im Viewer (Vor/Zurueck) */
+/* Round arrow buttons in the viewer (previous/next) */
 .modal_media_prev,
 .modal_media_next {
     position: absolute;
@@ -1237,7 +1237,7 @@
     transform: translateY(-50%) scale(1.1);
 }
 
-/* THUMBNAIL-LEISTE */
+/* THUMBNAIL BAR */
 .modal_thumb_bar {
     display: flex;
     flex-wrap: wrap;
@@ -1275,7 +1275,7 @@
     -webkit-filter: url(#water_distort_hover);
 }
 
-/* Aktives Medium: goldener Rahmen + Glow */
+/* Active media item: golden border + glow */
 .modal_thumb.active {
     border-color: var(--gold-accent, #c9a861);
     box-shadow:
@@ -1283,7 +1283,7 @@
         inset 0 0 6px rgba(201, 168, 97, 0.3);
 }
 
-/* Play-Badge auf Video-Thumbnails */
+/* Play badge on video thumbnails */
 .modal_thumb_badge {
     position: absolute;
     right: 3px;
@@ -1301,7 +1301,7 @@
     padding-left: 1px;
 }
 
-/* ZWEI-SPALTEN-BEREICH */
+/* TWO-COLUMN SECTION */
 .modal_info_grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1458,7 +1458,7 @@
     box-shadow: 0 0 6px rgba(201, 168, 97, 0.5);
 }
 
-/* Contribution: Einleitung + Kategorien-Gruppen (nutzt dieselben Design-Tokens) */
+/* Contribution: intro + category groups (reuses the same design tokens) */
 .modal_contribution_intro {
     margin: 0 0 14px;
     color: var(--text-light, #b8d0d8);
@@ -1479,7 +1479,7 @@
     margin-bottom: 4px;
 }
 
-/* TOOLS & SKILLS - einheitliche Tags ohne hervorgehobenes Haupttool */
+/* TOOLS & SKILLS - uniform tags without a highlighted main tool */
 
 /* Responsive: zwei Spalten stapeln */
 @media (max-width: 720px) {
@@ -1492,14 +1492,14 @@
     .modal_project_item { width: 100px; }
     .modal_project_item img,
     .modal_project_item video { height: 56px; }
-    /* Lightbox-Groesse (Steuerelement-Positionierung siehe Lightbox-Abschnitt) */
+    /* Lightbox size (control positioning: see the lightbox section) */
     .modal_lightbox { max-width: 95vw; max-height: 80vh; }
 }
 
 /* ========================================= */
-/* LIGHTBOX FUeR DEN MEDIA-VIEWER (Vollbild)   */
-/* Dunkler, leicht transparenter Overlay mit   */
-/* goldenen Rahmen-/Pfeil-Styles (wie im Modal) */
+/* LIGHTBOX FOR THE MEDIA VIEWER (FULLSCREEN)   */
+/* Dark, slightly transparent overlay with      */
+/* golden border/arrow styles (like the modal)  */
 /* ========================================= */
 
 .modal_lightbox_overlay {
@@ -1522,8 +1522,8 @@
 
 .modal_lightbox {
     position: relative;
-    /* Feste, komfortable Bildflaeche - auch fuer kleine Platzhalter-/Realbilder
-       gross genug. Das Medium waechst per object-fit in diese Flaeche. */
+    /* Fixed, comfortable image area - large enough even for small
+       placeholder/real images. The media scales via object-fit into this area. */
     width: min(86vw, 1040px);
     height: min(78vh, 760px);
     background: #02080c;
@@ -1558,10 +1558,10 @@
     border-radius: 4px;
 }
 
-/* YouTube-Embed in der Lightbox */
+/* YouTube embed in the lightbox */
 .modal_lightbox_youtube {
     display: none;
-    position: relative; /* Containment fuer die YouTube-Facade (absolute Fuellung) */
+    position: relative; /* Containment for the YouTube facade (absolute fill) */
     align-items: center;
     justify-content: center;
     width: 100%;
@@ -1579,10 +1579,10 @@
     border-radius: 6px;
 }
 
-/* X-Button oben rechts - nutzt dieselbe modal_close_btn-Klasse
-   wie das Haupt-Modal fuer visuelle Konsistenz */
+/* Close button top right - reuses the same modal_close_btn class
+   as the main modal for visual consistency */
 
-/* Runde Pfeil-Buttons in der Lightbox (identischer Stil zum Media-Viewer) */
+/* Round arrow buttons in the lightbox (same style as the media viewer) */
 .modal_lightbox_prev,
 .modal_lightbox_next {
     position: absolute;
@@ -1612,14 +1612,15 @@
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Pfeile zentriert AUF der goldenen Kante der Lightbox-Box (nicht innen ueber dem Bild).
-   Halber Button ragt ueber die Kante hinaus - gleicht dem Media-Viewer-Rand-Design. */
+/* Arrows centered ON the golden edge of the lightbox box (not inside over
+   the image). Half of each button extends past the edge - matches the
+   media viewer edge design. */
 .modal_lightbox_prev { left: -23px; }
 .modal_lightbox_next { right: -23px; }
 
-/* X-Button (Lightbox): zentriert auf der oberen rechten Kante der Box.
-   Eigene Groesse, damit die Kanten-Zentrierung (halber Button auf dem Rahmen)
-   in allen Breakpoints stimmig bleibt. */
+/* Close button (lightbox): centered on the top right edge of the box.
+   Own size so the edge centering (half the button on the border)
+   stays consistent across all breakpoints. */
 .modal_lightbox_overlay .modal_close_btn {
     width: 36px;
     height: 36px;
@@ -1635,7 +1636,7 @@
     transform: translateY(-50%) scale(1.1);
 }
 
-/* Groessere Pfeile auf hohen Aufloesungen */
+/* Larger arrows on high resolutions */
 @media (min-width: 1756px) {
     .modal_lightbox_prev,
     .modal_lightbox_next {
@@ -1647,7 +1648,7 @@
     .modal_lightbox_next { right: -27px; }
 }
 
-/* Lightbox-Steuerelemente an der Kante - Tablet (Breakpoints 768-1200px) */
+/* Lightbox controls at the edge - tablet (breakpoints 768-1200px) */
 @media (max-width: 1200px) {
     .modal_lightbox_prev,
     .modal_lightbox_next {
@@ -1666,7 +1667,7 @@
     }
 }
 
-/* Lightbox-Steuerelemente an der Kante - Mobile */
+/* Lightbox controls at the edge - mobile */
 @media (max-width: 768px) {
     .modal_lightbox_prev,
     .modal_lightbox_next {
@@ -1686,21 +1687,21 @@
 }
 
 /* =========================================================
-   NAVIGATION-FEEDBACK  (Approach A - performant)
-   Kurzer, performanter "Wasser"-Glow + Fade bei jedem Wechsel:
-     - Bild (Media-Viewer + Lightbox): .media_nav_glow
-     - Projekt (Auswahl-Leiste): .project_nav_glow
-   Wird via JS-Klasse umgeschaltet; nutzt @keyframes (one-shot)
-   or die vorhandene 0.3s-Transition von .modal_project_item.
-   KEINE neuen feTurbulence-/feDisplacementMap-Filter,
-   KEINE JS-Animations-Loops - im Sinne der Firefox-Performance.
+   NAVIGATION FEEDBACK  (approach A - performant)
+   Short, performant "water" glow + fade on every switch:
+     - image (media viewer + lightbox): .media_nav_glow
+     - project (selection bar): .project_nav_glow
+   Toggled via JS class; uses @keyframes (one-shot)
+   or the existing 0.3s transition of .modal_project_item.
+   NO new feTurbulence/feDisplacementMap filters,
+   NO JS animation loops - in the interest of Firefox performance.
    ========================================================= */
 
-/* Media-Viewer / Lightbox-Bild: sanfter Fade-in aus dem "Wasser" + blauer Halo */
+/* Media viewer / lightbox image: gentle fade-in from the "water" + blue halo */
 .modal_media_image.media_nav_glow,
 .modal_lightbox_image.media_nav_glow {
     animation: navMediaGlow var(--media-nav-glow-duration) ease-out forwards;
-    /* Wasser-Distortion-Effekt beim Bildwechsel (wird via JS-Klasse entfernt) */
+    /* Water distortion effect on image change (removed via JS class) */
     filter: url(#water_distort_hover);
     -webkit-filter: url(#water_distort_hover);
 }
@@ -1710,7 +1711,7 @@
     100% { opacity: 1;   box-shadow: 0 0 0 0 rgba(0, 0, 0, 0), 0 0 0 rgba(0, 0, 0, 0); }
 }
 
-/* Projekt-Karte: kurzer cyan-blasser Glow - die vorhandene Transition uebernimmt das Ausblenden */
+/* Project card: short pale cyan glow - the existing transition handles the fade-out */
 .modal_project_item.project_nav_glow {
     border-color: rgba(139, 224, 232, 0.9);
     box-shadow:

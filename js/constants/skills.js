@@ -39,7 +39,7 @@ export const skills = [
         id: 'web',
         name: 'HTML / CSS / JavaScript',
         i18n: 'skill-web',
-        /* JavaScript-Logo als erkennbares Symbol fuer das Web-Trio */
+        /* JavaScript logo as a recognizable symbol for the web trio */
         icon: 'bxl-javascript',
         toolAliases: ['html', 'css', 'javascript', 'html/css']
     },

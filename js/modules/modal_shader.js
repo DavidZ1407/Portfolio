@@ -115,9 +115,9 @@ const fragmentShader = `
         vec3 col = v * fgColor;
         col += (1.0 - v) * bgColor;
 
-        // Gedaempfte Wasser-Atmosphaere: abgedunkelt + halbtransparent, damit der
-        // dunkle Navy-Gradient (modal-bg-*) darunter durchscheint und der
-        // Voronoi-Shader nur noch eine dezente, atmosphaerische Ebene bildet.
+        // Muted water atmosphere: darkened + semi-transparent so the
+        // dark navy gradient (modal-bg-*) shows through and the
+        // Voronoi shader only forms a subtle, atmospheric layer.
         col *= 0.5;
         gl_FragColor = vec4(col, 0.62);
     }

@@ -6,18 +6,18 @@
 /* ========================================= */
 /* BREAKPOINTS:
  *   4K:        > 3840px
- *   Ultra:     3440px - 3840px   (Firefox-Performance-Modus)
+ *   Ultra:     3440px - 3840px   (Firefox performance mode)
  *   X-Large:   2560px - 3840px
- *   Large:     1980px - 2560px   (zusaetzl. Feintuning ab 2056px)
- *   HD+:       1600px            (Firefox-Performance / Font-Scale)
+ *   Large:     1980px - 2560px   (additional fine-tuning from 2056px)
+ *   HD+:       1600px            (Firefox performance / font scale)
  *   Desktop:   1400px - 1980px
  *   Laptop:    1200px - 1400px
- *   Tablet:    768px - 1200px    (Portal-Feintuning bei 1000px)
- *   Mini:      1024px            (kompakter Header / Navbar / Hero)
+ *   Tablet:    768px - 1200px    (portal fine-tuning at 1000px)
+ *   Mini:      1024px            (compact header / navigation / hero)
  *   Mobile:    < 768px
- *   Portal-Small: < 550px        (nur Center-Karte sichtbar)
+ *   Portal-Small: < 550px        (only the center card is visible)
  *   Small:     < 480px
- *   Tiny:      < 425px           (uebersteuert 480px)
+ *   Tiny:      < 425px           (overrides 480px)
  * ========================================= */
 
 /* BASE SIZING - uses rem for smooth scaling */
@@ -66,7 +66,7 @@ html {
 }
 
 /* SECTION PADDING */
-/* Basiswerte via :root-Variablen aus main.css - hier nur die Overrides je Breakpoint */
+/* Base values come from the :root variables in main.css - only per-breakpoint overrides here */
 section {
     padding: var(--section-pad-y) var(--section-pad-x);
     transition: padding var(--transition-fast);
@@ -225,7 +225,7 @@ section {
     }
 }
 
-/* Punkt 2: backdrop-filter frueher reduzieren (ab HD+) fuer Firefox-Performance */
+/* Reduce backdrop-filter earlier (from HD+) for Firefox performance */
 @media (min-width: 1600px) {
     .header {
         backdrop-filter: blur(6px) !important;
@@ -531,12 +531,12 @@ section {
 }
 
 /* ========================================= */
-/* HERO-KARUSSELL-INDIKATOREN - sehr grosse Screens (2056px+)
-   Es gibt in CSS/JS keinen Code, der die Punkte ausblendet - die absoluten
-   Hero-Overlays (hero_scene/hero_overlay + Bottom-Fade) liegen aber UeBER dem
-   unpositionierten Punkte-Container. Damit die Punkte auf 2560-4K zuverlaessig
-   sichtbar bleiben, werden sie ueber die Overlays gehoben (nur Positionierung,
-   keine Aenderung an Groesse/Layout/Abstand des Karussells). */
+/* HERO CAROUSEL INDICATORS - very large screens (2056px+)
+   No CSS/JS code hides the dots - but the absolutely positioned hero
+   overlays (hero_scene/hero_overlay + bottom fade) sit ABOVE the
+   unpositioned dots container. To keep the dots reliably visible on
+   2560-4K screens, they are raised above the overlays (positioning only,
+   no change to the size/layout/spacing of the carousel). */
 @media (min-width: 2056px) {
     .carousel_indicators {
         position: relative;
@@ -778,7 +778,7 @@ section {
         width: 12px !important;
         height: 12px !important;
     }
-    /* portal - restliche Fixes bei 768px */
+    /* Portal - remaining fixes at 768px */
     .carousel-arrow { width: 36px; height: 36px; font-size: 1.6rem; }
     .carousel-prev { left: 8px !important; }
     .carousel-next { right: 8px !important; }
@@ -1130,8 +1130,8 @@ section {
     .portal-slide .tilt-shine { display: none !important; }
     .portal-slide.tilt-lift { transform: none !important; }
 
-    /* Kompakte Karte: Bildbereich kleiner, mehr Raum fuer das Textfeld.
-       (pos-center-Selektoren wegen Spezifitaet mitgriffen) */
+    /* Compact card: smaller image area, more space for the text zone.
+       (pos-center selectors included to match specificity) */
     .portal-slide img,
     .portal-slide .tilt-inner img { top: 4%; height: 65%; }
     .slide-overlay,
@@ -1355,7 +1355,7 @@ section {
 
 /* MOBILE 425px - OVERRIDES 480px */
 @media (max-width: 425px) {
-    /* ===== Header / Navigation kompakt ===== */
+    /* ===== Header / navigation compact ===== */
     .header {
         padding: 6px 2%;
         gap: 2px;
@@ -1397,7 +1397,7 @@ section {
         letter-spacing: 0.1px;
     }
 
-    /* ===== Hero Typografie ===== */
+    /* ===== Hero typography ===== */
     .hero_section {
         padding: 80px 2% 20px !important;
     }
@@ -1440,7 +1440,7 @@ section {
         text-align: center !important;
     }
 
-    /* ===== Sidebar auf rechts bleiben, aber kompakter ===== */
+    /* ===== Sidebar stays on the right, but more compact ===== */
     .sidebar_socials {
         padding: 6px 4px !important;
         gap: 12px !important;
@@ -1455,7 +1455,7 @@ section {
         letter-spacing: 0.5px !important;
     }
 
-    /* ===== Sektion-Abstaende reduzieren ===== */
+    /* ===== Reduce section spacing ===== */
     section {
         padding: 50px 3% !important;
     }
@@ -1474,7 +1474,7 @@ section {
         gap: 8px !important;
     }
 
-    /* Hero-Carousel Mini-Modus: Bild bleibt dominant, Infozeile sehr kompakt */
+    /* Hero carousel mini mode: image stays dominant, info row very compact */
     .carousel_slide img {
         padding: 4px 4px 0 !important;
     }

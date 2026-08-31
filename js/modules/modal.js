@@ -377,13 +377,6 @@ function updateProjectNav() {
 }
 
 /**
-
-/**
- * Builds the project selection bar (level 2) for the current category.
- * Shows all projects of the category as clickable cards with cover + title.
- * The currently selected project gets the 'active' class.
- */
-/**
  * Creates a muted <video> preview element that uses preload=metadata to
  * show the first frame of the animation - so video thumbnails/cards look
  * like the animation itself, not like a static placeholder image.
@@ -403,6 +396,11 @@ function createVideoPreviewElement(src) {
     return vid;
 }
 
+/**
+ * Builds the project selection bar (level 2) for the current category.
+ * Shows all projects of the category as clickable cards with cover + title.
+ * The currently selected project gets the 'active' class.
+ */
 function buildProjectBar() {
     const bar = modalContainer.querySelector('.modal_project_bar');
     if (!bar) return;
@@ -900,7 +898,7 @@ function buildThumbnails(project) {
  * @param {HTMLImageElement} imageEl - image element to fill
  * @param {HTMLVideoElement} videoEl - video element to fill
  * @param {{type:string}|undefined} item - media object (item.type === 'video' or image)
- * @param {Object} opts - Optionen
+ * @param {Object} opts - Options
  * @param {boolean} opts.showControls - set/remove native controls on the video
  * @param {HTMLElement|null} opts.playBtn - play overlay button (shown/hidden)
  * @param {string} altText - alt text for images
@@ -1098,14 +1096,14 @@ function setupMediaEvents() {
     });
 }
 
-/* LIGHTBOX FUeR DEN MEDIA-VIEWER (Vollbild) */
+/* LIGHTBOX FOR THE MEDIA VIEWER (FULLSCREEN) */
 
 /**
- * Erstellt das Lightbox-Overlay als separates Element im body.
- * Wird unabhaengig vom Haupt-Modal positioniert (z-index 2000).
+ * Creates the lightbox overlay as a separate element in the body.
+ * Positioned independently from the main modal (z-index 2000).
  */
 function createLightbox() {
-    if (lightboxOverlay) return; // bereits erstellt
+    if (lightboxOverlay) return; // already created
 
     lightboxOverlay = document.createElement('div');
     lightboxOverlay.className = 'modal_lightbox_overlay';
@@ -1130,29 +1128,29 @@ function createLightbox() {
 }
 
 /**
- * Verdrahtet die Lightbox-Events:
- * - Klick auf Media-Stage oeffnet die Lightbox
- * - Klick auf X-Button oder Overlay-Hintergrund schliesst sie
- * - Pfeile navigieren durch die Medien des aktuellen Projekts
+ * Wires up the lightbox events:
+ * - Click on the media stage opens the lightbox
+ * - Click on the close button or the overlay background closes it
+ * - Arrows navigate through the media of the current project
  */
 function setupLightbox() {
     const mediaStage = modalContainer.querySelector('.modal_media_stage');
     mediaStage.addEventListener('click', (e) => {
-        // Play-Button-Klick nicht als Lightbox-Oeffnung interpretieren
+        // Do not treat a play button click as a lightbox open
         if (e.target.closest('.modal_media_play')) return;
         openLightbox();
     });
 
-    // X-Button schliesst die Lightbox
+    // Close button closes the lightbox
     const closeBtn = lightboxOverlay.querySelector('.modal_close_btn');
     closeBtn.addEventListener('click', closeLightbox);
 
-    // Klick auf Overlay-Hintergrund schliesst die Lightbox
+    // Click on the overlay background closes the lightbox
     lightboxOverlay.addEventListener('click', (e) => {
         if (e.target === lightboxOverlay) closeLightbox();
     });
 
-    // Pfeile navigieren durch die Bilder des aktuellen Projekts
+    // Arrows navigate through the media of the current project
     const prevBtn = lightboxOverlay.querySelector('.modal_lightbox_prev');
     const nextBtn = lightboxOverlay.querySelector('.modal_lightbox_next');
     prevBtn.addEventListener('click', (e) => {
@@ -1166,7 +1164,7 @@ function setupLightbox() {
 }
 
 /**
- * Oeffnet die Lightbox und zeigt das aktuell ausgewaehlte Medium.
+ * Opens the lightbox and shows the currently selected media.
  */
 function openLightbox() {
     if (!lightboxOverlay) return;
@@ -1175,7 +1173,7 @@ function openLightbox() {
     if (!project || !Array.isArray(project.media) || project.media.length === 0) return;
 
     syncLightbox();
-    // Laufende Close-Animation abbrechen + alte Klassen entfernen
+    // Cancel a running close animation + remove old classes
     if (lightboxCloseTimer) {
         clearTimeout(lightboxCloseTimer);
         lightboxCloseTimer = null;
@@ -1189,27 +1187,27 @@ function openLightbox() {
 }
 
 /**
- * Schliesst die Lightbox und pausiert das Video.
+ * Closes the lightbox and pauses the video.
  */
 function closeLightbox() {
     if (!lightboxOverlay) return;
-    if (!lightboxOpen) return; // bereits geschlossen / Close-Animation laeuft
+    if (!lightboxOpen) return; // already closed / close animation running
 
     lightboxOpen = false;
 
-    // Video pausieren, ABER das Bild fuer die Close-Animation sichtbar lassen
+    // Pause the video BUT keep the image visible for the close animation
     if (lightboxVideo) {
         lightboxVideo.pause();
     }
 
-    // Trigger water_distort_close SVG animation (gleicher Ablauf wie Modal-Close)
+    // Trigger water_distort_close SVG animation (same flow as the modal close)
     const closeBtn = lightboxOverlay.querySelector('.modal_close_btn');
     restartWaterCloseAnimation(closeBtn);
 
-    // Wasser-Close-Animation auf der Lightbox starten
+    // Start the water close animation on the lightbox
     if (lightboxContainer) lightboxContainer.classList.add('water_close');
 
-    // Nach der Animation ausblenden (Dauer identisch zum Modal: WATER_ANIMATION_MS)
+    // Hide after the animation (duration identical to the modal: WATER_ANIMATION_MS)
     lightboxCloseTimer = setTimeout(() => {
         lightboxCloseTimer = null;
         if (lightboxContainer) lightboxContainer.classList.remove('water_close');
@@ -1224,8 +1222,8 @@ function closeLightbox() {
 }
 
 /**
- * Aktualisiert die Lightbox-Ansicht auf das aktuell ausgewaehlte Medium
- * (currentMediaIndex). Wird nach showMedia aufgerufen, wenn die Lightbox offen ist.
+ * Updates the lightbox view to the currently selected media
+ * (currentMediaIndex). Called after showMedia when the lightbox is open.
  */
 function syncLightbox() {
     if (!lightboxImage || !lightboxVideo) return;

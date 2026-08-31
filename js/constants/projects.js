@@ -4,7 +4,7 @@
  */
 import { skills } from './skills.js?v=4';
 
-/* ---- Kategorien (Label) ---- */
+/* ---- Category labels ---- */
 const CATEGORY_LABELS = {
     gamedev: { en: 'Game Dev', de: 'Game Development' },
     '3d':    { en: '3D', de: '3D & Visual Art' },
@@ -14,8 +14,8 @@ const CATEGORY_LABELS = {
     other:   { en: 'Other Projects', de: 'Other Projects' }
 };
 
-/* ---- Bilingual-Helper: liefert den Wert eines { en, de }-Feldes in der
-   gewuenschten Sprache (Fallback: 'en'). Skalare werden durchgereicht. ---- */
+/* ---- Bilingual helper: returns the value of an { en, de } field in the
+   requested language (fallback: 'en'). Scalars are passed through. ---- */
 function pickLang(value, lang) {
     if (value && typeof value === 'object') {
         return value[lang] !== undefined ? value[lang] : value.en;
@@ -23,7 +23,7 @@ function pickLang(value, lang) {
     return value !== undefined && value !== null ? value : '';
 }
 
-/* ---- Exporte fuer das Modal ---- */
+/* ---- Accessors used by the modal ---- */
 export { CATEGORY_LABELS };
 export function getProjectTitle(index, lang = 'en') {
     const p = projects[index];
@@ -66,18 +66,18 @@ export function getProjectTools(index, lang = 'en') {
     return p.tools.map(t => ({ name: pickLang(t.name, lang), icon: t.icon || '' }));
 }
 
-/* ---- Skill-Registry-Helper (Projekt <-> Skill Verbindung) ---- */
+/* ---- Skill registry helpers (project <-> skill relation) ---- */
 const SKILL_BY_ID = {};
 skills.forEach(s => { SKILL_BY_ID[s.id] = s; });
 
-/** Ids der Skills, die das Projekt tatsaechlich genutzt hat */
+/** Ids of the skills the project actually used */
 export function getProjectSkillIds(index) {
     const p = projects[index];
     if (!p || !Array.isArray(p.skills)) return [];
     return p.skills;
 }
 
-/** Skills des Projekts (aus der Registry aufgeloest): [{ id, name, icon, logo }] */
+/** Project skills resolved from the registry: [{ id, name, icon, logo }] */
 export function getProjectSkills(index) {
     return getProjectSkillIds(index)
         .map(id => SKILL_BY_ID[id])
@@ -85,8 +85,8 @@ export function getProjectSkills(index) {
         .map(s => ({ id: s.id, name: s.name, icon: s.icon || '', logo: s.logo || '' }));
 }
 
-/** (Lowercase) Tool-Namen, die durch die Skills des Projekts bereits
-    abgedeckt sind - verhindert Doppel-Anzeige von Skills + Tools im Modal. */
+/** (Lowercase) tool names already covered by the project's skills -
+    prevents showing skills + tools twice in the modal. */
 export function getProjectCoveredToolNames(index) {
     const covered = new Set();
     getProjectSkillIds(index).forEach(id => {
@@ -114,14 +114,14 @@ export function getProjectCountInCategory(category) {
     return indices.length;
 }
 
-/* ---- Kategorie-Ordnung (Definition des Shader-Color-Schemes) ---- */
-/* Reihenfolge bestimmt die Register-Tabs, das Portal und das Hero-Carousel. */
+/* ---- Category order (defines the shader color scheme) ---- */
+/* The order determines the category tabs, the portal, and the hero carousel. */
 const CATEGORY_ORDER = ['gamedev', 'coding', '3d', 'concept', 'sound', 'other'];
 export {
     CATEGORY_ORDER
 };
 
-/* ---- Mapping Kategorie -> Indizes in projects[] (mehrere Projekte pro Kategorie moeglich) ---- */
+/* ---- Mapping category -> indices in projects[] (multiple projects per category possible) ---- */
 const categoryProjects = {
     gamedev: [0, 6, 16, 17],
     '3d':    [2, 10, 11],
@@ -134,8 +134,8 @@ export {
     categoryProjects
 };
 
-/* ---- Projekt-Daten ---- */
-/* Note: cover/image -> assets/Picture/ProjectX.png ist die Konvention aus STRUKTUR.md */
+/* ---- Project data ---- */
+/* Note: cover/image -> assets/Picture/ProjectX.png is the convention from STRUKTUR.md */
 const projects = [
 
     /* Index 0 - Game Dev */ {
@@ -153,9 +153,9 @@ const projects = [
         duration: { en: '6 weeks', de: '6 Wochen' },
         team: { en: '4 members', de: '4 Mitglieder' },
         cover: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_1.png',
-        /* Cover komplett zeigen (kein Crop) -> der gothica-solaris-Schriftzug
-           im Original-Screenshot bleibt voll lesbar. Das Bildbereich-Layout
-           der Karte (91% x 72.5%, nahezu Querformat) passt zum Original. */
+        /* Show the full cover uncropped -> the gothica-solaris wordmark in the
+           original screenshot stays fully readable. The card's image layout
+           (91% x 72.5%, nearly landscape) matches the original. */
         coverFit: 'contain',
         media: [
             { type: 'youtube', id: 'Ck4srNe2HZo', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_1.png' },
@@ -300,7 +300,7 @@ const projects = [
         skills: ['blender']
     },
 
-    /* Index 3 - Coding (Projekt 1 - Physics & Shader) */
+    /* Index 3 - Coding (project 1 - Physics & Shader) */
     {
         category: 'coding',
         title: { en: 'Coding: Physics & Shader', de: 'Coding: Physik & Shader' },
@@ -342,7 +342,7 @@ const projects = [
         skills: ['web', 'webgl']
     },
 
-    /* Index 4 - Sound (Projekt 1 - Space_Balls) */
+    /* Index 4 - Sound (project 1 - Space_Balls) */
     {
         category: 'sound',
         title: { en: 'Space Balls', de: 'Space Balls' },
@@ -379,7 +379,7 @@ const projects = [
         skills: ['godot', 'csharp', 'fmod']
     },
 
-    /* Index 5 - Other (Projekt 1 - Other_PJ_1) */
+    /* Index 5 - Other (project 1 - Other_PJ_1) */
     {
         category: 'other',
         title: { en: 'Sea Team', de: 'Sea Team' },
@@ -479,7 +479,7 @@ const projects = [
         skills: ['unreal']
     },
 
-    /* Index 7 - Other (Projekt 2 - Other_PJ_2) */
+    /* Index 7 - Other (project 2 - Other_PJ_2) */
     {
         category: 'other',
         title: { en: "Sir Aric's Souls", de: "Sir Aric's Souls" },
@@ -560,7 +560,7 @@ const projects = [
             { name: { en: 'Character Design', de: 'Charakterdesign' }, icon: 'bx-user' },
             { name: { en: 'Anatomy Studies', de: 'Anatomiestudien' }, icon: 'bx-brush' }
         ],
-        /* Kein Registry-Skill: traditionelle Bleistiftskizzen */
+        /* No registry skill: traditional pencil sketches */
         skills: []
     },
 
@@ -678,7 +678,7 @@ const projects = [
         skills: ['blender']
     },
 
-    /* Index 12 - Sound (Projekt 2 - Glow_Pods) */
+    /* Index 12 - Sound (project 2 - Glow_Pods) */
     {
         category: 'sound',
         title: { en: 'Glow Pods', de: 'Glow Pods' },
@@ -712,7 +712,7 @@ const projects = [
         skills: ['godot']
     },
 
-    /* Index 13 - Sound (Projekt 3 - Lifted) */
+    /* Index 13 - Sound (project 3 - Lifted) */
     {
         category: 'sound',
         title: { en: 'Lifted', de: 'Lifted' },
@@ -740,11 +740,11 @@ const projects = [
         tools: [
             { name: { en: 'DaVinci Resolve', de: 'DaVinci Resolve' }, icon: 'bx-video' }
         ],
-        /* Kein Registry-Skill: reines Video-Editing-Projekt */
+        /* No registry skill: pure video editing project */
         skills: []
     },
 
-    /* Index 14 - Coding (Projekt 2 - Website) */
+    /* Index 14 - Coding (project 2 - Website) */
     {
         category: 'coding',
         title: { en: 'Coding: Website', de: 'Coding: Website' },
@@ -790,7 +790,7 @@ const projects = [
         skills: ['web', 'typescript']
     },
 
-    /* Index 15 - Coding (Projekt 3 - Jump) */
+    /* Index 15 - Coding (project 3 - Jump) */
     {
         category: 'coding',
         title: { en: 'Coding: Jump', de: 'Coding: Jump' },
@@ -829,7 +829,7 @@ const projects = [
         skills: ['web']
     },
 
-    /* Index 16 - Game Dev (Projekt 3 - Godot Island Generator) */
+    /* Index 16 - Game Dev (project 3 - Godot Island Generator) */
     {
         category: 'gamedev',
         title: { en: 'Godot Island Generator', de: 'Godot Island Generator' },
@@ -897,7 +897,7 @@ const projects = [
         skills: ['godot']
     },
 
-    /* Index 17 - Game Dev (Projekt 4 - Fartnite, 48h Game Jam) */
+    /* Index 17 - Game Dev (project 4 - Fartnite, 48h Game Jam) */
     {
         category: 'gamedev',
         title: { en: 'Fartnite', de: 'Fartnite' },
@@ -952,18 +952,18 @@ const projects = [
     }
 
     /*
-     * Weitere Projekte nach diesem Muster anhaengen.
-     * Dann den zugehoerigen Index in categoryProjects Kategorie-Array eintragen.
+     * Append further projects following this pattern.
+     * Then add the corresponding index to the category array in categoryProjects.
      */
 ];
 export {
     projects
 };
 
-/* ---- Helper-Funktionen (werden vom Modal + Portal-Carousel verwendet) ---- */
+/* ---- Helper functions (used by the modal + portal carousel) ---- */
 
 /**
- * Liefert das Cover-/Titelbild eines Projekts (fuer Hero-Carousel + Portal).
+ * Returns the cover/title image of a project (for the hero carousel + portal).
  */
 export function getProjectCover(index) {
     const p = projects[index];
@@ -971,22 +971,22 @@ export function getProjectCover(index) {
 }
 
 /**
- * Liefert den thematischen Platzhalter-Pfad einer Kategorie.
- * Wird verwendet, wenn ein echtes Cover/Medium fehlt, damit alle
- * Blasen/Slides auf der Hauptseite und im Modal sichtbar bleiben.
+ * Returns the themed placeholder path of a category.
+ * Used when a real cover/media item is missing so all bubbles/slides
+ * on the main page and in the modal stay visible.
  *
- * Caution: Es wird absichtlich EIN gemeinsamer, neutraler Platzhalter
- * fuer ALLE Kategorien zurueckgegeben (nicht ein kategorie-spezifisches
- * Icon/Text-Bild). So erscheinen alle 6 Karten im Hero-Carousel und im
- * Portal konsistent - bis echte Projekt-Screenshots vorhanden sind.
+ * Caution: intentionally returns ONE shared, neutral placeholder for
+ * ALL categories (not a category-specific icon/text image). This way all
+ * 6 cards in the hero carousel and the portal appear consistently -
+ * until real project screenshots are available.
  */
 export function getCategoryPlaceholder(category) {
     return 'assets/Picture/placeholders/project.svg';
 }
 
 /**
- * Haengt einen Bild-Fallback an ein <img>: Wenn das Laden fehlschlaegt
- * (e.g. fehlende Datei), wird das Kategorie-Platzhalter-Bild gesetzt.
+ * Attaches an image fallback to an <img>: if loading fails
+ * (e.g. missing file), the category placeholder image is set.
  */
 export function applyImageFallback(img, category) {
     if (!img) return;
@@ -1002,22 +1002,22 @@ export function applyImageFallback(img, category) {
 }
 
 /**
- * Liefert die Indizes aller Projekte einer Kategorie (aus categoryProjects).
+ * Returns the indices of all projects in a category (from categoryProjects).
  */
 export function getProjectIndicesByCategory(category) {
     return categoryProjects[category] || [];
 }
 
 /**
- * Liefert die Liste der Kategorien, die mindestens ein Projekt enthalten.
- * (Reihenfolge = canonicaler Color-Scheme-Index aus CATEGORY_ORDER)
+ * Returns the list of categories that contain at least one project.
+ * (Order = canonical color scheme index from CATEGORY_ORDER)
  */
 export function getCategories() {
     return CATEGORY_ORDER.filter(cat => getProjectCountInCategory(cat) > 0);
 }
 
 /**
- * Liefert den ersten Projekt-Index einer Kategorie (oder null).
+ * Returns the first project index of a category (or null).
  */
 export function getFirstProjectOfCategory(category) {
     const indices = categoryProjects[category];
@@ -1026,9 +1026,9 @@ export function getFirstProjectOfCategory(category) {
 }
 
 /**
- * Liefert die Projekt-Indizes aller Kategorien in CATEGORY_ORDER-Reihenfolge,
- * pro Kategorie nur das ERSTE Projekt. Wird vom Portal- und Hero-Carousel genutzt,
- * damit beide die gleiche (eine) Karte je Bereich in identischer Reihenfolge zeigen.
+ * Returns the project indices of all categories in CATEGORY_ORDER order,
+ * only the FIRST project per category. Used by the portal and the hero
+ * carousel so both show the same (one) card per area in identical order.
  */
 export function getOrderedProjectIndices() {
     return getCategories()
@@ -1037,9 +1037,9 @@ export function getOrderedProjectIndices() {
 }
 
 /**
- * Wechsel zwischen Projekten DERSELBEN Kategorie.
+ * Switch between projects of the SAME category.
  * direction: 'prev' | 'next'  (wrap-around)
- * Gibt null zurueck, wenn die Kategorie nur ein Projekt hat.
+ * Returns null when the category has only one project.
  */
 export function getSiblingProjectIndex(currentIndex, direction) {
     const project = projects[currentIndex];
@@ -1054,8 +1054,8 @@ export function getSiblingProjectIndex(currentIndex, direction) {
 }
 
 /**
- * Wechsel zwischen Kategorien (wrap-around).
- * Wird zum ersten Projekt der angrenzenden Kategorie gewechselt.
+ * Switch between categories (wrap-around).
+ * Moves to the first project of the adjacent category.
  * direction: 'prev' | 'next'
  */
 export function getAdjacentCategoryProject(currentIndex, direction) {
@@ -1073,8 +1073,8 @@ export function getAdjacentCategoryProject(currentIndex, direction) {
 }
 
 /**
- * Farb-Schema-Index einer Kategorie fuer den Voronoi-Shader.
- * Reihenfolge entspricht CATEGORY_ORDER (0=gamedev, 1=coding, 2=3d, 3=concept, 4=sound, 5=other).
+ * Color scheme index of a category for the Voronoi shader.
+ * Order matches CATEGORY_ORDER (0=gamedev, 1=coding, 2=3d, 3=concept, 4=sound, 5=other).
  */
 export function getCategorySchemeIndex(category) {
     return CATEGORY_ORDER.indexOf(category);

@@ -221,8 +221,8 @@
 
 .carousel_container {
     position: relative;
-    /* Horizontale Zentrierung unter der Ueberschrift - nur Positionierung.
-       (aenderung nur links/rechts via auto; top/bottom bleiben 0) */
+    /* Center horizontally below the heading - positioning only
+       (left/right via auto margins; top/bottom stay 0) */
     margin: 0 auto;
     overflow: hidden;
     border: 1.5px solid rgba(201, 168, 97, 0.3);
@@ -254,7 +254,7 @@
     position: relative;
     overflow: hidden;
     display: flex;
-    flex-direction: column; /* Bild oben, Info unten - keine Ueberlappung */
+    flex-direction: column; /* Image on top, info below - no overlap */
     min-width: 100%;
 }
 
@@ -262,16 +262,16 @@
     flex: 1 1 0;
     min-height: 0;
     width: 100%;
-    object-fit: cover;
-    padding: 8px 8px 0; /* Luft zum Rahmen */
+    /* Fit the full image into the slide (contain + centered) so every
+       project cover stays completely visible without cropping or
+       distortion, regardless of its aspect ratio. The radial background
+       fills the letterbox areas and matches the portal carousel's look. */
+    object-fit: contain;
+    object-position: center;
+    padding: 8px 8px 0; /* Breathing room from the frame */
+    background: radial-gradient(circle at 50% 45%, rgba(10, 30, 45, 0.55) 0%, rgba(3, 8, 9, 0.9) 100%);
     filter: grayscale(60%) brightness(0.8);
     transition: filter 0.6s ease, transform 0.6s ease;
-}
-
-/* Cover komplett zeigen (kein Crop) - passend zum Portal-Carousel */
-.carousel_slide img.fit-contain {
-    object-fit: contain;
-    background: radial-gradient(circle at 50% 45%, rgba(10, 30, 45, 0.55) 0%, rgba(3, 8, 9, 0.9) 100%);
 }
 
 .carousel_slide:hover img {
@@ -298,7 +298,7 @@
     );
     opacity: 0;
     transition: opacity 0.4s ease;
-    /* mix-blend-mode entfernt fuer Firefox-Performance */
+    /* mix-blend-mode removed for Firefox performance */
 }
 
 .carousel_slide:hover::after {
@@ -325,7 +325,7 @@
 }
 
 .carousel_info {
-    position: relative; /* eigene Zeile unter dem Bild, kein Overlay mehr */
+    position: relative; /* Own row below the image, no longer an overlay */
     flex: 0 0 auto;
     text-align: center;
     padding: 7px 14px 9px;

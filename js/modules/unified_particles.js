@@ -7,11 +7,11 @@ import { sizeCanvas, cleanupRegistry } from '../utils/helpers.js';
 import { TWO_PI, MAX_FRAME_DELTA_SECONDS } from '../constants/ui.js';
 
 export function initUnifiedParticles() {
-    /* ZWEI uberlagerte Canvases, um die urspruengliche Schichtung 1:1 zu erhalten:
-       - back  (z3): Fische + Parallax-Stil-Partikel/-Bubbles (HINTER Sections)
-       - front (z7): Depth-Stil-Partikel/-Bubbles (Schleier VOR dem Content)
-       Beide werden aber in EINEM gemeinsamen rAF-Callback gezeichnet -
-       nur ein Loop-Overhead statt zwei. */
+    /* TWO overlaid canvases to preserve the original layering 1:1:
+       - back  (z3): fish + parallax-style particles/bubbles (BEHIND sections)
+       - front (z7): depth-style particles/bubbles (veil IN FRONT of the content)
+       Both are drawn in ONE shared rAF callback -
+       one loop overhead instead of two. */
     const canvasBack = document.createElement('canvas');
     canvasBack.className = 'unified-particles-canvas-back';
     canvasBack.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:3;';
@@ -29,11 +29,11 @@ export function initUnifiedParticles() {
     let time = 0;
     let lastTime = 0;
 
-    /* ---- Parallax-Stil (back, z3) ---- */
+    /* ---- Parallax style (back, z3) ---- */
     const backParticles = [];
     const backBubbles = [];
     const fishes = [];
-    /* ---- Depth-Stil (front, z7) ---- */
+    /* ---- Depth style (front, z7) ---- */
     const frontParticles = [];
     const frontBubbles = [];
 
@@ -44,10 +44,10 @@ export function initUnifiedParticles() {
     const COLORS_GOLD = [201, 168, 97];
     const COLORS_CYAN = [73, 146, 154];
 
-    /* Anzahlen bewusst reduziert: Die beiden alten Systeme hatten zusammen
-       25+30=55 Partikel und 12+12=24 Bubbles. Aufgeteilt wird jetzt auf das
-       Niveau des groesseren Einzelsystems (depth: 30 Partikel / 12 Bubbles),
-       sodass pro Frame deutlich weniger Zeichenarbeit anfaellt. */
+    /* Counts intentionally reduced: the two old systems had 25+30=55 particles
+       and 12+12=24 bubbles in total. They are now split at the level of the
+       larger single system (depth: 30 particles / 12 bubbles), so per-frame
+       draw work drops noticeably. */
     const BACK_PARTICLE_COUNT = 12;
     const BACK_BUBBLE_COUNT = 5;
     const FRONT_PARTICLE_COUNT = 18;
@@ -139,7 +139,7 @@ export function initUnifiedParticles() {
         }
     }
 
-    /* ---- Resize: vereinheitlicht auf sizeCanvas() mit 2560px-Cap ---- */
+    /* ---- Resize: unified on sizeCanvas() with a 2560px cap ---- */
     function resize() {
         const logicalW = window.innerWidth;
         const logicalH = window.innerHeight;
@@ -162,7 +162,7 @@ export function initUnifiedParticles() {
         resize();
     }
 
-    /* ---- Zeichenlogik back (Parallax-Stil) ---- */
+    /* ---- Draw logic back (parallax style) ---- */
     function drawBackParticles() {
         for (let i = 0; i < backParticles.length; i++) {
             const p = backParticles[i];
@@ -266,7 +266,7 @@ export function initUnifiedParticles() {
         }
     }
 
-    /* ---- Zeichenlogik front (Depth-Stil) ---- */
+    /* ---- Draw logic front (depth style) ---- */
     function drawFrontParticles() {
         for (let i = 0; i < frontParticles.length; i++) {
             const p = frontParticles[i];
@@ -315,7 +315,7 @@ export function initUnifiedParticles() {
         }
     }
 
-    /* ---- EIN gemeinsamer rAF-Loop fuer beide Canvases ---- */
+    /* ---- ONE shared rAF loop for both canvases ---- */
     function frame(now) {
         if (!lastTime) lastTime = now;
         const dt = Math.min((now - lastTime) / 1000, MAX_FRAME_DELTA_SECONDS);

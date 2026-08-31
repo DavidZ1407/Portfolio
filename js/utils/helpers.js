@@ -1,11 +1,11 @@
-//File: helpers.js
-//Description: Shared utilities: debounce/throttle, canvas sizing/quality helpers, and a cleanup registry for animations.
+// File: helpers.js
+// Description: Shared utilities: debounce/throttle, canvas sizing/quality helpers, and a cleanup registry for animations.
 
 
 import { CANVAS_BACKING_MAX_WIDTH, DEBOUNCE_DELAY_MS, THROTTLE_INTERVAL_MS, LARGE_BREAKPOINT_PX, XLARGE_BREAKPOINT_PX } from '../constants/ui.js';
 
-//SHARED UTILITY HELPERS 
-///Minimum distance (px) for a horizontal gesture to count as a swipe
+// SHARED UTILITY HELPERS
+// Minimum distance (px) for a horizontal gesture to count as a swipe
 const SWIPE_THRESHOLD_PX = 60;
 
 /**
@@ -45,7 +45,7 @@ export function bindHorizontalSwipe(el, onSwipeNext, onSwipePrev, onSwipeDone) {
         swiping = true;
     };
 
-    //Swip Horizontal and Vertical
+    // Horizontal swipe detection (vertical swipes are ignored)
     const onTouchEnd = (e) => {
         if (!swiping) return;
         swiping = false;

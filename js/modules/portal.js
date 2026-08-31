@@ -55,7 +55,7 @@ const TILT_MAX_ANGLE = 14; // max degrees of tilt
 
 /**
  * Build the 3D portal slides dynamically from projects.js
- * (eine Kategorie = ein Portal)
+ * (one category = one portal card)
  */
 function buildPortalSlides() {
     const carousel = document.querySelector('.portal-carousel');
@@ -87,9 +87,9 @@ function buildPortalSlides() {
         img.alt = getProjectTitle(projectIdx, lang) || '';
         img.loading = 'lazy';
         img.decoding = 'async';
-        // Optional: Cover komplett zeigen (coverFit: 'contain'), kein Crop
+        // Optional: show the cover completely (coverFit: 'contain'), no crop
         if (project.coverFit === 'contain') img.classList.add('fit-contain');
-        // Fallback: fehlendes Cover -> Kategorie-Platzhalter
+        // Fallback: missing cover -> category placeholder
         applyImageFallback(img, project.category);
         slide.appendChild(img);
 
@@ -108,7 +108,7 @@ function buildPortalSlides() {
 }
 
 /**
- * Update Titel/Untertitel der Portal-Slides (bei Sprachwechsel)
+ * Update the titles/subtitles of the portal slides (on language change)
  */
 function renderPortalLabels() {
     const lang = getCurrentLang();
@@ -130,24 +130,24 @@ function renderPortalLabels() {
 export function initPortal(onOpenModal) {
     modalOpenCallback = onOpenModal;
 
-    // Slides dynamisch aus projects.js erzeugen (VOR Carousel-Init)
+    // Build slides dynamically from projects.js (BEFORE carousel init)
     buildPortalSlides();
 
-    // Kategorie-Register fuer die Hauptseite (Level 1) aufbauen
+    // Build the category tabs for the main page (level 1)
     buildMainCategoryTabs();
 
     initBubbles();
     initCarousel();
     setupTiltStructure();
-// Wasserstrudel-Medallions auf allen Karten (nicht-aktiv = geschlossen,
-    // aktiv/hover = geoeffnet -> Bild sichtbar)
+    // Water vortex medallions on all cards (inactive = closed,
+    // active/hover = open -> image visible)
     initVortexShader();
     vortexSyncOpen();
 
-    // Aktiven Kategorie-Tab mit dem zentrierten Slide synchronisieren
+    // Sync the active category tab with the centered slide
     syncMainCategoryTab();
 
-    // Klick-Delegation fuer das Kategorie-Register (einmalig)
+    // Click delegation for the category tabs (registered once)
     const catContainer = document.querySelector('.main-cat-tabs');
     if (catContainer) {
         catContainer.addEventListener('click', (e) => {
@@ -158,7 +158,7 @@ export function initPortal(onOpenModal) {
         });
     }
 
-    // Labels bei Sprachwechsel aktualisieren
+    // Update labels on language change
     document.addEventListener('languageChanged', renderPortalLabels);
     document.addEventListener('languageChanged', () => {
         buildMainCategoryTabs();
@@ -168,8 +168,8 @@ export function initPortal(onOpenModal) {
 
 /* ---- MAIN-PAGE CATEGORY TABS ---- */
 /**
- * Baut das Kategorie-Register (Level 1) ueber dem Portal-Carousel auf.
- * Ein Klick springt zum ersten Projekt der jeweiligen Kategorie.
+ * Builds the category tabs (level 1) above the portal carousel.
+ * A click jumps to the first project of the respective category.
  */
 function buildMainCategoryTabs() {
     const container = document.querySelector('.main-cat-tabs');
@@ -202,8 +202,8 @@ function navigateToMainCategory(category) {
     const idx = getFirstProjectOfCategory(category);
     if (idx === null || idx === undefined) return;
     goToPortalSlide(idx);
-    // Aktiver Tab wird ueber syncMainCategoryTab() (in updatePositions)
-    // passend zum zentrierten Slide gesetzt.
+    // The active tab is set via syncMainCategoryTab() (in updatePositions)
+    // to match the centered slide.
     setActiveMainCategory(category);
 }
 
@@ -227,7 +227,7 @@ function syncMainCategoryTab() {
 
 /**
  * Navigate the portal carousel to the slide belonging to a project index.
- * @param {number} projectIndex - Index in projects[] (aus Hero-Carousel / Kategorie-Tabs)
+ * @param {number} projectIndex - Index in projects[] (from the hero carousel / category tabs)
  */
 export function goToPortalSlide(projectIndex) {
     const pos = findSlidePositionByProject(projectIndex);
@@ -332,13 +332,13 @@ tiltSlide.removeEventListener('focusin', onPortalFocusIn);
     tiltInner = null;
     tiltShine = null;
 }
-/** Tastatur-Fokus oeffnet den Strudel der fokussierten Karte (Bild-Reveal). */
+/** Keyboard focus opens the vortex of the focused card (image reveal). */
 function onPortalFocusIn() {
     const inst = vortexInstances.find(i => i.slide === tiltSlide);
     if (inst) inst.openTarget = 1;
 }
 
-/** Verlaesst der Fokus, schliessen sich nicht-aktive Karten wieder. */
+/** When focus leaves, non-active cards close again. */
 function onPortalFocusOut() {
     const inst = vortexInstances.find(i => i.slide === tiltSlide);
     if (inst) {
@@ -422,12 +422,12 @@ function onTiltLeave() {
 
 /* ========================================= */
 /* PORTAL VORTEX SHADER (WebGL)              */
-/* Realistischer Wasserstrudel statt flachem */
-/* CSS-Muster: organische Turbulenz (fbm),   */
-/* Kausik, Schaumringe, dunkler Trichter,    */
-/* driftende Partikel. Geschlossen deckt das */
-/* Wasser die Karte; Hover/Fokus oeffnet und */
-/* loest es nach aussen auf -> Bild sichtbar.*/
+/* Realistic water vortex instead of a flat  */
+/* CSS pattern: organic turbulence (fbm),    */
+/* caustics, foam rings, dark funnel,        */
+/* drifting particles. When closed the water */
+/* covers the card; hover/focus opens and    */
+/* dissolves it outward -> image visible.    */
 /* ========================================= */
 
 const vortexVertexShader = `
@@ -473,100 +473,100 @@ const vortexFragmentShader = `
         float t = uTime;
         float open = uOpen;
 
-        // Mittelpunkt atmet sanft -> der Strudel wirkt nie statisch
+        // The center breathes gently -> the vortex never looks static
         vec2 center = vec2(0.5, 0.5) + vec2(sin(t * 0.21) * 0.012, cos(t * 0.27) * 0.012);
         vec2 p = (vUv - center) * vec2(aspect, 1.0);
 
         float r = length(p);
         float ang = atan(p.y, p.x);
 
-        // Palette: dunkles Tiefblau -> Teal -> Aqua -> Schaum
+        // Palette: deep dark blue -> teal -> aqua -> foam
         vec3 deep = vec3(0.006, 0.028, 0.052);
         vec3 body = vec3(0.022, 0.110, 0.150);
         vec3 teal = vec3(0.052, 0.270, 0.305);
         vec3 aqua = vec3(0.170, 0.540, 0.560);
         vec3 foam = vec3(0.730, 0.945, 0.960);
 
-        // Wirbel: geschlossen langsam, beim Oeffnen schneller & weiter
+        // Vortex: slow when closed, faster & wider when opening
         float spin    = 0.20 + open * 0.55;
         float winding = 3.40 - open * 2.10;
 
-        // Organische Turbulenz im Wirbelraum (kein Speichenmuster)
+        // Organic turbulence in the vortex space (no spoke pattern)
         vec2 swirlBase = vec2(cos(ang), sin(ang)) * (0.8 + r * 3.0);
         float turb = fbm(swirlBase * 0.85 + vec2(t * 0.11, -t * 0.08)) - 0.5;
 
         float spiral = ang + t * spin + r * winding + turb * 1.7;
 
-        // Dunkler Trichter in der Mitte, weitet sich beim Oeffnen
+        // Dark funnel in the center, widens when opening
         float funnelR = 0.15 + open * 0.50;
         float funnel  = smoothstep(funnelR, 0.02, r);
         vec3 col = mix(body, deep, funnel);
 
-        // Konzentrische Ringe, die nach innen fliessen
+        // Concentric rings flowing inward
         float rings = sin(r * 26.0 - t * 1.05 + spiral * 2.0 + turb * 4.0);
         col += teal * (0.5 + 0.5 * rings) * 0.13 * (1.0 - r * 0.6);
 
-        // Kausik (Lichtflecken im Wasser)
+        // Caustics (light patches in the water)
         float cq = fbm(vec2(cos(spiral), sin(spiral)) * 3.4 + vec2(r * 8.0 - t * 0.7, t * 0.5));
         float caustic = smoothstep(0.52, 0.80, cq);
         col += aqua * caustic * 0.32;
         col += foam * caustic * 0.10;
 
-        // Schaumkronen-Ringe an der Trichterlippe, organisch wabbelnd
+        // Foam crest rings at the funnel lip, organically wobbling
         float c1 = smoothstep(0.045, 0.0, abs(r - (0.24 + 0.020 * sin(t * 0.7)  + turb * 0.05)));
         float c2 = smoothstep(0.070, 0.0, abs(r - (0.44 + 0.028 * sin(t * 0.45 + 2.0) + turb * 0.06)));
         col += aqua * (c1 * 0.42 + c2 * 0.20);
         col += foam * (c1 * 0.24 + c2 * 0.09);
 
-        // Glimmen tief im Schlund
+        // Glimmer deep in the throat
         float throat = exp(-r * 7.5);
         col += aqua * throat * 0.60;
         col += foam * throat * 0.10 * (0.5 + 0.5 * sin(t * 1.3));
 
-        // Driftende Partikel / Blasen, die nach innen sinken
+        // Drifting particles / bubbles sinking inward
         float sp = noise(vec2(cos(spiral) * 5.0 + t * 0.18, r * 4.0 - t * 0.7));
         float sparkle = pow(sp, 16.0);
         col += foam * sparkle * 0.30;
 
-        // ---- Farbton pro Kategorie: leuchtender, farbiger Wasser-Swirl ----
+        // ---- Tint per category: vivid, colored water swirl ----
         vec3 tint = uCategoryTint;
         float lumA = dot(col, vec3(0.2126, 0.7152, 0.0722));
-        vec3 tinted = mix(col, tint, 0.5);   // Modal-Shader-Palette als Akzent
+        vec3 tinted = mix(col, tint, 0.5);   // modal shader palette as accent
         float lumB = dot(tinted, vec3(0.2126, 0.7152, 0.0722));
-        col = tinted * (lumA / max(lumB, 0.0001));   // Helligkeit/Glow erhalten
+        col = tinted * (lumA / max(lumB, 0.0001));   // preserve brightness/glow
 
-        // ---- Weiche Radial-Vignettierung: kein harter Schnitt ----
-        // col verliert in die Ecken hinein an Leuchtkraft -> natuerliche
-        // Adaequung in die dunkle Karte, keine 4 separaten Eck-Spuren.
+        // ---- Soft radial vignette: no hard cut ----
+        // col loses luminosity toward the corners -> blends naturally
+        // into the dark card, no 4 separate corner marks.
         float vignette = 1.0 - smoothstep(0.40, 0.66, r);
         col *= 0.60 + 0.40 * vignette;
 
-        // ---- Bild-Rahmen-Vignette: Wasser nur am RAND (keine Mitte) ----
-        // KreisVignette: Mitte klar (Alpha ~ 0), Energie/Swirl im aeusseren Rand,
-        // wird am Rand (r ~ 0.48-0.52) staerker und gegen die Ecken abgeblendet,
-        // sodass keine 4ecken-Konzentration entsteht (rund statt eckig).
+        // ---- Image frame vignette: water only at the EDGE (no center) ----
+        // Circular vignette: clear center (alpha ~ 0), energy/swirl in the
+        // outer ring, intensifies at the edge (r ~ 0.48-0.52) and fades
+        // toward the corners so no corner concentration builds up (round instead of square).
         float edgeGlow  = smoothstep(0.30, 0.48, r) * (1.0 - smoothstep(0.52, 0.72, r));
-        // Rahmen/Ecken solide: Beim Oeffnen darf NUR die Bild-Mitte frei
-        // bleiben. Radial zu den 4 Ecken hin sowie entlang des oberen und
-        // seitlichen Kartenrahmens wird das Wasser voll opak (Vignette) -
-        // keine durchsichtigen Ecken mehr, hinter denen der Seitenhintergrund
-        // aufscheint. Unten bleibt die Textzone in der Mitte frei (lesbar).
-        vec2  qRect       = abs(vUv - vec2(0.5)) * 2.0;   // 0 Mitte -> 1 Kartenrand
+        // Solid frame/corners: when opening, ONLY the image center may become
+        // free. Radially toward the 4 corners and along the top and side card
+        // borders the water becomes fully opaque (vignette) - no translucent
+        // corners with the page background showing through. The text zone at
+        // the bottom center stays free (readable).
+        vec2  qRect       = abs(vUv - vec2(0.5)) * 2.0;   // 0 center -> 1 card edge
         float cornerSolid = smoothstep(0.52, 0.62, r);
         float frameSolid  = max(
-            smoothstep(0.925, 0.995, qRect.x),                     // seitlicher Rahmen
-            smoothstep(0.925, 0.995, qRect.y) * step(0.5, vUv.y)   // oberer Rahmen
+            smoothstep(0.925, 0.995, qRect.x),                     // side border
+            smoothstep(0.925, 0.995, qRect.y) * step(0.5, vUv.y)   // top border
         );
         float openBorder = max(0.75 * edgeGlow, max(cornerSolid, frameSolid));
-        // ---- Hover-Farbblitz: Portal "energized" kurz in seiner Kategorie-Farbe ----
-        // (ersetzt den entfernten weissen Specular-Glow). uFlash wird per JS
-        // bei mouseenter auf 1 gesetzt und klingt dort exponentiell ab (~0.8s).
+        // ---- Hover color flash: portal "energized" briefly in its category color ----
+        // (replaces the removed white specular glow). uFlash is set to 1 by JS
+        // on mouseenter and decays exponentially there (~0.8s).
         float ringBoost = 0.35 + 0.65 * edgeGlow + 0.55 * throat;
         col = mix(col, uCategoryTint * (0.85 + 0.40 * caustic), uFlash * 0.45);
         col += uCategoryTint * uFlash * 0.50 * ringBoost;
 
-        // geschlossen (open=0): Wasser vollstaendig deckend (Bild versteckt);
-        // geoeffnet (open=1):   Wasser nur am Rand, Mitte klar (Bild sichtbar)
+        // closed (open=0): water fully covering (image hidden);
+        // open (open=1):   water only at the edge, clear center (image visible)
         float alpha = mix(1.0, openBorder, open);
         gl_FragColor = vec4(col, alpha);
 
@@ -578,11 +578,11 @@ let vortexUnregisterAnim = null;
 let vortexSectionVisible = true;
 
 /**
- * Erzeugt fuer EINE Karte ein eigenes Wasserstrudel-Medallion.
- * Nicht-aktive Karten zeigen den geschlossenen Wirbel; Hover oder
- * Zentral-Position oeffnet ihn (Wasser zieht sich von den Kanten her
- * in die Mitte zurueck -> Bild wird sichtbar). Seamless: keilrunde,
- * weiche Ausblendung statt harter Kasten-Kante.
+ * Creates a water vortex medallion for ONE card.
+ * Non-active cards show the closed vortex; hover or the center
+ * position opens it (the water pulls back from the edges toward
+ * the center -> the image becomes visible). Seamless: wedge-shaped,
+ * soft fade-out instead of a hard box edge.
  */
 function createVortexInstance(slide) {
     const THREE = window.THREE;
@@ -597,14 +597,14 @@ function createVortexInstance(slide) {
 
     const canvas = renderer.domElement;
     canvas.className = 'portal-vortex-canvas';
-    // KEIN Rahmen/Kasten, KEINE runde Maske, KEIN screen-Blend:
-    // - ohne runde Maske deckt das Wasser geschlossen die ganze Karte
-    //   (auch die 4 Ecken) -> kein rechteckiger Rahmen mehr sichtbar
-    // - ohne mix-blend-mode bleibt das dunkle Wasser undurchsichtig,
-    //   sodass Bild/Text der geschlossenen Karte vollstaendig verdeckt ist
-    // - weiche, kreisende Oeffnungskante entsteht ausschliesslich im Shader
-    //   (siehe edgeGlow-Vignette), was beim Oeffnen von den Kanten her
-    //   aufloest (seamless)
+    // NO border/box, NO circular mask, NO screen blend:
+    // - without a circular mask the water covers the whole card when closed
+    //   (including the 4 corners) -> no rectangular frame visible anymore
+    // - without mix-blend-mode the dark water stays opaque,
+    //   so image/text of the closed card is fully hidden
+    // - the soft, circular opening edge is created exclusively in the shader
+    //   (see the edgeGlow vignette), dissolving from the edges inward
+    //   when opening (seamless)
     canvas.style.cssText = [
         'position:absolute;top:0;left:0;width:100%;height:100%;',
         'z-index:8;pointer-events:none;'
@@ -653,14 +653,14 @@ function createVortexInstance(slide) {
         flashV: 0
     };
 
-    // Hover = kurzer Farbblitz in der Kategorie-Farbe (kein weisser Glow mehr)
+    // Hover = short color flash in the category color (no more white glow)
     slide.addEventListener('mouseenter', () => { inst.flashV = 1; }, { passive: true });
 
     vortexInstances.push(inst);
     return inst;
 }
 
-/** Initialisiert die Vortex-Medallions auf allen Karten. */
+/** Initializes the vortex medallions on all cards. */
 function initVortexShader() {
     if (vortexInstances.length) return;
 
@@ -673,7 +673,7 @@ function initVortexShader() {
     try {
         reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     } catch (e) { /* ignore */ }
-    if (reduced) return; // Bild bleibt dauerhaft sichtbar
+    if (reduced) return; // image stays permanently visible
 
     document.querySelectorAll('.portal-slide').forEach(createVortexInstance);
     if (!vortexInstances.length) return;
@@ -686,7 +686,7 @@ function initVortexShader() {
             inst.uniforms.uTime.value += delta;
             const ease = 1 - Math.exp(-delta * 3.5);
             inst.uniforms.uOpen.value += (inst.openTarget - inst.uniforms.uOpen.value) * ease;
-            // Farbblitz-Puls: sofort voll (mouseenter), exponentiell abklingend
+            // Color flash pulse: full immediately (mouseenter), decaying exponentially
             if (inst.flashV > 0.002) {
                 inst.flashV *= Math.exp(-delta * 3.4);
             } else {
@@ -717,9 +717,9 @@ function initVortexShader() {
     });
 }
 
-/** Synchronisiert den Oeffnungsgrad nach jedem Kartenwechsel:
- *  NUR die zentrierte (aktive) Karte ist offen -> Bild sichtbar.
- *  Alle anderen Karten sind komplett geschlossen (Wasserstrudel oben). */
+/** Syncs the open degree after every card change:
+ *  ONLY the centered (active) card is open -> image visible.
+ *  All other cards are fully closed (water vortex on top). */
 function vortexSyncOpen() {
     document.querySelectorAll('.portal-slide').forEach(slide => {
         const inst = vortexInstances.find(i => i.slide === slide);
@@ -748,7 +748,7 @@ function initCarousel() {
 
     let cleanupListeners = [];
 
-    // Touch-Swipe: nach links zur naechsten Karte, nach rechts zur vorherigen
+    // Touch swipe: left goes to the next card, right to the previous one
     const carouselEl = document.querySelector('.portal-carousel');
     if (carouselEl && slides.length > 0) {
         const cleanupSwipe = bindHorizontalSwipe(
@@ -832,7 +832,7 @@ function initCarousel() {
                 if (modalOpenCallback) {
                     modalOpenCallback(slide);
                 } else {
-                    // Kein Callback gesetzt - nichts tun
+                    // No callback set - do nothing
                 }
                 return;
             }
@@ -986,7 +986,7 @@ function updatePositions(slides, dots) {
         }
     });
 
-    // Kategorie-Register aktualisieren (aktiver Tab folgt dem zentrierten Slide)
+    // Update the category tabs (active tab follows the centered slide)
     syncMainCategoryTab();
     // Attach tilt to the new center slide (after transitions settle)
     requestAnimationFrame(() => {
@@ -994,7 +994,7 @@ function updatePositions(slides, dots) {
             attachTilt();
         });
     });
-// Wasserstrudel-Synchronisation: neue zentrierte Karte bleibt offen (Bild)
+    // Vortex sync: the newly centered card stays open (image visible)
     vortexSyncOpen();
 }
 
@@ -1051,8 +1051,8 @@ function initBubbles() {
 
     const ctx = canvas.getContext('2d');
     const section = document.querySelector('.archives_section');
-    // Ohne Section gibt es nichts zu animieren; verhindert Crash in
-    // observer.observe(section) und resize() (vgl. initCarousel/initVortexShader)
+    // Without a section there is nothing to animate; prevents a crash in
+    // observer.observe(section) and resize() (cf. initCarousel/initVortexShader)
     if (!section) return;
     let bubbles = [];
     let particles = [];

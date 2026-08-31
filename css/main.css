@@ -150,7 +150,7 @@ section:not(#home) {
     50% { transform: translateY(-4px); }
 }
 
-/* ========================================= */
+/* FOOTER */
 .site_footer {
     padding: var(--footer-pad-y) var(--footer-pad-x);
     background: var(--abyss-deep);

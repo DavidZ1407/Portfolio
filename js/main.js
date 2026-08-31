@@ -119,7 +119,7 @@ function renderHeroSkills() {
     }, 200);
 }
 
-//Render skills grid in about section
+// Render the skills grid in the about section
 function renderAboutSkills() {
     const skillsGrid = document.querySelector('.lexicon_section .skills_grid');
     if (!skillsGrid) return;
@@ -140,7 +140,7 @@ function renderAboutSkills() {
     skillsGrid.appendChild(fragment);
 }
 
-//Initialize timeline scroll-reveal animation
+// Initialize the timeline scroll-reveal animation
 function initTimelineAnimation() {
     const timelineItems = document.querySelectorAll('.timeline_item');
     if (timelineItems.length === 0) return;

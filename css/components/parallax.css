@@ -143,7 +143,7 @@ header, main, section {
     opacity: 1;
 }
 
-/* Castle walls - hidden, erzeugen ungewollte Flaechen */
+/* Castle walls - hidden, they would create unwanted surfaces */
 .castle-wall-left,
 .castle-wall-right,
 .pillar,

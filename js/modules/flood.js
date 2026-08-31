@@ -128,13 +128,13 @@ export function initFlood() {
                 ctx.arc(p.x, p.y, p.r + p.glow, 0, TWO_PI);
                 ctx.fill();
 
-                // Aeusserer Rand
+                // Outer rim
                 ctx.fillStyle = `rgba(73, 146, 154, ${alpha * 0.15})`;
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.r, 0, TWO_PI);
                 ctx.fill();
 
-                // Helle Kontur
+                // Bright outline
                 ctx.strokeStyle = `rgba(150, 220, 220, ${alpha * 0.8})`;
                 ctx.lineWidth = 1.5;
                 ctx.beginPath();
