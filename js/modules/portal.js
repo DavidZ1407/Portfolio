@@ -3,6 +3,7 @@
  * Description: 3D portal carousel for the archives section: slide transforms, drag navigation, and water-open effect.
  */
 import { cleanupRegistry, debounce, sizeCanvas, bindHorizontalSwipe } from '../utils/helpers.js';
+import { isWebGLAvailable } from '../utils/webgl_utils.js';
 import { registerAnimation } from '../utils/animation_manager.js';
 import { projects, getProjectSubtitle, getProjectCover, getProjectTitle, getCategories, getCategoryLabel, getFirstProjectOfCategory, getOrderedProjectIndices, applyImageFallback } from '../constants/projects.js?v=10';
 import { getCurrentLang } from './language.js';
@@ -588,9 +589,22 @@ function createVortexInstance(slide) {
     const THREE = window.THREE;
     if (!THREE || !slide) return null;
 
-    const renderer = new THREE.WebGLRenderer({
-        alpha: true, antialias: true, powerPreference: 'high-performance'
-    });
+    // Feature-detect WebGL first: on unsupported mobile devices a bare
+    // renderer creation logs "THREE.WebGLRenderer: Error creating WebGL
+    // context" and burns one of the browser's few available contexts.
+    // Skipping keeps the slide image-visible (same look as reduced-motion).
+    if (!isWebGLAvailable()) return null;
+
+    let renderer;
+    try {
+        renderer = new THREE.WebGLRenderer({
+            alpha: true, antialias: true, powerPreference: 'high-performance'
+        });
+    } catch (e) {
+        // One broken card must never break the whole portal carousel.
+        console.warn('[portal-vortex] WebGL context creation failed, slide stays image-visible.', e);
+        return null;
+    }
     const pixelRatio = Math.min(window.devicePixelRatio || 1, PORTAL_MAX_PIXEL_RATIO);
     renderer.setPixelRatio(pixelRatio);
     renderer.setClearColor(0x000000, 0);
@@ -666,7 +680,7 @@ function initVortexShader() {
 
     const THREE = window.THREE;
     if (!THREE) {
-        console.warn('[portal-vortex] Three.js not loaded – ohne Wasserstrudel.');
+        console.warn('[portal-vortex] Three.js not loaded - no vortex medallions.');
         return;
     }
     let reduced = false;
@@ -674,6 +688,30 @@ function initVortexShader() {
         reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     } catch (e) { /* ignore */ }
     if (reduced) return; // image stays permanently visible
+
+    // Lazy creation: every card costs one WebGL context. Creating all of them
+    // at page load can exceed the mobile browser's context limit ("Error
+    // creating WebGL context"), so the medallions are only allocated once the
+    // archives section is about to enter the viewport.
+    const section = document.querySelector('.archives_section');
+    if (section && typeof IntersectionObserver !== 'undefined') {
+        const lazyObserver = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                lazyObserver.disconnect();
+                createPortalVortices();
+            }
+        }, { rootMargin: '800px 0px', threshold: 0 });
+        lazyObserver.observe(section);
+        return;
+    }
+
+    // Fallback for browsers without IntersectionObserver: create immediately.
+    createPortalVortices();
+}
+
+/** Creates the vortex instances and starts their shared render loop. */
+function createPortalVortices() {
+    if (vortexInstances.length) return; // already created
 
     document.querySelectorAll('.portal-slide').forEach(createVortexInstance);
     if (!vortexInstances.length) return;
@@ -697,12 +735,12 @@ function initVortexShader() {
         }
     });
 
-    const section = document.querySelector('.archives_section');
-    if (section) {
+    const visSection = document.querySelector('.archives_section');
+    if (visSection) {
         const obs = new IntersectionObserver((entries) => {
             vortexSectionVisible = entries[0].isIntersecting;
         }, { threshold: INTERSECTION_THRESHOLD });
-        obs.observe(section);
+        obs.observe(visSection);
     }
 
     cleanupRegistry.register(() => {

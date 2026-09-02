@@ -40,6 +40,8 @@ function buildCarouselSlides() {
         // closest thing to an LCP image on this page - load it eagerly.
         // Every other slide is a candidate for lazy loading.
         img.loading = slideIndex === 0 ? 'eager' : 'lazy';
+        // Priority hint for the LCP image; ignored harmlessly where unsupported.
+        if (slideIndex === 0) img.fetchPriority = 'high';
         img.decoding = 'async';
         // Optional: show the cover completely (coverFit: 'contain'), no crop
         if (project.coverFit === 'contain') img.classList.add('fit-contain');

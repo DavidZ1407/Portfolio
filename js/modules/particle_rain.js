@@ -2,9 +2,9 @@
  * File: particle_rain.js
  * Description: Canvas particle rain effect for the underwater depth experience.
  */
-import { sizeCanvas, getCanvasQuality } from '../utils/helpers.js';
+import { sizeCanvas, getCanvasQuality, debounce } from '../utils/helpers.js';
 import { registerAnimation } from '../utils/animation_manager.js';
-import { RESIZE_BOOT_DELAY_MS } from '../constants/ui.js';
+import { RESIZE_BOOT_DELAY_MS, DEBOUNCE_DELAY_MS } from '../constants/ui.js';
 
 export function initContactRain() {
     const section = document.querySelector('.contact_section');
@@ -106,7 +106,7 @@ export function initContactRain() {
             const p = particles[i];
             p.age++;
 
-            // DIE
+            // Past its lifetime: fade the particle out, then remove it
             if (p.age > p.life) {
                 p.opacity -= 0.03;
                 if (p.opacity <= 0) { particles.splice(i, 1); continue; }
@@ -265,7 +265,11 @@ export function initContactRain() {
         ensureBuffer(canvas.width, canvas.height);
     }
 
-    window.addEventListener('resize', resize);
+    // Debounce resize: mobile browsers fire rapid resize events when the
+    // URL bar shows/hides; each handler run reads offsetWidth/offsetHeight
+    // (forced layout) and would rebuild the render buffer per event.
+    const debouncedResize = debounce(resize, DEBOUNCE_DELAY_MS);
+    window.addEventListener('resize', debouncedResize);
 
     const observer = new IntersectionObserver((entries) => {
         isVisible = entries[0].isIntersecting;
@@ -343,7 +347,7 @@ export function initContactRain() {
 
     return () => {
         observer.disconnect();
-        window.removeEventListener('resize', resize);
+        window.removeEventListener('resize', debouncedResize);
         canvas.remove();
     };
 }

@@ -3,6 +3,7 @@
  * Description: WebGL Voronoi shader background for the project modal, tinted per project category color.
  */
 import { cleanupRegistry } from '../utils/helpers.js';
+import { isWebGLAvailable } from '../utils/webgl_utils.js';
 import { FRAME_TIMESTEP, SHADER_MAX_PIXEL_RATIO } from '../constants/ui.js';
 
 const vertexShader = `
@@ -135,15 +136,29 @@ export function initModalShader(container) {
     const oldCanvas = container.querySelector('.modal_shader_canvas');
     if (oldCanvas) oldCanvas.remove();
 
+    // Skip WebGL entirely on unsupported devices instead of letting THREE
+    // throw "Error creating WebGL context"; the modal keeps its CSS gradient.
+    if (!isWebGLAvailable()) {
+        console.warn('[modal_shader] WebGL unavailable - modal keeps static background.');
+        return null;
+    }
+
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     const scene = new THREE.Scene();
     scene.background = null;
 
-    const renderer = new THREE.WebGLRenderer({
-        alpha: true,
-        antialias: true,
-        powerPreference: 'high-performance'
-    });
+    let renderer;
+    try {
+        renderer = new THREE.WebGLRenderer({
+            alpha: true,
+            antialias: true,
+            powerPreference: 'high-performance'
+        });
+    } catch (e) {
+        // Returning null is an already-supported path (same as missing THREE).
+        console.warn('[modal_shader] WebGL context creation failed - modal keeps static background.', e);
+        return null;
+    }
     renderer.setSize(container.clientWidth, container.clientHeight);
     // Cap pixel ratio to prevent excessive GPU load at very large viewports
     const pixelRatio = Math.min(window.devicePixelRatio, SHADER_MAX_PIXEL_RATIO);

@@ -23,60 +23,71 @@ import { projects } from './constants/projects.js?v=10';
 import { skills, skillIconHtml } from './constants/skills.js?v=4';
 import { translations } from './constants/translations.js?v=2';
 
+// One broken visual effect must never take down the rest of the page:
+// containing init errors keeps navigation, i18n, carousel and modal working
+// even if an optional effect (e.g. unsupported WebGL) throws during setup.
+function safeInit(label, init) {
+    try {
+        init();
+    } catch (err) {
+        console.error(`[init] "${label}" failed - module skipped:`, err);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Language must be first (sets up data-i18n)
+    // Language must be first (sets up data-i18n). Intentionally unguarded:
+    // a failure here is fundamental (no translated text at all) and must
+    // stay visible instead of being silently contained.
     initLanguage();
 
     // Generate carousel dots BEFORE initializing carousels
-    generateCarouselDots();
+    safeInit('carousel-dots', generateCarouselDots);
 
     // Core navigation & layout
-    initNavigation();
-    initCarousel();
-    initParallax();
-    updateParallaxHeight();
+    safeInit('navigation', initNavigation);
+    safeInit('hero-carousel', initCarousel);
+    safeInit('parallax', initParallax);
+    safeInit('parallax-height', updateParallaxHeight);
 
-    // Hero Three.js Shader Parallax
-    initHeroShader();
+    // Hero Three.js shader parallax (optional WebGL effect)
+    safeInit('ocean-shader', initHeroShader);
 
-    // Water Logo Shader Effect
-    initWaterLogo();
-
-    // Water Subtitle Cycling Shader Effect
-    initWaterSubtitle();
+    // Water logo / subtitle shader effects (optional WebGL effects)
+    safeInit('water-logo', initWaterLogo);
+    safeInit('water-subtitle', initWaterSubtitle);
 
     // Modal & Portal carousel
-    initModal(projects);
-    initPortal((card) => {
+    safeInit('modal', () => initModal(projects));
+    safeInit('portal', () => initPortal((card) => {
         const projectIndex = parseInt(card.dataset.project);
         if (projectIndex >= 0 && projectIndex < projects.length) {
             showPopupAtCard(projects[projectIndex], card);
         }
-    });
+    }));
 
     // Dynamic content rendering (language-aware)
-    renderHeroSkills();
-    renderAboutSkills();
+    safeInit('hero-skills', renderHeroSkills);
+    safeInit('about-skills', renderAboutSkills);
 
     // Skill <-> project link:
     // Hovering a skill card in the hero arsenal highlights all project cards
     // (hero carousel + 3D portal) that use this skill.
-    initSkillProjectLink();
+    safeInit('skill-link', initSkillProjectLink);
 
     // Atmospheric effects
-    initUnderwater();
-    initFlood();
-    initContactRain();
-    initDepthExperience();
+    safeInit('underwater', initUnderwater);
+    safeInit('flood', initFlood);
+    safeInit('contact-rain', initContactRain);
+    safeInit('depth-experience', initDepthExperience);
 
     // Fish swarm transition (scroll-triggered, all sections)
-    initFishSwarm();
+    safeInit('fish-swarm', initFishSwarm);
 
     // Bioluminescent creature shadows (persistent, timeline section)
-    initBioluminescentSwarm();
+    safeInit('bio-swarm', initBioluminescentSwarm);
 
     // Timeline scroll animation
-    initTimelineAnimation();
+    safeInit('timeline', initTimelineAnimation);
 
     // Data accessible via module imports
 });

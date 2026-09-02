@@ -234,7 +234,7 @@ const projects = [
         media: [
             { type: 'image', src: 'assets/2D_Art/2D_Digital/2D_IMG_1.webp', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_1.webp' },
             { type: 'image', src: 'assets/2D_Art/2D_Digital/2D_IMG_2.webp', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_2.webp' },
-            { type: 'image', src: 'assets/2D_Art/2D_Digital/2D_IMG_3.webp', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_3.webp' },
+            { type: 'image', src: 'assets/2D_Art/2D_Digital/2D_IMG_3.jpg', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_3.jpg' },
             { type: 'image', src: 'assets/2D_Art/2D_Digital/2D_IMG_4.webp', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_4.webp' },
             { type: 'image', src: 'assets/2D_Art/2D_Digital/2D_IMG_5.webp', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_5.webp' },
             { type: 'image', src: 'assets/2D_Art/2D_Digital/2D_IMG_6.webp', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_6.webp' },
@@ -388,16 +388,16 @@ const projects = [
         gameConcept: { en: 'The game explores deep-sea exploration through the lens of trust and incomplete knowledge. Two players share a submarine but see different obstacles (corals vs. pillars) on the same board due to their colored filters. Through dice-placement mechanics, they must coordinate movement, resource management (oxygen and fuel) and sonar scanning without revealing their exact dice values, retrieving three artifacts to reach the final level, Atlantis.', de: 'Das Spiel erkundet Tiefseeforschung durch die Brille von Vertrauen und unvollständigem Wissen. Zwei Spieler teilen sich ein U-Boot, sehen aufgrund ihrer Farbfilter jedoch unterschiedliche Hindernisse (Korallen vs. Säulen) auf demselben Spielfeld. Über Würfelplatzierungs-Mechaniken müssen sie Bewegung, Ressourcenmanagement (Sauerstoff und Treibstoff) und Sonar-Abtastung koordinieren, ohne ihre exakten Würfelwerte preiszugeben, und drei Artefakte bergen, um die letzte Ebene, Atlantis, zu erreichen.' },
         duration: { en: '5 weeks', de: '5 Wochen' },
         team: { en: '4 members', de: '4 Personen' },
-        cover: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG7.webp',
+        cover: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG7.jpg',
         media: [
-            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG7.webp', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG7.webp' },
-            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG2.webp', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG2.webp' },
+            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG7.jpg', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG7.jpg' },
+            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG2.jpg', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG2.jpg' },
             { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG3.webp', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG3.webp' },
             { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG4.webp', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG4.webp' },
             { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG5.webp', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG5.webp' },
             { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG6.webp', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG6.webp' },
             { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG8.webp', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG8.webp' },
-            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG9.webp', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG9.webp' },
+            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG9.jpg', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG9.jpg' },
             { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG1.webp', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG1.webp' }
         ],
         contribution: {
@@ -455,7 +455,7 @@ const projects = [
             { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_7.webp', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_7.webp' },
             { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_8.webp', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_8.webp' },
             { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_9.webp', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_9.webp' },
-            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_10.webp', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_10.webp' }
+            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_10.jpg', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_10.jpg' }
         ],
         contribution: {
             en: [
@@ -806,8 +806,8 @@ const projects = [
         media: [
             { type: 'image', src: 'assets/Coding_Web/Coding_Jump/C_W_Jump_2.webp', thumb: 'assets/Coding_Web/Coding_Jump/C_W_Jump_2.webp' },
             { type: 'image', src: 'assets/Coding_Web/Coding_Jump/C_W_Jump_3.webp', thumb: 'assets/Coding_Web/Coding_Jump/C_W_Jump_3.webp' },
-            { type: 'image', src: 'assets/Coding_Web/Coding_Jump/C_W_Jump_4.webp', thumb: 'assets/Coding_Web/Coding_Jump/C_W_Jump_4.webp' },
-            { type: 'image', src: 'assets/Coding_Web/Coding_Jump/C_W_Jump_5.webp', thumb: 'assets/Coding_Web/Coding_Jump/C_W_Jump_5.webp' }
+            { type: 'image', src: 'assets/Coding_Web/Coding_Jump/C_W_Jump_4.jpg', thumb: 'assets/Coding_Web/Coding_Jump/C_W_Jump_4.jpg' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Jump/C_W_Jump_5.jpg', thumb: 'assets/Coding_Web/Coding_Jump/C_W_Jump_5.jpg' }
         ],
         contribution: {
             en: [

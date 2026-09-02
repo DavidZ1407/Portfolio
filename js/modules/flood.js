@@ -3,8 +3,8 @@
  * Description: Canvas water flood effect with rising liquid fill and splash details.
  */
 import { registerAnimation } from '../utils/animation_manager.js';
-import { sizeCanvas, getCanvasQuality } from '../utils/helpers.js';
-import { MAX_FRAME_DELTA_SECONDS, INTERSECTION_THRESHOLD, TWO_PI } from '../constants/ui.js';
+import { sizeCanvas, getCanvasQuality, debounce } from '../utils/helpers.js';
+import { MAX_FRAME_DELTA_SECONDS, INTERSECTION_THRESHOLD, TWO_PI, DEBOUNCE_DELAY_MS } from '../constants/ui.js';
 
 export function initFlood() {
     const section = document.querySelector('.journey_section');
@@ -47,7 +47,11 @@ export function initFlood() {
         canvas.style.height = h + 'px';
     }
     resize();
-    window.addEventListener('resize', resize);
+    // Debounce resize: mobile browsers fire rapid resize events when the
+    // URL bar shows/hides, and each handler run reads offsetWidth/offsetHeight
+    // (forced layout). Debouncing collapses that storm into one resize.
+    const debouncedResize = debounce(resize, DEBOUNCE_DELAY_MS);
+    window.addEventListener('resize', debouncedResize);
 
     function updateWater() {
         const rect = section.getBoundingClientRect();
@@ -122,7 +126,7 @@ export function initFlood() {
             if (p.y >= waterTop && p.opacity > 0.05) {
                 const alpha = p.opacity * waterLevel;
 
-                // Glow-Halo (no shadowBlur - use large semi-transparent circle instead)
+                // Glow halo (no shadowBlur - use a large semi-transparent circle instead)
                 ctx.fillStyle = `rgba(73, 146, 154, ${alpha * 0.08})`;
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.r + p.glow, 0, TWO_PI);
@@ -141,7 +145,7 @@ export function initFlood() {
                 ctx.arc(p.x, p.y, p.r, 0, TWO_PI);
                 ctx.stroke();
 
-                // Highlight-Spot
+                // Highlight spot
                 ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.5})`;
                 ctx.beginPath();
                 ctx.arc(p.x - p.r * 0.3, p.y - p.r * 0.3, p.r * 0.3, 0, TWO_PI);
@@ -182,11 +186,24 @@ export function initFlood() {
     }, { threshold: INTERSECTION_THRESHOLD });
     observer.observe(section);
 
-    window.addEventListener('scroll', updateWater, { passive: true });
+    // rAF-throttle the scroll handler: updateWater() calls
+    // getBoundingClientRect() which forces layout, so it must not run on
+    // every scroll event (mobile fires them at high frequency).
+    let scrollTicking = false;
+    function onScroll() {
+        if (scrollTicking) return;
+        scrollTicking = true;
+        requestAnimationFrame(() => {
+            scrollTicking = false;
+            updateWater();
+        });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
     updateWater();
 
     return () => {
-        window.removeEventListener('scroll', updateWater);
+        window.removeEventListener('scroll', onScroll);
+        window.removeEventListener('resize', debouncedResize);
         observer.disconnect();
         if (unregAnim) unregAnim();
         canvas.remove();

@@ -3,6 +3,7 @@
  * Description: WebGL ocean/caustics shader background for the hero section.
  */
 import { cleanupRegistry } from '../utils/helpers.js';
+import { isWebGLAvailable } from '../utils/webgl_utils.js';
 import { INTERSECTION_THRESHOLD, FRAME_TIMESTEP, SHADER_MAX_PIXEL_RATIO } from '../constants/ui.js';
 
 const vertexShader = `
@@ -141,15 +142,30 @@ export function initHeroShader() {
     const oldCanvas = heroSection.querySelector('.hero-shader-canvas');
     if (oldCanvas) oldCanvas.remove();
 
+    // Skip WebGL entirely on unsupported devices instead of letting THREE
+    // throw "Error creating WebGL context" - the hero keeps its CSS layers,
+    // so the design stays intact without any GPU work.
+    if (!isWebGLAvailable()) {
+        console.warn('[hero-shader] WebGL unavailable - hero keeps static background.');
+        return;
+    }
+
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     const scene = new THREE.Scene();
     scene.background = null;
 
-    const renderer = new THREE.WebGLRenderer({
-        alpha: true,
-        antialias: true,
-        powerPreference: 'high-performance'
-    });
+    let renderer;
+    try {
+        renderer = new THREE.WebGLRenderer({
+            alpha: true,
+            antialias: true,
+            powerPreference: 'high-performance'
+        });
+    } catch (e) {
+        // Context creation can still fail on blacklisted GPUs - degrade to CSS.
+        console.warn('[hero-shader] WebGL context creation failed - hero keeps static background.', e);
+        return;
+    }
     renderer.setSize(heroSection.clientWidth, heroSection.clientHeight);
     // Cap pixel ratio to prevent excessive GPU load at very large viewports
     const pixelRatio = Math.min(window.devicePixelRatio, SHADER_MAX_PIXEL_RATIO);

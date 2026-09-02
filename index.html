@@ -11,9 +11,26 @@
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/Picture/favicon.svg?v=3">
 
-    <!-- Production CSS bundle (single minified file, generated via: node tools\build_css.js) -->
-    <link rel="preload" href="dist/style.min.css?v=1" as="style">
-    <link rel="stylesheet" href="dist/style.min.css?v=1">
+    <!-- Preload critical assets -->
+    <link rel="preload" href="css/main.css" as="style">
+    <link rel="preload" href="css/components/landing.css" as="style">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/main.css">
+
+    <!-- Component CSS Files -->
+    <link rel="stylesheet" href="css/components/navbar.css">
+    <link rel="stylesheet" href="css/components/landing.css">
+    <link rel="stylesheet" href="css/components/archives.css">
+    <link rel="stylesheet" href="css/components/about.css">
+    <link rel="stylesheet" href="css/components/journey.css">
+    <link rel="stylesheet" href="css/components/contact.css">
+    <link rel="stylesheet" href="css/components/parallax.css">
+    <link rel="stylesheet" href="css/components/modal.css">
+    <link rel="stylesheet" href="css/components/depth-experience.css">
+
+    <!-- Unified Responsive System (overrides component-specific MQs) -->
+    <link rel="stylesheet" href="css/responsive.css">
 
     <!-- SVG filters for water distortion effects -->
     <svg style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
@@ -64,12 +81,17 @@
         </filter>
     </svg>
 
-    <!-- Three.js must load before main.js, otherwise window.THREE is undefined.
-         defer: downloads in parallel, still executes before the deferred ES module (main.js). -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous" defer></script>
+    <!-- Warm up the CDN connections used below while the parser continues. -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+
+    <!-- Three.js must EXECUTE before main.js (module). `defer` keeps both in
+         the post-parsing execution queue in document order, but no longer
+         blocks HTML parsing / first paint while the large library downloads. -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous"></script>
 
     <!-- Main JavaScript (ES Module - imports all modules and constants) -->
-    <script defer type="module" src="js/main.js?v=10"></script>
+    <script defer type="module" src="js/main.js?v=9"></script>
 
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet' crossorigin="anonymous">
 
@@ -219,8 +241,11 @@
         <h1 class="section_title" data-i18n="about-title">ABOUT ME</h1>
         <div class="expedition_container">
             <div class="about_profile_box">
-                <img src="assets/Picture/Assets_Profile.jpg" alt="David Zahn Profile" class="profile_image"
-                    loading="lazy" decoding="async">
+                <!-- Sized variants only: the 4045x6068 original (~524 KB) is never
+                     needed for a ~300px render, so mobile downloads 41 KB instead. -->
+                <img src="assets/Picture/Assets_Profile-600.jpg" alt="David Zahn Profile" class="profile_image"
+                    srcset="assets/Picture/Assets_Profile-600.jpg 600w, assets/Picture/Assets_Profile-1200.jpg 1200w"
+                    sizes="(max-width: 768px) 90vw, 300px" loading="lazy" decoding="async">
             </div>
             <div class="about_content_box">
                 <p class="about_text" data-i18n="about-text-1">I've always been fascinated by how games work under the
