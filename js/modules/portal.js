@@ -4,7 +4,7 @@
  */
 import { cleanupRegistry, debounce, sizeCanvas, bindHorizontalSwipe } from '../utils/helpers.js';
 import { registerAnimation } from '../utils/animation_manager.js';
-import { projects, getProjectSubtitle, getProjectCover, getProjectTitle, getCategories, getCategoryLabel, getFirstProjectOfCategory, getOrderedProjectIndices, applyImageFallback } from '../constants/projects.js?v=9';
+import { projects, getProjectSubtitle, getProjectCover, getProjectTitle, getCategories, getCategoryLabel, getFirstProjectOfCategory, getOrderedProjectIndices, applyImageFallback } from '../constants/projects.js?v=10';
 import { getCurrentLang } from './language.js';
 import { TWO_PI, DEBOUNCE_DELAY_MS, RESIZE_BOOT_DELAY_MS, INTERSECTION_THRESHOLD, PORTAL_MAX_PIXEL_RATIO } from '../constants/ui.js';
 

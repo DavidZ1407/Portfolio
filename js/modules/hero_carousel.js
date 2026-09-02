@@ -2,7 +2,7 @@
  * File: hero_carousel.js
  * Description: Hero works carousel: slide rendering from project data, autoplay, and navigation controls.
  */
-import { projects, getProjectSubtitle, getProjectCover, getProjectTitle, getProjectSkillIds, getOrderedProjectIndices, applyImageFallback } from "../constants/projects.js?v=9";
+import { projects, getProjectSubtitle, getProjectCover, getProjectTitle, getProjectSkillIds, getOrderedProjectIndices, applyImageFallback } from "../constants/projects.js?v=10";
 import { getCurrentLang } from "./language.js";
 import { cleanupRegistry, bindHorizontalSwipe } from '../utils/helpers.js';
 

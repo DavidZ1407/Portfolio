@@ -19,7 +19,7 @@ import { initHeroShader } from './modules/ocean_shader.js';
 import { initWaterLogo } from './modules/water_logo.js';
 import { initWaterSubtitle } from './modules/water_subtitle.js';
 import { initLanguage, getCurrentLang } from './modules/language.js';
-import { projects } from './constants/projects.js?v=9';
+import { projects } from './constants/projects.js?v=10';
 import { skills, skillIconHtml } from './constants/skills.js?v=4';
 import { translations } from './constants/translations.js?v=2';
 

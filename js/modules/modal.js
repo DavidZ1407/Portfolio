@@ -23,7 +23,7 @@ import {
     getProjectSkills,
     getProjectCoveredToolNames,
     getProjectLinks,
-} from '../constants/projects.js?v=9';
+} from '../constants/projects.js?v=10';
 import { skillIconHtml } from '../constants/skills.js?v=4';
 import { initModalShader } from './modal_shader.js';
 
@@ -1188,6 +1188,16 @@ function bindMediaDragGesture(el, onNext, onPrev) {
     el.addEventListener('pointerdown', (e) => {
         if (e.pointerType === 'mouse' && e.button !== 0) return;
         if (!e.isPrimary) return;
+        // Critical: if the press starts on an interactive control (lightbox
+        // prev/next arrows, close button, media play button, links...), keep
+        // the interaction fully native. Otherwise the setPointerCapture below
+        // retargets all pointer events - and the resulting click - onto this
+        // container, so the control's own click handler never fires (the
+        // lightbox prev/next arrows used to do nothing for that reason).
+        const startEl = e.target && e.target.closest
+            ? e.target.closest('button, a, input, select, textarea, [role="button"]')
+            : null;
+        if (startEl) return;
         pointerId = e.pointerId;
         startX = e.clientX;
         startY = e.clientY;

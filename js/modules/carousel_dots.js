@@ -2,7 +2,7 @@
  * File: carousel_dots.js
  * Description: Generates and manages the dot indicators for the hero and portal carousels.
  */
-import { getOrderedProjectIndices } from '../constants/projects.js?v=9';
+import { getOrderedProjectIndices } from '../constants/projects.js?v=10';
 
 export function generateCarouselDots() {
     // Count = one card per category (same order as portal/hero)

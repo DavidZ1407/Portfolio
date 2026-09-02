@@ -2,7 +2,7 @@
  * File: skill_link.js
  * Description: Links hero skill items to related project slides, applying highlight/dim effects on hover.
  */
-import { getProjectSkillIds } from '../constants/projects.js?v=9';
+import { getProjectSkillIds } from '../constants/projects.js?v=10';
 
 let activeSkillId = null;
 

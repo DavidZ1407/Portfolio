@@ -152,23 +152,23 @@ const projects = [
         },
         duration: { en: '6 weeks', de: '6 Wochen' },
         team: { en: '4 members', de: '4 Mitglieder' },
-        cover: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_1.png',
+        cover: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_1.webp',
         /* Show the full cover uncropped -> the gothica-solaris wordmark in the
            original screenshot stays fully readable. The card's image layout
            (91% x 72.5%, nearly landscape) matches the original. */
         coverFit: 'contain',
         media: [
-            { type: 'youtube', id: 'Ck4srNe2HZo', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_1.png' },
-            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_1.png', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_1.png' },
-            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_2.png', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_2.png' },
-            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_3.png', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_3.png' },
-            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_4.png', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_4.png' },
-            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_5.png', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_5.png' },
-            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_6.png', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_6.png' },
-            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_7.png', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_7.png' },
-            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_8.png', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_8.png' },
-            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_9.png', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_9.png' },
-            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_10.png', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_10.png' }
+            { type: 'youtube', id: 'Ck4srNe2HZo', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_1.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_1.webp', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_1.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_2.webp', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_2.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_3.webp', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_3.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_4.webp', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_4.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_5.webp', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_5.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_6.webp', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_6.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_7.webp', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_7.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_8.webp', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_8.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_9.webp', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_9.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_10.webp', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_10.webp' }
         ],
         contribution: {
             en: [
@@ -230,15 +230,15 @@ const projects = [
         title: { en: 'Digital Art', de: 'Digital Art' },
         subtitle: { en: 'Digital Illustrations & Artworks', de: 'Digitale Illustrationen & Artworks' },
         description: { en: 'A collection of sketches created for game projects — logo concepts and character art developed during early design phases, exploring mood, silhouette and visual identity before moving into digital or physical prototyping.', de: 'Eine Sammlung von Skizzen für Spieleprojekte – Logo-Konzepte und Charakter-Artworks aus frühen Designphasen, die Stimmung, Silhouette und visuelle Identität erkunden, bevor es in das digitale oder physische Prototyping geht.' },
-        cover: 'assets/2D_Art/2D_Digital/2D_IMG_1.png',
+        cover: 'assets/2D_Art/2D_Digital/2D_IMG_1.webp',
         media: [
-            { type: 'image', src: 'assets/2D_Art/2D_Digital/2D_IMG_1.png', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_1.png' },
-            { type: 'image', src: 'assets/2D_Art/2D_Digital/2D_IMG_2.png', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_2.png' },
-            { type: 'image', src: 'assets/2D_Art/2D_Digital/2D_IMG_3.png', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_3.png' },
-            { type: 'image', src: 'assets/2D_Art/2D_Digital/2D_IMG_4.png', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_4.png' },
-            { type: 'image', src: 'assets/2D_Art/2D_Digital/2D_IMG_5.png', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_5.png' },
-            { type: 'image', src: 'assets/2D_Art/2D_Digital/2D_IMG_6.jpg', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_6.jpg' },
-            { type: 'image', src: 'assets/2D_Art/2D_Digital/2D_IMG_7.png', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_7.png' }
+            { type: 'image', src: 'assets/2D_Art/2D_Digital/2D_IMG_1.webp', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_1.webp' },
+            { type: 'image', src: 'assets/2D_Art/2D_Digital/2D_IMG_2.webp', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_2.webp' },
+            { type: 'image', src: 'assets/2D_Art/2D_Digital/2D_IMG_3.webp', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_3.webp' },
+            { type: 'image', src: 'assets/2D_Art/2D_Digital/2D_IMG_4.webp', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_4.webp' },
+            { type: 'image', src: 'assets/2D_Art/2D_Digital/2D_IMG_5.webp', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_5.webp' },
+            { type: 'image', src: 'assets/2D_Art/2D_Digital/2D_IMG_6.webp', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_6.webp' },
+            { type: 'image', src: 'assets/2D_Art/2D_Digital/2D_IMG_7.webp', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_7.webp' }
         ],
         contribution: {
             en: [
@@ -267,18 +267,18 @@ const projects = [
         title: { en: '3D Modeling', de: '3D Modeling' },
         subtitle: { en: 'Comprehensive 3D Work in Blender', de: 'Umfassende 3D-Arbeiten in Blender' },
         description: { en: 'Comprehensive 3D work done in Blender, covering everything from high-to-low poly modeling and digital sculpting to detailed texturing and normal map workflows. Focused on creating clean, efficient assets.', de: 'Umfassende 3D-Arbeiten in Blender – von High- zu Low-Poly-Modellierung und digitalem Sculpting bis hin zu detaillierter Texturierung und Normal-Map-Workflows. Der Fokus liegt auf sauberen, effizienten Assets.' },
-        cover: 'assets/3D/3D_IMG/3D_IMG_1.png',
+        cover: 'assets/3D/3D_IMG/3D_IMG_1.webp',
         media: [
-            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_1.png', thumb: 'assets/3D/3D_IMG/3D_IMG_1.png' },
-            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_2.png', thumb: 'assets/3D/3D_IMG/3D_IMG_2.png' },
-            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_3.png', thumb: 'assets/3D/3D_IMG/3D_IMG_3.png' },
-            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_4.png', thumb: 'assets/3D/3D_IMG/3D_IMG_4.png' },
-            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_5.png', thumb: 'assets/3D/3D_IMG/3D_IMG_5.png' },
-            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_6.png', thumb: 'assets/3D/3D_IMG/3D_IMG_6.png' },
-            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_7.png', thumb: 'assets/3D/3D_IMG/3D_IMG_7.png' },
-            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_8.png', thumb: 'assets/3D/3D_IMG/3D_IMG_8.png' },
-            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_9.png', thumb: 'assets/3D/3D_IMG/3D_IMG_9.png' },
-            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_10.JPG', thumb: 'assets/3D/3D_IMG/3D_IMG_10.JPG' }
+            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_1.webp', thumb: 'assets/3D/3D_IMG/3D_IMG_1.webp' },
+            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_2.webp', thumb: 'assets/3D/3D_IMG/3D_IMG_2.webp' },
+            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_3.webp', thumb: 'assets/3D/3D_IMG/3D_IMG_3.webp' },
+            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_4.webp', thumb: 'assets/3D/3D_IMG/3D_IMG_4.webp' },
+            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_5.webp', thumb: 'assets/3D/3D_IMG/3D_IMG_5.webp' },
+            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_6.webp', thumb: 'assets/3D/3D_IMG/3D_IMG_6.webp' },
+            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_7.webp', thumb: 'assets/3D/3D_IMG/3D_IMG_7.webp' },
+            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_8.webp', thumb: 'assets/3D/3D_IMG/3D_IMG_8.webp' },
+            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_9.webp', thumb: 'assets/3D/3D_IMG/3D_IMG_9.webp' },
+            { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_10.webp', thumb: 'assets/3D/3D_IMG/3D_IMG_10.webp' }
         ],
         contribution: {
             en: [
@@ -314,13 +314,13 @@ const projects = [
             { label: { en: 'WebGL Water Shader – Play', de: 'WebGL-Wasser-Shader – Ansehen' }, url: 'https://davidz1407.github.io/Stem2_Code/Shader_OpenGL/index.html' },
             { label: { en: 'GitHub Repository', de: 'GitHub Repository' }, url: 'https://github.com/DavidZ1407/Stem2_Code' }
         ],
-        cover: 'assets/Coding_Web/Coding_Physics/C_W_Physics_3.png',
+        cover: 'assets/Coding_Web/Coding_Physics/C_W_Physics_3.webp',
         media: [
-            { type: 'image', src: 'assets/Coding_Web/Coding_Physics/C_W_Physics_1.png', thumb: 'assets/Coding_Web/Coding_Physics/C_W_Physics_1.png' },
-            { type: 'image', src: 'assets/Coding_Web/Coding_Physics/C_W_Physics_2.png', thumb: 'assets/Coding_Web/Coding_Physics/C_W_Physics_2.png' },
-            { type: 'image', src: 'assets/Coding_Web/Coding_Physics/C_W_Physics_3.png', thumb: 'assets/Coding_Web/Coding_Physics/C_W_Physics_3.png' },
-            { type: 'image', src: 'assets/Coding_Web/Coding_Physics/C_W_Physics_4.png', thumb: 'assets/Coding_Web/Coding_Physics/C_W_Physics_4.png' },
-            { type: 'image', src: 'assets/Coding_Web/Coding_Physics/C_W_Physics_5.png', thumb: 'assets/Coding_Web/Coding_Physics/C_W_Physics_5.png' }
+            { type: 'image', src: 'assets/Coding_Web/Coding_Physics/C_W_Physics_1.webp', thumb: 'assets/Coding_Web/Coding_Physics/C_W_Physics_1.webp' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Physics/C_W_Physics_2.webp', thumb: 'assets/Coding_Web/Coding_Physics/C_W_Physics_2.webp' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Physics/C_W_Physics_3.webp', thumb: 'assets/Coding_Web/Coding_Physics/C_W_Physics_3.webp' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Physics/C_W_Physics_4.webp', thumb: 'assets/Coding_Web/Coding_Physics/C_W_Physics_4.webp' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Physics/C_W_Physics_5.webp', thumb: 'assets/Coding_Web/Coding_Physics/C_W_Physics_5.webp' }
         ],
         contribution: {
             en: [
@@ -350,11 +350,11 @@ const projects = [
         description: { en: 'An exciting sci-fi rhythm game developed in the Godot Engine (C#). The project focused entirely on sound design: all sound effects were created from scratch in Ableton Live — from futuristic sci-fi weapons, drives and UI elements to crisp rhythm cues — and independently integrated into Godot via C#, perfectly synchronized with the gameplay and the rhythm of the game. Final video editing & sync realized with DaVinci Resolve.', de: 'Ein aufregendes Sci-Fi-Rhythmusspiel, entwickelt in der Godot Engine (C#). Das Projekt legte den Fokus komplett auf Sounddesign: Alle Soundeffekte entstanden von Grund auf in Ableton Live – von futuristischen Sci-Fi-Waffen, Antrieben und UI-Elementen bis hin zu knackigen Rhythmus-Cues – und wurden eigenständig per C# in Godot integriert, perfekt synchron zu Gameplay und Rhythmus des Spiels. Videoschnitt & Sync final umgesetzt mit DaVinci Resolve.' },
         gameConcept: { en: 'Two players each control a ball ("Odd Balls"), charging a power meter to the beat by rhythmically shaking their controller. Once the meter is full, players can shoot and destroy UFOs.', de: 'Zwei Spieler steuern jeweils einen Ball ("Odd Balls") und laden einen Energie-Balken im Takt auf, indem sie ihren Controller rhythmisch schütteln. Ist der Balken voll, können die Spieler UFOs abschießen und zerstören.' },
         duration: { en: '2 weeks', de: '2 Wochen' },
-        cover: 'assets/Sound/Space_Balls/Sound_2.png',
+        cover: 'assets/Sound/Space_Balls/Sound_2.webp',
         media: [
-            { type: 'video', src: 'assets/Sound/Space_Balls/Sound_1.mp4', thumb: 'assets/Sound/Space_Balls/Sound_2.png' },
-            { type: 'image', src: 'assets/Sound/Space_Balls/Sound_2.png', thumb: 'assets/Sound/Space_Balls/Sound_2.png' },
-            { type: 'image', src: 'assets/Sound/Space_Balls/Sound_3.jpg', thumb: 'assets/Sound/Space_Balls/Sound_3.jpg' }
+            { type: 'video', src: 'assets/Sound/Space_Balls/Sound_1.mp4', thumb: 'assets/Sound/Space_Balls/Sound_2.webp' },
+            { type: 'image', src: 'assets/Sound/Space_Balls/Sound_2.webp', thumb: 'assets/Sound/Space_Balls/Sound_2.webp' },
+            { type: 'image', src: 'assets/Sound/Space_Balls/Sound_3.webp', thumb: 'assets/Sound/Space_Balls/Sound_3.webp' }
         ],
         contribution: {
             en: [
@@ -388,17 +388,17 @@ const projects = [
         gameConcept: { en: 'The game explores deep-sea exploration through the lens of trust and incomplete knowledge. Two players share a submarine but see different obstacles (corals vs. pillars) on the same board due to their colored filters. Through dice-placement mechanics, they must coordinate movement, resource management (oxygen and fuel) and sonar scanning without revealing their exact dice values, retrieving three artifacts to reach the final level, Atlantis.', de: 'Das Spiel erkundet Tiefseeforschung durch die Brille von Vertrauen und unvollständigem Wissen. Zwei Spieler teilen sich ein U-Boot, sehen aufgrund ihrer Farbfilter jedoch unterschiedliche Hindernisse (Korallen vs. Säulen) auf demselben Spielfeld. Über Würfelplatzierungs-Mechaniken müssen sie Bewegung, Ressourcenmanagement (Sauerstoff und Treibstoff) und Sonar-Abtastung koordinieren, ohne ihre exakten Würfelwerte preiszugeben, und drei Artefakte bergen, um die letzte Ebene, Atlantis, zu erreichen.' },
         duration: { en: '5 weeks', de: '5 Wochen' },
         team: { en: '4 members', de: '4 Personen' },
-        cover: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG7.jpg',
+        cover: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG7.webp',
         media: [
-            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG7.jpg', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG7.jpg' },
-            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG2.png', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG2.png' },
-            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG3.png', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG3.png' },
-            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG4.png', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG4.png' },
-            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG5.png', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG5.png' },
-            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG6.jpeg', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG6.jpeg' },
-            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG8.png', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG8.png' },
-            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG9.jpeg', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG9.jpeg' },
-            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG1.jpeg', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG1.jpeg' }
+            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG7.webp', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG7.webp' },
+            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG2.webp', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG2.webp' },
+            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG3.webp', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG3.webp' },
+            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG4.webp', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG4.webp' },
+            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG5.webp', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG5.webp' },
+            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG6.webp', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG6.webp' },
+            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG8.webp', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG8.webp' },
+            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG9.webp', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG9.webp' },
+            { type: 'image', src: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG1.webp', thumb: 'assets/Other/Other_PJ_1/Other_ProjektT_IMG1.webp' }
         ],
         contribution: {
             en: [
@@ -443,19 +443,19 @@ const projects = [
         },
         duration: { en: '2 weeks', de: '2 Wochen' },
         team: { en: '5 members', de: '5 Mitglieder' },
-        cover: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_1.png',
+        cover: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_1.webp',
         media: [
-            { type: 'youtube', id: 'eomk8vSr40o', start: 95, thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_1.png' },
-            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_1.png', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_1.png' },
-            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_2.png', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_2.png' },
-            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_3.png', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_3.png' },
-            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_4.png', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_4.png' },
-            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_5.png', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_5.png' },
-            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_6.JPG', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_6.JPG' },
-            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_7.JPG', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_7.JPG' },
-            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_8.JPG', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_8.JPG' },
-            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_9.JPG', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_9.JPG' },
-            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_10.JPG', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_10.JPG' }
+            { type: 'youtube', id: 'eomk8vSr40o', start: 95, thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_1.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_1.webp', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_1.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_2.webp', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_2.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_3.webp', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_3.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_4.webp', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_4.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_5.webp', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_5.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_6.webp', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_6.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_7.webp', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_7.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_8.webp', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_8.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_9.webp', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_9.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_10.webp', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_10.webp' }
         ],
         contribution: {
             en: [
@@ -488,18 +488,18 @@ const projects = [
         gameConcept: { en: 'The game explores a world built around the contrast between black and white. The player must navigate through changing environments, using movement, timing and the interaction between both sides to overcome obstacles and reach the end of the level.', de: 'Das Spiel erkundet eine Welt, die um den Kontrast zwischen Schwarz und Weiß gebaut ist. Der Spieler muss sich durch wechselnde Umgebungen navigieren und dabei Bewegung, Timing und die Wechselwirkung beider Seiten nutzen, um Hindernisse zu überwinden und das Ende des Levels zu erreichen.' },
         duration: { en: '7 weeks', de: '7 Wochen' },
         team: { en: '5 members', de: '5 Mitglieder' },
-        cover: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG1.png',
+        cover: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG1.webp',
         media: [
-            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG1.png', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG1.png' },
-            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG2.png', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG2.png' },
-            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG3.png', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG3.png' },
-            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG4.jpg', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG4.jpg' },
-            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG5.jpg', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG5.jpg' },
-            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG6.jpg', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG6.jpg' },
-            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG7.jpg', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG7.jpg' },
-            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG8.png', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG8.png' },
-            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG9.png', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG9.png' },
-            { type: 'video', src: 'assets/Other/Other_PJ_2/Other_Projekt2_V1.mp4', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG1.png' }
+            { type: 'video', src: 'assets/Other/Other_PJ_2/Other_Projekt2_V1.mp4', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG1.webp' },
+            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG1.webp', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG1.webp' },
+            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG2.webp', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG2.webp' },
+            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG3.webp', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG3.webp' },
+            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG4.webp', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG4.webp' },
+            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG5.webp', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG5.webp' },
+            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG6.webp', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG6.webp' },
+            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG7.webp', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG7.webp' },
+            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG8.webp', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG8.webp' },
+            { type: 'image', src: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG9.webp', thumb: 'assets/Other/Other_PJ_2/Other_Projekt2_IMG9.webp' }
         ],
         contribution: {
             en: [
@@ -531,17 +531,17 @@ const projects = [
         title: { en: 'Drawing', de: 'Drawing' },
         subtitle: { en: 'Traditional Pencil Sketches', de: 'Traditionelle Bleistiftskizzen' },
         description: { en: "A collection of traditional pencil sketches exploring creature and character design through different poses and anatomy. Each drawing focuses on form, proportion and dynamic posing.", de: "Eine Sammlung traditioneller Bleistiftskizzen, die Kreatur- und Charakterdesign durch verschiedene Posen und Anatomie erkunden. Jede Zeichnung konzentriert sich auf Form, Proportion und dynamische Haltung." },
-        cover: 'assets/2D_Art/2D_Draw/2D_Draw_1.png',
+        cover: 'assets/2D_Art/2D_Draw/2D_Draw_1.webp',
         media: [
-            { type: 'image', src: 'assets/2D_Art/2D_Draw/2D_Draw_1.png', thumb: 'assets/2D_Art/2D_Draw/2D_Draw_1.png' },
-            { type: 'image', src: 'assets/2D_Art/2D_Draw/2D_Draw_2.png', thumb: 'assets/2D_Art/2D_Draw/2D_Draw_2.png' },
-            { type: 'image', src: 'assets/2D_Art/2D_Draw/2D_Draw_3.png', thumb: 'assets/2D_Art/2D_Draw/2D_Draw_3.png' },
-            { type: 'image', src: 'assets/2D_Art/2D_Draw/2D_Draw_4.png', thumb: 'assets/2D_Art/2D_Draw/2D_Draw_4.png' },
-            { type: 'image', src: 'assets/2D_Art/2D_Draw/2D_Draw_5.png', thumb: 'assets/2D_Art/2D_Draw/2D_Draw_5.png' },
-            { type: 'image', src: 'assets/2D_Art/2D_Draw/2D_Draw_6.png', thumb: 'assets/2D_Art/2D_Draw/2D_Draw_6.png' },
-            { type: 'image', src: 'assets/2D_Art/2D_Draw/2D_Draw_7.png', thumb: 'assets/2D_Art/2D_Draw/2D_Draw_7.png' },
-            { type: 'image', src: 'assets/2D_Art/2D_Draw/2D_Draw_8.png', thumb: 'assets/2D_Art/2D_Draw/2D_Draw_8.png' },
-            { type: 'image', src: 'assets/2D_Art/2D_Draw/2D_Draw_9.png', thumb: 'assets/2D_Art/2D_Draw/2D_Draw_9.png' }
+            { type: 'image', src: 'assets/2D_Art/2D_Draw/2D_Draw_1.webp', thumb: 'assets/2D_Art/2D_Draw/2D_Draw_1.webp' },
+            { type: 'image', src: 'assets/2D_Art/2D_Draw/2D_Draw_2.webp', thumb: 'assets/2D_Art/2D_Draw/2D_Draw_2.webp' },
+            { type: 'image', src: 'assets/2D_Art/2D_Draw/2D_Draw_3.webp', thumb: 'assets/2D_Art/2D_Draw/2D_Draw_3.webp' },
+            { type: 'image', src: 'assets/2D_Art/2D_Draw/2D_Draw_4.webp', thumb: 'assets/2D_Art/2D_Draw/2D_Draw_4.webp' },
+            { type: 'image', src: 'assets/2D_Art/2D_Draw/2D_Draw_5.webp', thumb: 'assets/2D_Art/2D_Draw/2D_Draw_5.webp' },
+            { type: 'image', src: 'assets/2D_Art/2D_Draw/2D_Draw_6.webp', thumb: 'assets/2D_Art/2D_Draw/2D_Draw_6.webp' },
+            { type: 'image', src: 'assets/2D_Art/2D_Draw/2D_Draw_7.webp', thumb: 'assets/2D_Art/2D_Draw/2D_Draw_7.webp' },
+            { type: 'image', src: 'assets/2D_Art/2D_Draw/2D_Draw_8.webp', thumb: 'assets/2D_Art/2D_Draw/2D_Draw_8.webp' },
+            { type: 'image', src: 'assets/2D_Art/2D_Draw/2D_Draw_9.webp', thumb: 'assets/2D_Art/2D_Draw/2D_Draw_9.webp' }
         ],
         contribution: {
             en: [
@@ -570,15 +570,15 @@ const projects = [
         title: { en: '2D Animation', de: '2D Animation' },
         subtitle: { en: 'Hand-drawn 2D Animation Sequences', de: 'Handgezeichnete 2D-Animationen' },
         description: { en: "A collection of hand-drawn 2D animation sequences. Frame-by-frame loops and short scenes exploring movement, timing and character acting in a stylized look.", de: "Eine Sammlung handgezeichneter 2D-Animationssequenzen. Frame-by-Frame-Loops und kurze Szenen, die Bewegung, Timing und Character Acting in einem stilisierten Look erkunden." },
-        cover: 'assets/2D_Art/2D_Digital/2D_IMG_1.png',
+        cover: 'assets/2D_Art/2D_Digital/2D_IMG_1.webp',
         media: [
-            { type: 'video', src: 'assets/2D_Art/2D_VID/2D_VID_1.mp4', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_1.png' },
-            { type: 'video', src: 'assets/2D_Art/2D_VID/2D_VID_2.mp4', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_1.png' },
-            { type: 'video', src: 'assets/2D_Art/2D_VID/2D_VID_3.mp4', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_1.png' },
-            { type: 'video', src: 'assets/2D_Art/2D_VID/2D_VID_4.mp4', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_1.png' },
-            { type: 'video', src: 'assets/2D_Art/2D_VID/2D_VID_5.mp4', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_1.png' },
-            { type: 'video', src: 'assets/2D_Art/2D_VID/2D_VID_6.mp4', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_1.png' },
-            { type: 'video', src: 'assets/2D_Art/2D_VID/2D_VID_7.mp4', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_1.png' }
+            { type: 'video', src: 'assets/2D_Art/2D_VID/2D_VID_1.mp4', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_1.webp' },
+            { type: 'video', src: 'assets/2D_Art/2D_VID/2D_VID_2.mp4', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_1.webp' },
+            { type: 'video', src: 'assets/2D_Art/2D_VID/2D_VID_3.mp4', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_1.webp' },
+            { type: 'video', src: 'assets/2D_Art/2D_VID/2D_VID_4.mp4', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_1.webp' },
+            { type: 'video', src: 'assets/2D_Art/2D_VID/2D_VID_5.mp4', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_1.webp' },
+            { type: 'video', src: 'assets/2D_Art/2D_VID/2D_VID_6.mp4', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_1.webp' },
+            { type: 'video', src: 'assets/2D_Art/2D_VID/2D_VID_7.mp4', thumb: 'assets/2D_Art/2D_Digital/2D_IMG_1.webp' }
         ],
         contribution: {
             en: [
@@ -606,13 +606,13 @@ const projects = [
         title: { en: '3D Animation', de: '3D Animation' },
         subtitle: { en: 'In-engine 3D Animation & Mechanics', de: '3D-Animationen & Gameplay-Mechaniken' },
         description: { en: '3D animations developed in Blender and implemented within the Godot game engine to drive interactive gameplay mechanics, including character actions and facial animations.', de: 'In Blender entwickelte 3D-Animationen, die in der Godot-Spielengine umgesetzt wurden, um interaktive Gameplay-Mechaniken anzutreiben – einschließlich Charakteraktionen und Gesichtsanimationen.' },
-        cover: 'assets/3D/3D_IMG/3D_IMG_1.png',
+        cover: 'assets/3D/3D_IMG/3D_IMG_1.webp',
         media: [
-            { type: 'video', src: 'assets/3D/3D_VID/3D_VID_1.mp4', thumb: 'assets/3D/3D_IMG/3D_IMG_1.png' },
-            { type: 'video', src: 'assets/3D/3D_VID/3D_VID_2.mp4', thumb: 'assets/3D/3D_IMG/3D_IMG_1.png' },
-            { type: 'video', src: 'assets/3D/3D_VID/3D_VID_3.mp4', thumb: 'assets/3D/3D_IMG/3D_IMG_1.png' },
-            { type: 'video', src: 'assets/3D/3D_VID/3D_VID_4.mp4', thumb: 'assets/3D/3D_IMG/3D_IMG_1.png' },
-            { type: 'video', src: 'assets/3D/3D_VID/3D_VID_5.mp4', thumb: 'assets/3D/3D_IMG/3D_IMG_1.png' }
+            { type: 'video', src: 'assets/3D/3D_VID/3D_VID_1.mp4', thumb: 'assets/3D/3D_IMG/3D_IMG_1.webp' },
+            { type: 'video', src: 'assets/3D/3D_VID/3D_VID_2.mp4', thumb: 'assets/3D/3D_IMG/3D_IMG_1.webp' },
+            { type: 'video', src: 'assets/3D/3D_VID/3D_VID_3.mp4', thumb: 'assets/3D/3D_IMG/3D_IMG_1.webp' },
+            { type: 'video', src: 'assets/3D/3D_VID/3D_VID_4.mp4', thumb: 'assets/3D/3D_IMG/3D_IMG_1.webp' },
+            { type: 'video', src: 'assets/3D/3D_VID/3D_VID_5.mp4', thumb: 'assets/3D/3D_IMG/3D_IMG_1.webp' }
         ],
         contribution: {
             en: [
@@ -644,18 +644,18 @@ const projects = [
         gameConcept: { en: "A chased spaceship navigates through outer space, featuring a real-life actor integrated directly into the animated scene.", de: "Ein gejagtes Raumschiff navigiert durch den Weltraum, mit einem echten Schauspieler, der direkt in die animierte Szene integriert ist." },
         duration: { en: '4 weeks', de: '4 Wochen' },
         team: { en: '4 members', de: '4 Mitglieder' },
-        cover: 'assets/3D/3D_Pj/3D_PJ_2.png',
+        cover: 'assets/3D/3D_Pj/3D_PJ_2.webp',
         media: [
-            { type: 'video', src: 'assets/3D/3D_Pj/3D_PJ_1.mp4', thumb: 'assets/3D/3D_Pj/3D_PJ_2.png' },
-            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_2.png', thumb: 'assets/3D/3D_Pj/3D_PJ_2.png' },
-            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_3.png', thumb: 'assets/3D/3D_Pj/3D_PJ_3.png' },
-            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_4.png', thumb: 'assets/3D/3D_Pj/3D_PJ_4.png' },
-            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_5.png', thumb: 'assets/3D/3D_Pj/3D_PJ_5.png' },
-            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_6.jpg', thumb: 'assets/3D/3D_Pj/3D_PJ_6.jpg' },
-            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_7.png', thumb: 'assets/3D/3D_Pj/3D_PJ_7.png' },
-            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_8.jpg', thumb: 'assets/3D/3D_Pj/3D_PJ_8.jpg' },
-            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_9.png', thumb: 'assets/3D/3D_Pj/3D_PJ_9.png' },
-            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_10.png', thumb: 'assets/3D/3D_Pj/3D_PJ_10.png' }
+            { type: 'video', src: 'assets/3D/3D_Pj/3D_PJ_1.mp4', thumb: 'assets/3D/3D_Pj/3D_PJ_2.webp' },
+            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_2.webp', thumb: 'assets/3D/3D_Pj/3D_PJ_2.webp' },
+            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_3.webp', thumb: 'assets/3D/3D_Pj/3D_PJ_3.webp' },
+            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_4.webp', thumb: 'assets/3D/3D_Pj/3D_PJ_4.webp' },
+            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_5.webp', thumb: 'assets/3D/3D_Pj/3D_PJ_5.webp' },
+            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_6.webp', thumb: 'assets/3D/3D_Pj/3D_PJ_6.webp' },
+            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_7.webp', thumb: 'assets/3D/3D_Pj/3D_PJ_7.webp' },
+            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_8.webp', thumb: 'assets/3D/3D_Pj/3D_PJ_8.webp' },
+            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_9.webp', thumb: 'assets/3D/3D_Pj/3D_PJ_9.webp' },
+            { type: 'image', src: 'assets/3D/3D_Pj/3D_PJ_10.webp', thumb: 'assets/3D/3D_Pj/3D_PJ_10.webp' }
         ],
         contribution: {
             en: [
@@ -686,10 +686,10 @@ const projects = [
         description: { en: 'An atmospheric 3D game set in a dark, icy world where players must collect glowing pods to illuminate and navigate their path. The goal was to give this small 3D world a distinct, immersive acoustic identity using Godot and Ableton Live: dynamic ambient soundscapes and realistic environmental audio tailored to each environment, organic effects, foley and echoing orb interactions that reinforce distance, scale and mystery.', de: 'Ein atmosphärisches 3D-Spiel in einer dunklen, eisigen Welt, in der Spieler leuchtende Pods einsammeln müssen, um ihren Weg zu beleuchten und zu finden. Das Ziel war es, dieser kleinen 3D-Welt mit Godot und Ableton Live eine eigenständige, immersive akustische Identität zu geben: dynamische Ambient-Klanglandschaften und realistisches Umgebungsaudio, zugeschnitten auf jede Umgebung, dazu organische Effekte, Foley und hallende Orb-Interaktionen, die Distanz, Größe und Geheimnis verstärken.' },
         gameConcept: { en: 'The world is divided into two contrasting environments: The Snow Field — vast, cold and isolated, shaped by ice crackling, wind and wide reverb — and The Cave — dark, enigmatic and enclosed, defined by water drips, abstract tones and deep hall reverb.', de: 'Die Welt ist in zwei kontrastierende Umgebungen geteilt: Das Schneefeld – weit, kalt und isoliert, geprägt von knisterndem Eis, Wind und weitem Hall – und Die Höhle – dunkel, rätselhaft und eng, definiert durch Wassertropfen, abstrakte Töne und tiefen Hallenklang.' },
         duration: { en: '2 weeks', de: '2 Wochen' },
-        cover: 'assets/Sound/Glow_Pods/Sound_5.png',
+        cover: 'assets/Sound/Glow_Pods/Sound_5.webp',
         media: [
-            { type: 'video', src: 'assets/Sound/Glow_Pods/Sound_4.mp4', thumb: 'assets/Sound/Glow_Pods/Sound_5.png' },
-            { type: 'image', src: 'assets/Sound/Glow_Pods/Sound_5.png', thumb: 'assets/Sound/Glow_Pods/Sound_5.png' }
+            { type: 'video', src: 'assets/Sound/Glow_Pods/Sound_4.mp4', thumb: 'assets/Sound/Glow_Pods/Sound_5.webp' },
+            { type: 'image', src: 'assets/Sound/Glow_Pods/Sound_5.webp', thumb: 'assets/Sound/Glow_Pods/Sound_5.webp' }
         ],
         contribution: {
             en: [
@@ -760,14 +760,14 @@ const projects = [
             { label: { en: 'Ball Animation – Live Website', de: 'Ball-Animation – Live-Website' }, url: 'https://davidz1407.github.io/Code1/Task_4_Coding/ball_animation/ball.html' },
             { label: { en: 'Games of Games – Live Website', de: 'Games of Games – Live-Website' }, url: 'https://davidz1407.github.io/Code1/Task_4_Coding/games_of_games/games_of_games.html' }
         ],
-        cover: 'assets/Coding_Web/Coding_Web/C_W_1.png',
+        cover: 'assets/Coding_Web/Coding_Web/C_W_1.webp',
         media: [
-            { type: 'image', src: 'assets/Coding_Web/Coding_Web/C_W_1.png', thumb: 'assets/Coding_Web/Coding_Web/C_W_1.png' },
-            { type: 'image', src: 'assets/Coding_Web/Coding_Web/C_W_2.png', thumb: 'assets/Coding_Web/Coding_Web/C_W_2.png' },
-            { type: 'image', src: 'assets/Coding_Web/Coding_Web/C_W_3.png', thumb: 'assets/Coding_Web/Coding_Web/C_W_3.png' },
-            { type: 'image', src: 'assets/Coding_Web/Coding_Web/C_W_4.png', thumb: 'assets/Coding_Web/Coding_Web/C_W_4.png' },
-            { type: 'image', src: 'assets/Coding_Web/Coding_Web/C_W_5.png', thumb: 'assets/Coding_Web/Coding_Web/C_W_5.png' },
-            { type: 'image', src: 'assets/Coding_Web/Coding_Web/C_W_6.png', thumb: 'assets/Coding_Web/Coding_Web/C_W_6.png' }
+            { type: 'image', src: 'assets/Coding_Web/Coding_Web/C_W_1.webp', thumb: 'assets/Coding_Web/Coding_Web/C_W_1.webp' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Web/C_W_2.webp', thumb: 'assets/Coding_Web/Coding_Web/C_W_2.webp' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Web/C_W_3.webp', thumb: 'assets/Coding_Web/Coding_Web/C_W_3.webp' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Web/C_W_4.webp', thumb: 'assets/Coding_Web/Coding_Web/C_W_4.webp' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Web/C_W_5.webp', thumb: 'assets/Coding_Web/Coding_Web/C_W_5.webp' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Web/C_W_6.webp', thumb: 'assets/Coding_Web/Coding_Web/C_W_6.webp' }
         ],
         contribution: {
             en: [
@@ -802,12 +802,12 @@ const projects = [
         ],
         duration: { en: '1 week', de: '1 Woche' },
         team: { en: 'Worked alone', de: 'Allein gearbeitet' },
-        cover: 'assets/Coding_Web/Coding_Jump/C_W_Jump_2.png',
+        cover: 'assets/Coding_Web/Coding_Jump/C_W_Jump_2.webp',
         media: [
-            { type: 'image', src: 'assets/Coding_Web/Coding_Jump/C_W_Jump_2.png', thumb: 'assets/Coding_Web/Coding_Jump/C_W_Jump_2.png' },
-            { type: 'image', src: 'assets/Coding_Web/Coding_Jump/C_W_Jump_3.png', thumb: 'assets/Coding_Web/Coding_Jump/C_W_Jump_3.png' },
-            { type: 'image', src: 'assets/Coding_Web/Coding_Jump/C_W_Jump_4.jpg', thumb: 'assets/Coding_Web/Coding_Jump/C_W_Jump_4.jpg' },
-            { type: 'image', src: 'assets/Coding_Web/Coding_Jump/C_W_Jump_5.jpg', thumb: 'assets/Coding_Web/Coding_Jump/C_W_Jump_5.jpg' }
+            { type: 'image', src: 'assets/Coding_Web/Coding_Jump/C_W_Jump_2.webp', thumb: 'assets/Coding_Web/Coding_Jump/C_W_Jump_2.webp' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Jump/C_W_Jump_3.webp', thumb: 'assets/Coding_Web/Coding_Jump/C_W_Jump_3.webp' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Jump/C_W_Jump_4.webp', thumb: 'assets/Coding_Web/Coding_Jump/C_W_Jump_4.webp' },
+            { type: 'image', src: 'assets/Coding_Web/Coding_Jump/C_W_Jump_5.webp', thumb: 'assets/Coding_Web/Coding_Jump/C_W_Jump_5.webp' }
         ],
         contribution: {
             en: [
@@ -847,13 +847,13 @@ const projects = [
         links: [
             { label: { en: 'GitHub Repository', de: 'GitHub-Repository' }, url: 'https://github.com/DavidZ1407/Terrain-Generator' }
         ],
-        cover: 'assets/Game_Dev/Terrain/G_D_Terrain_2.png',
+        cover: 'assets/Game_Dev/Terrain/G_D_Terrain_2.webp',
         media: [
-            { type: 'video', src: 'assets/Game_Dev/Terrain/G_D_Terrain_1.mp4', thumb: 'assets/Game_Dev/Terrain/G_D_Terrain_2.png' },
-            { type: 'image', src: 'assets/Game_Dev/Terrain/G_D_Terrain_2.png', thumb: 'assets/Game_Dev/Terrain/G_D_Terrain_2.png' },
-            { type: 'image', src: 'assets/Game_Dev/Terrain/G_D_Terrain_3.png', thumb: 'assets/Game_Dev/Terrain/G_D_Terrain_3.png' },
-            { type: 'image', src: 'assets/Game_Dev/Terrain/G_D_Terrain_4.png', thumb: 'assets/Game_Dev/Terrain/G_D_Terrain_4.png' },
-            { type: 'image', src: 'assets/Game_Dev/Terrain/G_D_Terrain_5.png', thumb: 'assets/Game_Dev/Terrain/G_D_Terrain_5.png' }
+            { type: 'video', src: 'assets/Game_Dev/Terrain/G_D_Terrain_1.mp4', thumb: 'assets/Game_Dev/Terrain/G_D_Terrain_2.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Terrain/G_D_Terrain_2.webp', thumb: 'assets/Game_Dev/Terrain/G_D_Terrain_2.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Terrain/G_D_Terrain_3.webp', thumb: 'assets/Game_Dev/Terrain/G_D_Terrain_3.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Terrain/G_D_Terrain_4.webp', thumb: 'assets/Game_Dev/Terrain/G_D_Terrain_4.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Terrain/G_D_Terrain_5.webp', thumb: 'assets/Game_Dev/Terrain/G_D_Terrain_5.webp' }
         ],
         contribution: {
             en: [
@@ -912,14 +912,14 @@ const projects = [
         },
         duration: { en: '48 hours (Game Jam)', de: '48 Stunden (Game Jam)' },
         team: { en: '3 members', de: '3 Mitglieder' },
-        cover: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_2.png',
+        cover: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_2.webp',
         media: [
-            { type: 'video', src: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_1.mp4', thumb: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_2.png' },
-            { type: 'image', src: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_2.png', thumb: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_2.png' },
-            { type: 'image', src: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_3.png', thumb: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_3.png' },
-            { type: 'image', src: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_4.png', thumb: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_4.png' },
-            { type: 'image', src: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_5.png', thumb: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_5.png' },
-            { type: 'image', src: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_6.png', thumb: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_6.png' }
+            { type: 'video', src: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_1.mp4', thumb: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_2.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_2.webp', thumb: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_2.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_3.webp', thumb: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_3.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_4.webp', thumb: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_4.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_5.webp', thumb: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_5.webp' },
+            { type: 'image', src: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_6.webp', thumb: 'assets/Game_Dev/Game_Jam_26/G_D_GJ_6.webp' }
         ],
         contribution: {
             en: [
