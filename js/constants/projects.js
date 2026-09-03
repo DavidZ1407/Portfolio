@@ -719,9 +719,9 @@ const projects = [
         subtitle: { en: 'Complete Sound Redesign & Synchronization', de: 'Komplettes Sound-Redesign & Synchronisation' },
         description: { en: 'A dedicated sound redesign project in which an existing scene was fully re-scored and synchronized from scratch. The main focus was on breathing acoustic life into the visuals using a hybrid approach of custom-made sounds and professionally edited library assets.', de: 'Ein dediziertes Sound-Redesign-Projekt, bei dem eine bestehende Szene von Grund auf neu vertont und synchronisiert wurde. Der Hauptfokus lag darauf, den Bildern akustisches Leben einzuhauchen – mit einem hybriden Ansatz aus selbst erstellten Sounds und professionell bearbeiteten Bibliotheks-Sounds.' },
         duration: { en: '1 week', de: '1 Woche' },
-        cover: 'assets/Picture/placeholders/sound.svg',
+        cover: 'assets/Picture/favicon.svg',
         media: [
-            { type: 'video', src: 'assets/Sound/Lifted/Sound_6.mp4', thumb: 'assets/Picture/placeholders/sound.svg' }
+            { type: 'video', src: 'assets/Sound/Lifted/Sound_6.mp4', thumb: 'assets/Picture/favicon.svg' }
         ],
         contribution: {
             en: [
@@ -804,6 +804,7 @@ const projects = [
         team: { en: 'Worked alone', de: 'Allein gearbeitet' },
         cover: 'assets/Coding_Web/Coding_Jump/C_W_Jump_2.webp',
         media: [
+            { type: 'video', src: 'assets/Coding_Web/Coding_Jump/C_W_Jump_1.mp4', thumb: 'assets/Coding_Web/Coding_Jump/C_W_Jump_2.webp' },
             { type: 'image', src: 'assets/Coding_Web/Coding_Jump/C_W_Jump_2.webp', thumb: 'assets/Coding_Web/Coding_Jump/C_W_Jump_2.webp' },
             { type: 'image', src: 'assets/Coding_Web/Coding_Jump/C_W_Jump_3.webp', thumb: 'assets/Coding_Web/Coding_Jump/C_W_Jump_3.webp' },
             { type: 'image', src: 'assets/Coding_Web/Coding_Jump/C_W_Jump_4.jpg', thumb: 'assets/Coding_Web/Coding_Jump/C_W_Jump_4.jpg' },
@@ -975,13 +976,12 @@ export function getProjectCover(index) {
  * Used when a real cover/media item is missing so all bubbles/slides
  * on the main page and in the modal stay visible.
  *
- * Caution: intentionally returns ONE shared, neutral placeholder for
- * ALL categories (not a category-specific icon/text image). This way all
- * 6 cards in the hero carousel and the portal appear consistently -
- * until real project screenshots are available.
+ * Caution: intentionally returns ONE shared, neutral placeholder (the
+ * site favicon) for ALL categories. This way all 6 cards in the hero
+ * carousel and the portal appear consistently if a cover is missing.
  */
 export function getCategoryPlaceholder(category) {
-    return 'assets/Picture/placeholders/project.svg';
+    return 'assets/Picture/favicon.svg';
 }
 
 /**

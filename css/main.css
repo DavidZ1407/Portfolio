@@ -136,11 +136,16 @@ section:not(#home) {
 .site_footer { box-shadow: inset 0 60px 40px -30px var(--abyss-deep); } /* Footer top fade */
 
 .section_title {
+    /* Gold accent like .skills_title - the base rule previously had no color,
+       so every section title inherited the grey body text color instead. */
+    color: var(--gold-accent);
     font-size: 2.5rem;
     animation: section-float 7s ease-in-out infinite;
 }
 
 .section_subtitle {
+    /* Darker gold like .skills_subtitle, keeping the established title/subtitle pairing. */
+    color: var(--gold-dark);
     animation: section-float 8s ease-in-out infinite;
     animation-delay: 0.5s;
 }
