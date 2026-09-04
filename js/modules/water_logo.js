@@ -179,6 +179,7 @@ export function initWaterLogo() {
     const gl = canvas.getContext('webgl2', { alpha: true, premultipliedAlpha: false });
     if (!gl) {
         console.warn('[water-logo] WebGL2 not supported');
+        container.remove();
         h1.style.opacity = '1';
         return;
     }
@@ -197,7 +198,7 @@ export function initWaterLogo() {
 
     const vs = compile(gl.VERTEX_SHADER, vertSrc);
     const fs = compile(gl.FRAGMENT_SHADER, fragSrc);
-    if (!vs || !fs) { h1.style.opacity = '1'; return; }
+    if (!vs || !fs) { container.remove(); h1.style.opacity = '1'; return; }
 
     const prog = gl.createProgram();
     gl.attachShader(prog, vs);
@@ -205,6 +206,7 @@ export function initWaterLogo() {
     gl.linkProgram(prog);
     if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
         console.error('[water-logo] Link error:', gl.getProgramInfoLog(prog));
+        container.remove();
         h1.style.opacity = '1';
         return;
     }
