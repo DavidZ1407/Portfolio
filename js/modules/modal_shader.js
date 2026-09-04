@@ -177,6 +177,18 @@ export function initModalShader(container) {
 
     container.prepend(renderer.domElement);
 
+    // Handle context loss: the browser may reclaim the WebGL context under
+    // memory pressure (especially on mobile). Prevent default to allow
+    // restoration, then remove the canvas and keep the CSS gradient.
+    renderer.domElement.addEventListener('webglcontextlost', (event) => {
+        event.preventDefault();
+        console.warn('[modal_shader] WebGL context lost - keeping static CSS background.');
+        isActive = false;
+        if (animFrame) cancelAnimationFrame(animFrame);
+        renderer.dispose();
+        renderer.domElement.remove();
+    }, { once: true });
+
     let currentColorScheme = 0;
 
     const uniforms = {

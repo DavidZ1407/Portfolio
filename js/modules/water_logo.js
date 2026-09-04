@@ -184,6 +184,18 @@ export function initWaterLogo() {
         return;
     }
 
+    // Handle context loss: the browser may reclaim the WebGL context under
+    // memory pressure (especially on mobile). Prevent default to allow
+    // restoration, then fall back to the static h1 text.
+    canvas.addEventListener('webglcontextlost', (event) => {
+        event.preventDefault();
+        console.warn('[water-logo] WebGL context lost - falling back to static text.');
+        isActive = false;
+        if (animFrame) cancelAnimationFrame(animFrame);
+        container.remove();
+        h1.style.opacity = '1';
+    }, { once: true });
+
     // Compile shaders
     function compile(type, src) {
         const s = gl.createShader(type);

@@ -208,6 +208,19 @@ export function initWaterSubtitle() {
         return;
     }
 
+    // Handle context loss: the browser may reclaim the WebGL context under
+    // memory pressure (especially on mobile). Prevent default to allow
+    // restoration, then fall back to the static text elements.
+    canvas.addEventListener('webglcontextlost', (event) => {
+        event.preventDefault();
+        console.warn('[water-subtitle] WebGL context lost - falling back to static text.');
+        isActive = false;
+        if (animFrame) cancelAnimationFrame(animFrame);
+        iAmText.remove();
+        studyingText.remove();
+        container.remove();
+    }, { once: true });
+
     function compile(type, src) {
         const s = gl.createShader(type);
         gl.shaderSource(s, src);
