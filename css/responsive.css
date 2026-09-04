@@ -693,13 +693,6 @@ section {
     .water-subtitle-canvas {
         max-width: 100% !important;
     }
-    .water-text-container {
-        max-width: 100% !important;
-        justify-content: center !important;
-    }
-    .water-text-canvas {
-        max-width: 100% !important;
-    }
     .descend_btn {
         font-size: 0.7rem !important;
         padding: 6px 20px !important;
@@ -740,17 +733,43 @@ section {
     .hero_content h2 {
         font-size: 0.65rem !important;
     }
+    /* Chrome-specific: ensure correct order I AM -> DAVID ZAHN -> studying */
     .hero_i_am {
         font-size: 0.75rem !important;
         text-align: center !important;
         margin-bottom: 4px !important;
         letter-spacing: 0.3px !important;
+        display: block !important;
+        width: 100% !important;
+        clear: both !important;
+        position: relative !important;
+        float: none !important;
+    }
+    .water-text-container {
+        max-width: 100% !important;
+        justify-content: center !important;
+        display: flex !important;
+        width: 100% !important;
+        margin-bottom: 4px !important;
+        clear: both !important;
+        position: relative !important;
+        float: none !important;
+    }
+    .water-text-canvas {
+        max-width: 100% !important;
+        display: block !important;
+        clear: both !important;
     }
     .hero_studying {
         font-size: 0.65rem !important;
         text-align: center !important;
         margin-bottom: 8px !important;
         letter-spacing: 0.2px !important;
+        display: block !important;
+        width: 100% !important;
+        clear: both !important;
+        position: relative !important;
+        float: none !important;
     }
     .hero_description {
         font-size: 0.7rem !important;
@@ -854,22 +873,43 @@ section {
         margin-bottom: 6px !important;
     }
 
+    /* Chrome-specific: ensure correct order I AM -> DAVID ZAHN -> studying */
     .hero_i_am {
         font-size: 0.75rem !important;
         margin-bottom: 2px !important;
+        display: block !important;
+        width: 100% !important;
+        text-align: center !important;
+        clear: both !important;
+        position: relative !important;
+        float: none !important;
     }
 
     .hero_studying {
         font-size: 0.65rem !important;
         margin-bottom: 4px !important;
+        display: block !important;
+        width: 100% !important;
+        text-align: center !important;
+        clear: both !important;
+        position: relative !important;
+        float: none !important;
     }
 
     .water-text-container {
         max-width: 100% !important;
         justify-content: center !important;
+        display: flex !important;
+        width: 100% !important;
+        margin-bottom: 4px !important;
+        clear: both !important;
+        position: relative !important;
+        float: none !important;
     }
     .water-text-canvas {
         max-width: 100% !important;
+        display: block !important;
+        clear: both !important;
     }
 
     .hero_description {
@@ -1429,20 +1469,41 @@ section {
         font-size: 0.55rem !important;
         text-align: center !important;
     }
+    /* Chrome-specific: ensure correct order I AM -> DAVID ZAHN -> studying */
     .hero_i_am {
         font-size: 0.65rem !important;
         text-align: center !important;
+        display: block !important;
+        width: 100% !important;
+        margin-bottom: 2px !important;
+        clear: both !important;
+        position: relative !important;
+        float: none !important;
     }
     .hero_studying {
         font-size: 0.55rem !important;
         text-align: center !important;
+        display: block !important;
+        width: 100% !important;
+        margin-bottom: 4px !important;
+        clear: both !important;
+        position: relative !important;
+        float: none !important;
     }
     .water-text-container {
         max-width: 100% !important;
         justify-content: center !important;
+        display: flex !important;
+        width: 100% !important;
+        margin-bottom: 2px !important;
+        clear: both !important;
+        position: relative !important;
+        float: none !important;
     }
     .water-text-canvas {
         max-width: 100% !important;
+        display: block !important;
+        clear: both !important;
     }
     .hero_description {
         font-size: 0.6rem !important;
