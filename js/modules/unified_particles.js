@@ -317,6 +317,10 @@ export function initUnifiedParticles() {
 
     /* ---- ONE shared rAF loop for both canvases ---- */
     function frame(now) {
+        // Skip both fixed fullscreen canvases while the modal overlay is open:
+        // z3 (back) and z7 (front) are both covered by it, so rendering would
+        // only consume CPU/GPU for pixels that no one can see.
+        if (document.body.classList.contains('modal-open')) return;
         if (!lastTime) lastTime = now;
         const dt = Math.min((now - lastTime) / 1000, MAX_FRAME_DELTA_SECONDS);
         lastTime = now;

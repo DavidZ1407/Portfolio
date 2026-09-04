@@ -720,6 +720,9 @@ function createPortalVortices() {
         const delta = dt || 1 / 60;
         for (const inst of vortexInstances) {
             if (!vortexSectionVisible) continue;
+            // The archives section sits directly behind the modal overlay -
+            // skip rendering while a project modal covers it.
+            if (document.body.classList.contains('modal-open')) continue;
             if (!inst.canvas.isConnected) continue;
             inst.uniforms.uTime.value += delta;
             const ease = 1 - Math.exp(-delta * 3.5);
@@ -1108,6 +1111,7 @@ function initBubbles() {
                     // Register with centralized animation manager
                     unregisterAnim = registerAnimation(() => {
                         if (!isActive) return;
+                        if (document.body.classList.contains('modal-open')) return;
                         animate();
                     });
                 }

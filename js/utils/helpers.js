@@ -218,3 +218,48 @@ export function requireElement(selector, name = selector) {
     return el;
 }
 
+/**
+ * Resolves once the given CSS font (as used in canvas 2d fillText) is ready,
+ * so text textures are never rasterized with the fallback typeface.
+ *
+ * The web fonts are loaded asynchronously via Google Fonts. Drawing canvas
+ * text before the font arrived silently uses the fallback font and, once the
+ * text is baked into a WebGL texture, keeps the wrong glyphs for the whole
+ * session (no automatic redraw). This waits for the actual FontFaceSet load
+ * instead of using a blind timeout.
+ *
+ * @param {string} [font] - Full CSS font shorthand as used by ctx.font (e.g. 'bold 48px Cinzel, serif')
+ * @returns {Promise<void>} Resolves when the font is available or unusable.
+ */
+export function waitForFont(font = '') {
+    // Fast path: canvas already (or not) loaded - resolve on the next task so
+    // callers behave consistently without blocking.
+    const resolveSoon = () => Promise.resolve();
+
+    if (typeof document === 'undefined' || !document.fonts) return resolveSoon();
+    if (!document.fonts.load) return resolveSoon();
+
+    try {
+        // Pull the first font-family token (the token right before ", serif",
+        // ", sans-serif" or the end) so we only wait for the actual face.
+        const family = (font.split(',')[0] || '').trim().replace(/^['"]|['"]$/g, '');
+        if (!family) return resolveSoon();
+
+        // If the face is already loaded (or blocked/unsupported), the load call
+        // resolves quickly - no artificial delay for something we already have.
+        return document.fonts.load(font, /* text */ 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789').then(() => {
+            // Everything is already current: nothing more to do.
+            return undefined;
+        }).catch(() => {
+            // FontFaceSet.load rejects on permanent failures (network blacklist,
+            // bad font file). Fall back to awaiting the global ready promise so
+            // we still line up with the browser's own font pipeline.
+            const ready = document.fonts.ready;
+            if (ready && ready.then) return ready.then(() => undefined);
+            return undefined;
+        });
+    } catch (e) {
+        return resolveSoon();
+    }
+}
+

@@ -4,7 +4,7 @@
  */
 import { translations } from '../constants/translations.js?v=2';
 import { getCurrentLang } from './language.js';
-import { cleanupRegistry } from '../utils/helpers.js';
+import { cleanupRegistry, waitForFont } from '../utils/helpers.js';
 import { INTERSECTION_THRESHOLD } from '../constants/ui.js';
 
 /* Cycling terms displayed (EN/DE via translations.js). */
@@ -19,6 +19,11 @@ const SUBTITLE_KEYS = [
 /* Canvas size of the cycling subtitle text (px). */
 const SUBTITLE_CANVAS_WIDTH = 520;
 const SUBTITLE_CANVAS_HEIGHT = 65;
+
+// Full CSS font shorthand used for the subtitle texture. Shared by the canvas
+// rasterizer and the font-loading wait, so the waiter always targets the exact
+// same face (and the sample text matches the uppercase cycling terms).
+const SUBTITLE_FONT = 'bold 48px Cinzel, serif';
 
 function getSubtitles(lang) {
     const texts = translations[lang] || translations.en;
@@ -117,7 +122,7 @@ function createTextCanvas(text, w, h) {
     const ctx = c.getContext('2d');
     ctx.clearRect(0, 0, w, h);
     ctx.fillStyle = '#49929a';
-    ctx.font = 'bold 48px Cinzel, serif';
+    ctx.font = SUBTITLE_FONT;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(text, w / 2, h / 2);
@@ -252,6 +257,24 @@ export function initWaterSubtitle() {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 
+    // The Google Font arrives asynchronously - the initial texture may have
+    // been rasterized with the fallback serif face. Await it once and reuse the
+    // promise, so every later texture upload is redrawn with Cinzel exactly
+    // once (never repeatedly, once the face has arrived or failed permanently).
+    const fontReadyPromise = waitForFont(SUBTITLE_FONT);
+    let textureHasCinzel = false;
+    function redrawTextureWithCinzel(text) {
+        if (textureHasCinzel) return;
+        fontReadyPromise.then(() => {
+            if (!isActive || textureHasCinzel) return;
+            const freshCanvas = createTextCanvas(text, textWidth, textHeight);
+            gl.bindTexture(gl.TEXTURE_2D, tex);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, freshCanvas);
+            // Stop retrying once the face was applied (or is confirmed unusable).
+            textureHasCinzel = true;
+        }).catch(() => { textureHasCinzel = true; /* font permanently unavailable - keep fallback glyphs */ });
+    }
+
     const uTime = gl.getUniformLocation(prog, 'uTime');
     const uFade = gl.getUniformLocation(prog, 'uFade');
     gl.viewport(0, 0, textWidth, textHeight);
@@ -268,6 +291,9 @@ export function initWaterSubtitle() {
         const newCanvas = createTextCanvas(newText, textWidth, textHeight);
         gl.bindTexture(gl.TEXTURE_2D, tex);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, newCanvas);
+        // If the Cinzel face has not arrived yet, exchange the just-drawn
+        // fallback glyphs in-place once it does (only once per session).
+        redrawTextureWithCinzel(newText);
     }
 
     let animFrame = null;
@@ -280,6 +306,8 @@ export function initWaterSubtitle() {
         if (!isActive) return;
         // Item 4: skip WebGL render while the subtitle is off-screen
         if (!isVisible) { animFrame = requestAnimationFrame(render); return; }
+        // Skip drawing while the project modal covers the hero (no visual benefit).
+        if (document.body.classList.contains('modal-open')) { animFrame = requestAnimationFrame(render); return; }
         const t = (performance.now() - startTime) / 1000.0;
         const now = performance.now();
         const elapsed = now - lastCycleTime;
@@ -319,6 +347,10 @@ export function initWaterSubtitle() {
     }
 
     animFrame = requestAnimationFrame(render);
+
+    // Redraw the initial texture once Cinzel becomes available (the first draw
+    // may have used the fallback serif, and canvas textures never re-render).
+    redrawTextureWithCinzel(SUBTITLES[currentIndex]);
 
     // Item 4: pause when not visible (like particle-rain.js)
     const heroObserver = new IntersectionObserver((entries) => {

@@ -2,7 +2,7 @@
  * File: water_logo.js
  * Description: WebGL water-effect canvas rendering the AETHERTECH logo text in the hero.
  */
-import { cleanupRegistry } from '../utils/helpers.js';
+import { cleanupRegistry, waitForFont } from '../utils/helpers.js';
 import { MOBILE_BREAKPOINT, LARGE_BREAKPOINT_PX, MOBILE_SMALL_BREAKPOINT_PX, INTERSECTION_THRESHOLD } from '../constants/ui.js';
 
 /* ---- Canvas text sizes (screen-dependent) ---- */
@@ -107,6 +107,12 @@ void main() {
     fragColor = vec4(finalColor, alpha);
 }`;
 
+// Full CSS font shorthand used for the logo texture. Shared by the canvas rasterizer
+// and the font-loading wait, so the waiter always targets the exact same face.
+function getLogoFont(h) {
+    return `bold ${Math.round(h * 0.55)}px Cinzel, serif`;
+}
+
 function createTextCanvas(text, w, h) {
     const c = document.createElement('canvas');
     c.width = w;
@@ -115,8 +121,7 @@ function createTextCanvas(text, w, h) {
     ctx.clearRect(0, 0, w, h);
     ctx.fillStyle = '#ffffff';
     // Fit the font dynamically to the canvas size
-    const fontSize = Math.round(h * 0.55);
-    ctx.font = `bold ${fontSize}px Cinzel, serif`;
+    ctx.font = getLogoFont(h);
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(text, w / 2, h / 2);
@@ -243,6 +248,8 @@ export function initWaterLogo() {
         if (!isActive) return;
         // Item 4: skip WebGL rendering while the logo is off-screen
         if (!isVisible) { animFrame = requestAnimationFrame(render); return; }
+        // Skip drawing while the project modal covers the hero (no visual benefit).
+        if (document.body.classList.contains('modal-open')) { animFrame = requestAnimationFrame(render); return; }
         const t = (performance.now() - startTime) / 1000.0;
         gl.uniform1f(uTime, t);
         gl.clearColor(0, 0, 0, 0);
@@ -252,6 +259,17 @@ export function initWaterLogo() {
     }
 
     animFrame = requestAnimationFrame(render);
+
+    // The Google Font arrives asynchronously, so the first texture may have
+    // been rasterized with the fallback serif face. Redraw the texture in-place
+    // once Cinzel is ready - without this the wrong glyphs would stay in the
+    // texture for the whole session (canvas textures are never redrawn automatically).
+    waitForFont(getLogoFont(textHeight)).then(() => {
+        if (!isActive) return;
+        const freshCanvas = createTextCanvas('DAVID ZAHN', textWidth, textHeight);
+        gl.bindTexture(gl.TEXTURE_2D, tex);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, freshCanvas);
+    }).catch(() => { /* font permanently unavailable - keep the first rendering */ });
 
     // Item 4: pause when not visible (like particle-rain.js)
     const heroObserver = new IntersectionObserver((entries) => {

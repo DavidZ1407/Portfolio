@@ -208,6 +208,9 @@ export function initHeroShader() {
 
     function animate() {
         if (!isActive) { animFrame = requestAnimationFrame(animate); return; }
+        // Pause GPU rendering while the project modal is open: the hero sits
+        // behind the dark overlay, so rendering would burn GPU for zero visibility.
+        if (document.body.classList.contains('modal-open')) { animFrame = requestAnimationFrame(animate); return; }
         // Skip GPU rendering while the hero section is off-screen
         if (!isVisible) { animFrame = requestAnimationFrame(animate); return; }
         material.uniforms.uTime.value += FRAME_TIMESTEP;
