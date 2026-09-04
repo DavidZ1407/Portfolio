@@ -59,6 +59,11 @@
 .hero_content {
     text-align: left;
     max-width: 450px;
+}
+
+.hero_content h2,
+.hero_small,
+.hero_description {
     animation: fadeInUp 1s ease-out;
 }
 
