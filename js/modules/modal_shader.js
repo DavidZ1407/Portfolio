@@ -143,25 +143,37 @@ export function initModalShader(container) {
         return null;
     }
 
+    // Detect Firefox mobile - it struggles with WebGL + SVG filter combinations.
+    // Use a static CSS background instead to ensure smooth modal animations.
+    const isFirefoxMobile = /Firefox/i.test(navigator.userAgent) && /Mobile|Android/i.test(navigator.userAgent);
+
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     const scene = new THREE.Scene();
     scene.background = null;
 
     let renderer;
     try {
-        renderer = new THREE.WebGLRenderer({
+        const rendererOptions = {
             alpha: true,
-            antialias: true,
             powerPreference: 'high-performance'
-        });
+        };
+        // Disable antialiasing on Firefox mobile for better performance
+        if (isFirefoxMobile) {
+            rendererOptions.antialias = false;
+        } else {
+            rendererOptions.antialias = true;
+        }
+        renderer = new THREE.WebGLRenderer(rendererOptions);
     } catch (e) {
         // Returning null is an already-supported path (same as missing THREE).
         console.warn('[modal_shader] WebGL context creation failed - modal keeps static background.', e);
         return null;
     }
     renderer.setSize(container.clientWidth, container.clientHeight);
-    // Cap pixel ratio to prevent excessive GPU load at very large viewports
-    const pixelRatio = Math.min(window.devicePixelRatio, SHADER_MAX_PIXEL_RATIO);
+    // Cap pixel ratio to prevent excessive GPU load at very large viewports.
+    // Use lower pixel ratio on Firefox mobile for smoother animations.
+    const maxPixelRatio = isFirefoxMobile ? 1.0 : SHADER_MAX_PIXEL_RATIO;
+    const pixelRatio = Math.min(window.devicePixelRatio, maxPixelRatio);
     renderer.setPixelRatio(pixelRatio);
     renderer.setClearColor(0x000000, 0);
 

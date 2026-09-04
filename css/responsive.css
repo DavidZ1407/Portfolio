@@ -693,6 +693,13 @@ section {
     .water-subtitle-canvas {
         max-width: 100% !important;
     }
+    .water-text-container {
+        max-width: 100% !important;
+        justify-content: center !important;
+    }
+    .water-text-canvas {
+        max-width: 100% !important;
+    }
     .descend_btn {
         font-size: 0.7rem !important;
         padding: 6px 20px !important;
@@ -855,6 +862,14 @@ section {
     .hero_studying {
         font-size: 0.65rem !important;
         margin-bottom: 4px !important;
+    }
+
+    .water-text-container {
+        max-width: 100% !important;
+        justify-content: center !important;
+    }
+    .water-text-canvas {
+        max-width: 100% !important;
     }
 
     .hero_description {
@@ -1421,6 +1436,13 @@ section {
     .hero_studying {
         font-size: 0.55rem !important;
         text-align: center !important;
+    }
+    .water-text-container {
+        max-width: 100% !important;
+        justify-content: center !important;
+    }
+    .water-text-canvas {
+        max-width: 100% !important;
     }
     .hero_description {
         font-size: 0.6rem !important;

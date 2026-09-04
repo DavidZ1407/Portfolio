@@ -646,6 +646,12 @@ function closePopup(immediate = false) {
 
     const closeBtn = modalContainer.querySelector('.modal_close_btn');
 
+    // Stop shader BEFORE starting close animation to free GPU resources.
+    // Running WebGL + SVG filters simultaneously causes jank on Firefox mobile.
+    if (modalShader) {
+        modalShader.stop();
+    }
+
     if (immediate) {
         // Hide immediately without the close animation (e.g. when clicking a navbar link).
         // Release scroll lock immediately so the user can scroll right away.
@@ -655,9 +661,6 @@ function closePopup(immediate = false) {
         modalContainer.classList.remove('water_close');
         if (closeBtn) {
             closeBtn.classList.remove('water_effect');
-        }
-        if (modalShader) {
-            modalShader.stop();
         }
         currentProject = null;
         return;
@@ -686,10 +689,6 @@ function closePopup(immediate = false) {
         modalContainer.classList.remove('water_close');
         if (closeBtn) {
             closeBtn.classList.remove('water_effect');
-        }
-        // Stop shader only AFTER hiding to prevent text flicker during close
-        if (modalShader) {
-            modalShader.stop();
         }
         currentProject = null;
     }, WATER_ANIMATION_MS);
