@@ -1669,6 +1669,21 @@
     }
 }
 
+/* Mobile performance: disable expensive SVG filters that cause jank
+   especially on Firefox mobile. CSS animations/filters are used instead. */
+@media (max-width: 768px) {
+    .project_modal.water_emerge,
+    .project_modal.water_close,
+    .modal_lightbox.water_close {
+        filter: none !important;
+        -webkit-filter: none !important;
+    }
+    .modal_media_image.media_nav_glow,
+    .modal_lightbox_image.media_nav_glow {
+        filter: none !important;
+        -webkit-filter: none !important;
+    }
+
 /* Lightbox controls at the edge - mobile */
 @media (max-width: 768px) {
     .modal_lightbox_prev,
