@@ -733,15 +733,21 @@ section {
     .hero_content h2 {
         font-size: 0.65rem !important;
     }
-    /* Chrome-specific: ensure correct order I AM -> DAVID ZAHN -> studying */
-    .hero_content h1 {
-        position: absolute !important;
-        left: -9999px !important;
-        top: auto !important;
-        width: 1px !important;
-        height: 1px !important;
-        overflow: hidden !important;
+    .hero_content {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
     }
+    .hero_content .hero_small { order: 1; }
+    .hero_content .hero_i_am { order: 2; }
+    .hero_content .water-text-container { order: 3; }
+    .hero_content .hero_studying { order: 4; }
+    .hero_content .water-subtitle-container { order: 5; }
+    .hero_content h1 { order: 6; }
+    .hero_content h2 { order: 7; }
+    .hero_content .hero_description { order: 8; }
+    .hero_content .descend_btn { order: 9; }
+    /* Chrome-specific: ensure correct order I AM -> DAVID ZAHN -> studying */
     .hero_i_am {
         font-size: 0.75rem !important;
         text-align: center !important;
@@ -867,12 +873,6 @@ section {
     }
 
     .hero_content h1 {
-        position: absolute !important;
-        left: -9999px !important;
-        top: auto !important;
-        width: 1px !important;
-        height: 1px !important;
-        overflow: hidden !important;
         font-size: clamp(0.35rem, 1vw, 0.5rem) !important;
         letter-spacing: 0.02px !important;
         margin-bottom: 0px !important;
@@ -1471,15 +1471,10 @@ section {
         padding: 80px 2% 20px !important;
     }
     .hero_content h1 {
-        position: absolute !important;
-        left: -9999px !important;
-        top: auto !important;
-        width: 1px !important;
-        height: 1px !important;
-        overflow: hidden !important;
         font-size: 0.85rem !important;
         letter-spacing: 0.3px !important;
         text-align: center !important;
+        overflow: hidden !important;
         word-break: break-word !important;
         white-space: normal !important;
         line-height: 1.1 !important;
