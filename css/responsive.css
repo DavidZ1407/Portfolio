@@ -734,6 +734,14 @@ section {
         font-size: 0.65rem !important;
     }
     /* Chrome-specific: ensure correct order I AM -> DAVID ZAHN -> studying */
+    .hero_content h1 {
+        position: absolute !important;
+        left: -9999px !important;
+        top: auto !important;
+        width: 1px !important;
+        height: 1px !important;
+        overflow: hidden !important;
+    }
     .hero_i_am {
         font-size: 0.75rem !important;
         text-align: center !important;
@@ -859,6 +867,12 @@ section {
     }
 
     .hero_content h1 {
+        position: absolute !important;
+        left: -9999px !important;
+        top: auto !important;
+        width: 1px !important;
+        height: 1px !important;
+        overflow: hidden !important;
         font-size: clamp(0.35rem, 1vw, 0.5rem) !important;
         letter-spacing: 0.02px !important;
         margin-bottom: 0px !important;
@@ -1457,10 +1471,15 @@ section {
         padding: 80px 2% 20px !important;
     }
     .hero_content h1 {
+        position: absolute !important;
+        left: -9999px !important;
+        top: auto !important;
+        width: 1px !important;
+        height: 1px !important;
+        overflow: hidden !important;
         font-size: 0.85rem !important;
         letter-spacing: 0.3px !important;
         text-align: center !important;
-        overflow: hidden !important;
         word-break: break-word !important;
         white-space: normal !important;
         line-height: 1.1 !important;
