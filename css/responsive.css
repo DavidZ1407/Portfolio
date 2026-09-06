@@ -1706,3 +1706,94 @@ section {
         opacity: 0.7;
     }
 }
+/* ========================================= */
+/* ONE-TAP RESPONSIVENESS (touch devices)    */
+/* ========================================= */
+/* Fix for the "buttons need two taps on mobile" issue:
+
+   1) touch-action: manipulation tells touch browsers to dispatch the click
+      on the FIRST tap. It only opts the element out of the double-tap-zoom
+      gesture - pinch zoom stays fully available. Without it, the first tap
+      is held back by the browser's double-tap-zoom disambiguation (only the
+      sticky :hover state appears) and the action runs on the second tap.
+      Set on <html> so every element (also JS-created ones) is covered;
+      it has no effect for mouse users on desktop.
+
+   2) The decorative :hover water-distortion SVG filters (feTurbulence +
+      feDisplacementMap rasterized right at tap time) are now desktop-only:
+      on devices without a hover-capable pointer they are replaced with
+      filter: none. Cheap hover feedback (color, glow, text-shadow, border,
+      transform) is untouched, the non-hover design/animations are untouched,
+      and the WebGL/water effects outside :hover are untouched. */
+
+html {
+    touch-action: manipulation;
+}
+
+@media (hover: none), (pointer: coarse) {
+    /* All interactive elements: immediate click on the first tap + no
+       browser default grey tap flash (the site's own glow/hover feedback
+       shows instead). */
+    .header a,
+    .header button,
+    .navbar .nav_link,
+    .logo,
+    .lang-toggle-btn,
+    .sidebar_socials a,
+    .descend_btn,
+    .carousel_track > *,
+    .indicator,
+    .main-cat-item,
+    .portal-slide,
+    .carousel-arrow,
+    .c-dot,
+    .skill_item,
+    .skill_item_box,
+    .timeline_content,
+    .back_to_top,
+    .cv_download_btn,
+    .contact_icon_link,
+    .project_modal_overlay,
+    .modal_close_btn,
+    .modal_cat_tab,
+    .modal_cat_prev,
+    .modal_cat_next,
+    .modal_project_prev,
+    .modal_project_next,
+    .modal_project_item,
+    .modal_thumb,
+    .modal_prev_btn,
+    .modal_next_btn,
+    .modal_lightbox_overlay,
+    .modal_lightbox_prev,
+    .modal_lightbox_next {
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Expensive :hover water filters become desktop-only (see comment above).
+       Same selectors as the component :hover rules - this file loads last,
+       so these win on touch devices. All other :hover properties remain as
+       visual tap feedback. */
+    .sidebar_socials a:hover,
+    .logo:hover,
+    .lang-toggle-btn:hover,
+    .nav_link:hover,
+    .nav_link.active:hover,
+    .descend_btn:hover,
+    .main-cat-item:hover,
+    .main-cat-item.active:hover,
+    .carousel-arrow:hover,
+    .skill_item_box:hover,
+    .cv_download_btn:hover,
+    .contact_icon_link:hover,
+    .back_to_top:hover,
+    .timeline_content:hover,
+    .modal_project_item:hover,
+    .modal_project_item.active:hover,
+    .modal_thumb:hover {
+        filter: none;
+        -webkit-filter: none;
+    }
+}
+
