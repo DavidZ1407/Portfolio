@@ -1199,13 +1199,11 @@ section {
     .portal-slide .tilt-shine { display: none !important; }
     .portal-slide.tilt-lift { transform: none !important; }
 
-    /* Compact card: smaller image area, more space for the text zone.
-       (pos-center selectors included to match specificity) */
-    .portal-slide img,
-    .portal-slide .tilt-inner img { top: 4%; height: 65%; }
+    /* Compact card: the portal-visual box (2% top / 75% height) already
+       leaves room for the text zone - the image fills it fully. */
     .slide-overlay,
     .portal-slide.pos-center .slide-overlay {
-        height: 31%;
+        min-height: 31%;
         padding: 2px 10px 6px;
         gap: 4px;
     }
@@ -1242,10 +1240,8 @@ section {
     .carousel-controls { bottom: -30px; gap: 10px; }
     .c-dot { width: 6px; height: 6px; }
     .c-dot.active { width: 12px; height: 12px; }
-    .portal-slide img,
-    .portal-slide .tilt-inner img { height: 64%; }
     .slide-overlay,
-    .portal-slide.pos-center .slide-overlay { height: 32%; padding: 2px 8px 5px; }
+    .portal-slide.pos-center .slide-overlay { min-height: 32%; padding: 2px 8px 5px; }
     .slide-overlay h2,
     .portal-slide.pos-center .slide-overlay h2 { font-size: 0.72rem; }
     .slide-overlay p,
@@ -1293,11 +1289,12 @@ section {
         padding: 20px;
         margin-bottom: 28px;
         width: 100%;
+        box-sizing: border-box;
     }
-    /* Centered mobile timeline: vertical line stays at the middle,
-       content sits to the right of it and text wraps (no overflow). */
+            /* Center timeline content within the centered timeline column */
     .timeline_content {
-        margin-left: 55%;
+        margin-left: 0;
+        margin-right: 0;
     }
     .timeline_item::after {
         display: none;
@@ -1794,6 +1791,37 @@ html {
     .modal_thumb:hover {
         filter: none;
         -webkit-filter: none;
+    }
+}
+
+/* Education timeline: centered column beneath the centered title (mobile) */
+@media (max-width: 768px) {
+    .journey_section {
+        overflow-x: hidden;
+    }
+
+    /* Centered column - margin:auto sits it inside the section's symmetric padding */
+    .water_timeline {
+        max-width: 100%;
+        margin: 0 auto;
+        box-sizing: border-box;
+    }
+
+    .timeline_item {
+        width: 100%;
+        padding: 20px;
+        margin: 0;
+        box-sizing: border-box;
+        justify-content: center;
+    }
+
+    /* Compact content cards (text width), centered like on desktop */
+    /* Cap width so long single-line titles wrap and the card stays centered */
+    .timeline_content {
+        margin: 0;
+        width: auto;
+        max-width: min(100%, 300px);
+        box-sizing: border-box;
     }
 }
 

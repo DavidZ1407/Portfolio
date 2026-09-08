@@ -4,6 +4,7 @@
  */
 import { cleanupRegistry } from '../utils/helpers.js';
 import { isWebGLAvailable } from '../utils/webgl_utils.js';
+import { isModalResumeStagger } from '../utils/modal_resume.js?v=2';
 import { INTERSECTION_THRESHOLD, FRAME_TIMESTEP, SHADER_MAX_PIXEL_RATIO } from '../constants/ui.js';
 
 const vertexShader = `
@@ -222,7 +223,7 @@ export function initHeroShader() {
         if (!isActive) { animFrame = requestAnimationFrame(animate); return; }
         // Pause GPU rendering while the project modal is open: the hero sits
         // behind the dark overlay, so rendering would burn GPU for zero visibility.
-        if (document.body.classList.contains('modal-open')) { animFrame = requestAnimationFrame(animate); return; }
+        if (document.body.classList.contains('modal-open') || isModalResumeStagger(5)) { animFrame = requestAnimationFrame(animate); return; }
         // Skip GPU rendering while the hero section is off-screen
         if (!isVisible) { animFrame = requestAnimationFrame(animate); return; }
         material.uniforms.uTime.value += FRAME_TIMESTEP;

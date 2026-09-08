@@ -3,6 +3,7 @@
  * Description: WebGL water-effect canvas rendering the AETHERTECH logo text in the hero.
  */
 import { cleanupRegistry, waitForFont } from '../utils/helpers.js';
+import { isModalResumeStagger } from '../utils/modal_resume.js?v=2';
 import { MOBILE_BREAKPOINT, LARGE_BREAKPOINT_PX, MOBILE_SMALL_BREAKPOINT_PX, INTERSECTION_THRESHOLD } from '../constants/ui.js';
 
 /* ---- Canvas text sizes (screen-dependent) ---- */
@@ -263,7 +264,7 @@ export function initWaterLogo() {
         // Item 4: skip WebGL rendering while the logo is off-screen
         if (!isVisible) { animFrame = requestAnimationFrame(render); return; }
         // Skip drawing while the project modal covers the hero (no visual benefit).
-        if (document.body.classList.contains('modal-open')) { animFrame = requestAnimationFrame(render); return; }
+        if (document.body.classList.contains('modal-open') || isModalResumeStagger(3)) { animFrame = requestAnimationFrame(render); return; }
         const t = (performance.now() - startTime) / 1000.0;
         gl.uniform1f(uTime, t);
         gl.clearColor(0, 0, 0, 0);

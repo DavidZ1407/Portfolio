@@ -190,14 +190,49 @@
     will-change: transform, opacity;
 }
 
+/* Portal aura: one soft glow behind image + text so both zones read as a
+   single organic portal silhouette (fades out before any card edge) */
+.portal-slide::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 62% 58% at 50% 50%,
+        rgba(73, 146, 154, 0.13) 0%,
+        rgba(23, 62, 76, 0.10) 40%,
+        rgba(10, 30, 45, 0.07) 62%,
+        transparent 86%);
+    pointer-events: none;
+}
+
+/* Shared masked box: holds the <img> AND the vortex canvas (appended by
+   portal.js). Applying the mask here - once, to the shared parent - fades
+   both layers to transparent at the exact same edge, so no rectangular
+   canvas/image boundary is ever visible, whether the portal is open or
+   closed. Position/size = the former .portal-slide img geometry. The box is
+   sized slightly larger than the old image frame so more of the cover shows
+   inside the portal; the bottom reaches into the slide-overlay zone (its
+   scrim sits above the canvas there).
+   Ellipse = half the box and "transparent" stop < 100%: alpha must reach 0
+   AT the box mid-edges, otherwise the canvas is clipped mid-fade and a faint
+   rectangular edge stays visible. */
+.portal-visual {
+    position: absolute;
+    top: 2%;
+    left: 3%;
+    width: 94%;
+    height: 75%;
+    overflow: hidden;
+    mask-image: radial-gradient(ellipse 52% 52% at 50% 50%, #000 48%, transparent 97%);
+    -webkit-mask-image: radial-gradient(ellipse 52% 52% at 50% 50%, #000 48%, transparent 97%);
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+}
+
 .portal-slide img {
     position: absolute;
-    /* Image area with breathing room from the frame; the bottom 24%
-       is reserved for the text zone (slide-overlay) - no overlapping. */
-    top: 3.5%;
-    left: 4.5%;
-    width: 91%;
-    height: 72.5%;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     border-radius: 3px;
     transition: filter 0.9s cubic-bezier(0.23, 1, 0.32, 1);
@@ -240,10 +275,9 @@
    bottom space for the text zone) */
 .portal-slide .tilt-inner img {
     position: absolute;
-    top: 3.5%;
-    left: 4.5%;
-    width: 91%;
-    height: 72.5%;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     border-radius: 3px;
     transition: filter 0.3s ease;
@@ -334,21 +368,27 @@
 .portal-slide.pos-hidden {
     transform: translateX(0) translateZ(-300px) scale(0.5);
     opacity: 0;
+    /* Fully closed: nothing may paint or react. Visibility flips
+       discretely at transition end, so the fade-out stays smooth. */
+    visibility: hidden;
     pointer-events: none;
     z-index: 0;
 }
 
 /* SLIDE ELEMENTS */
 
-/* Slide overlay text - its own zone BELOW the image (bottom 24% of the card).
-   No more overlapping: the image ends at 76% (top 3.5% + height 72.5%),
-   the text zone starts exactly there and is separated by a divider line. */
+/* Slide overlay text - part of the portal, not a separate panel: the dark
+   scrim lives on ::before with a fully feathered elliptical mask (no
+   rectangular edges) and reaches up into the water fade-out zone. */
+/* min-height instead of height: bottom-anchored zone keeps its size for
+   short text but grows upward into the portal when titles/subtitles wrap,
+   so longer text is never clipped by the card bounds. */
 .slide-overlay {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 24%;
+    min-height: 24%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -356,19 +396,34 @@
     gap: 4px;
     text-align: center;
     padding: 4px 14px 8px;
-    border-top: 1px solid rgba(201, 168, 97, 0.25);
-    /* Scrim behind the text: darker and softer than before so the title and
-       subtitle keep strong contrast (also over the bright water ring of an
-       open portal). Left slightly open at the very bottom so the ring glows. */
-    background: linear-gradient(
-        to bottom,
-        rgba(3, 8, 9, 0.55) 0%,
-        rgba(3, 8, 9, 0.78) 40%,
-        rgba(3, 8, 9, 0.92) 70%,
-        rgba(3, 8, 9, 0.62) 100%
-    );
     z-index: 4;
     transition: all 0.5s ease;
+    pointer-events: none;
+}
+
+/* Feathered scrim behind the text (text itself stays unmasked + readable) */
+.slide-overlay::before {
+    content: '';
+    position: absolute;
+    /* Reaches up into the vortex fade-out zone below the image */
+    inset: -36% -12% -8%;
+    background:
+        /* Faint portal light reflecting on the mist above the text */
+        radial-gradient(ellipse 72% 42% at 50% 6%,
+            rgba(73, 146, 154, 0.18) 0%,
+            rgba(73, 146, 154, 0.06) 48%,
+            transparent 78%),
+        /* Dark atmospheric scrim, darkest behind the text */
+        radial-gradient(ellipse 60% 60% at 50% 44%,
+            rgba(3, 8, 9, 0.90) 0%,
+            rgba(3, 8, 9, 0.68) 42%,
+            rgba(3, 8, 9, 0.32) 68%,
+            transparent 94%);
+    mask-image: radial-gradient(ellipse 55% 56% at 50% 46%, #000 40%, transparent 96%);
+    -webkit-mask-image: radial-gradient(ellipse 55% 56% at 50% 46%, #000 40%, transparent 96%);
+    /* Behind the text, still above the vortex canvas (overlay is a stacking
+       context via z-index) */
+    z-index: -1;
     pointer-events: none;
 }
 
@@ -415,9 +470,15 @@
 .portal-slide.pos-center .slide-overlay {
     padding: 4px 18px 10px;
     /* Open card: raise the text zone above the vortex canvas (z-index 8)
-       so scrim + text sit on the water ring instead of underneath.
-       Closed cards are unaffected (water still covers everything). */
+       so scrim + text sit on the water ring instead of underneath. */
     z-index: 9;
+}
+
+/* Closed portals: text belongs to the open state - fades out with the water.
+   visibility flips discretely at transition end -> smooth both ways. */
+.portal-slide:not(.pos-center) .slide-overlay {
+    opacity: 0;
+    visibility: hidden;
 }
 
 /* Fix: overlay titles wrap cleanly instead of clipping hard at the edge

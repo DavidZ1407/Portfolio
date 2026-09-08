@@ -5,6 +5,7 @@
 import { translations } from '../constants/translations.js?v=2';
 import { getCurrentLang } from './language.js';
 import { cleanupRegistry, waitForFont } from '../utils/helpers.js';
+import { isModalResumeStagger } from '../utils/modal_resume.js?v=2';
 import { INTERSECTION_THRESHOLD } from '../constants/ui.js';
 
 /* Cycling terms displayed (EN/DE via translations.js). */
@@ -107,7 +108,7 @@ void main() {
 
     vec3 finalColor = texColor.rgb;
     finalColor *= (0.88 + waveHeight * 0.12);
-    finalColor += caustic * vec3(0.25, 0.55, 0.65) * 0.06;
+    finalColor += caustic * vec3(0.55, 0.45, 0.28) * 0.06;
     finalColor += spec * vec3(1.0, 0.97, 0.9) * 0.08;
     finalColor = mix(finalColor, finalColor * (waterColor + 0.6), 0.18);
 
@@ -121,7 +122,7 @@ function createTextCanvas(text, w, h) {
     c.height = h;
     const ctx = c.getContext('2d');
     ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = '#49929a';
+    ctx.fillStyle = '#c9a861'; // gold text, matching the site's accent color
     ctx.font = SUBTITLE_FONT;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -320,7 +321,7 @@ export function initWaterSubtitle() {
         // Item 4: skip WebGL render while the subtitle is off-screen
         if (!isVisible) { animFrame = requestAnimationFrame(render); return; }
         // Skip drawing while the project modal covers the hero (no visual benefit).
-        if (document.body.classList.contains('modal-open')) { animFrame = requestAnimationFrame(render); return; }
+        if (document.body.classList.contains('modal-open') || isModalResumeStagger(4)) { animFrame = requestAnimationFrame(render); return; }
         const t = (performance.now() - startTime) / 1000.0;
         const now = performance.now();
         const elapsed = now - lastCycleTime;

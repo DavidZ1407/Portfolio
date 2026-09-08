@@ -3,6 +3,7 @@
  * Description: Unified particle system: one render loop for background fish/parallax and depth particles.
  */
 import { registerAnimation } from '../utils/animation_manager.js';
+import { isModalResumeStagger } from '../utils/modal_resume.js?v=2';
 import { sizeCanvas, cleanupRegistry } from '../utils/helpers.js';
 import { TWO_PI, MAX_FRAME_DELTA_SECONDS } from '../constants/ui.js';
 
@@ -320,7 +321,7 @@ export function initUnifiedParticles() {
         // Skip both fixed fullscreen canvases while the modal overlay is open:
         // z3 (back) and z7 (front) are both covered by it, so rendering would
         // only consume CPU/GPU for pixels that no one can see.
-        if (document.body.classList.contains('modal-open')) return;
+        if (document.body.classList.contains('modal-open') || isModalResumeStagger(2)) return;
         if (!lastTime) lastTime = now;
         const dt = Math.min((now - lastTime) / 1000, MAX_FRAME_DELTA_SECONDS);
         lastTime = now;

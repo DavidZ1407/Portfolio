@@ -2,7 +2,7 @@
  * File: depth_experience.js
  * Description: Depth experience controller: fog/vignette intensity based on scroll depth.
  */
-import { initUnifiedParticles } from './unified_particles.js';
+import { initUnifiedParticles } from './unified_particles.js?v=2';
 
 export function initDepthExperience() {
     // ONE shared particle system (merges both old systems):

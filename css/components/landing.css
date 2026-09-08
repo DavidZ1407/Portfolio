@@ -121,7 +121,7 @@
 }
 
 .hero_small {
-    color: var(--cyan-glow);
+    color: var(--gold-accent);
     font-size: clamp(1rem, 1.7vw, 1.4rem);
     letter-spacing: 2px;
     text-transform: uppercase;

@@ -118,6 +118,17 @@
     overflow: hidden;
 }
 
+/* Close performance: drop the media stage (loaded video/image) out of the
+   filtered subtree while water_distort_close runs - an SVG filter over a
+   playing video froze the animation for seconds. Class-based, so it is
+   automatically restored when .water_close is removed. */
+.project_modal.water_close .modal_media_stage,
+.modal_lightbox.water_close .modal_lightbox_image,
+.modal_lightbox.water_close .modal_lightbox_video,
+.modal_lightbox.water_close .modal_lightbox_youtube {
+    visibility: hidden;
+}
+
 .project_modal.water_emerge .modal_content {
     animation: modal_content_appear 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     opacity: 0;
@@ -153,53 +164,37 @@
 }
 
 @keyframes modal_close_water {
+    /* NOTE: no box-shadow here - animating it repaints the whole modal each
+       frame and froze the close. Only compositor-friendly props remain. */
     0% {
         transform: scale(1);
         opacity: 1;
         border-color: var(--gold-accent);
-        box-shadow: 
-            0 0 60px rgba(201, 168, 97, 0.3),
-            0 20px 80px rgba(0, 0, 0, 0.6);
     }
     20% {
         transform: scale(1.0);
         opacity: 0.8;
         border-color: rgba(201, 168, 97, 0.5);
-        box-shadow: 
-            0 0 50px rgba(201, 168, 97, 0.25),
-            0 15px 60px rgba(0, 0, 0, 0.5);
     }
     40% {
         transform: scale(1.0);
         opacity: 0.6;
         border-color: rgba(73, 146, 154, 0.5);
-        box-shadow: 
-            0 0 40px rgba(73, 146, 154, 0.3),
-            0 10px 40px rgba(0, 0, 0, 0.4);
     }
     60% {
         transform: scale(0.995);
         opacity: 0.4;
         border-color: rgba(73, 146, 154, 0.65);
-        box-shadow: 
-            0 0 30px rgba(73, 146, 154, 0.4),
-            0 5px 20px rgba(0, 0, 0, 0.3);
     }
     80% {
         transform: scale(0.85);
         opacity: 0.2;
         border-color: rgba(73, 146, 154, 0.8);
-        box-shadow: 
-            0 0 20px rgba(73, 146, 154, 0.5),
-            0 0 40px rgba(73, 146, 154, 0.3);
     }
     100% {
         transform: scale(0.85);
         opacity: 0;
         border-color: rgba(73, 146, 154, 1);
-        box-shadow: 
-            0 0 80px rgba(73, 146, 154, 0.6),
-            0 0 120px rgba(73, 146, 154, 0.4);
     }
 }
 
@@ -697,13 +692,16 @@
 
 .modal_project_prev,
 .modal_project_next {
-    width: 30px;
-    height: 30px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    border: 1px solid rgba(201, 168, 97, 0.45);
-    background: rgba(201, 168, 97, 0.06);
-    color: var(--gold-accent, #c9a861);
-    font-size: 1.05rem;
+    border: 2px solid rgba(201, 168, 97, 0.7);
+    background:
+        radial-gradient(circle at 35% 30%, rgba(201, 168, 97, 0.3) 0%, transparent 60%),
+        linear-gradient(145deg, #8a7340 0%, #6b5828 50%, #4a3d1a 100%);
+    color: #c9a861;
+    font-size: 1.55rem;
+    font-weight: 300;
     font-family: 'Cinzel', serif;
     line-height: 1;
     cursor: pointer;
@@ -711,6 +709,10 @@
     align-items: center;
     justify-content: center;
     padding: 0;
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.7),
+        inset 0 2px 0 rgba(201, 168, 97, 0.4),
+        inset 0 -2px 3px rgba(0, 0, 0, 0.5);
     transition: all 0.3s ease;
 }
 
@@ -718,8 +720,7 @@
 .modal_project_next:hover:not(:disabled) {
     border-color: rgba(139, 224, 232, 0.7);
     color: #8be0e8;
-    background: rgba(139, 224, 232, 0.1);
-    transform: translateY(-1px);
+    transform: scale(1.06);
 }
 
 /* Disabled when the category contains only ONE project */
@@ -731,7 +732,7 @@
     cursor: not-allowed;
     border-color: rgba(201, 168, 97, 0.2);
     transform: none;
-    background: rgba(201, 168, 97, 0.03);
+    background: rgba(201, 168, 97, 0.05);
 }
 
 /* CATEGORY arrows (between areas, e.g. Game Dev -> Sound).
@@ -1205,15 +1206,15 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 46px;
-    height: 46px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     border: 2px solid rgba(201, 168, 97, 0.7);
     background:
         radial-gradient(circle at 35% 30%, rgba(201, 168, 97, 0.3) 0%, transparent 60%),
         linear-gradient(145deg, #8a7340 0%, #6b5828 50%, #4a3d1a 100%);
     color: #c9a861;
-    font-size: 1.6rem;
+    font-size: 1.55rem;
     font-weight: 300;
     font-family: 'Cinzel', serif;
     cursor: pointer;
@@ -1237,6 +1238,68 @@
     color: #8be0e8;
     border-color: rgba(139, 224, 232, 0.7);
     transform: translateY(-50%) scale(1.1);
+}
+
+/* Shared arrow sizing across viewports (project + media arrows) */
+@media (min-width: 2056px) {
+    .modal_project_prev,
+    .modal_project_next,
+    .modal_media_prev,
+    .modal_media_next {
+        width: 56px;
+        height: 56px;
+        font-size: 1.9rem;
+    }
+    .modal_media_prev { left: -36px; }
+    .modal_media_next { right: -36px; }
+}
+
+@media (min-width: 2560px) {
+    .modal_project_prev,
+    .modal_project_next,
+    .modal_media_prev,
+    .modal_media_next {
+        width: 64px;
+        height: 64px;
+        font-size: 2.1rem;
+    }
+    .modal_media_prev { left: -40px; }
+    .modal_media_next { right: -40px; }
+}
+
+@media (min-width: 3840px) {
+    .modal_project_prev,
+    .modal_project_next,
+    .modal_media_prev,
+    .modal_media_next {
+        width: 72px;
+        height: 72px;
+        font-size: 2.4rem;
+    }
+    .modal_media_prev { left: -44px; }
+    .modal_media_next { right: -44px; }
+}
+
+@media (max-width: 768px) {
+    .modal_project_prev,
+    .modal_project_next,
+    .modal_media_prev,
+    .modal_media_next {
+        width: 38px;
+        height: 38px;
+        font-size: 1.35rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal_project_prev,
+    .modal_project_next,
+    .modal_media_prev,
+    .modal_media_next {
+        width: 34px;
+        height: 34px;
+        font-size: 1.2rem;
+    }
 }
 
 /* THUMBNAIL BAR */
@@ -1683,6 +1746,7 @@
         filter: none !important;
         -webkit-filter: none !important;
     }
+}
 
 /* Lightbox controls at the edge - mobile */
 @media (max-width: 768px) {

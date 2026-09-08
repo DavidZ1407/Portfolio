@@ -23,7 +23,7 @@ import {
     getProjectSkills,
     getProjectCoveredToolNames,
     getProjectLinks,
-} from '../constants/projects.js?v=10';
+} from '../constants/projects.js?v=11';
 import { skillIconHtml } from '../constants/skills.js?v=4';
 import { initModalShader } from './modal_shader.js';
 
@@ -271,6 +271,7 @@ function switchCategory(category) {
     if (!currentProject) return;
         // populateModal sets the shader color, resets media to 0 and rebuilds everything
     populateModal(currentProject);
+    resetModalScroll();
     triggerProjectFeedback();
 }
 
@@ -291,6 +292,7 @@ function navigateProject(direction) {
 
         // Resets currentMediaIndex to 0 + rebuilds everything (incl. shader color)
     populateModal(currentProject);
+    resetModalScroll();
     triggerProjectFeedback();
 }
 
@@ -310,6 +312,7 @@ function navigateCategory(direction) {
     if (!currentProject) return;
 
     populateModal(currentProject);
+    resetModalScroll();
     // Also highlight the newly activated project tab on category switch
     triggerProjectFeedback();
 }
@@ -471,7 +474,17 @@ function switchToProjectIndex(index) {
         currentProject = projectsList[index];
     if (!currentProject) return;
     populateModal(currentProject);
+    resetModalScroll();
     triggerProjectFeedback();
+}
+
+/**
+ * Reset the modal's own scroll container to the top so every opened or
+ * switched project starts at the beginning again.
+ */
+function resetModalScroll() {
+    const content = modalContainer ? modalContainer.querySelector('.modal_content') : null;
+    if (content) content.scrollTop = 0;
 }
 
 /**
@@ -560,6 +573,8 @@ export function showPopupAtCard(project, card) {
     // Compensating for the disappearing scrollbar keeps the page behind the modal
     // layout-stable, so opening/closing never shifts or jumps the page.
     lockBodyScroll();
+    // Show every opened project from the top, never a stale scroll position.
+    resetModalScroll();
 }
 
 /**
@@ -595,6 +610,10 @@ function lockBodyScroll() {
     document.body.style.overflow = 'hidden';
     document.body.style.paddingRight = scrollbarWidth > 0 ? `${scrollbarWidth}px` : '';
     document.body.classList.add('modal-open');
+    // A fresh modal open invalidates any leftover resume-stagger from a
+    // previous close (stale body[data-modal-resume-at] must never gate the
+    // portal/hero effects of the NEXT close).
+    delete document.body.dataset.modalResumeAt;
 }
 
 /**
@@ -603,6 +622,11 @@ function lockBodyScroll() {
  * navigation/scrolling work again immediately - never a "scroll-locked" state.
  */
 function unlockBodyScroll() {
+    // Stamp the close time so effects (portals, hero, particles) resume
+    // staggered instead of all rendering in the same frame after the modal.
+    if (document.body.classList.contains('modal-open')) {
+        document.body.dataset.modalResumeAt = String(performance.now());
+    }
     document.body.style.overflow = '';
     document.body.style.paddingRight = '';
     document.body.classList.remove('modal-open');
@@ -629,13 +653,10 @@ function closePopup(immediate = false) {
         modalContainer._cleanupCycle = null;
     }
 
-    // Pause any playing video before closing
-    const video = modalContainer.querySelector('.modal_media_video');
-    if (video) {
-        video.pause();
-        video.removeAttribute('src');
-        video.load();
-    }
+    // Pause modal videos immediately (sound off) but keep them loaded:
+    // unloading the srcs here stalls the main thread and freezes the
+    // water-close animation - the unload runs after the animation instead.
+    stopActiveModalVideos({ unloadPlayers: false });
 
     modalContainer.classList.remove('water_emerge', 'fade_complete');
     const modalContent = modalContainer.querySelector('.modal_content');
@@ -677,13 +698,24 @@ function closePopup(immediate = false) {
     modalOverlay.style.transition = 'opacity 0.35s ease';
     modalOverlay.style.opacity = '0';
 
-    // Wait for animation to complete before hiding.
-    // Scroll lock stays engaged during the water-close animation so the
-    // SVG filter animation gets the GPU to itself on mobile - releasing it
-    // mid-animation is what caused the close jank. It is unlocked here,
-    // once the modal is hidden and the animation is finished.
+    // Release scroll lock + .modal-open as soon as the dark backdrop has
+    // faded (0.35s overlay fade + buffer), so the background effects can
+    // resume staggered WHILE the water-close animation finishes - without
+    // this the page stays visibly frozen for the whole 1s close duration
+    // even though the overlay is already transparent after ~0.35s.
+    // The resume-stagger (utils/modal_resume.js) spreads the effects across
+    // frames, so this early unlock does NOT re-create the old single-frame
+    // spike that originally caused the close jank.
     setTimeout(() => {
-        unlockBodyScroll();
+        requestAnimationFrame(unlockBodyScroll);
+        setTimeout(unlockBodyScroll, 50);
+    }, 400);
+
+    // Wait for the water-close animation to finish before hiding the modal.
+    setTimeout(() => {
+        // Hide FIRST, then light teardown: pause + drop srcs WITHOUT the
+        // synchronous load() call - it froze the resumed portal animation
+        // behind the closing modal (next show re-sets src + load anyway).
         modalOverlay.style.display = 'none';
         modalContainer.style.display = 'none';
         modalContainer.classList.remove('water_close');
@@ -691,6 +723,7 @@ function closePopup(immediate = false) {
             closeBtn.classList.remove('water_effect');
         }
         currentProject = null;
+        stopActiveModalVideos({ unloadPlayers: false });
     }, WATER_ANIMATION_MS);
 }
 
@@ -870,6 +903,9 @@ function populateModal(project) {
     });
 
     // Media + thumbnails
+    // Stop the previous project's video / YouTube iframe BEFORE rebuilding
+    // (project switch + initial open) - only visible media may ever play.
+    stopActiveModalVideos();
     currentMediaIndex = 0;
     buildThumbnails(project);
     showMedia(0);
@@ -931,15 +967,55 @@ function buildThumbnails(project) {
 }
 
 /**
- * Shows a media item (image or video) in the given elements.
- * Shared logic for the main media viewer (showMedia) and the lightbox (syncLightbox),
- * so the video/image render logic lives in only ONE place.
- * @param {HTMLImageElement} imageEl - image element to fill
- * @param {HTMLVideoElement} videoEl - video element to fill
- * @param {{type:string}|undefined} item - media object (item.type === 'video' or image)
- * @param {Object} opts - Options
- * @param {boolean} opts.showControls - set/remove native controls on the video
- * @param {HTMLElement|null} opts.playBtn - play overlay button (shown/hidden)
+ * Centralized video cleanup for the whole modal (main viewer + lightbox):
+ * pauses every video, fully unloads the two player elements and removes a
+ * possibly playing YouTube iframe (autoplay iframes keep running while
+ * hidden - display:none does not stop them). Called by showMedia,
+ * populateModal, openLightbox and closePopup so exactly ONE media element
+ * can ever be active at a time. Preview videos keep their first frame
+ * (they are only paused, their src stays).
+ * @param {Object} [options]
+ * @param {boolean} [options.unloadPlayers=true] - false keeps the two player
+ *   videos loaded (they are only paused). Used by openLightbox so the main
+ *   stage keeps its current media after the lightbox closes.
+ */
+function stopActiveModalVideos({ unloadPlayers = true } = {}) {
+    const scopes = [modalContainer, lightboxOverlay];
+    scopes.forEach((scope) => {
+        if (!scope) return;
+        // 1) Pause everything that could be playing (incl. preview videos)
+        scope.querySelectorAll('video').forEach((vid) => {
+            if (!vid.paused) {
+                try { vid.pause(); } catch (err) { /* ignore */ }
+            }
+        });
+        // 2) Remove playing YouTube players. A container that still shows the
+        //    lightweight facade (thumbnail + play button) is left untouched:
+        //    only an actually created <iframe> (autoplay player) must go, so
+        //    the facade survives e.g. an openLightbox/closeLightbox round-trip.
+        scope.querySelectorAll('.modal_media_youtube, .modal_lightbox_youtube').forEach((yt) => {
+            if (yt.querySelector('iframe')) yt.innerHTML = '';
+        });
+    });
+    // 3) Fully unload the two player videos (their src is re-set on next show).
+    //    Skipped with { unloadPlayers: false } (openLightbox) so the main stage
+    //    keeps its current media while the lightbox shows it enlarged.
+    if (unloadPlayers) {
+        const players = [
+            modalContainer ? modalContainer.querySelector('.modal_media_video') : null,
+            lightboxOverlay ? lightboxOverlay.querySelector('.modal_lightbox_video') : null
+        ];
+        players.forEach((vid) => {
+            if (!vid) return;
+            try { vid.pause(); } catch (err) { /* ignore */ }
+            vid.removeAttribute('src');
+            try { vid.load(); } catch (err) { /* ignore */ }
+        });
+    }
+}
+
+/**
+ * Renders the given media item into the viewer (image/video/youtube branch)
  * @param {string} altText - alt text for images
  * @param {string} category - project category (for fallback images)
  */
@@ -949,6 +1025,11 @@ function renderMediaItem(imageEl, videoEl, item, opts, altText, category) {
     const ytEl = stage ? stage.querySelector('.modal_media_youtube, .modal_lightbox_youtube') : null;
 
     if (item.type === 'youtube') {
+        // Stop a possibly playing MP4 BEFORE hiding it: display:none alone
+        // would keep its audio running (same rule as every other switch).
+        if (videoEl && !videoEl.paused) {
+            try { videoEl.pause(); } catch (err) { /* ignore */ }
+        }
         // Hide image + video, show the YouTube facade
         imageEl.style.display = 'none';
         videoEl.style.display = 'none';
@@ -1017,7 +1098,8 @@ function renderMediaItem(imageEl, videoEl, item, opts, altText, category) {
         videoEl.addEventListener('loadeddata', () => {
             try { if (videoEl.paused) videoEl.currentTime = 0.001; } catch (e) { /* ignore */ }
         }, { once: true });
-        if (opts.showControls) videoEl.setAttribute('controls', '');
+        // Native controls always on: play/pause, seek, volume, fullscreen.
+        videoEl.setAttribute('controls', '');
         if (opts.playBtn) opts.playBtn.style.display = 'flex';
     } else {
         videoEl.style.display = 'none';
@@ -1050,9 +1132,7 @@ function showMedia(index) {
     const videoEl = modalContainer.querySelector('.modal_media_video');
     const playBtn = modalContainer.querySelector('.modal_media_play');
 
-    // Stop the old video
     videoEl.pause();
-    videoEl.removeAttribute('controls');
 
     renderMediaItem(imageEl, videoEl, item, { showControls: false, playBtn }, getProjectTitle(currentProjectIndex, getCurrentLang()), project.category);
 
@@ -1114,24 +1194,25 @@ function setupMediaEvents() {
 
     playBtn.addEventListener('click', () => {
         if (videoEl.style.display === 'none') return;
-        videoEl.setAttribute('controls', '');
         const tryPlay = videoEl.play();
         if (tryPlay && tryPlay.then) {
             tryPlay.then(() => {
                 playBtn.style.display = 'none';
             }).catch(() => {
-                // Autoplay blocked etc. -> controls stay visible
+                // Autoplay blocked etc. -> native controls stay usable
             });
         }
     });
 
     videoEl.addEventListener('play', () => { playBtn.style.display = 'none'; });
+    // Re-show the centered play button whenever the video stops, so the
+    // viewer offers a clear restart affordance again. It only covers the
+    // middle of the frame - the native control bar at the bottom stays free.
     videoEl.addEventListener('pause', () => {
         if (!videoEl.ended) playBtn.style.display = 'flex';
     });
     videoEl.addEventListener('ended', () => {
         playBtn.style.display = 'flex';
-        videoEl.removeAttribute('controls');
     });
 }
 
@@ -1193,8 +1274,10 @@ function bindMediaDragGesture(el, onNext, onPrev) {
         // retargets all pointer events - and the resulting click - onto this
         // container, so the control's own click handler never fires (the
         // lightbox prev/next arrows used to do nothing for that reason).
+        // Native <video> controls are browser chrome; starting a drag on the video
+        // must never capture the pointer or the controls would not work.
         const startEl = e.target && e.target.closest
-            ? e.target.closest('button, a, input, select, textarea, [role="button"]')
+            ? e.target.closest('button, a, input, select, textarea, [role="button"], video')
             : null;
         if (startEl) return;
         pointerId = e.pointerId;
@@ -1320,8 +1403,8 @@ function createLightbox() {
 function setupLightbox() {
     const mediaStage = modalContainer.querySelector('.modal_media_stage');
     mediaStage.addEventListener('click', (e) => {
-        // Do not treat a play button click as a lightbox open
-        if (e.target.closest('.modal_media_play')) return;
+        // Play button + native video controls stay native, not a lightbox open
+        if (e.target.closest('.modal_media_play, video')) return;
         openLightbox();
     });
 
@@ -1360,6 +1443,11 @@ function setupLightbox() {
 function openLightbox() {
     if (!lightboxOverlay) return;
 
+    // The lightbox takes over the media stage: pause the main viewer video
+    // (and remove any YouTube iframe) so nothing keeps playing behind the
+    // overlay - but keep its src so the stage is intact after closing.
+    stopActiveModalVideos({ unloadPlayers: false });
+
     const project = currentProject;
     if (!project || !Array.isArray(project.media) || project.media.length === 0) return;
 
@@ -1390,6 +1478,10 @@ function closeLightbox() {
     if (lightboxVideo) {
         lightboxVideo.pause();
     }
+    // Remove a playing YouTube iframe immediately - it keeps running (and
+    // playing audio) inside the hidden overlay otherwise.
+    const lbYt = lightboxOverlay.querySelector('.modal_lightbox_youtube');
+    if (lbYt && lbYt.querySelector('iframe')) lbYt.innerHTML = '';
 
     // Trigger water_distort_close SVG animation (same flow as the modal close)
     const closeBtn = lightboxOverlay.querySelector('.modal_close_btn');
@@ -1406,8 +1498,9 @@ function closeLightbox() {
         lightboxOverlay.classList.remove('active');
         lightboxOverlay.setAttribute('aria-hidden', 'true');
         if (lightboxVideo) {
+            // Drop src WITHOUT load(): the browser cleans up async, and the
+            // synchronous load() froze the resumed portal animation.
             lightboxVideo.removeAttribute('src');
-            lightboxVideo.load();
         }
     }, WATER_ANIMATION_MS);
 }

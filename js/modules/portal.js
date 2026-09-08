@@ -5,7 +5,8 @@
 import { cleanupRegistry, debounce, sizeCanvas, bindHorizontalSwipe } from '../utils/helpers.js';
 import { isWebGLAvailable } from '../utils/webgl_utils.js';
 import { registerAnimation } from '../utils/animation_manager.js';
-import { projects, getProjectSubtitle, getProjectCover, getProjectTitle, getCategories, getCategoryLabel, getFirstProjectOfCategory, getOrderedProjectIndices, applyImageFallback } from '../constants/projects.js?v=10';
+import { isModalResumeStagger, getModalResumeElapsed } from '../utils/modal_resume.js?v=2';
+import { projects, getProjectSubtitle, getProjectCover, getProjectTitle, getCategories, getCategoryLabel, getFirstProjectOfCategory, getOrderedProjectIndices, applyImageFallback } from '../constants/projects.js?v=11';
 import { getCurrentLang } from './language.js';
 import { TWO_PI, DEBOUNCE_DELAY_MS, RESIZE_BOOT_DELAY_MS, INTERSECTION_THRESHOLD, PORTAL_MAX_PIXEL_RATIO } from '../constants/ui.js';
 
@@ -20,6 +21,7 @@ const AUTO_INTERVAL = 9000;         // Auto-rotate after 9s with no interaction
 const AUTO_RESUME_DELAY_MS = 8000;  // Resume auto-rotation after pause
 const BUBBLE_COUNT = 30;            // Bubbles in the portal canvas
 const PARTICLE_COUNT = 40;
+const PORTAL_VORTEX_STEP_MS = 33;   // ~2 frames (60Hz) between each vortex restarting after the modal closes
 
 /* ---- 3D positions of the portal slides (base values in archives.css
    .portal-slide.pos-left/.pos-right; inline styles here override these
@@ -90,9 +92,19 @@ function buildPortalSlides() {
         img.decoding = 'async';
         // Optional: show the cover completely (coverFit: 'contain'), no crop
         if (project.coverFit === 'contain') img.classList.add('fit-contain');
+        // Optional: shift the cover crop inside the box (object-position)
+        if (project.coverPosition) img.style.objectPosition = project.coverPosition;
         // Fallback: missing cover -> category placeholder
         applyImageFallback(img, project.category);
-        slide.appendChild(img);
+
+        // Shared masked wrapper: image AND vortex canvas (appended in
+        // createVortexInstance) both live inside this box, so the same
+        // CSS mask-image fades both layers together at the exact same
+        // edge - no visible rectangular seam in either open or closed state.
+        const visual = document.createElement('div');
+        visual.className = 'portal-visual';
+        visual.appendChild(img);
+        slide.appendChild(visual);
 
         const overlay = document.createElement('div');
         overlay.className = 'slide-overlay';
@@ -611,14 +623,13 @@ function createVortexInstance(slide) {
 
     const canvas = renderer.domElement;
     canvas.className = 'portal-vortex-canvas';
-    // NO border/box, NO circular mask, NO screen blend:
-    // - without a circular mask the water covers the whole card when closed
-    //   (including the 4 corners) -> no rectangular frame visible anymore
-    // - without mix-blend-mode the dark water stays opaque,
-    //   so image/text of the closed card is fully hidden
-    // - the soft, circular opening edge is created exclusively in the shader
-    //   (see the edgeGlow vignette), dissolving from the edges inward
-    //   when opening (seamless)
+    // No border/box, no screen blend: the dark water stays fully opaque
+    // while closed so the image underneath is hidden, and the soft
+    // circular opening edge is created in the shader (edgeGlow vignette)
+    // when open. The rectangular canvas boundary itself is hidden by the
+    // shared .portal-visual mask-image (applied to this canvas's parent),
+    // which fades both the canvas and the image to transparent at the
+    // same edge - no visible seam in either state.
     canvas.style.cssText = [
         'position:absolute;top:0;left:0;width:100%;height:100%;',
         'z-index:8;pointer-events:none;'
@@ -647,11 +658,14 @@ function createVortexInstance(slide) {
     });
     scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material));
 
-    slide.appendChild(canvas);
+    // Append into .portal-visual (same masked box as the <img>), not
+    // directly into the slide - see the mask-image comment above.
+    const visual = slide.querySelector('.portal-visual') || slide;
+    visual.appendChild(canvas);
 
     function size() {
-        const w = slide.clientWidth || 1;
-        const h = slide.clientHeight || 1;
+        const w = visual.clientWidth || 1;
+        const h = visual.clientHeight || 1;
         if (w > 0 && h > 0) {
             renderer.setSize(w, h, false);
             uniforms.uResolution.value = [w * pixelRatio, h * pixelRatio];
@@ -718,12 +732,20 @@ function createPortalVortices() {
 
     vortexUnregisterAnim = registerAnimation((now, dt) => {
         const delta = dt || 1 / 60;
-        for (const inst of vortexInstances) {
-            if (!vortexSectionVisible) continue;
+        vortexInstances.forEach((inst, idx) => {
+            if (!vortexSectionVisible) return;
             // The archives section sits directly behind the modal overlay -
             // skip rendering while a project modal covers it.
-            if (document.body.classList.contains('modal-open')) continue;
-            if (!inst.canvas.isConnected) continue;
+            if (document.body.classList.contains('modal-open')) return;
+            // After the modal closes, restart the vortices spread across the
+            // first frames: each card owns its own WebGL context, so rendering
+            // all of them in the very first resume frame was exactly what froze
+            // the resumed portal animation on close.
+            const resumeElapsed = getModalResumeElapsed();
+            if (resumeElapsed >= 0 && resumeElapsed < idx * PORTAL_VORTEX_STEP_MS) return;
+            if (!inst.canvas.isConnected) return;
+            // Closed slides (.pos-hidden) are fully invisible - skip render
+            if (inst.slide.classList.contains('pos-hidden')) return;
             inst.uniforms.uTime.value += delta;
             const ease = 1 - Math.exp(-delta * 3.5);
             inst.uniforms.uOpen.value += (inst.openTarget - inst.uniforms.uOpen.value) * ease;
@@ -735,7 +757,7 @@ function createPortalVortices() {
             }
             inst.uniforms.uFlash.value = inst.flashV;
             inst.renderer.render(inst.scene, inst.camera);
-        }
+        });
     });
 
     const visSection = document.querySelector('.archives_section');
@@ -999,19 +1021,22 @@ function updatePositions(slides, dots) {
             slide.setAttribute("aria-current", "true");
             slide.style.transform = `translateX(0) translateZ(${SLIDE_SCALE_CENTER_Z_PX}px) scale(${SLIDE_SCALE_CENTER})`;
             slide.style.opacity = '1';
+            // Clear stale pos-hidden lock so the center card is clickable again
+            slide.style.pointerEvents = '';
         } else if (rel === -1 || rel === 1) {
             // Neighboring projects - medium visibility with 3D positioning
             slide.classList.add("pos-" + (rel === -1 ? "left" : "right"));
             slide.setAttribute("aria-current", "false");
             slide.style.transform = `translateX(${rel === -1 ? -SLIDE_OFFSET_X_PX : SLIDE_OFFSET_X_PX}px) translateZ(${SLIDE_OFFSET_Z_PX}px) rotateY(${rel === -1 ? SLIDE_ROTATE_Y_DEG : -SLIDE_ROTATE_Y_DEG}deg) scale(${SLIDE_SCALE_SIDE})`;
             slide.style.opacity = '0.7';
+            // Side cards must stay clickable (bring-to-center)
+            slide.style.pointerEvents = '';
         } else {
-            // Further projects - reduced visibility but still visible
-            // Use pos-hidden class but with overridden styles for visibility
+            // Fully closed: beyond the visible ring -> completely invisible
+            // (matches CSS .pos-hidden: opacity 0 + visibility hidden)
             slide.classList.add("pos-hidden");
-            // Inline styles override CSS defaults for visibility
-            slide.style.opacity = '0.4';
-            slide.style.pointerEvents = 'auto';
+            slide.style.opacity = '0';
+            slide.style.pointerEvents = 'none';
             slide.style.transform = `translateX(0) translateZ(${SLIDE_HIDDEN_Z_PX}px) scale(${SLIDE_SCALE_HIDDEN})`;
         }
     });
@@ -1111,7 +1136,7 @@ function initBubbles() {
                     // Register with centralized animation manager
                     unregisterAnim = registerAnimation(() => {
                         if (!isActive) return;
-                        if (document.body.classList.contains('modal-open')) return;
+                        if (document.body.classList.contains('modal-open') || isModalResumeStagger(1)) return;
                         animate();
                     });
                 }

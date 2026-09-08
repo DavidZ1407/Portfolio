@@ -268,6 +268,7 @@ const projects = [
         subtitle: { en: 'Comprehensive 3D Work in Blender', de: 'Umfassende 3D-Arbeiten in Blender' },
         description: { en: 'Comprehensive 3D work done in Blender, covering everything from high-to-low poly modeling and digital sculpting to detailed texturing and normal map workflows. Focused on creating clean, efficient assets.', de: 'Umfassende 3D-Arbeiten in Blender – von High- zu Low-Poly-Modellierung und digitalem Sculpting bis hin zu detaillierter Texturierung und Normal-Map-Workflows. Der Fokus liegt auf sauberen, effizienten Assets.' },
         cover: 'assets/3D/3D_IMG/3D_IMG_1.webp',
+        coverPosition: '50% 0%', // portrait cover in a near-square box: keep the head fully visible
         media: [
             { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_1.webp', thumb: 'assets/3D/3D_IMG/3D_IMG_1.webp' },
             { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_2.webp', thumb: 'assets/3D/3D_IMG/3D_IMG_2.webp' },
@@ -607,6 +608,7 @@ const projects = [
         subtitle: { en: 'In-engine 3D Animation & Mechanics', de: '3D-Animationen & Gameplay-Mechaniken' },
         description: { en: '3D animations developed in Blender and implemented within the Godot game engine to drive interactive gameplay mechanics, including character actions and facial animations.', de: 'In Blender entwickelte 3D-Animationen, die in der Godot-Spielengine umgesetzt wurden, um interaktive Gameplay-Mechaniken anzutreiben – einschließlich Charakteraktionen und Gesichtsanimationen.' },
         cover: 'assets/3D/3D_IMG/3D_IMG_1.webp',
+        coverPosition: '50% 0%', // portrait cover in a near-square box: keep the head fully visible
         media: [
             { type: 'video', src: 'assets/3D/3D_VID/3D_VID_1.mp4', thumb: 'assets/3D/3D_IMG/3D_IMG_1.webp' },
             { type: 'video', src: 'assets/3D/3D_VID/3D_VID_2.mp4', thumb: 'assets/3D/3D_IMG/3D_IMG_1.webp' },
