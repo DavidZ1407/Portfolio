@@ -8,6 +8,13 @@ The site is built as a single-page, visually immersive experience with a Gothic/
 
 [Visit Portfolio](https://davidz1407.github.io/Portfolio/index.html)
 
+### Responsive Testing
+
+- 📱 **Mobile:** 390 · 425 · 480 px 
+- 📟 **Tablet:** 600 · 768 · 1024 px 
+- 💻 **Desktop:** 1440 · 1980 px 
+- 🖥️ **Large / 4K:** 2560 · 3440 · 3840+ px 
+- 🌐 **Browsers:** Chrome · Firefox 
 
 ## About
 
@@ -61,17 +68,8 @@ Projects on the site are organized into six categories, with each project presen
 
 Each project modal includes descriptions, contributions, game concepts, duration and team details, a tools and skills breakdown, and a media gallery of images, videos, and YouTube embeds with links to live sites and repositories.
 
-## Tested On
-
-The portfolio has been tested and works on the following platforms:
-
-- **Desktop:** Google Chrome, Mozilla Firefox
-- **Mobile:** Chrome (Android), Firefox (Android)
-
-> **Note:** The site uses WebGL shader effects (water animations, parallax, particle systems). On browsers or devices without WebGL support, these effects automatically fall back to static displays — all content remains accessible.
-
-## 📬 Contact
+## Contact
 
 - **Email:** [David-Zahn@hotmail.com](mailto:David-Zahn@hotmail.com)
 - **GitHub:** [DavidZ1407](https://github.com/DavidZ1407)
-- **LinkedIn:** [David Zahn](https://www.linkedin.com/in/david-zahn-3829a1364/)
+- **LinkedIn:** [David Zahn](https://www.linkedin.com/in/david-zahn-3829a1364/) 
