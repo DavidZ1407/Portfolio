@@ -1,14 +1,15 @@
-/**
- * File: bioluminescent_swarm.js
- * Description: Bioluminescent particle swarm canvas effect for the journey section.
- */
+/* ==========================================================================
+   FILE: js/modules/bioluminescent_swarm.js
+   DESCRIPTION: Bioluminescent particle swarm canvas effect for the journey (education) section.
+   ========================================================================== */
+
 import { debounce, cleanupRegistry, sizeCanvas, getCanvasQuality } from '../utils/helpers.js';
 import { MOBILE_BREAKPOINT, TWO_PI, MOBILE_SMALL_BREAKPOINT_PX, TABLET_DESKTOP_BREAKPOINT_PX, INTERSECTION_THRESHOLD, DEBOUNCE_DELAY_LARGE_MS, BOOT_DELAY_MS } from '../constants/ui.js';
 import { registerAnimation } from '../utils/animation_manager.js';
 
-/* ----------------------------------------- */
-/* CREATURE TYPES                            */
-/* ----------------------------------------- */
+
+
+
 
 const CREATURE_TYPES = {
     jellyfish: {
@@ -16,7 +17,7 @@ const CREATURE_TYPES = {
             ctx.save();
             ctx.translate(x, y);
 
-            // Body (dome)
+            
             ctx.beginPath();
             ctx.moveTo(-size * 0.5, 0);
             ctx.quadraticCurveTo(-size * 0.5, -size * 0.6, 0, -size * 0.7);
@@ -25,12 +26,11 @@ const CREATURE_TYPES = {
             ctx.fillStyle = `rgba(5, 15, 30, ${0.5 + glow * 0.2})`;
             ctx.fill();
 
-            // Tentacles - using pre-computed seed for stable lengths
+            
             for (let i = 0; i < 5; i++) {
                 const tx = -size * 0.3 + (i / 4) * size * 0.6;
                 const tentSeed = seed ? seed.tentLens[i] : 0.5;
                 const tentLen = size * (0.4 + tentSeed * 0.3);
-                // Smooth sway using continuous sine, not random
                 const sway = Math.sin(glow * 1.5 + i * 1.2 + seed.offset) * size * 0.15;
                 const sway2 = Math.sin(glow * 0.8 + i * 0.9 + seed.offset * 1.3) * size * 0.1;
                 ctx.beginPath();
@@ -46,7 +46,6 @@ const CREATURE_TYPES = {
                 ctx.stroke();
             }
 
-            // Bioluminescent spots (BRIGHT)
             const spotCount = 3;
             for (let i = 0; i < spotCount; i++) {
                 const sx = -size * 0.2 + (i / (spotCount - 1)) * size * 0.4;
@@ -54,7 +53,7 @@ const CREATURE_TYPES = {
                 const sr = size * 0.05 + Math.sin(glow * 2 + i) * size * 0.015;
                 const alpha = 0.6 + Math.sin(glow * 1.5 + i * 1.3) * 0.3;
 
-                // Large glow halo
+                
                 const grad = ctx.createRadialGradient(sx, sy, 0, sx, sy, sr * 8);
                 grad.addColorStop(0, `rgba(150, 220, 220, ${alpha * 0.6})`);
                 grad.addColorStop(0.3, `rgba(73, 146, 154, ${alpha * 0.3})`);
@@ -65,7 +64,7 @@ const CREATURE_TYPES = {
                 ctx.arc(sx, sy, sr * 8, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Bright core
+                
                 ctx.fillStyle = `rgba(150, 220, 220, ${alpha})`;
                 ctx.beginPath();
                 ctx.arc(sx, sy, sr, 0, Math.PI * 2);
@@ -74,7 +73,7 @@ const CREATURE_TYPES = {
 
             ctx.restore();
         },
-        w: 0.8, // aspect multiplier
+        w: 0.8, 
         h: 1.2,
     },
 
@@ -83,7 +82,7 @@ const CREATURE_TYPES = {
             ctx.save();
             ctx.translate(x, y);
 
-            // Body (elongated mantle)
+            
             ctx.beginPath();
             ctx.moveTo(0, -size * 0.8);
             ctx.quadraticCurveTo(size * 0.3, -size * 0.5, size * 0.25, 0);
@@ -93,12 +92,11 @@ const CREATURE_TYPES = {
             ctx.fillStyle = `rgba(3, 8, 15, ${0.35 + glow * 0.15})`;
             ctx.fill();
 
-            // Tentacles - using pre-computed seed for stable lengths
+            
             for (let i = 0; i < 6; i++) {
                 const tx = -size * 0.2 + (i / 5) * size * 0.4;
                 const tentSeed = seed ? seed.tentLens[i] : 0.5;
                 const tentLen = size * (0.5 + tentSeed * 0.2);
-                // Smooth organic sway - continuous sine waves, no randomness
                 const sway1 = Math.sin(glow * 1.2 + i * 0.8 + seed.offset) * size * 0.2;
                 const sway2 = Math.sin(glow * 0.7 + i * 1.1 + seed.offset * 1.5) * size * 0.25;
                 ctx.beginPath();
@@ -114,7 +112,6 @@ const CREATURE_TYPES = {
                 ctx.stroke();
             }
 
-            // Eyes (two glowing spots)
             for (let side = -1; side <= 1; side += 2) {
                 const ex = side * size * 0.12;
                 const ey = -size * 0.15;
@@ -136,7 +133,6 @@ const CREATURE_TYPES = {
                 ctx.fill();
             }
 
-            // Bioluminescent line along body
             const lineAlpha = 0.15 + Math.sin(glow * 1.2) * 0.1;
             ctx.beginPath();
             ctx.moveTo(0, -size * 0.7);
@@ -156,13 +152,11 @@ const CREATURE_TYPES = {
             ctx.save();
             ctx.translate(x, y);
 
-            // Body (bulbous)
             ctx.beginPath();
             ctx.ellipse(0, 0, size * 0.35, size * 0.25, 0, 0, Math.PI * 2);
             ctx.fillStyle = `rgba(3, 8, 15, ${0.5 + glow * 0.2})`;
             ctx.fill();
 
-            // Tail
             ctx.beginPath();
             ctx.moveTo(-size * 0.3, 0);
             ctx.quadraticCurveTo(-size * 0.6, -size * 0.15, -size * 0.65, -size * 0.05);
@@ -171,7 +165,6 @@ const CREATURE_TYPES = {
             ctx.fillStyle = `rgba(3, 8, 15, ${0.35 + glow * 0.1})`;
             ctx.fill();
 
-            // Lure (anglerfish antenna)
             const lureCurveX = size * 0.1;
             const lureCurveY = -size * 0.5;
             const lureTipX = size * 0.15;
@@ -184,7 +177,6 @@ const CREATURE_TYPES = {
             ctx.lineWidth = 1;
             ctx.stroke();
 
-            // Lure glow
             const lureAlpha = 0.6 + Math.sin(glow * 2.5) * 0.3;
             const lr = size * 0.03;
 
@@ -198,13 +190,11 @@ const CREATURE_TYPES = {
             ctx.arc(lureTipX, lureTipY, lr * 10, 0, Math.PI * 2);
             ctx.fill();
 
-            // Core
             ctx.fillStyle = `rgba(200, 240, 255, ${lureAlpha})`;
             ctx.beginPath();
             ctx.arc(lureTipX, lureTipY, lr, 0, Math.PI * 2);
             ctx.fill();
 
-            // Eye
             const eyeAlpha = 0.3 + Math.sin(glow * 1.5) * 0.15;
             ctx.fillStyle = `rgba(73, 146, 154, ${eyeAlpha})`;
             ctx.beginPath();
@@ -219,14 +209,14 @@ const CREATURE_TYPES = {
 };
 
 /* ----------------------------------------- */
-/* MODULE INIT                               */
-/* ----------------------------------------- */
+
+
 
 export function initBioluminescentSwarm() {
     const section = document.querySelector('.journey_section');
     if (!section) return;
 
-    // Remove old canvas if exists
+    
     const oldCanvas = section.querySelector('.swarm-canvas');
     if (oldCanvas) oldCanvas.remove();
 
@@ -253,7 +243,7 @@ export function initBioluminescentSwarm() {
     let creatures = [];
     let unregisterAnim = null;
 
-    // Dynamic creature count based on viewport
+    
     function getCreatureCount() {
         if (window.innerWidth <= MOBILE_SMALL_BREAKPOINT_PX) return 4;
         if (window.innerWidth <= MOBILE_BREAKPOINT) return 6;
@@ -264,10 +254,10 @@ export function initBioluminescentSwarm() {
     const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
     const CREATURE_COUNT = getCreatureCount();
 
-    /* ---- Large viewport low-res buffering (2056px+) ---- */
+    
     const { scale: SCALE } = getCanvasQuality();
 
-    /* ---- IntersectionObserver ---- */
+    
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -278,7 +268,7 @@ export function initBioluminescentSwarm() {
                     spawnCreatures();
                     lastFrameTime = 0;
                     
-                    // Register with centralized animation manager
+                    
                     unregisterAnim = registerAnimation((now) => {
                         if (!isActive) return;
                         animate(now);
@@ -302,7 +292,7 @@ export function initBioluminescentSwarm() {
     function resize() {
         const w = section.offsetWidth;
         const h = section.offsetHeight;
-        // Cap backing store at 2560px to prevent explosion on large viewports
+        
         const result = sizeCanvas(canvas, w, h);
         canvas.style.width = w + 'px';
         canvas.style.height = h + 'px';
@@ -312,7 +302,7 @@ export function initBioluminescentSwarm() {
     window.addEventListener('resize', debouncedResize);
     setTimeout(resize, BOOT_DELAY_MS);
 
-    /* ---- Spawn Creatures ---- */
+    
     function spawnCreatures() {
         creatures = [];
         const types = Object.keys(CREATURE_TYPES);
@@ -324,7 +314,7 @@ export function initBioluminescentSwarm() {
             const type = CREATURE_TYPES[typeKey];
             const size = (isMobile ? 40 : 60) + Math.random() * 40;
 
-            // Pre-compute tentacle seed data for smooth animation
+            
             const tentLens = [];
             for (let t = 0; t < 6; t++) {
                 tentLens.push(Math.random());
@@ -354,7 +344,7 @@ export function initBioluminescentSwarm() {
 
     let lastFrameTime = 0;
 
-    /* ---- Animate ---- */
+    
     function animate(now) {
         if (!isActive) return;
         if (!lastFrameTime) lastFrameTime = now;
@@ -370,28 +360,28 @@ export function initBioluminescentSwarm() {
         creatures.forEach(c => {
             const type = CREATURE_TYPES[c.type];
 
-            // Organic floating movement
+            
             const floatX = Math.sin(time * c.floatSpeedX + c.phase) * c.floatAmpX;
             const floatY = Math.sin(time * c.floatSpeedY + c.phase * 1.3) * c.floatAmpY;
 
             let drawX = c.x + floatX;
             let drawY = c.y + floatY;
 
-            // Wrap around edges
+            
             const margin = c.size * 2;
             if (drawX < -margin) c.x += w + margin * 2;
             if (drawX > w + margin) c.x -= w + margin * 2;
             if (drawY < -margin) c.y += h + margin * 2;
             if (drawY > h + margin) c.y -= h + margin * 2;
 
-            // Drift
+            
             c.x += c.speedX;
             c.y += c.speedY;
 
-            // Fade in/out
+            
             c.opacity += (c.targetOpacity - c.opacity) * 0.01;
 
-            // Depth-based opacity modulation
+            
             const depthMod = 0.5 + c.depth * 0.5;
             const finalOpacity = c.opacity * depthMod;
 
@@ -403,12 +393,12 @@ export function initBioluminescentSwarm() {
 
         ctx.globalAlpha = 1;
 
-        // Floating bioluminescent particles (extra ambient)
+        
         drawAmbientParticles();
-        // Animation loop managed by AnimationManager
+        
     }
 
-    /* ---- Ambient Particles ---- */
+    
     let ambientParticles = null;
 
     function initAmbientParticles() {
@@ -443,13 +433,13 @@ export function initBioluminescentSwarm() {
 
             const color = '73, 146, 154';
 
-            // Glow
+            
             ctx.fillStyle = `rgba(${color}, ${alpha * 0.15})`;
             ctx.beginPath();
             ctx.arc(p.x, floatY, p.r + 5, 0, Math.PI * 2);
             ctx.fill();
 
-            // Core
+            
             ctx.fillStyle = `rgba(${color}, ${alpha})`;
             ctx.beginPath();
             ctx.arc(p.x, floatY, p.r, 0, Math.PI * 2);
@@ -457,7 +447,7 @@ export function initBioluminescentSwarm() {
         });
     }
 
-    /* ---- Cleanup ---- */
+    
     cleanupRegistry.register(() => {
         isActive = false;
         if (animFrame) {

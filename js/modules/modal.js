@@ -1,7 +1,8 @@
-/**
- * File: modal.js
- * Description: Project modal: open/close water animations, media viewer, lightbox, thumbnails, and keyboard navigation.
- */
+/* ==========================================================================
+   FILE: js/modules/modal.js
+   DESCRIPTION: Project modal: open/close water animations, media viewer, lightbox, thumbnails, and keyboard navigation.
+   ========================================================================== */
+
 import { getCurrentLang } from './language.js';
 import { LARGE_BREAKPOINT_PX, XLARGE_BREAKPOINT_PX, FOUR_K_BREAKPOINT_PX, CANVAS_BACKING_MAX_WIDTH, MOBILE_BREAKPOINT } from '../constants/ui.js';
 import {
@@ -35,7 +36,7 @@ let projectsList = [];
 let currentProjectIndex = 0;
 let currentMediaIndex = 0;
 
-// Lightbox state (fullscreen view of the media viewer)
+
 let lightboxOverlay = null;
 let lightboxContainer = null;
 let lightboxImage = null;
@@ -43,38 +44,34 @@ let lightboxVideo = null;
 let lightboxOpen = false;
 let lightboxCloseTimer = null;
 
-/* ---- Timing / Animation constants ---- */
-const WATER_ANIMATION_MS = 1000;      // duration of the SVG water morph animation (0.8s + buffer; matches --water-close-duration in modal.css)
-const PROJECT_GLOW_MS = 420;          // display duration of the project glow feedback (matches --media-nav-glow-duration in modal.css)
 
-/* ---- Viewport-responsive modal sizes ---- */
-// Size preset per large breakpoint (2056px+). Smaller viewports fall back to the default.
+const WATER_ANIMATION_MS = 1000;      
+const PROJECT_GLOW_MS = 420;          
+
+
+
 const MODAL_SIZE_PRESETS = [
     { minWidth: FOUR_K_BREAKPOINT_PX, width: 1800, height: 1400 },
     { minWidth: CANVAS_BACKING_MAX_WIDTH, width: 1400, height: 1100 },
     { minWidth: LARGE_BREAKPOINT_PX, width: 1100, height: 900 },
 ];
 const MODAL_DEFAULT_SIZE = { minWidth: 0, width: 900, height: 800 };
-const MODAL_VIEWPORT_MARGIN_X = 60;   // modal distance to the viewport edge (horizontal)
-const MODAL_VIEWPORT_MARGIN_Y = 80;   // modal distance to the viewport edge (vertical)
+const MODAL_VIEWPORT_MARGIN_X = 60;   
+const MODAL_VIEWPORT_MARGIN_Y = 80;   
 
-// On mobile the fixed right-side social bar (.sidebar_socials, z-index 1100)
-// floats above the modal. Reserve a right-side gap on screens < 768px so the
-// modal frame AND its hanging prev/next arrows never touch the sidebar.
+
+
+
 const MODAL_SIDEBAR_RESERVE_PX = 56;
 const MOBILE_MODAL_BREAKPOINT_PX = MOBILE_BREAKPOINT;
 
-/**
- * Initialize modal system
- */
+
 export function initModal(projects) {
     createModalElements();
     attachEventListeners(projects);
 }
 
-/**
- * Create modal HTML elements
- */
+
 function createModalElements() {
     modalOverlay = document.createElement('div');
     modalOverlay.className = 'project_modal_overlay';
@@ -88,10 +85,10 @@ function createModalElements() {
         <div class="modal_content">
             <div class="modal_cat_tabs" role="tablist" aria-label="Project categories"></div>
 
-            <!-- LABEL ABOVE THE PROJECT SELECTION BAR -->
+            
             <div class="modal_project_bar_label">Projects in this category</div>
 
-            <!-- PROJECT SELECTION BAR (level 2: projects within the current category) -->
+            
             <div class="modal_project_bar" role="group" aria-label="Projects in category"></div>
 
             <div class="modal_project_header">
@@ -103,7 +100,7 @@ function createModalElements() {
                 </div>
             </div>
 
-            <!-- MAIN MEDIA VIEWER -->
+            
             <div class="modal_media_viewer">
                 <div class="modal_media_stage">
                     <img class="modal_media_image" src="" alt="" loading="lazy" decoding="async">
@@ -115,10 +112,10 @@ function createModalElements() {
                 <button class="modal_media_next" aria-label="Next media">›</button>
             </div>
 
-            <!-- THUMBNAIL BAR -->
+            
             <div class="modal_thumb_bar"></div>
 
-            <!-- TWO-COLUMN SECTION -->
+            
             <div class="modal_info_grid">
                 <div class="modal_description_col">
                     <p class="modal_project_description"></p>
@@ -141,7 +138,7 @@ function createModalElements() {
                 </div>
             </div>
 
-            <!-- TOOLS & SKILLS -->
+            
             <div class="modal_skills_section">
                 <h3 class="modal_skills_title">Tools & Skills used</h3>
                 <div class="modal_skills_grid"></div>
@@ -152,28 +149,26 @@ function createModalElements() {
     modalOverlay.appendChild(modalContainer);
     document.body.appendChild(modalOverlay);
 
-    // Wire up media events (play button/video) once
+    
     setupMediaEvents();
 
-    // Unified touch/mouse/stylus swipe & drag navigation for the main viewer.
-    // (Arrows + keyboard stay fully functional - this is purely additive.)
+    
+    
     bindMediaDragGesture(
         modalContainer.querySelector('.modal_media_stage'),
         () => navigateMedia(1),
         () => navigateMedia(-1)
     );
 
-    // Create and wire up the lightbox for the large media viewer (fullscreen)
+    
     createLightbox();
     setupLightbox();
 
-    // Initialize voronoi shader background (unchanged)
+    
     modalShader = initModalShader(modalContainer);
 }
 
-/**
- * Attach event listeners
- */
+
 function attachEventListeners(projects) {
     projectsList = projects;
 
@@ -190,7 +185,7 @@ function attachEventListeners(projects) {
     projectPrev.addEventListener('click', () => navigateProject(-1));
     projectNext.addEventListener('click', () => navigateProject(1));
 
-    // Category tabs + category arrows (delegation: rebuilt dynamically)
+    
     const catTabs = modalContainer.querySelector('.modal_cat_tabs');
     catTabs.addEventListener('click', (e) => {
         if (e.target.closest('.modal_cat_prev')) { navigateCategory(-1); return; }
@@ -201,7 +196,7 @@ function attachEventListeners(projects) {
         }
     });
 
-    // Project selection bar (level 2) - click delegation
+    
     const projectBar = modalContainer.querySelector('.modal_project_bar');
     if (projectBar) {
         projectBar.addEventListener('click', (e) => {
@@ -214,18 +209,18 @@ function attachEventListeners(projects) {
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            // Close the lightbox if open - modal stays open
+            
             if (lightboxOpen) { closeLightbox(); return; }
             closePopup();
             return;
         }
-        // Ctrl+arrow -> switch between CATEGORIES
+        
         if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && (e.ctrlKey || e.metaKey)) {
             e.preventDefault();
             navigateCategory(e.key === 'ArrowLeft' ? -1 : 1);
             return;
         }
-        // Alt+arrow -> switch between projects of the same category
+        
         if (e.key === 'ArrowLeft' && e.altKey) { e.preventDefault(); navigateProject(-1); return; }
         if (e.key === 'ArrowRight' && e.altKey) { e.preventDefault(); navigateProject(1); return; }
         if (e.key === 'ArrowLeft') navigateMedia(-1);
@@ -236,8 +231,8 @@ function attachEventListeners(projects) {
         if (e.target === modalOverlay) closePopup();
     });
 
-    // When the language is switched while a modal is open,
-    // re-populate the modal content in the new language
+    
+    
     document.addEventListener('languageChanged', () => {
         if (currentProject) {
             populateModal(currentProject);
@@ -245,10 +240,7 @@ function attachEventListeners(projects) {
     });
 }
 
-/**
- * Navigate between media items of the current project.
- * Used by the in-viewer arrows and keyboard arrows.
- */
+
 function navigateMedia(direction) {
     if (!currentProject || !Array.isArray(currentProject.media) || currentProject.media.length === 0) return;
     const total = currentProject.media.length;
@@ -257,31 +249,23 @@ function navigateMedia(direction) {
     triggerMediaFeedback();
 }
 
-/**
- * Switch between projects of the SAME category.
- * Automatically resets the media navigation to the first item.
- * If the category has only one project, nothing happens
- * (the arrows are disabled/gray in that case).
- */
+
 function switchCategory(category) {
     const target = getFirstProjectOfCategory(category);
     if (target === null || target === undefined) return;
     currentProjectIndex = target;
     currentProject = projectsList[target];
     if (!currentProject) return;
-        // populateModal sets the shader color, resets media to 0 and rebuilds everything
+        
     populateModal(currentProject);
     resetModalScroll();
     triggerProjectFeedback();
 }
 
-/**
- * Switch between projects of the SAME category.
- * Automatically resets the media navigation to the first item.
- */
+
 function navigateProject(direction) {
     if (!currentProject) return;
-    // callers pass -1/+1 - getSiblingProjectIndex expects 'prev'/'next'
+    
     const dirName = direction < 0 ? 'prev' : 'next';
     const target = getSiblingProjectIndex(currentProjectIndex, dirName);
     if (target === null || target === undefined) return;
@@ -290,19 +274,16 @@ function navigateProject(direction) {
     currentProject = projectsList[target];
     if (!currentProject) return;
 
-        // Resets currentMediaIndex to 0 + rebuilds everything (incl. shader color)
+        
     populateModal(currentProject);
     resetModalScroll();
     triggerProjectFeedback();
 }
 
-/**
- * Switch between CATEGORIES (e.g. Game Dev -> Sound).
- * Moves to the first project of the adjacent category.
- */
+
 function navigateCategory(direction) {
     if (!currentProject) return;
-    // callers pass -1/+1 - getAdjacentCategoryProject expects 'prev'/'next'
+    
     const dirName = direction < 0 ? 'prev' : 'next';
     const target = getAdjacentCategoryProject(currentProjectIndex, dirName);
     if (target === null || target === undefined) return;
@@ -313,14 +294,11 @@ function navigateCategory(direction) {
 
     populateModal(currentProject);
     resetModalScroll();
-    // Also highlight the newly activated project tab on category switch
+    
     triggerProjectFeedback();
 }
 
-/**
- * Builds the category tabs into the modal.
- * The active tab marks the currently open category.
- */
+
 function buildCategoryTabs() {
     const tabsEl = modalContainer.querySelector('.modal_cat_tabs');
     if (!tabsEl) return;
@@ -328,7 +306,7 @@ function buildCategoryTabs() {
 
     tabsEl.innerHTML = '';
 
-    // CATEGORY arrow back (<<) - cyclic like navigateCategory (wrap-around)
+    
     const catPrevBtn = document.createElement('button');
     catPrevBtn.className = 'modal_cat_prev';
     catPrevBtn.textContent = '«';
@@ -348,7 +326,7 @@ function buildCategoryTabs() {
         tabsEl.appendChild(btn);
     });
 
-    // CATEGORY arrow forward (>>) - cyclic like navigateCategory (wrap-around)
+    
     const catNextBtn = document.createElement('button');
     catNextBtn.className = 'modal_cat_next';
     catNextBtn.textContent = '»';
@@ -356,13 +334,9 @@ function buildCategoryTabs() {
     tabsEl.appendChild(catNextBtn);
 }
 
-/**
- * Updates category tabs + project switcher.
- * The project switcher is only shown when the category has
- * MULTIPLE projects (otherwise hidden, no confusing arrows).
- */
+
 function updateProjectNav() {
-    // Rebuild tabs (active one = current category)
+    
     buildCategoryTabs();
 
     const lang = getCurrentLang();
@@ -393,11 +367,7 @@ function updateProjectNav() {
     }
 }
 
-/**
- * Creates a muted <video> preview element that uses preload=metadata to
- * show the first frame of the animation - so video thumbnails/cards look
- * like the animation itself, not like a static placeholder image.
- */
+
 function createVideoPreviewElement(src) {
     const vid = document.createElement('video');
     vid.src = src || '';
@@ -406,18 +376,14 @@ function createVideoPreviewElement(src) {
     vid.playsInline = true;
     vid.setAttribute('playsinline', '');
     vid.setAttribute('aria-hidden', 'true');
-    // Small time jump so the browser reliably renders the first frame
+    
     vid.addEventListener('loadeddata', () => {
-        try { vid.currentTime = 0.001; } catch (e) { /* ignore */ }
+        try { vid.currentTime = 0.001; } catch (e) {  }
     }, { once: true });
     return vid;
 }
 
-/**
- * Builds the project selection bar (level 2) for the current category.
- * Shows all projects of the category as clickable cards with cover + title.
- * The currently selected project gets the 'active' class.
- */
+
 function buildProjectBar() {
     const bar = modalContainer.querySelector('.modal_project_bar');
     if (!bar) return;
@@ -440,8 +406,8 @@ function buildProjectBar() {
 
         const media = Array.isArray(project.media) ? project.media : [];
         const firstMedia = media[0];
-        // Pure video projects: card preview shows the first frame of the first animation.
-        // Mixed projects (video + images) show the cover image instead.
+        
+        
         const isPureVideoProject = Boolean(firstMedia && firstMedia.type === 'video' && !media.some(m => m && m.type === 'image'));
         if (isPureVideoProject) {
             item.appendChild(createVideoPreviewElement(firstMedia.src));
@@ -464,10 +430,7 @@ function buildProjectBar() {
     });
 }
 
-/**
- * Switches to any project (via the project selection bar etc.).
- * Sets currentProjectIndex + currentProject and rebuilds the modal completely.
- */
+
 function switchToProjectIndex(index) {
     if (!projectsList[index]) return;
     currentProjectIndex = index;
@@ -478,27 +441,21 @@ function switchToProjectIndex(index) {
     triggerProjectFeedback();
 }
 
-/**
- * Reset the modal's own scroll container to the top so every opened or
- * switched project starts at the beginning again.
- */
+
 function resetModalScroll() {
     const content = modalContainer ? modalContainer.querySelector('.modal_content') : null;
     if (content) content.scrollTop = 0;
 }
 
-/**
 
- * Show popup at card position with water emerge animation
- */
 export function showPopupAtCard(project, card) {
     currentProjectIndex = projectsList.findIndex(p => p === project);
     if (currentProjectIndex === -1) currentProjectIndex = 0;
     currentProject = project;
 
-    // Set modal size - viewport-responsive for large screens (2056px+).
-    // On mobile (< 768px) the fixed social sidebar on the right edge floats
-    // above the modal (z-index 1100), so reserve extra room for it.
+    
+    
+    
     const vw = document.documentElement.clientWidth || window.innerWidth;
     const sizePreset = MODAL_SIZE_PRESETS.find(p => vw >= p.minWidth) || MODAL_DEFAULT_SIZE;
     const maxModalW = sizePreset.width;
@@ -508,37 +465,37 @@ export function showPopupAtCard(project, card) {
     const modalHeight = Math.min(maxModalH, window.innerHeight - MODAL_VIEWPORT_MARGIN_Y);
     const left = Math.max((vw - modalWidth) / 2, 12);
 
-    // Position the modal below the fixed main navbar so the title/X button
-    // are never covered by the navbar when it sits above the overlay.
+    
+    
     const headerEl = document.querySelector('.header');
     const headerBottom = headerEl ? headerEl.getBoundingClientRect().bottom : 0;
     const centerTop = (window.innerHeight - modalHeight) / 2;
     const top = Math.max(headerBottom + 14, centerTop);
 
-    // Position modal
+    
     modalContainer.style.position = 'fixed';
     modalContainer.style.left = `${left}px`;
     modalContainer.style.top = `${top}px`;
     modalContainer.style.width = `${modalWidth}px`;
     modalContainer.style.maxHeight = `${modalHeight}px`;
 
-    // Remove any previous animation class
+    
     modalContainer.classList.remove('water_emerge', 'fade_complete');
     void modalContainer.offsetWidth;
 
-    // Show overlay
+    
     modalOverlay.style.display = 'block';
     modalOverlay.style.opacity = '0';
     void modalOverlay.offsetHeight;
     modalOverlay.style.transition = 'opacity 0.3s ease';
     modalOverlay.style.opacity = '1';
 
-    // Show modal with water emerge animation (SVG filter)
+    
     modalContainer.style.display = 'block';
     modalContainer.style.opacity = '1';
     modalContainer.style.transform = 'scale(1)';
 
-    // Restart SVG animation by triggering all animate elements
+    
     const svgFilter = document.getElementById('water_emerge');
     if (svgFilter) {
         const animations = svgFilter.querySelectorAll('animate');
@@ -546,7 +503,7 @@ export function showPopupAtCard(project, card) {
             try {
                 anim.beginElement();
             } catch (e) {
-                // Fallback: clone filter if beginElement fails
+                
                 const parent = svgFilter.parentNode;
                 const clone = svgFilter.cloneNode(true);
                 parent.replaceChild(clone, svgFilter);
@@ -554,35 +511,30 @@ export function showPopupAtCard(project, card) {
         });
     }
 
-    // Trigger the water emerge animation
+    
     modalContainer.classList.add('water_emerge');
 
     if (modalContainer._emergeTimer) {
         clearTimeout(modalContainer._emergeTimer);
     }
     modalContainer._emergeTimer = setTimeout(() => {
-        // Remove water_emerge class - SVG filter already at scale=0
+        
         modalContainer.classList.remove('water_emerge');
-    }, WATER_ANIMATION_MS); // after SVG animation completes (0.8s + buffer)
+    }, WATER_ANIMATION_MS); 
 
-    // Populate content (including media + thumbnails)
-    // The shader is started here with the matching category color
+    
+    
     populateModal(project);
 
-    // Set scroll lock + modal-open state on body (navbar stays above the overlay via CSS).
-    // Compensating for the disappearing scrollbar keeps the page behind the modal
-    // layout-stable, so opening/closing never shifts or jumps the page.
+    
+    
+    
     lockBodyScroll();
-    // Show every opened project from the top, never a stale scroll position.
+    
     resetModalScroll();
 }
 
-/**
- * Restarts the water close SVG animation (water_distort_close) and throws
- * the water effect onto the close button. ONLY place for this flow -
- * used by modal close (closePopup) and lightbox close (closeLightbox),
- * so the code is not duplicated.
- */
+
 function restartWaterCloseAnimation(closeBtn) {
     const closeFilter = document.getElementById('water_distort_close');
     if (closeFilter) {
@@ -600,30 +552,22 @@ function restartWaterCloseAnimation(closeBtn) {
     if (closeBtn) closeBtn.classList.add('water_effect');
 }
 
-/**
- * Prevents body scrolling while the modal is open.
- * Also compensates for the disappearing vertical scrollbar so the page behind
- * the modal keeps its exact width (no horizontal jump when opening/closing).
- */
+
 function lockBodyScroll() {
     const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
     document.body.style.overflow = 'hidden';
     document.body.style.paddingRight = scrollbarWidth > 0 ? `${scrollbarWidth}px` : '';
     document.body.classList.add('modal-open');
-    // A fresh modal open invalidates any leftover resume-stagger from a
-    // previous close (stale body[data-modal-resume-at] must never gate the
-    // portal/hero effects of the NEXT close).
+    
+    
+    
     delete document.body.dataset.modalResumeAt;
 }
 
-/**
- * ALWAYS reset body scroll + modal-open state.
- * Executed synchronously (even during the close animation) so
- * navigation/scrolling work again immediately - never a "scroll-locked" state.
- */
+
 function unlockBodyScroll() {
-    // Stamp the close time so effects (portals, hero, particles) resume
-    // staggered instead of all rendering in the same frame after the modal.
+    
+    
     if (document.body.classList.contains('modal-open')) {
         document.body.dataset.modalResumeAt = String(performance.now());
     }
@@ -632,15 +576,11 @@ function unlockBodyScroll() {
     document.body.classList.remove('modal-open');
 }
 
-/**
- * Close popup with water animation.
- * @param {boolean} immediate - true = close immediately without the water close animation
- *   (used when navigating via the main navbar).
- */
+
 function closePopup(immediate = false) {
     if (!currentProject) return;
 
-    // Close the lightbox if still open
+    
     if (lightboxOpen) closeLightbox();
 
     if (modalContainer._emergeTimer) {
@@ -653,9 +593,9 @@ function closePopup(immediate = false) {
         modalContainer._cleanupCycle = null;
     }
 
-    // Pause modal videos immediately (sound off) but keep them loaded:
-    // unloading the srcs here stalls the main thread and freezes the
-    // water-close animation - the unload runs after the animation instead.
+    
+    
+    
     stopActiveModalVideos({ unloadPlayers: false });
 
     modalContainer.classList.remove('water_emerge', 'fade_complete');
@@ -667,15 +607,15 @@ function closePopup(immediate = false) {
 
     const closeBtn = modalContainer.querySelector('.modal_close_btn');
 
-    // Stop shader BEFORE starting close animation to free GPU resources.
-    // Running WebGL + SVG filters simultaneously causes jank on Firefox mobile.
+    
+    
     if (modalShader) {
         modalShader.stop();
     }
 
     if (immediate) {
-        // Hide immediately without the close animation (e.g. when clicking a navbar link).
-        // Release scroll lock immediately so the user can scroll right away.
+        
+        
         unlockBodyScroll();
         modalOverlay.style.display = 'none';
         modalContainer.style.display = 'none';
@@ -687,35 +627,35 @@ function closePopup(immediate = false) {
         return;
     }
 
-    // Trigger water_distort_close SVG animation (same as water_emerge opening)
+    
     restartWaterCloseAnimation(closeBtn);
 
-    // Trigger water close animation
+    
     modalContainer.classList.add('water_close');
 
-    // Fade the dark backdrop out in sync with the water-close animation so it
-    // never snaps away abruptly when the overlay is hidden at the end.
+    
+    
     modalOverlay.style.transition = 'opacity 0.35s ease';
     modalOverlay.style.opacity = '0';
 
-    // Release scroll lock + .modal-open as soon as the dark backdrop has
-    // faded (0.35s overlay fade + buffer), so the background effects can
-    // resume staggered WHILE the water-close animation finishes - without
-    // this the page stays visibly frozen for the whole 1s close duration
-    // even though the overlay is already transparent after ~0.35s.
-    // The resume-stagger (utils/modal_resume.js) spreads the effects across
-    // frames, so this early unlock does NOT re-create the old single-frame
-    // spike that originally caused the close jank.
+    
+    
+    
+    
+    
+    
+    
+    
     setTimeout(() => {
         requestAnimationFrame(unlockBodyScroll);
         setTimeout(unlockBodyScroll, 50);
     }, 400);
 
-    // Wait for the water-close animation to finish before hiding the modal.
+    
     setTimeout(() => {
-        // Hide FIRST, then light teardown: pause + drop srcs WITHOUT the
-        // synchronous load() call - it froze the resumed portal animation
-        // behind the closing modal (next show re-sets src + load anyway).
+        
+        
+        
         modalOverlay.style.display = 'none';
         modalContainer.style.display = 'none';
         modalContainer.classList.remove('water_close');
@@ -727,59 +667,51 @@ function closePopup(immediate = false) {
     }, WATER_ANIMATION_MS);
 }
 
-/**
- * Reusable: exported function to close the project modal from outside
- * (e.g. from the navigation). Equivalent to closePopup().
- * @param {{ immediate?: boolean }} options
- */
+
 export function closeProjectModal(options = {}) {
     closePopup(Boolean(options.immediate));
 }
 
-/**
- * Reusable: is a project modal currently open?
- */
+
 export function isProjectModalOpen() {
     return Boolean(currentProject);
 }
 
-/**
- * Populate modal with project data (new structure)
- */
+
 function populateModal(project) {
     const lang = getCurrentLang();
 
-    // Close the lightbox if a different project is loaded
+    
     if (lightboxOpen) closeLightbox();
 
-    // Water background based on category (CSS gradient + shader color)
+    
     const bgClasses = ['modal_bg_abyss', 'modal_bg_teal', 'modal_bg_ocean', 'modal_bg_bio', 'modal_bg_amber', 'modal_bg_rose'];
     modalContainer.classList.remove(...bgClasses);
     const scheme = currentProject ? getCategorySchemeIndex(currentProject.category) : 0;
     if (scheme >= 0 && scheme < bgClasses.length) {
         modalContainer.classList.add(bgClasses[scheme]);
     }
-    // Set the category shader color (also works while the shader is running)
+    
     if (modalShader) {
         modalShader.start(scheme);
     }
 
-    // Header
+    
     const titleEl = modalContainer.querySelector('.modal_project_title');
     titleEl.textContent = getProjectTitle(currentProjectIndex, lang);
 
-    // Set the label above the project selection bar in the current language
+    
     const barLabelEl = modalContainer.querySelector('.modal_project_bar_label');
     if (barLabelEl) barLabelEl.textContent = lang === 'de' ? 'Projekte in dieser Kategorie' : 'Projects in this category';
 
-    // Build the project selection bar for the current category (level 2)
+    
     buildProjectBar();
 
-    // Description (left column)
+    
     const descriptionEl = modalContainer.querySelector('.modal_project_description');
     descriptionEl.textContent = getProjectDescription(currentProjectIndex, lang);
 
-    // Game concept (only visible if the project has a gameConcept field)
+    
     const gameConceptEl = modalContainer.querySelector('.modal_game_concept');
     const gameConceptTextEl = modalContainer.querySelector('.modal_game_concept_text');
     const conceptTitleEl = modalContainer.querySelector('.modal_game_concept_title');
@@ -788,7 +720,7 @@ function populateModal(project) {
     gameConceptTextEl.textContent = gameConcept;
     gameConceptEl.hidden = !gameConcept;
 
-    // Project details (duration/team - only visible if the project has values)
+    
     const detailsEl = modalContainer.querySelector('.modal_project_details');
     const detailsTitleEl = modalContainer.querySelector('.modal_details_title');
     if (detailsTitleEl) detailsTitleEl.textContent = lang === 'de' ? 'Projektdetails' : 'Project Details';
@@ -814,7 +746,7 @@ function populateModal(project) {
     });
     detailsEl.hidden = detailItems.length === 0;
 
-    // Links & demos (only visible if the project has links)
+    
     const linksEl = modalContainer.querySelector('.modal_project_links');
     const linksTitleEl = modalContainer.querySelector('.modal_links_title');
     if (linksTitleEl) linksTitleEl.textContent = lang === 'de' ? 'Links & Demos' : 'Links & Demos';
@@ -832,16 +764,16 @@ function populateModal(project) {
     });
     linksEl.hidden = links.length === 0;
 
-    // Contribution (right column)
+    
     const contributionTitleEl = modalContainer.querySelector('.modal_contribution_title');
     if (contributionTitleEl) contributionTitleEl.textContent = lang === 'de' ? 'Mein Beitrag' : 'My Contribution';
     const contributionList = modalContainer.querySelector('.modal_contribution_list');
     const contributions = getProjectContribution(currentProjectIndex, lang);
     contributionList.innerHTML = '';
-    // Supports two formats (backward compatible):
-    //  - String           -> normal list item
-    //  - { intro: ... }   -> intro paragraph without a bullet
-    //  - { group, items } -> group heading + its own item list
+    
+    
+    
+    
     contributions.forEach(item => {
         if (item && typeof item === 'object') {
             if (item.intro) {
@@ -870,14 +802,14 @@ function populateModal(project) {
         contributionList.appendChild(li);
     });
 
-    // Tools & Skills
+    
     const skillsTitleEl = modalContainer.querySelector('.modal_skills_title');
     if (skillsTitleEl) skillsTitleEl.textContent = lang === 'de' ? 'Tools & Skills' : 'Tools & Skills used';
     const skillsGridEl = modalContainer.querySelector('.modal_skills_grid');
     skillsGridEl.innerHTML = '';
 
-    // 1) Portfolio skills (coupled to the skill registry, see skills.js)
-    //    -> same blue/teal tags as all other tools in the modal
+    
+    
     const projectSkills = getProjectSkills(currentProjectIndex);
     projectSkills.forEach((skill) => {
         const tag = document.createElement('span');
@@ -887,7 +819,7 @@ function populateModal(project) {
         skillsGridEl.appendChild(tag);
     });
 
-    // 2) Other tools of the project (without the skills already covered above)
+    
     const coveredTools = getProjectCoveredToolNames(currentProjectIndex);
     const tools = getProjectTools(currentProjectIndex, lang);
     tools.forEach((tool) => {
@@ -902,27 +834,25 @@ function populateModal(project) {
         skillsGridEl.appendChild(tag);
     });
 
-    // Media + thumbnails
-    // Stop the previous project's video / YouTube iframe BEFORE rebuilding
-    // (project switch + initial open) - only visible media may ever play.
+    
+    
+    
     stopActiveModalVideos();
     currentMediaIndex = 0;
     buildThumbnails(project);
     showMedia(0);
 
-    // Goal: update the project navigation (label, tooltips, disabling)
+    
     updateProjectNav();
 
-    // Clean up old cycle timer
+    
     if (modalContainer._cleanupCycle) {
         modalContainer._cleanupCycle();
         modalContainer._cleanupCycle = null;
     }
 }
 
-/**
- * Build the thumbnail bar for all media of the project
- */
+
 function buildThumbnails(project) {
     const bar = modalContainer.querySelector('.modal_thumb_bar');
     bar.innerHTML = '';
@@ -934,7 +864,7 @@ function buildThumbnails(project) {
         btn.setAttribute('aria-label', `Media ${index + 1}`);
 
         if (item.type === 'video') {
-            // Video preview: shows the first frame of the animation ("what things look like")
+            
             btn.appendChild(createVideoPreviewElement(item.src));
         } else {
             const img = document.createElement('img');
@@ -946,7 +876,7 @@ function buildThumbnails(project) {
             btn.appendChild(img);
         }
 
-        // Video thumbnails get a small play symbol
+        
         if (item.type === 'video') {
             const badge = document.createElement('span');
             badge.className = 'modal_thumb_badge';
@@ -957,7 +887,7 @@ function buildThumbnails(project) {
         btn.addEventListener('click', () => {
             currentMediaIndex = index;
             showMedia(index);
-                        // Thumbnail click opens the lightbox directly with the enlarged media
+                        
             openLightbox();
             triggerMediaFeedback();
         });
@@ -966,40 +896,28 @@ function buildThumbnails(project) {
     });
 }
 
-/**
- * Centralized video cleanup for the whole modal (main viewer + lightbox):
- * pauses every video, fully unloads the two player elements and removes a
- * possibly playing YouTube iframe (autoplay iframes keep running while
- * hidden - display:none does not stop them). Called by showMedia,
- * populateModal, openLightbox and closePopup so exactly ONE media element
- * can ever be active at a time. Preview videos keep their first frame
- * (they are only paused, their src stays).
- * @param {Object} [options]
- * @param {boolean} [options.unloadPlayers=true] - false keeps the two player
- *   videos loaded (they are only paused). Used by openLightbox so the main
- *   stage keeps its current media after the lightbox closes.
- */
+
 function stopActiveModalVideos({ unloadPlayers = true } = {}) {
     const scopes = [modalContainer, lightboxOverlay];
     scopes.forEach((scope) => {
         if (!scope) return;
-        // 1) Pause everything that could be playing (incl. preview videos)
+        
         scope.querySelectorAll('video').forEach((vid) => {
             if (!vid.paused) {
-                try { vid.pause(); } catch (err) { /* ignore */ }
+                try { vid.pause(); } catch (err) {  }
             }
         });
-        // 2) Remove playing YouTube players. A container that still shows the
-        //    lightweight facade (thumbnail + play button) is left untouched:
-        //    only an actually created <iframe> (autoplay player) must go, so
-        //    the facade survives e.g. an openLightbox/closeLightbox round-trip.
+        
+        
+        
+        
         scope.querySelectorAll('.modal_media_youtube, .modal_lightbox_youtube').forEach((yt) => {
             if (yt.querySelector('iframe')) yt.innerHTML = '';
         });
     });
-    // 3) Fully unload the two player videos (their src is re-set on next show).
-    //    Skipped with { unloadPlayers: false } (openLightbox) so the main stage
-    //    keeps its current media while the lightbox shows it enlarged.
+    
+    
+    
     if (unloadPlayers) {
         const players = [
             modalContainer ? modalContainer.querySelector('.modal_media_video') : null,
@@ -1007,30 +925,26 @@ function stopActiveModalVideos({ unloadPlayers = true } = {}) {
         ];
         players.forEach((vid) => {
             if (!vid) return;
-            try { vid.pause(); } catch (err) { /* ignore */ }
+            try { vid.pause(); } catch (err) {  }
             vid.removeAttribute('src');
-            try { vid.load(); } catch (err) { /* ignore */ }
+            try { vid.load(); } catch (err) {  }
         });
     }
 }
 
-/**
- * Renders the given media item into the viewer (image/video/youtube branch)
- * @param {string} altText - alt text for images
- * @param {string} category - project category (for fallback images)
- */
+
 function renderMediaItem(imageEl, videoEl, item, opts, altText, category) {
-    // YouTube-Embed handling
+    
     const stage = videoEl ? videoEl.parentElement : null;
     const ytEl = stage ? stage.querySelector('.modal_media_youtube, .modal_lightbox_youtube') : null;
 
     if (item.type === 'youtube') {
-        // Stop a possibly playing MP4 BEFORE hiding it: display:none alone
-        // would keep its audio running (same rule as every other switch).
+        
+        
         if (videoEl && !videoEl.paused) {
-            try { videoEl.pause(); } catch (err) { /* ignore */ }
+            try { videoEl.pause(); } catch (err) {  }
         }
-        // Hide image + video, show the YouTube facade
+        
         imageEl.style.display = 'none';
         videoEl.style.display = 'none';
         if (opts.showControls) videoEl.removeAttribute('controls');
@@ -1039,10 +953,10 @@ function renderMediaItem(imageEl, videoEl, item, opts, altText, category) {
             const id = item.id || '';
             ytEl.innerHTML = '';
             if (id) {
-                // Lightweight facade instead of an immediate player: thumbnail + play button
-                // are shown and the iframe is only created on click (no parallel
-                // preloading of heavy players). Optional start time in seconds
-                // (item.start, e.g. for YouTube links with &t=95s).
+                
+                
+                
+                
                 const startParam = Number.isFinite(item.start) && item.start > 0 ? `&start=${Math.floor(item.start)}` : '';
                 const thumbSrc = item.thumb || `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
 
@@ -1089,16 +1003,16 @@ function renderMediaItem(imageEl, videoEl, item, opts, altText, category) {
     if (item.type === 'video') {
         imageEl.style.display = 'none';
         videoEl.style.display = 'block';
-        // No static poster image anymore: the video shows its own first frame
+        
         videoEl.removeAttribute('poster');
         videoEl.setAttribute('src', item.src);
         videoEl.preload = 'metadata';
         videoEl.load();
-        // Render the first frame reliably (small time jump after loading)
+        
         videoEl.addEventListener('loadeddata', () => {
-            try { if (videoEl.paused) videoEl.currentTime = 0.001; } catch (e) { /* ignore */ }
+            try { if (videoEl.paused) videoEl.currentTime = 0.001; } catch (e) {  }
         }, { once: true });
-        // Native controls always on: play/pause, seek, volume, fullscreen.
+        
         videoEl.setAttribute('controls', '');
         if (opts.playBtn) opts.playBtn.style.display = 'flex';
     } else {
@@ -1108,7 +1022,7 @@ function renderMediaItem(imageEl, videoEl, item, opts, altText, category) {
         videoEl.load();
         if (opts.playBtn) opts.playBtn.style.display = 'none';
         imageEl.src = item.src || '';
-        // Native lazy-load control for the currently displayed image
+        
         imageEl.loading = 'lazy';
         imageEl.decoding = 'async';
         applyImageFallback(imageEl, category);
@@ -1118,9 +1032,7 @@ function renderMediaItem(imageEl, videoEl, item, opts, altText, category) {
     if (ytEl) { ytEl.innerHTML = ''; ytEl.style.display = 'none'; ytEl.hidden = true; }
 }
 
-/**
- * Show the media item at position `index` in the main viewer
- */
+
 function showMedia(index) {
     const project = currentProject;
     if (!project) return;
@@ -1136,21 +1048,17 @@ function showMedia(index) {
 
     renderMediaItem(imageEl, videoEl, item, { showControls: false, playBtn }, getProjectTitle(currentProjectIndex, getCurrentLang()), project.category);
 
-    // Mark the active thumbnail (golden border)
+    
     const thumbs = modalContainer.querySelectorAll('.modal_thumb');
     thumbs.forEach((t, i) => {
         t.classList.toggle('active', i === index);
     });
 
-        // Sync the lightbox content if open
+        
     if (lightboxOpen) syncLightbox();
 }
 
-/**
- * Trigger a brief teal "water-like" glow + fade on the active media
- * whenever the selected image changes (viewer prev/next, thumbnails,
- * lightbox prev/next). One-shot CSS animation - no JS animation loop.
- */
+
 function triggerMediaFeedback() {
     const targets = [];
     if (lightboxOverlay && lightboxOpen && currentProject) {
@@ -1168,11 +1076,7 @@ function triggerMediaFeedback() {
     });
 }
 
-/**
- * Trigger a brief blue/teal glow on the newly-selected project item when
- * switching projects (prev/next arrows, project-bar click, category tab).
- * Reuses the existing 0.3s transition of .modal_project_item - no JS loop.
- */
+
 function triggerProjectFeedback() {
     if (!modalContainer) return;
     const activeItem = modalContainer.querySelector('.modal_project_item.active');
@@ -1185,9 +1089,7 @@ function triggerProjectFeedback() {
     }, PROJECT_GLOW_MS);
 }
 
-/**
- * Play button: plays the current video
- */
+
 function setupMediaEvents() {
     const playBtn = modalContainer.querySelector('.modal_media_play');
     const videoEl = modalContainer.querySelector('.modal_media_video');
@@ -1199,15 +1101,15 @@ function setupMediaEvents() {
             tryPlay.then(() => {
                 playBtn.style.display = 'none';
             }).catch(() => {
-                // Autoplay blocked etc. -> native controls stay usable
+                
             });
         }
     });
 
     videoEl.addEventListener('play', () => { playBtn.style.display = 'none'; });
-    // Re-show the centered play button whenever the video stops, so the
-    // viewer offers a clear restart affordance again. It only covers the
-    // middle of the frame - the native control bar at the bottom stays free.
+    
+    
+    
     videoEl.addEventListener('pause', () => {
         if (!videoEl.ended) playBtn.style.display = 'flex';
     });
@@ -1216,31 +1118,16 @@ function setupMediaEvents() {
     });
 }
 
-/**
- * Unified swipe/drag navigation for the media viewer + lightbox.
- * Uses Pointer Events so touch, mouse and stylus share ONE implementation:
- *   - drag/swipe LEFT  -> next media item
- *   - drag/swipe RIGHT -> previous media item
- *   - vertical movement is left untouched (native vertical scrolling keeps working)
- *   - a tap without movement is NOT treated as a swipe (clicks keep working)
- *   - horizontal trackpad two-finger swipes (wheel) are supported on desktop
- * Purely additive - the existing arrow buttons and keyboard arrows keep working.
- */
+
 function bindMediaDragGesture(el, onNext, onPrev) {
     if (!el) return;
 
-        const DRAG_START_DISTANCE = 14;  // px of horizontal intent before dragging starts
-    const SWIPE_THRESHOLD = 55;      // px required for a swipe to count
+        const DRAG_START_DISTANCE = 14;  
+    const SWIPE_THRESHOLD = 55;      
 
-    /*
-     * Mobile UX fix (Issue 1): keep the image pinned inside its frame while the
-     * user swipes, instead of letting it follow the finger. Set to `true` to
-     * restore the old "drag-follows-finger" behaviour, or leave `false` for a
-     * clean hard-switch between images once the swipe threshold is crossed.
-     * Either way the threshold/tap/scroll detection is identical.
-     */
+    
     const FOLLOW_DURING_DRAG = false;
-    const WHEEL_THRESHOLD = 30;      // px (trackpad horizontal delta)
+    const WHEEL_THRESHOLD = 30;      
     const WHEEL_COOLDOWN_MS = 700;
 
     let pointerId = null;
@@ -1261,21 +1148,21 @@ function bindMediaDragGesture(el, onNext, onPrev) {
     }
 
     el.addEventListener('dragstart', (e) => {
-        // Never start the browser's native image drag from the media area
+        
         e.preventDefault();
     });
 
     el.addEventListener('pointerdown', (e) => {
         if (e.pointerType === 'mouse' && e.button !== 0) return;
         if (!e.isPrimary) return;
-        // Critical: if the press starts on an interactive control (lightbox
-        // prev/next arrows, close button, media play button, links...), keep
-        // the interaction fully native. Otherwise the setPointerCapture below
-        // retargets all pointer events - and the resulting click - onto this
-        // container, so the control's own click handler never fires (the
-        // lightbox prev/next arrows used to do nothing for that reason).
-        // Native <video> controls are browser chrome; starting a drag on the video
-        // must never capture the pointer or the controls would not work.
+        
+        
+        
+        
+        
+        
+        
+        
         const startEl = e.target && e.target.closest
             ? e.target.closest('button, a, input, select, textarea, [role="button"], video')
             : null;
@@ -1286,7 +1173,7 @@ function bindMediaDragGesture(el, onNext, onPrev) {
         lastDX = 0;
         dragging = false;
         suppressClick = false;
-        try { el.setPointerCapture(e.pointerId); } catch (err) { /* noop */ }
+        try { el.setPointerCapture(e.pointerId); } catch (err) {  }
     }, true);
 
     el.addEventListener('pointermove', (e) => {
@@ -1295,8 +1182,8 @@ function bindMediaDragGesture(el, onNext, onPrev) {
         const dy = e.clientY - startY;
 
         if (!dragging) {
-            // Need convincing horizontal intent before engaging, so tiny moves,
-            // taps and vertical scrolling never trigger a swipe.
+            
+            
             if (Math.abs(dx) < DRAG_START_DISTANCE) return;
             if (Math.abs(dx) < Math.abs(dy) * 1.2) return;
             dragging = true;
@@ -1307,13 +1194,13 @@ function bindMediaDragGesture(el, onNext, onPrev) {
         if (FOLLOW_DURING_DRAG) {
             const media = getMedia();
             if (media) {
-                // The image/video gently follows the finger/hand
+                
                 media.style.transform = `translate3d(${dx}px, 0, 0)`;
             }
         }
-        // When FOLLOW_DURING_DRAG is false the image stays pinned in its
-        // frame; the actual prev/next switch happens in endDrag() once the
-        // swipe threshold is crossed.
+        
+        
+        
     }, { passive: true });
 
     function endDrag(e) {
@@ -1340,8 +1227,8 @@ function bindMediaDragGesture(el, onNext, onPrev) {
         if (dragging) { dragging = false; resetTransform(); }
     });
 
-    // After a real drag a synthetic click fires - swallow it so the lightbox
-    // does not open right after swiping the media.
+    
+    
     el.addEventListener('click', (e) => {
         if (suppressClick) {
             suppressClick = false;
@@ -1350,7 +1237,7 @@ function bindMediaDragGesture(el, onNext, onPrev) {
         }
     }, true);
 
-    // Desktop trackpads: two-finger horizontal swipe = prev/next
+    
     let lastWheelTime = 0;
     el.addEventListener('wheel', (e) => {
         const dx = e.deltaX;
@@ -1363,14 +1250,11 @@ function bindMediaDragGesture(el, onNext, onPrev) {
     }, { passive: true });
 }
 
-/* LIGHTBOX FOR THE MEDIA VIEWER (FULLSCREEN) */
 
-/**
- * Creates the lightbox overlay as a separate element in the body.
- * Positioned independently from the main modal (z-index 2000).
- */
+
+
 function createLightbox() {
-    if (lightboxOverlay) return; // already created
+    if (lightboxOverlay) return; 
 
     lightboxOverlay = document.createElement('div');
     lightboxOverlay.className = 'modal_lightbox_overlay';
@@ -1394,30 +1278,25 @@ function createLightbox() {
     lightboxVideo = lightboxOverlay.querySelector('.modal_lightbox_video');
 }
 
-/**
- * Wires up the lightbox events:
- * - Click on the media stage opens the lightbox
- * - Click on the close button or the overlay background closes it
- * - Arrows navigate through the media of the current project
- */
+
 function setupLightbox() {
     const mediaStage = modalContainer.querySelector('.modal_media_stage');
     mediaStage.addEventListener('click', (e) => {
-        // Play button + native video controls stay native, not a lightbox open
+        
         if (e.target.closest('.modal_media_play, video')) return;
         openLightbox();
     });
 
-    // Close button closes the lightbox
+    
     const closeBtn = lightboxOverlay.querySelector('.modal_close_btn');
     closeBtn.addEventListener('click', closeLightbox);
 
-    // Click on the overlay background closes the lightbox
+    
     lightboxOverlay.addEventListener('click', (e) => {
         if (e.target === lightboxOverlay) closeLightbox();
     });
 
-    // Arrows navigate through the media of the current project
+    
     const prevBtn = lightboxOverlay.querySelector('.modal_lightbox_prev');
     const nextBtn = lightboxOverlay.querySelector('.modal_lightbox_next');
     prevBtn.addEventListener('click', (e) => {
@@ -1429,7 +1308,7 @@ function setupLightbox() {
         navigateMedia(1);
     });
 
-    // Unified swipe/drag (touch + mouse + trackpad) inside the lightbox
+    
     bindMediaDragGesture(
         lightboxContainer,
         () => navigateMedia(1),
@@ -1437,22 +1316,20 @@ function setupLightbox() {
     );
 }
 
-/**
- * Opens the lightbox and shows the currently selected media.
- */
+
 function openLightbox() {
     if (!lightboxOverlay) return;
 
-    // The lightbox takes over the media stage: pause the main viewer video
-    // (and remove any YouTube iframe) so nothing keeps playing behind the
-    // overlay - but keep its src so the stage is intact after closing.
+    
+    
+    
     stopActiveModalVideos({ unloadPlayers: false });
 
     const project = currentProject;
     if (!project || !Array.isArray(project.media) || project.media.length === 0) return;
 
     syncLightbox();
-    // Cancel a running close animation + remove old classes
+    
     if (lightboxCloseTimer) {
         clearTimeout(lightboxCloseTimer);
         lightboxCloseTimer = null;
@@ -1465,32 +1342,30 @@ function openLightbox() {
     lightboxOpen = true;
 }
 
-/**
- * Closes the lightbox and pauses the video.
- */
+
 function closeLightbox() {
     if (!lightboxOverlay) return;
-    if (!lightboxOpen) return; // already closed / close animation running
+    if (!lightboxOpen) return; 
 
     lightboxOpen = false;
 
-    // Pause the video BUT keep the image visible for the close animation
+    
     if (lightboxVideo) {
         lightboxVideo.pause();
     }
-    // Remove a playing YouTube iframe immediately - it keeps running (and
-    // playing audio) inside the hidden overlay otherwise.
+    
+    
     const lbYt = lightboxOverlay.querySelector('.modal_lightbox_youtube');
     if (lbYt && lbYt.querySelector('iframe')) lbYt.innerHTML = '';
 
-    // Trigger water_distort_close SVG animation (same flow as the modal close)
+    
     const closeBtn = lightboxOverlay.querySelector('.modal_close_btn');
     restartWaterCloseAnimation(closeBtn);
 
-    // Start the water close animation on the lightbox
+    
     if (lightboxContainer) lightboxContainer.classList.add('water_close');
 
-    // Hide after the animation (duration identical to the modal: WATER_ANIMATION_MS)
+    
     lightboxCloseTimer = setTimeout(() => {
         lightboxCloseTimer = null;
         if (lightboxContainer) lightboxContainer.classList.remove('water_close');
@@ -1498,17 +1373,14 @@ function closeLightbox() {
         lightboxOverlay.classList.remove('active');
         lightboxOverlay.setAttribute('aria-hidden', 'true');
         if (lightboxVideo) {
-            // Drop src WITHOUT load(): the browser cleans up async, and the
-            // synchronous load() froze the resumed portal animation.
+            
+            
             lightboxVideo.removeAttribute('src');
         }
     }, WATER_ANIMATION_MS);
 }
 
-/**
- * Updates the lightbox view to the currently selected media
- * (currentMediaIndex). Called after showMedia when the lightbox is open.
- */
+
 function syncLightbox() {
     if (!lightboxImage || !lightboxVideo) return;
 

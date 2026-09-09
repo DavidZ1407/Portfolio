@@ -1,7 +1,8 @@
-/**
- * File: hero_carousel.js
- * Description: Hero works carousel: slide rendering from project data, autoplay, and navigation controls.
- */
+/* ==========================================================================
+   FILE: js/modules/hero_carousel.js
+   DESCRIPTION: Hero works carousel: slide rendering from project data, autoplay, and navigation controls.
+   ========================================================================== */
+
 import { projects, getProjectSubtitle, getProjectCover, getProjectTitle, getProjectSkillIds, getOrderedProjectIndices, applyImageFallback } from "../constants/projects.js?v=11";
 import { getCurrentLang } from "./language.js";
 import { cleanupRegistry, bindHorizontalSwipe } from '../utils/helpers.js';
@@ -9,12 +10,9 @@ import { cleanupRegistry, bindHorizontalSwipe } from '../utils/helpers.js';
 let currentProjectIndex = 0;
 let cleanupFunctions = [];
 let autoPlayInterval = null;
-const AUTO_PLAY_DELAY = 5000; // 5 seconds per slide
+const AUTO_PLAY_DELAY = 5000; 
 
-/**
- * Build carousel slides dynamically from projects.js
- * (one category = one portal slide, same order as the portal)
- */
+
 function buildCarouselSlides() {
     const track = document.querySelector('.carousel_track');
     if (!track) return;
@@ -29,23 +27,23 @@ function buildCarouselSlides() {
 
         const slide = document.createElement('div');
         slide.className = 'carousel_slide';
-        // data-index = position in the carousel; data-project = index in projects[]
+        
         slide.setAttribute('data-index', slideIndex);
         slide.setAttribute('data-project', projectIdx);
 
         const img = document.createElement('img');
         img.src = getProjectCover(projectIdx) || '';
         img.alt = getProjectTitle(projectIdx, lang) || '';
-        // The first slide sits inside the initial viewport (hero) and is the
-        // closest thing to an LCP image on this page - load it eagerly.
-        // Every other slide is a candidate for lazy loading.
+        
+        
+        
         img.loading = slideIndex === 0 ? 'eager' : 'lazy';
-        // Priority hint for the LCP image; ignored harmlessly where unsupported.
+        
         if (slideIndex === 0) img.fetchPriority = 'high';
         img.decoding = 'async';
-        // Optional: show the cover completely (coverFit: 'contain'), no crop
+        
         if (project.coverFit === 'contain') img.classList.add('fit-contain');
-        // Fallback for a missing cover
+        
         applyImageFallback(img, project.category);
         slide.appendChild(img);
 
@@ -63,9 +61,7 @@ function buildCarouselSlides() {
     });
 }
 
-/**
- * Update titles/subtitles of the hero slides (on language change)
- */
+
 function renderCarouselLabels() {
     const lang = getCurrentLang();
     document.querySelectorAll('.carousel_track .carousel_slide').forEach((slide) => {
@@ -79,21 +75,19 @@ function renderCarouselLabels() {
     });
 }
 
-/**
- * Initialize the hero carousel
- */
+
 export function initCarousel() {
-    // Build slides dynamically from projects.js
+    
     buildCarouselSlides();
 
     const indicators = document.querySelectorAll('.indicator');
     const slides = document.querySelectorAll('.carousel_slide');
 
-    // Update labels on language change
+    
     const onLangChanged = renderCarouselLabels;
     document.addEventListener('languageChanged', onLangChanged);
 
-    // Touch swipe: left goes to the next card, right to the previous one
+    
     const track = document.querySelector('.carousel_track');
     if (track) {
         const cleanupSwipe = bindHorizontalSwipe(
@@ -104,7 +98,7 @@ export function initCarousel() {
         cleanupFunctions.push(cleanupSwipe);
     }
     
-    // Apply ARIA labels to indicators
+    
     indicators.forEach((indicator, i) => {
         indicator.setAttribute('aria-label', `Go to project ${i + 1}`);
         
@@ -120,7 +114,7 @@ export function initCarousel() {
         cleanupFunctions.push(() => indicator.removeEventListener('click', onClick));
     });
 
-    // Make carousel slides clickable -> navigate to #work section
+    
     slides.forEach((slide, i) => {
         slide.setAttribute('role', 'button');
         slide.setAttribute('tabindex', '0');
@@ -137,12 +131,12 @@ export function initCarousel() {
         cleanupFunctions.push(() => slide.removeEventListener('click', onSlideClick));
     });
 
-    // Start auto-play
+    
     startAutoPlay();
 
-    // Pause auto-play whenever the hero section leaves the viewport.
-    // The slide transform itself is cheap, but skipping a timer-driven
-    // animation for an off-screen carousel is a free win on mobile.
+    
+    
+    
     const heroSection = document.querySelector('.hero_section');
     if (heroSection && 'IntersectionObserver' in window) {
         const heroObserver = new IntersectionObserver((entries) => {
@@ -153,7 +147,7 @@ export function initCarousel() {
         cleanupFunctions.push(() => heroObserver.disconnect());
     }
 
-    // Register cleanup
+    
     cleanupRegistry.register(() => {
         cleanupFunctions.forEach(fn => { try { fn(); } catch(e) {} });
         cleanupFunctions = [];
@@ -162,18 +156,14 @@ export function initCarousel() {
     });
 }
 
-/**
- * Navigate to the #work section and show the clicked project in the portal carousel
- * @param {number} projectIndex - The project index (in projects[]) to show
- */
+
 function navigateToWorkSection(projectIndex) {
     const workSection = document.querySelector('#work');
     if (!workSection) return;
 
-    // Smooth scroll to the work section
     workSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-    // Dynamically import the portal module and navigate to the selected project
+    
     if (window.goToPortalSlide) {
         window.goToPortalSlide(projectIndex);
     }
@@ -220,14 +210,14 @@ function goToSlide(index) {
         }
     });
     
-    // Highlight matching skills in hero arsenal based on the slide's project
+    
     const projectIdx = slides[index] ? parseInt(slides[index].dataset.project) : index;
     highlightHeroSkills(projectIdx);
 }
 
 export function highlightHeroSkills(projectIndex) {
-    // Highlights the arsenal skills used by the currently shown project.
-    // Compares skill registry ids (skills.js) with the items' data-skill.
+    
+    
     const projectSkillIds = getProjectSkillIds(projectIndex);
 
     const skillItems = document.querySelectorAll('.arsenal_grid .skill_item');
@@ -240,17 +230,13 @@ export function highlightHeroSkills(projectIndex) {
 }
 window.highlightHeroSkills = highlightHeroSkills;
 
-/**
- * Go to next slide
- */
+
 export function nextSlide() {
     const totalSlides = document.querySelectorAll('.carousel_slide').length;
     goToSlide((currentProjectIndex + 1) % totalSlides);
 }
 
-/**
- * Go to previous slide
- */
+
 export function prevSlide() {
     const totalSlides = document.querySelectorAll('.carousel_slide').length;
     goToSlide((currentProjectIndex - 1 + totalSlides) % totalSlides);

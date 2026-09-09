@@ -1,17 +1,18 @@
-/**
- * File: carousel_dots.js
- * Description: Generates and manages the dot indicators for the hero and portal carousels.
- */
+/* ==========================================================================
+   FILE: js/modules/carousel_dots.js
+   DESCRIPTION: Generates and manages the dot indicators for the hero and portal carousels.
+   ========================================================================== */
+
 import { getOrderedProjectIndices } from '../constants/projects.js?v=11';
 
 export function generateCarouselDots() {
-    // Count = one card per category (same order as portal/hero)
+    
     const projectCount = getOrderedProjectIndices().length;
 
-    // Generate Hero Carousel Indicators
+    
     generateHeroIndicators(projectCount);
 
-    // Generate Portal Carousel Dots
+    
     generatePortalDots(projectCount);
 }
 
@@ -20,10 +21,8 @@ function generateHeroIndicators(count) {
     
     if (!indicatorsContainer) return;
 
-    // Clear existing indicators
     indicatorsContainer.innerHTML = '';
 
-    // Generate new indicators with ARIA labels
     for (let i = 0; i < count; i++) {
         const button = document.createElement('button');
         button.className = 'indicator';
@@ -40,10 +39,8 @@ function generatePortalDots(count) {
     
     if (!dotsContainer) return;
 
-    // Clear existing dots
     dotsContainer.innerHTML = '';
 
-    // Generate new dots with ARIA labels
     for (let i = 0; i < count; i++) {
         const button = document.createElement('button');
         button.className = 'c-dot';

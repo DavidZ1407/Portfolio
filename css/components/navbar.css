@@ -1,7 +1,7 @@
-/* ==========================================
- * File: navbar.css
- * Description: Navbar header, sidebar social links, language toggle, and mobile menu styling.
- * ========================================== */
+/* ==========================================================================
+   FILE: css/components/navbar.css
+   DESCRIPTION: Header bar, sidebar social links, language toggle, and navigation styling.
+   ========================================================================== */
 
 .sidebar_socials {
     position: fixed;
@@ -49,7 +49,7 @@
     50% { transform: translateY(-4px); }
 }
 
-/* Reduce floating animation intensity at very large viewports for better performance */
+
 @media (min-width: 2560px) {
     .sidebar_socials a {
         animation-duration: 12s !important;
@@ -73,12 +73,12 @@
     z-index: 2;
 }
 
-/* Connection lines removed */
+
 .sidebar_socials a::after {
     display: none;
 }
 
-/* Only the hovered link glows blue */
+
 .sidebar_socials a:hover i {
     color: var(--cyan-glow);
     text-shadow: 
@@ -118,20 +118,17 @@
     box-sizing: border-box;
 }
 
-/* While a project modal is open, the main navbar stays above the
-   modal overlay (z-index 1000) and the modal container (z-index 1001) so
-   nav links, logo, and the DE/EN toggle stay visible and clickable. */
+
 body.modal-open .header {
     z-index: 1100;
 }
 
-/* Same for the right sidebar (Email/GitHub/LinkedIn/Phone) -
-   it should also stay visible and clickable while a modal is open. */
+
 body.modal-open .sidebar_socials {
     z-index: 1100;
 }
 
-/* Reduce backdrop-filter from HD+ (1600px) for Firefox performance */
+
 @media (min-width: 1600px) {
     .header {
         backdrop-filter: blur(6px);
@@ -180,10 +177,9 @@ body.modal-open .sidebar_socials {
     padding-top: 0;
 }
 
-/* Phone icon in the navigation: the element no longer exists
-   (no HTML node, no JS reference) -> its rules were removed. */
 
-/* Language Toggle Button */
+
+
 .lang-toggle-btn {
     margin-left: 20px;
     padding: 4px 12px;
@@ -196,6 +192,36 @@ body.modal-open .sidebar_socials {
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+
+.lang-toggle-btn i {
+    font-size: 1.2em;
+    display: inline-flex;
+    line-height: 1;
+}
+
+
+.lang-opt {
+    opacity: 0.5;
+    font-weight: 400;
+    transition: opacity 0.3s ease;
+}
+
+.lang-opt.active {
+    opacity: 1;
+    font-weight: 700;
+    color: var(--gold-accent);
+    text-shadow: 0 0 8px rgba(201, 168, 97, 0.55);
+}
+
+.lang-sep {
+    opacity: 0.4;
 }
 
 .lang-toggle-btn:hover {
@@ -295,14 +321,14 @@ body.modal-open .sidebar_socials {
         box-shadow: none;
     }
     
-    /* Wait for drop to fall */
+    
     50% {
         opacity: 0;
         width: 0;
         height: 0;
     }
     
-    /* First splash - slow start */
+    
     54% {
         opacity: 0.85;
         width: 16px;
@@ -315,7 +341,7 @@ body.modal-open .sidebar_socials {
             4px -3px 1px 0 rgba(201, 168, 97, 0.35);
     }
     
-    /* Splash expands - smooth transition */
+    
     62% {
         opacity: 0.6;
         width: 26px;
@@ -328,7 +354,7 @@ body.modal-open .sidebar_socials {
             6.5px -2.5px 1px 0 rgba(201, 168, 97, 0.2);
     }
     
-    /* Splash fades slowly */
+    
     72% {
         opacity: 0.2;
         width: 32px;
@@ -359,7 +385,7 @@ body.modal-open .sidebar_socials {
         box-shadow: none;
     }
     
-    /* Ripple ring expands */
+    
     8% {
         width: 15px;
         height: 15px;
@@ -380,7 +406,7 @@ body.modal-open .sidebar_socials {
         box-shadow: none;
     }
     
-    /* Ripple fades, splash starts forming */
+    
     40% {
         width: 50px;
         height: 50px;
@@ -391,7 +417,7 @@ body.modal-open .sidebar_socials {
         box-shadow: none;
     }
     
-    /* Splash forms - cyan color */
+    
     50% {
         width: 0;
         height: 2.5px;
@@ -407,7 +433,7 @@ body.modal-open .sidebar_socials {
         background: radial-gradient(ellipse at center, rgba(73, 146, 154, 0.65) 0%, rgba(73, 146, 154, 0.15) 70%, transparent 100%);
     }
     
-    /* Splash expands */
+    
     62% {
         width: 26px;
         height: 1.8px;
@@ -422,7 +448,7 @@ body.modal-open .sidebar_socials {
         background: radial-gradient(ellipse at center, rgba(73, 146, 154, 0.3) 0%, rgba(73, 146, 154, 0.05) 70%, transparent 100%);
     }
     
-    /* Splash fades */
+    
     72% {
         width: 32px;
         height: 1px;
@@ -455,14 +481,14 @@ body.modal-open .sidebar_socials {
         box-shadow: none;
     }
     
-    /* Wait for drop to fall */
+    
     50% {
         opacity: 0;
         width: 0;
         height: 0;
     }
     
-    /* First splash - slow start */
+    
     54% {
         opacity: 0.85;
         width: 16px;
@@ -475,7 +501,7 @@ body.modal-open .sidebar_socials {
             4px -3px 1px 0 rgba(73, 146, 154, 0.35);
     }
     
-    /* Splash expands - smooth transition */
+    
     62% {
         opacity: 0.6;
         width: 26px;
@@ -488,7 +514,7 @@ body.modal-open .sidebar_socials {
             6.5px -2.5px 1px 0 rgba(73, 146, 154, 0.2);
     }
     
-    /* Splash fades slowly */
+    
     72% {
         opacity: 0.2;
         width: 32px;

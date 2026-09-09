@@ -1,7 +1,8 @@
-/* ==========================================
- * File: parallax.css
- * Description: Fixed parallax background layers (sky, underwater, particles, fish, light rays) and transition overlays.
- * ========================================== */
+/* ==========================================================================
+   FILE: css/components/parallax.css
+   DESCRIPTION: Fixed parallax background layers (sky, underwater, particles, fish, light rays) and transition overlays.
+   ========================================================================== */
+
 .parallax-container {
     position: fixed;
     top: 0;
@@ -11,30 +12,29 @@
     pointer-events: none;
     z-index: 0;
     overflow: hidden;
-    /* Isolation: parallax rendering fully separated from particles */
+    
     contain: strict;
     isolation: isolate;
 }
 
-/* Ensure body and html have proper stacking */
+
 html, body {
     position: relative;
 }
 
-/* Ensure sections and the main hero are above parallax */
+
 header, main, section {
     position: relative;
     z-index: 5;
 }
 
-/* Parallax Layers */
 .parallax-layer {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    /* No will-change - it causes compositing overhead and jitter on particles */
+    
 }
 
 .parallax-bg {
@@ -49,7 +49,7 @@ header, main, section {
     z-index: 2;
 }
 
-/* SKY/CLIFF LAYER (Hero - Above Water) */
+
 .sky-layer {
     background: linear-gradient(
         to bottom,
@@ -60,7 +60,7 @@ header, main, section {
     );
 }
 
-/* Cliff Silhouette - Placeholder */
+
 .cliff-silhouette {
     position: absolute;
     bottom: 0;
@@ -84,12 +84,12 @@ header, main, section {
     );
 }
 
-/* Castle silhouette - hidden, it would distract from the background */
+
 .castle-silhouette {
     display: none;
 }
 
-/* UNDERWATER LAYER (Transition) */
+
 .underwater-layer {
     background: linear-gradient(
         to bottom,
@@ -106,7 +106,7 @@ header, main, section {
     opacity: 1;
 }
 
-/* Water Surface Line */
+
 .water-surface {
     position: absolute;
     top: 0;
@@ -133,7 +133,7 @@ header, main, section {
     50% { transform: scaleY(1.5); }
 }
 
-/* CASTLE LAYER (Mid-ground) */
+
 .castle-layer {
     opacity: 0;
     transition: opacity 0.8s ease;
@@ -143,7 +143,7 @@ header, main, section {
     opacity: 1;
 }
 
-/* Castle walls - hidden, they would create unwanted surfaces */
+
 .castle-wall-left,
 .castle-wall-right,
 .pillar,
@@ -151,19 +151,18 @@ header, main, section {
     display: none;
 }
 
-/* FOREGROUND PARTICLES LAYER */
+
 .particles-layer {
     z-index: 3;
     pointer-events: none;
 }
 
-/* Individual Particle */
 .particle {
     position: absolute;
     border-radius: 50%;
     background: var(--cyan-glow);
     opacity: 0;
-    /* No CSS animation - fully driven by JS */
+    
 }
 
 .particle:nth-child(odd) {
@@ -192,13 +191,12 @@ header, main, section {
     }
 }
 
-/* Bubbles */
 .bubble {
     position: absolute;
     border-radius: 50%;
     border: 1px solid rgba(73, 146, 154, 0.3);
     background: rgba(73, 146, 154, 0.05);
-    /* No CSS animation - fully driven by JS */
+    
 }
 
 @keyframes bubble-rise {
@@ -218,7 +216,6 @@ header, main, section {
     }
 }
 
-/* Fish Silhouettes */
 .fish {
     position: absolute;
     width: 30px;
@@ -233,7 +230,7 @@ header, main, section {
         20% 80%
     );
     opacity: 0.3;
-    /* No CSS animation - fully driven by JS */
+    
 }
 
 @keyframes fish-swim {
@@ -254,7 +251,6 @@ header, main, section {
     }
 }
 
-/* Light Rays */
 .light-ray {
     position: absolute;
     top: -10%;
@@ -275,7 +271,6 @@ header, main, section {
     50% { opacity: 0.3; }
 }
 
-/* TRANSITION ZONES */
 .transition-overlay {
     position: fixed;
     top: 0;

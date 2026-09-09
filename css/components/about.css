@@ -1,7 +1,7 @@
-/* ==========================================
- * File: about.css
- * Description: Styles for the About Me section including profile box, content text, skills grid, and CV download.
- * ========================================== */
+/* ==========================================================================
+   FILE: css/components/about.css
+   DESCRIPTION: About section styles: profile box, content text, skills grid, and CV download button.
+   ========================================================================== */
 
 .expedition_container {
     display: grid;
@@ -62,7 +62,7 @@
     line-height: 1.8;
     letter-spacing: 0.5px;
     text-transform: none;
-    max-width: 65ch; /* Limit line length for readability */
+    max-width: 65ch; 
     margin-bottom: 1rem;
 }
 
@@ -197,7 +197,7 @@
     text-shadow: 0 0 8px rgba(73, 146, 154, 0.2);
 }
 
-/* Staggered floating animations for About section elements */
+
 .about_profile_box { animation: about-float 8s ease-in-out infinite; }
 .about_content_box { animation: about-float 9s ease-in-out infinite; animation-delay: 0.5s; }
 .skills_title { animation: about-float 7s ease-in-out infinite; animation-delay: 0.3s; }
@@ -216,7 +216,7 @@
     50% { transform: translateY(-5px); }
 }
 
-/* Reduce floating animation intensity at very large viewports for better performance */
+
 @media (min-width: 2560px) {
     .about_profile_box,
     .about_content_box,

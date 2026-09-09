@@ -1,15 +1,13 @@
-/**
- * File: skill_link.js
- * Description: Links hero skill items to related project slides, applying highlight/dim effects on hover.
- */
+/* ==========================================================================
+   FILE: js/modules/skill_link.js
+   DESCRIPTION: Links hero skill items to related project slides, applying highlight/dim effects on hover.
+   ========================================================================== */
+
 import { getProjectSkillIds } from '../constants/projects.js?v=11';
 
 let activeSkillId = null;
 
-/**
- * Apply highlight/dim to all project cards
- * @param {string} skillId - Skill id from the registry (data-skill in the arsenal)
- */
+
 function applySkillHighlight(skillId) {
     activeSkillId = skillId;
 
@@ -25,15 +23,13 @@ function applySkillHighlight(skillId) {
         card.classList.toggle('skill-dim', !isMatch);
     });
 
-    // If NO visible project uses this skill (e.g. a skill that only
-    // appears in non-displayed projects), nothing gets dimmed -
-    // all cards stay in their normal state instead of going completely dark.
+    
+    
+    
     if (!anyMatch) clearSkillHighlight();
 }
 
-/**
- * Remove all highlight/dim classes (restore the normal state)
- */
+
 export function clearSkillHighlight() {
     activeSkillId = null;
     document.querySelectorAll('.skill-highlight, .skill-dim').forEach(card => {
@@ -41,10 +37,7 @@ export function clearSkillHighlight() {
     });
 }
 
-/**
- * Initializes the skill hover in the hero arsenal (event delegation).
- * Call once - also works after the skill items are re-rendered.
- */
+
 export function initSkillProjectLink() {
     const arsenalGrid = document.querySelector('.arsenal_grid');
     if (!arsenalGrid) return;

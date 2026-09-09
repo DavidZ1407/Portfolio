@@ -1,26 +1,8 @@
-/* ==========================================
- * File: responsive.css
- * Description: Unified responsive system - font sizing, section padding, and component breakpoints (mobile to 4K).
- * ========================================== */
+/* ==========================================================================
+   FILE: css/responsive.css
+   DESCRIPTION: Unified responsive system: font sizing, section padding, and component breakpoints from mobile to 4K.
+   ========================================================================== */
 
-/* ========================================= */
-/* BREAKPOINTS:
- *   4K:        > 3840px
- *   Ultra:     3440px - 3840px   (Firefox performance mode)
- *   X-Large:   2560px - 3840px
- *   Large:     1980px - 2560px   (additional fine-tuning from 2056px)
- *   HD+:       1600px            (Firefox performance / font scale)
- *   Desktop:   1400px - 1980px
- *   Laptop:    1200px - 1400px
- *   Tablet:    768px - 1200px    (portal fine-tuning at 1000px)
- *   Mini:      1024px            (compact header / navigation / hero)
- *   Mobile:    < 768px
- *   Portal-Small: < 550px        (only the center card is visible)
- *   Small:     < 480px
- *   Tiny:      < 425px           (overrides 480px)
- * ========================================= */
-
-/* BASE SIZING - uses rem for smooth scaling */
 html {
     font-size: 16px;
 }
@@ -65,8 +47,8 @@ html {
     html { font-size: 28px; }
 }
 
-/* SECTION PADDING */
-/* Base values come from the :root variables in main.css - only per-breakpoint overrides here */
+
+
 section {
     padding: var(--section-pad-y) var(--section-pad-x);
     transition: padding var(--transition-fast);
@@ -104,7 +86,7 @@ section {
     section { padding: 60px 4%; }
 }
 
-/* SECTION TITLES */
+
 .section_title {
     font-size: 2.5rem;
     transition: font-size 0.3s ease;
@@ -155,7 +137,7 @@ section {
     .section_subtitle { font-size: 0.75rem; margin-bottom: 40px; }
 }
 
-/* HEADER / NAVBAR */
+
 .header {
     padding: 30px 10%;
     transition: padding 0.3s ease;
@@ -225,7 +207,7 @@ section {
     }
 }
 
-/* Reduce backdrop-filter earlier (from HD+) for Firefox performance */
+
 @media (min-width: 1600px) {
     .header {
         backdrop-filter: blur(6px) !important;
@@ -258,10 +240,11 @@ section {
         padding: 2px 4px;
         font-size: 0.45rem;
         letter-spacing: 0.3px;
+        gap: 3px;
     }
 }
 
-/* NAV LINKS */
+
 .navbar {
     gap: 40px;
     transition: gap 0.3s ease;
@@ -316,7 +299,7 @@ section {
     .navbar { gap: 8px; }
 }
 
-/* SIDEBAR SOCIALS */
+
 .sidebar_socials {
     transition: padding 0.3s ease, gap 0.3s ease, background 0.3s ease;
 }
@@ -353,7 +336,7 @@ section {
     }
 }
 
-/* HERO SECTION */
+
 .hero_section {
     transition: padding 0.3s ease;
 }
@@ -377,7 +360,7 @@ section {
     }
 }
 
-/* HOVER FIXES */
+
 @media (max-width: 768px) {
     .skill_item:hover {
         transform: translateY(-2px);
@@ -403,7 +386,7 @@ section {
     }
 }
 
-/* HERO TYPOGRAPHY - Base */
+
 .hero_content h1 {
     font-size: 3.2rem;
     transition: font-size 0.3s ease;
@@ -422,7 +405,7 @@ section {
     max-width: 520px;
 }
 
-/* HERO TYPOGRAPHY - Large screens (1980px+) */
+
 @media (min-width: 1980px) {
     .hero_content h1 { font-size: 3.5rem; }
     .hero_content { max-width: 500px; }
@@ -442,7 +425,7 @@ section {
         max-width: 400px;
         background: transparent;
     }
-    /* Disable floating animation at large screens - causes jitter */
+    
     .hero_content h1,
     .hero_content h2,
     .hero_description,
@@ -530,13 +513,8 @@ section {
     .carousel_indicators { gap: 24px; }
 }
 
-/* ========================================= */
-/* HERO CAROUSEL INDICATORS - very large screens (2056px+)
-   No CSS/JS code hides the dots - but the absolutely positioned hero
-   overlays (hero_scene/hero_overlay + bottom fade) sit ABOVE the
-   unpositioned dots container. To keep the dots reliably visible on
-   2560-4K screens, they are raised above the overlays (positioning only,
-   no change to the size/layout/spacing of the carousel). */
+
+
 @media (min-width: 2056px) {
     .carousel_indicators {
         position: relative;
@@ -565,7 +543,7 @@ section {
     }
 }
 
-/* 1024px BREAKPOINT */
+
 @media (max-width: 1024px) {
     .hero_section {
         padding-left: 5%;
@@ -628,7 +606,7 @@ section {
         max-width: 100%;
         box-sizing: border-box;
     }
-    /* portal arrows at 1024px */
+    
     .carousel-arrow { width: 42px; height: 42px; font-size: 2.2rem; }
     .carousel-prev { left: 15px; }
     .carousel-next { right: 15px; }
@@ -641,7 +619,7 @@ section {
     }
 }
 
-/* HERO - Tablet 768px */
+
 @media (max-width: 768px) {
     .hero_section {
         display: block !important;
@@ -747,43 +725,28 @@ section {
     .hero_content h2 { order: 7; }
     .hero_content .hero_description { order: 8; }
     .hero_content .descend_btn { order: 9; }
-    /* Chrome-specific: ensure correct order I AM -> DAVID ZAHN -> studying */
+    
     .hero_i_am {
         font-size: 0.75rem !important;
         text-align: center !important;
         margin-bottom: 4px !important;
         letter-spacing: 0.3px !important;
-        display: block !important;
-        width: 100% !important;
-        clear: both !important;
-        position: relative !important;
-        float: none !important;
     }
     .water-text-container {
         max-width: 100% !important;
         justify-content: center !important;
         display: flex !important;
-        width: 100% !important;
         margin-bottom: 4px !important;
-        clear: both !important;
-        position: relative !important;
-        float: none !important;
     }
     .water-text-canvas {
         max-width: 100% !important;
         display: block !important;
-        clear: both !important;
     }
     .hero_studying {
         font-size: 0.65rem !important;
         text-align: center !important;
         margin-bottom: 8px !important;
         letter-spacing: 0.2px !important;
-        display: block !important;
-        width: 100% !important;
-        clear: both !important;
-        position: relative !important;
-        float: none !important;
     }
     .hero_description {
         font-size: 0.7rem !important;
@@ -818,7 +781,7 @@ section {
         width: 12px !important;
         height: 12px !important;
     }
-    /* Portal - remaining fixes at 768px */
+    
     .carousel-arrow { width: 36px; height: 36px; font-size: 1.6rem; }
     .carousel-prev { left: 8px !important; }
     .carousel-next { right: 8px !important; }
@@ -835,13 +798,13 @@ section {
     .carousel-controls { bottom: -55px; gap: 12px; }
     .c-dot { width: 8px; height: 8px; }
     .c-dot.active { width: 14px; height: 14px; }
-    /* disable 3D tilt on mobile/tablet to prevent jitter */
+    
     .portal-slide .tilt-inner { transform: none !important; }
     .portal-slide .tilt-shine { display: none !important; }
     .portal-slide.tilt-lift { transform: none !important; }
 }
 
-/* HERO - Small Mobile (425px / 480px) */
+
 @media (max-width: 480px) {
     html, body {
         overflow-x: hidden !important;
@@ -887,43 +850,28 @@ section {
         margin-bottom: 6px !important;
     }
 
-    /* Chrome-specific: ensure correct order I AM -> DAVID ZAHN -> studying */
+    
     .hero_i_am {
         font-size: 0.75rem !important;
         margin-bottom: 2px !important;
-        display: block !important;
-        width: 100% !important;
         text-align: center !important;
-        clear: both !important;
-        position: relative !important;
-        float: none !important;
     }
 
     .hero_studying {
         font-size: 0.65rem !important;
         margin-bottom: 4px !important;
-        display: block !important;
-        width: 100% !important;
         text-align: center !important;
-        clear: both !important;
-        position: relative !important;
-        float: none !important;
     }
 
     .water-text-container {
         max-width: 100% !important;
         justify-content: center !important;
         display: flex !important;
-        width: 100% !important;
         margin-bottom: 4px !important;
-        clear: both !important;
-        position: relative !important;
-        float: none !important;
     }
     .water-text-canvas {
         max-width: 100% !important;
         display: block !important;
-        clear: both !important;
     }
 
     .hero_description {
@@ -1003,7 +951,7 @@ section {
     }
 }
 
-/* ARSENAL SKILLS GRID */
+
 .arsenal_grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1033,7 +981,7 @@ section {
     }
 }
 
-/* ABOUT - EXPEDITION */
+
 .expedition_container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1064,21 +1012,21 @@ section {
     }
 }
 
-/* ABOUT - TEXT & ELEMENT CENTERING (Tablet) */
-/* ========================================= */
+
+
 @media (max-width: 768px) {
-    /* Center the profile box + content box within the single-column grid */
+    
     #about .expedition_container {
         justify-items: center;
     }
-    /* Center every flex child: paragraphs, headings, skills grid, CV button */
+    
     .about_content_box {
         align-items: center;
         text-align: center;
     }
 }
 
-/* SKILLS GRID (About) */
+
 .skills_grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1108,7 +1056,7 @@ section {
     }
 }
 
-/* PORTAL CAROUSEL */
+
 .portal-carousel {
     transition: height 0.3s ease;
     will-change: transform;
@@ -1194,13 +1142,12 @@ section {
     .carousel-controls { bottom: -55px; gap: 12px; }
     .c-dot { width: 8px; height: 8px; }
     .c-dot.active { width: 14px; height: 14px; }
-    /* disable 3D tilt on mobile/tablet to prevent jitter */
+    
     .portal-slide .tilt-inner { transform: none !important; }
     .portal-slide .tilt-shine { display: none !important; }
     .portal-slide.tilt-lift { transform: none !important; }
 
-    /* Compact card: the portal-visual box (2% top / 75% height) already
-       leaves room for the text zone - the image fills it fully. */
+    
     .slide-overlay,
     .portal-slide.pos-center .slide-overlay {
         min-height: 31%;
@@ -1249,7 +1196,7 @@ section {
     .light-ray { display: none; }
 }
 
-/* CAROUSEL (Hero) */
+
 .carousel_container {
     transition: border 0.3s ease;
 }
@@ -1267,7 +1214,7 @@ section {
     .carousel_indicators { gap: 8px; }
 }
 
-/* JOURNEY / TIMELINE */
+
 .water_timeline {
     transition: gap 0.3s ease;
 }
@@ -1291,7 +1238,7 @@ section {
         width: 100%;
         box-sizing: border-box;
     }
-            /* Center timeline content within the centered timeline column */
+            
     .timeline_content {
         margin-left: 0;
         margin-right: 0;
@@ -1318,7 +1265,7 @@ section {
     }
 }
 
-/* CONTACT SECTION */
+
 .contact_section {
     transition: padding 0.3s ease;
 }
@@ -1341,7 +1288,7 @@ section {
         overflow-x: hidden;
     }
 }
-/* FOOTER */
+
 .site_footer {
     padding: 60px 10%;
     transition: padding 0.3s ease;
@@ -1359,7 +1306,7 @@ section {
     .site_footer { padding: 30px 4%; }
 }
 
-/* DEPTH EXPERIENCE LAYERS */
+
 .depth-fog-overlay,
 .depth-vignette {
     transition: opacity 0.5s ease;
@@ -1405,7 +1352,7 @@ section {
     .modal_next_btn { right: -20px; }
 }
 
-/* PARALLAX */
+
 @media (max-width: 768px) {
     .parallax-container { opacity: 0.3; }
     .underwater-layer, .water-surface { opacity: 0.5; }
@@ -1419,9 +1366,9 @@ section {
     .parallax-container { opacity: 1; }
 }
 
-/* MOBILE 425px - OVERRIDES 480px */
+
 @media (max-width: 425px) {
-    /* ===== Header / navigation compact ===== */
+    
     .header {
         padding: 6px 2%;
         gap: 2px;
@@ -1461,9 +1408,10 @@ section {
         padding: 1px 4px;
         font-size: 0.4rem;
         letter-spacing: 0.1px;
+        gap: 2px;
     }
 
-    /* ===== Hero typography ===== */
+    
     .hero_section {
         padding: 80px 2% 20px !important;
     }
@@ -1480,41 +1428,26 @@ section {
         font-size: 0.55rem !important;
         text-align: center !important;
     }
-    /* Chrome-specific: ensure correct order I AM -> DAVID ZAHN -> studying */
+    
     .hero_i_am {
         font-size: 0.65rem !important;
         text-align: center !important;
-        display: block !important;
-        width: 100% !important;
         margin-bottom: 2px !important;
-        clear: both !important;
-        position: relative !important;
-        float: none !important;
     }
     .hero_studying {
         font-size: 0.55rem !important;
         text-align: center !important;
-        display: block !important;
-        width: 100% !important;
         margin-bottom: 4px !important;
-        clear: both !important;
-        position: relative !important;
-        float: none !important;
     }
     .water-text-container {
         max-width: 100% !important;
         justify-content: center !important;
         display: flex !important;
-        width: 100% !important;
         margin-bottom: 2px !important;
-        clear: both !important;
-        position: relative !important;
-        float: none !important;
     }
     .water-text-canvas {
         max-width: 100% !important;
         display: block !important;
-        clear: both !important;
     }
     .hero_description {
         font-size: 0.6rem !important;
@@ -1534,7 +1467,7 @@ section {
         text-align: center !important;
     }
 
-    /* ===== Sidebar stays on the right, but more compact ===== */
+    
     .sidebar_socials {
         padding: 6px 4px !important;
         gap: 12px !important;
@@ -1549,7 +1482,7 @@ section {
         letter-spacing: 0.5px !important;
     }
 
-    /* ===== Reduce section spacing ===== */
+    
     section {
         padding: 50px 3% !important;
     }
@@ -1562,13 +1495,13 @@ section {
         margin-bottom: 25px !important;
     }
 
-    /* ===== Hero Showcase ===== */
+    
     .hero_showcase_container {
         padding-top: 10px !important;
         gap: 8px !important;
     }
 
-    /* Hero carousel mini mode: image stays dominant, info row very compact */
+    
     .carousel_slide img {
         padding: 4px 4px 0 !important;
     }
@@ -1621,12 +1554,12 @@ section {
     }
 }
 
-/* ========================================= */
-/* LARGE VIEWPORT PERFORMANCE MODE (2560px+) */
-/* Reduce expensive rendering for Firefox   */
-/* ========================================= */
+
+
+
+
 @media (min-width: 2560px) {
-    /* Reduce text-shadow intensity on hover to save compositing */
+    
     .skill_item:hover i,
     .contact_icon_link:hover i,
     .back_to_top:hover i,
@@ -1641,7 +1574,7 @@ section {
         text-shadow: 0 0 10px rgba(73, 146, 154, 0.3) !important;
     }
     
-    /* Simplify box-shadow on hover states */
+    
     .about_profile_box:hover,
     .skill_item_box:hover {
         box-shadow: 
@@ -1649,17 +1582,17 @@ section {
             0 0 40px rgba(73, 146, 154, 0.08) !important;
     }
     
-    /* Reduce light ray blur */
+    
     .light-ray {
         filter: blur(2px) !important;
     }
     
-    /* Reduce caustics animation complexity */
+    
     .underwater-caustics {
         animation-duration: 20s !important;
     }
     
-    /* Simplify section transitions */
+    
     section:not(#home) {
         box-shadow: 
             inset 0 60px 40px -30px var(--abyss-deep),
@@ -1675,62 +1608,45 @@ section {
     }
 }
 
-/* Even more aggressive optimizations for ultra-wide screens (3440px+) */
+
 @media (min-width: 3440px) {
-    /* Further reduce backdrop blur */
+    
     .header {
         backdrop-filter: blur(4px) !important;
         -webkit-backdrop-filter: blur(4px) !important;
         background: rgba(3, 8, 9, 0.98) !important;
     }
     
-    /* Disable expensive hover filters on large elements */
+    
     .skill_item_box:hover,
     .about_profile_box:hover {
         filter: none !important;
         -webkit-filter: none !important;
     }
     
-    /* Simplify light rays further */
+    
     .light-ray {
         filter: none !important;
         opacity: 0.3 !important;
     }
     
-    /* Reduce particle canvas complexity (unified back + front) */
+    
     .unified-particles-canvas-back,
     .unified-particles-canvas-front {
         opacity: 0.7;
     }
 }
-/* ========================================= */
-/* ONE-TAP RESPONSIVENESS (touch devices)    */
-/* ========================================= */
-/* Fix for the "buttons need two taps on mobile" issue:
 
-   1) touch-action: manipulation tells touch browsers to dispatch the click
-      on the FIRST tap. It only opts the element out of the double-tap-zoom
-      gesture - pinch zoom stays fully available. Without it, the first tap
-      is held back by the browser's double-tap-zoom disambiguation (only the
-      sticky :hover state appears) and the action runs on the second tap.
-      Set on <html> so every element (also JS-created ones) is covered;
-      it has no effect for mouse users on desktop.
 
-   2) The decorative :hover water-distortion SVG filters (feTurbulence +
-      feDisplacementMap rasterized right at tap time) are now desktop-only:
-      on devices without a hover-capable pointer they are replaced with
-      filter: none. Cheap hover feedback (color, glow, text-shadow, border,
-      transform) is untouched, the non-hover design/animations are untouched,
-      and the WebGL/water effects outside :hover are untouched. */
+
+
 
 html {
     touch-action: manipulation;
 }
 
 @media (hover: none), (pointer: coarse) {
-    /* All interactive elements: immediate click on the first tap + no
-       browser default grey tap flash (the site's own glow/hover feedback
-       shows instead). */
+    
     .header a,
     .header button,
     .navbar .nav_link,
@@ -1768,10 +1684,7 @@ html {
         -webkit-tap-highlight-color: transparent;
     }
 
-    /* Expensive :hover water filters become desktop-only (see comment above).
-       Same selectors as the component :hover rules - this file loads last,
-       so these win on touch devices. All other :hover properties remain as
-       visual tap feedback. */
+    
     .sidebar_socials a:hover,
     .logo:hover,
     .lang-toggle-btn:hover,
@@ -1794,13 +1707,13 @@ html {
     }
 }
 
-/* Education timeline: centered column beneath the centered title (mobile) */
+
 @media (max-width: 768px) {
     .journey_section {
         overflow-x: hidden;
     }
 
-    /* Centered column - margin:auto sits it inside the section's symmetric padding */
+    
     .water_timeline {
         max-width: 100%;
         margin: 0 auto;
@@ -1815,8 +1728,8 @@ html {
         justify-content: center;
     }
 
-    /* Compact content cards (text width), centered like on desktop */
-    /* Cap width so long single-line titles wrap and the card stays centered */
+    
+    
     .timeline_content {
         margin: 0;
         width: auto;

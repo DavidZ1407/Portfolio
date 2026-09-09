@@ -1,14 +1,15 @@
-/**
- * File: fish_swarm.js
- * Description: Canvas fish swarm simulation that reacts to scroll direction and the active section.
- */
+/* ==========================================================================
+   FILE: js/modules/fish_swarm.js
+   DESCRIPTION: Canvas fish swarm simulation that reacts to scroll direction and the active section.
+   ========================================================================== */
+
 import { debounce, cleanupRegistry, sizeCanvas, getCanvasQuality } from '../utils/helpers.js';
 import { MOBILE_BREAKPOINT, FOUR_K_BREAKPOINT_PX, MOBILE_SMALL_BREAKPOINT_PX, TABLET_DESKTOP_BREAKPOINT_PX, CANVAS_BACKING_MAX_WIDTH, TWO_PI } from '../constants/ui.js';
 import { registerAnimation } from '../utils/animation_manager.js';
 
-/* ----------------------------------------- */
-/* FISH SHAPES                               */
-/* ----------------------------------------- */
+
+
+
 
 const CREATURE_DRAW = {
     smallFish(ctx, s, glow, time) {
@@ -28,14 +29,14 @@ const CREATURE_DRAW = {
         ctx.lineTo(-s * 0.5 + tw, s * 0.1 + bw);
         ctx.closePath();
         ctx.fill();
-        // Spine (no gradient - simple stroke)
+        
         ctx.strokeStyle = `rgba(73,146,154,${0.2 + glow * 0.15})`;
         ctx.lineWidth = 0.6;
         ctx.beginPath();
         ctx.moveTo(s * 0.3, bw);
         ctx.quadraticCurveTo(0, s * 0.05 + bw, -s * 0.3, bw);
         ctx.stroke();
-        // Eye (simple dot instead of gradient)
+        
         ctx.fillStyle = `rgba(150,220,220,${0.5 + glow * 0.2})`;
         ctx.beginPath(); ctx.arc(s * 0.2, -s * 0.01 + bw, s * 0.03, 0, Math.PI * 2); ctx.fill();
     },
@@ -60,19 +61,19 @@ const CREATURE_DRAW = {
         ctx.moveTo(s * 0.1, -s * 0.18 + bw);
         ctx.quadraticCurveTo(-s * 0.05, -s * 0.32 + bw, -s * 0.2, -s * 0.22 + bw);
         ctx.fill();
-        // Pectoral fin
+        
         ctx.beginPath();
         ctx.moveTo(s * 0.15, s * 0.05 + bw);
         ctx.quadraticCurveTo(s * 0.05, s * 0.18 + Math.sin(time * 4) * s * 0.04 + bw, -s * 0.05, s * 0.12 + bw);
         ctx.fill();
-        // Spine (no gradient)
+        
         ctx.strokeStyle = `rgba(73,146,154,${0.25 + glow * 0.15})`;
         ctx.lineWidth = 1.2;
         ctx.beginPath();
         ctx.moveTo(s * 0.45, bw);
         ctx.quadraticCurveTo(s * 0.15, -s * 0.05 + bw, -s * 0.4, bw);
         ctx.stroke();
-        // Eye (simple dot)
+        
         ctx.fillStyle = `rgba(150,220,220,${0.6 + glow * 0.2})`;
         ctx.beginPath(); ctx.arc(s * 0.35, -s * 0.02 + bw, s * 0.04, 0, Math.PI * 2); ctx.fill();
     },
@@ -91,32 +92,32 @@ function drawCreature(ctx, x, y, size, angle, glow, type, time) {
     ctx.restore();
 }
 
-/* ----------------------------------------- */
-/* BUBBLE DRAWING                            */
-/* ----------------------------------------- */
+
+
+
 
 function drawBubble(ctx, x, y, r, opacity) {
-    // Outer ring
+    
     ctx.strokeStyle = `rgba(73,146,154,${opacity * 0.6})`;
     ctx.lineWidth = 0.8;
     ctx.beginPath();
     ctx.arc(x, y, r, 0, Math.PI * 2);
     ctx.stroke();
-    // Highlight
+    
     ctx.fillStyle = `rgba(150,220,220,${opacity * 0.4})`;
     ctx.beginPath();
     ctx.arc(x - r * 0.25, y - r * 0.25, r * 0.25, 0, Math.PI * 2);
     ctx.fill();
 }
 
-/* ----------------------------------------- */
-/* MODULE INIT                               */
-/* ----------------------------------------- */
+
+
+
 
 export function initFishSwarm() {
     const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
     const SWARM_SIZE = isMobile ? 25 : 45;
-    const COOLDOWN = 3000; // ms between triggers
+    const COOLDOWN = 3000; 
 
     const canvas = document.createElement('canvas');
     canvas.className = 'fish-swarm-canvas';
@@ -131,27 +132,27 @@ export function initFishSwarm() {
     let lastScrollY = window.scrollY, scrollDirection = 'down', lastSectionId = null;
     let lastFrameTime = 0;
 
-    /* ----------------------------------------- */
-    /* LARGE VIEWPORT LOW-RES RENDERING (2056px-) */
-    /* This is the SAME strategy already used by   */
-    /* particle-rain.js: the fixed full-screen     */
-    /* canvas is rendered at a reduced internal    */
-    /* resolution and CSS stretches it to fill the */
-    /* viewport. This cuts per-frame fill-rate     */
-    /* (clearRect + all draw calls) ~4-8x on huge  */
-    /* viewports while keeping fish, bubbles and   */
-    /* trails fully enabled and visible.           */
-    /* ----------------------------------------- */
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     const { scale: SCALE } = getCanvasQuality();
 
-    // Logical (CSS-pixel) viewport size. The simulation runs in this space;
-    // a SCALE transform maps it onto the reduced backing store.
+    
+    
     let logicalW = window.innerWidth, logicalH = window.innerHeight;
 
     function resize() {
         logicalW = window.innerWidth;
         logicalH = window.innerHeight;
-        // Cap backing store at 2560px to prevent explosion on large viewports
+        
         const result = sizeCanvas(canvas, logicalW, logicalH);
         canvas.style.width = logicalW + 'px';
         canvas.style.height = logicalH + 'px';
@@ -159,7 +160,7 @@ export function initFishSwarm() {
     resize();
     window.addEventListener('resize', debounce(resize, 200));
 
-    /* ---- Section Tracking ---- */
+    
     const sections = document.querySelectorAll('main[id], section[id]');
     if (sections.length > 0) lastSectionId = sections[0].id;
 
@@ -179,8 +180,8 @@ export function initFishSwarm() {
     }, { threshold: 0.15, rootMargin: '-5% 0px -5% 0px' });
     sections.forEach(s => observer.observe(s));
 
-    // Track scroll position continuously - throttled via rAF
-    // so the scroll listener never runs more than once per frame on mobile.
+    
+    
     let scrollTicking = false;
     window.addEventListener('scroll', () => {
         if (!scrollTicking) {
@@ -194,7 +195,7 @@ export function initFishSwarm() {
         }
     }, { passive: true });
 
-    // Also listen for hashchange (nav clicks)
+    
     window.addEventListener('hashchange', () => {
         const hash = window.location.hash.replace('#', '');
         if (hash && hash !== lastSectionId) {
@@ -210,7 +211,7 @@ export function initFishSwarm() {
         }
     });
 
-    /* ---- Trigger with cooldown ---- */
+    
     function triggerSwarm() {
         const now = Date.now();
         if (now - lastTriggerTime < COOLDOWN) return;
@@ -230,7 +231,7 @@ export function initFishSwarm() {
         spawnCreatures();
         spawnBubbles();
         
-        // Register with centralized animation manager
+        
         unregisterAnim = registerAnimation((now) => {
             if (!isActive) return;
             animate(now);
@@ -239,7 +240,7 @@ export function initFishSwarm() {
         canvas.style.opacity = '1';
     }
 
-    /* ---- Determine swarm size based on viewport ---- */
+    
     function getSwarmSize() {
         if (window.innerWidth <= MOBILE_SMALL_BREAKPOINT_PX) return 8;
         if (window.innerWidth <= MOBILE_BREAKPOINT) return 12;
@@ -249,7 +250,7 @@ export function initFishSwarm() {
         return 15;
     }
 
-    /* ---- Spawn fish ---- */
+    
     function spawnCreatures() {
         creatures = [];
         const w = logicalW, h = logicalH;
@@ -273,7 +274,7 @@ export function initFishSwarm() {
         }
     }
 
-    /* ---- Spawn bubbles ---- */
+    
     function spawnBubbles() {
         bubbles = [];
         const w = logicalW, h = logicalH;
@@ -293,20 +294,20 @@ export function initFishSwarm() {
         }
     }
 
-    /* ---- Animate ---- */
+    
     function animate(now) {
         if (!isActive) return;
         if (!lastFrameTime) lastFrameTime = now;
         const dt = Math.min((now - lastFrameTime) / 1000, 0.05);
         lastFrameTime = now;
         time += dt;
-        // Clear the full backing store (already low-res on large viewports).
+        
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        // Map logical (CSS-pixel) coordinates into the reduced backing store.
-        // SCALE === 1 leaves the transform as identity on normal viewports.
+        
+        
         ctx.setTransform(SCALE, 0, 0, SCALE, 0, 0);
 
-        // Draw fish with organic swimming
+        
         creatures.forEach(c => {
             if (time < c.delay) return;
             c.opacity = Math.min(1, (time - c.delay) * 2);
@@ -330,7 +331,7 @@ export function initFishSwarm() {
             }
         });
 
-        // Draw bubbles
+        
         bubbles.forEach(b => {
             if (time < b.delay) return;
             b.opacity = Math.min(b.maxOpacity, b.opacity + 0.008);
@@ -344,7 +345,7 @@ export function initFishSwarm() {
         ctx.globalAlpha = 1;
         drawTrail();
 
-        // Reset transform so later clear/state handling uses identity space.
+        
         ctx.setTransform(1, 0, 0, 1, 0, 0);
 
         let aliveFish = 0;
@@ -361,10 +362,10 @@ export function initFishSwarm() {
         } else {
             canvas.style.opacity = '1';
         }
-        // Animation loop managed by AnimationManager
+        
     }
 
-    /* ---- Trail ---- */
+    
     function drawTrail() {
         creatures.forEach(c => {
             if (c.opacity < 0.1 || Math.random() > 0.15) return;

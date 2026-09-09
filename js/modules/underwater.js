@@ -1,12 +1,14 @@
-//File: underwater.js
-//Description: Underwater ambient effects: bubbles and caustic overlays.
+/* ==========================================================================
+   FILE: js/modules/underwater.js
+   DESCRIPTION: Underwater ambience effects: bubbles and caustic overlays.
+   ========================================================================== */
 
 import { cleanupRegistry, debounce, sizeCanvas } from '../utils/helpers.js';
 import { smoothLerp } from '../utils/smooth.js';
 import { registerAnimation } from '../utils/animation_manager.js';
 import { MAX_FRAME_DELTA_SECONDS, INTERSECTION_THRESHOLD, DEBOUNCE_DELAY_MS, BOOT_DELAY_MS } from '../constants/ui.js';
 
-// SIMPLEX NOISE 3D 
+
 const SimplexNoise = (() => {
     const F3 = 1 / 3;
     const G3 = 1 / 6;
@@ -22,7 +24,7 @@ const SimplexNoise = (() => {
             this.permMod12 = new Uint8Array(512);
             const p = new Uint8Array(256);
             for (let i = 0; i < 256; i++) p[i] = i;
-            // Fisher-Yates shuffle with seed
+            
             let s = seed || Math.random() * 65536;
             for (let i = 255; i > 0; i--) {
                 s = (s * 16807 + 0) % 2147483647;
@@ -98,11 +100,11 @@ export function initUnderwater() {
     const container = document.querySelector('.water_timeline');
     if (!section || !container) return;
 
-    // Remove old canvas if exists
+    
     const oldCanvas = container.querySelector('.underwater-canvas');
     if (oldCanvas) oldCanvas.remove();
 
-    // Create canvas
+    
     const canvas = document.createElement('canvas');
     canvas.className = 'underwater-canvas';
     canvas.style.cssText = `
@@ -126,10 +128,10 @@ export function initUnderwater() {
     let time = 0;
     let unregisterAnim = null;
 
-    // Simplex noise instance
+    
     const noise = new SimplexNoise(42);
 
-    // Sphere state
+    
     let sphereY = 0;
     let sphereTargetY = 0;
     let sphereEnergy = 0;
@@ -138,7 +140,7 @@ export function initUnderwater() {
     let bubbles = [];
     let currentNodeIndex = -1;
 
-    // Shared line path function - returns X position of the energy line at a given Y
+    
     function getLineXAtY(y, nodes) {
         if (nodes.length < 2) return 130;
         const startY = nodes[0].y;
@@ -154,7 +156,7 @@ export function initUnderwater() {
         return centerX + sag + sway1 + sway2 + drift;
     }
 
-    // Sphere config
+    
     const SPHERE_RADIUS = 20;
     const LAT_LINES = 12;
     const LON_LINES = 16;
@@ -163,7 +165,7 @@ export function initUnderwater() {
     const DISPLACEMENT_AMOUNT = 4.0;
     const FLOW_SPEED = 0.2;
 
-    // Intersection Observer
+    
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -174,7 +176,7 @@ export function initUnderwater() {
                     initParticles();
                     lastFrameTime = 0;
 
-                    // Register with centralized animation manager
+                    
                     unregisterAnim = registerAnimation((now) => {
                         if (!isActive) return;
                         animate(now);
@@ -197,7 +199,7 @@ export function initUnderwater() {
 
     function resize() {
         const rect = container.getBoundingClientRect();
-        // Cap canvas backing store to prevent explosion on large viewports
+        
         const result = sizeCanvas(canvas, 260, rect.height, 800);
         canvas.style.width = '260px';
         canvas.style.height = rect.height + 'px';
@@ -293,7 +295,7 @@ export function initUnderwater() {
         const totalHeight = endY - startY + 60;
         const segments = 90;
 
-        // CABLE 
+        
         const points = [];
         for (let i = 0; i <= segments; i++) {
             const t = i / segments;
@@ -628,7 +630,7 @@ export function initUnderwater() {
         ctx.arc(cx, cy, coreRadius, 0, Math.PI * 2);
         ctx.fill();
 
-        // Specular
+        
         const specGrad = ctx.createRadialGradient(cx - 1, cy - 1.5, 0, cx - 0.3, cy - 0.5, 2.5);
         specGrad.addColorStop(0, `rgba(255, 255, 255, ${0.65 * breathe})`);
         specGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');

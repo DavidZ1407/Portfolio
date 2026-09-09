@@ -1,7 +1,8 @@
-/* ==========================================
- * File: depth-experience.css
- * Description: Full-page underwater experience with depth fog, vignette overlay, and unified particle canvas rendering.
- * ========================================== */
+/* ==========================================================================
+   FILE: css/components/depth-experience.css
+   DESCRIPTION: Full-page underwater experience: depth fog, vignette overlay, and unified particle canvas rendering.
+   ========================================================================== */
+
 .depth-fog-overlay {
     position: fixed;
     inset: 0;
@@ -15,7 +16,7 @@
     opacity: 1;
 }
 
-/* VIGNETTE - Deep water darkness at edges */
+
 .depth-vignette {
     position: fixed;
     inset: 0;
@@ -35,16 +36,14 @@
     opacity: 1;
 }
 
-/* Particle canvas (full viewport): the full-page particle system lives in
-   unified_particles.js - canvas-back (z3, fish + parallax) and canvas-front
-   (z7, depth) render in ONE registerAnimation loop. */
 
-/* RESPONSIVE */
+
+
 @media (prefers-reduced-motion: reduce) {
     .scroll-ripple {
         display: none;
     }
-    /* Hide the only remaining particle system (back + front) */
+    
     .unified-particles-canvas-back,
     .unified-particles-canvas-front {
         display: none;

@@ -1,7 +1,8 @@
-/**
- * File: modal_shader.js
- * Description: WebGL Voronoi shader background for the project modal, tinted per project category color.
- */
+/* ==========================================================================
+   FILE: js/modules/modal_shader.js
+   DESCRIPTION: WebGL Voronoi shader background for the project modal, tinted per project category color.
+   ========================================================================== */
+
 import { cleanupRegistry } from '../utils/helpers.js';
 import { isWebGLAvailable } from '../utils/webgl_utils.js';
 import { FRAME_TIMESTEP, SHADER_MAX_PIXEL_RATIO } from '../constants/ui.js';
@@ -81,34 +82,34 @@ const fragmentShader = `
         v += voronoi(uv, t * 2.0, 0.5, 2.5 - sizeDistortion);
         v += voronoi(uv, t * 4.0, 0.0, 4.0 - sizeDistortion) / 2.0;
 
-        // Color schemes (one per category), index = getCategorySchemeIndex(category)
-        // 0=gamedev(blue), 1=coding(teal), 2=3d(purple/indigo),
-        // 3=concept(green/emerald), 4=sound(amber/gold), 5=other(rose)
+        
+        
+        
         vec3 fgColor;
         vec3 bgColor;
 
         if (uColorScheme < 1.0) {
-            // Scheme 0 - Game Dev (deep blue)
+            
             fgColor = vec3(0.55, 0.75, 1.0);
             bgColor = vec3(0.0, 0.3, 0.5);
         } else if (uColorScheme < 2.0) {
-            // Scheme 1 - Coding (teal/cyan)
+            
             fgColor = vec3(0.4, 0.85, 0.8);
             bgColor = vec3(0.0, 0.35, 0.4);
         } else if (uColorScheme < 3.0) {
-            // Scheme 2 - 3d (purple/indigo)
+            
             fgColor = vec3(0.7, 0.55, 0.9);
             bgColor = vec3(0.15, 0.1, 0.3);
         } else if (uColorScheme < 4.0) {
-            // Scheme 3 - Concept (green/emerald)
+            
             fgColor = vec3(0.45, 0.8, 0.55);
             bgColor = vec3(0.05, 0.25, 0.15);
         } else if (uColorScheme < 5.0) {
-            // Scheme 4 - Sound (amber/gold warm)
+            
             fgColor = vec3(1.0, 0.78, 0.4);
             bgColor = vec3(0.35, 0.22, 0.05);
         } else {
-            // Scheme 5 - Other (rose/magenta)
+            
             fgColor = vec3(0.95, 0.4, 0.6);
             bgColor = vec3(0.3, 0.05, 0.18);
         }
@@ -116,9 +117,9 @@ const fragmentShader = `
         vec3 col = v * fgColor;
         col += (1.0 - v) * bgColor;
 
-        // Muted water atmosphere: darkened + semi-transparent so the
-        // dark navy gradient (modal-bg-*) shows through and the
-        // Voronoi shader only forms a subtle, atmospheric layer.
+        
+        
+        
         col *= 0.5;
         gl_FragColor = vec4(col, 0.62);
     }
@@ -136,15 +137,15 @@ export function initModalShader(container) {
     const oldCanvas = container.querySelector('.modal_shader_canvas');
     if (oldCanvas) oldCanvas.remove();
 
-    // Skip WebGL entirely on unsupported devices instead of letting THREE
-    // throw "Error creating WebGL context"; the modal keeps its CSS gradient.
+    
+    
     if (!isWebGLAvailable()) {
         console.warn('[modal_shader] WebGL unavailable - modal keeps static background.');
         return null;
     }
 
-    // Detect Firefox mobile - it struggles with WebGL + SVG filter combinations.
-    // Use a static CSS background instead to ensure smooth modal animations.
+    
+    
     const isFirefoxMobile = /Firefox/i.test(navigator.userAgent) && /Mobile|Android/i.test(navigator.userAgent);
 
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
@@ -157,7 +158,7 @@ export function initModalShader(container) {
             alpha: true,
             powerPreference: 'high-performance'
         };
-        // Disable antialiasing on Firefox mobile for better performance
+        
         if (isFirefoxMobile) {
             rendererOptions.antialias = false;
         } else {
@@ -165,13 +166,13 @@ export function initModalShader(container) {
         }
         renderer = new THREE.WebGLRenderer(rendererOptions);
     } catch (e) {
-        // Returning null is an already-supported path (same as missing THREE).
+        
         console.warn('[modal_shader] WebGL context creation failed - modal keeps static background.', e);
         return null;
     }
     renderer.setSize(container.clientWidth, container.clientHeight);
-    // Cap pixel ratio to prevent excessive GPU load at very large viewports.
-    // Use lower pixel ratio on Firefox mobile for smoother animations.
+    
+    
     const maxPixelRatio = isFirefoxMobile ? 1.0 : SHADER_MAX_PIXEL_RATIO;
     const pixelRatio = Math.min(window.devicePixelRatio, maxPixelRatio);
     renderer.setPixelRatio(pixelRatio);
@@ -189,9 +190,9 @@ export function initModalShader(container) {
 
     container.prepend(renderer.domElement);
 
-    // Handle context loss: the browser may reclaim the WebGL context under
-    // memory pressure (especially on mobile). Prevent default to allow
-    // restoration, then remove the canvas and keep the CSS gradient.
+    
+    
+    
     renderer.domElement.addEventListener('webglcontextlost', (event) => {
         event.preventDefault();
         console.warn('[modal_shader] WebGL context lost - keeping static CSS background.');
@@ -252,7 +253,7 @@ export function initModalShader(container) {
     }
 
     function start(scheme) {
-        // Update the color even while the shader is running
+        
         if (scheme !== undefined) setColorScheme(scheme);
         if (isActive) return;
         isActive = true;

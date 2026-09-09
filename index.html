@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!-- ===== HEAD ===== -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,31 +9,32 @@
         content="Portfolio von David Zahn - Games & Immersive Media Creator. Fokus auf Atmosphäre, Narrative und Gameplay.">
     <title>David Zahn | Portfolio</title>
 
-    <!-- Favicon -->
+    
     <link rel="icon" type="image/svg+xml" href="assets/Picture/favicon.svg?v=3">
 
-    <!-- Preload critical assets -->
-    <link rel="preload" href="css/main.css?v=10" as="style">
+    
+    <link rel="preload" href="css/main.css?v=12" as="style">
     <link rel="preload" href="css/components/landing.css?v=11" as="style">
 
-    <!-- Main CSS -->
-    <link rel="stylesheet" href="css/main.css?v=10">
+    
+    <link rel="stylesheet" href="css/main.css?v=12">
 
-    <!-- Component CSS Files -->
-    <link rel="stylesheet" href="css/components/navbar.css?v=10">
+    
+    <link rel="stylesheet" href="css/components/navbar.css?v=11">
     <link rel="stylesheet" href="css/components/landing.css?v=11">
-    <link rel="stylesheet" href="css/components/archives.css?v=15">
+    <link rel="stylesheet" href="css/components/archives.css?v=16">
     <link rel="stylesheet" href="css/components/about.css?v=10">
-    <link rel="stylesheet" href="css/components/journey.css?v=10">
-    <link rel="stylesheet" href="css/components/contact.css?v=10">
+    <link rel="stylesheet" href="css/components/journey.css?v=12">
+    <link rel="stylesheet" href="css/components/contact.css?v=13">
     <link rel="stylesheet" href="css/components/parallax.css?v=10">
     <link rel="stylesheet" href="css/components/modal.css?v=14">
     <link rel="stylesheet" href="css/components/depth-experience.css?v=10">
 
-    <!-- Unified Responsive System (overrides component-specific MQs) -->
-    <link rel="stylesheet" href="css/responsive.css?v=12">
+    
+    <link rel="stylesheet" href="css/responsive.css?v=13">
 
-    <!-- SVG filters for water distortion effects -->
+    
+    <!-- ===== SVG FILTERS / DEFINITIONS ===== -->
     <svg style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
         <filter id="water_distort_hover" x="-5%" y="-5%" width="110%" height="110%">
             <feTurbulence type="fractalNoise" baseFrequency="0.02 0.04" numOctaves="2" result="noise" seed="5">
@@ -42,7 +44,7 @@
             <feDisplacementMap in="SourceGraphic" in2="noise" scale="7" xChannelSelector="R" yChannelSelector="G" />
             <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#49929a" flood-opacity="0.5" />
         </filter>
-        <!-- Hover filter for modal buttons (no begin=hoverIn, for CSS :hover) -->
+        
         <filter id="water_distort_modal_hover" x="-5%" y="-5%" width="110%" height="110%">
             <feTurbulence type="fractalNoise" baseFrequency="0.02 0.04" numOctaves="2" result="noise" seed="5">
                 <animate attributeName="baseFrequency" values="0.02 0.04;0.04 0.08;0.02 0.04" dur="3s"
@@ -52,9 +54,7 @@
             <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#8be0e8" flood-opacity="0.6" />
         </filter>
         <filter id="water_distort_close" x="-5%" y="-5%" width="110%" height="110%">
-            <!-- Static noise + small displacement: a full-strength displacement
-                 (scale ~35) + animated drop shadow over the whole modal froze the
-                 close for ~1s. Cheap wobble keeps the water-morph look. -->
+            
             <feTurbulence type="fractalNoise" baseFrequency="0.04 0.08" numOctaves="2" result="noise" seed="8" />
             <feDisplacementMap in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G">
                 <animate attributeName="scale" values="0;8;4;0" dur="1s" fill="freeze" calcMode="spline"
@@ -77,21 +77,19 @@
         </filter>
     </svg>
 
-    <!-- Warm up the CDN connections used below while the parser continues. -->
+    
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
 
-    <!-- Three.js must EXECUTE before main.js (module). `defer` keeps both in
-         the post-parsing execution queue in document order, but no longer
-         blocks HTML parsing / first paint while the large library downloads. -->
+    
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous"></script>
 
-    <!-- Main JavaScript (ES Module - imports all modules and constants) -->
+    
     <script defer type="module" src="js/main.js?v=21"></script>
 
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet' crossorigin="anonymous">
 
-    <!-- Gothic-style fonts -->
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -101,9 +99,10 @@
 
 <body>
 
-    <!-- ========================================= -->
-    <!-- PARALLAX CONTAINER -->
-    <!-- ========================================= -->
+    
+    
+    
+    <!-- ===== PARALLAX BACKGROUND LAYERS ===== -->
     <div class="parallax-container">
         <div class="parallax-layer parallax-bg">
             <div class="sky-layer">
@@ -122,10 +121,12 @@
         <div class="underwater-layer"></div>
         <div class="water-surface"></div>
     </div>
+    <!-- ===== END PARALLAX ===== -->
 
-    <!-- ========================================= -->
-    <!-- SIDEBAR -->
-    <!-- ========================================= -->
+    
+    
+    
+    <!-- ===== SIDEBAR SOCIAL LINKS ===== -->
     <div class="sidebar_socials">
         <a href="mailto:David-Zahn@hotmail.com">
             <i class='bx bx-envelope'></i>
@@ -144,10 +145,12 @@
             <span>01578 0989121</span>
         </a>
     </div>
+    <!-- ===== END SIDEBAR SOCIALS ===== -->
 
-    <!-- ========================================= -->
-    <!-- HEADER -->
-    <!-- ========================================= -->
+    
+    
+    
+    <!-- ===== NAVBAR ===== -->
     <header class="header">
         <a href="#" class="logo">
             DAVID <span>ZAHN</span>
@@ -160,10 +163,12 @@
             <a href="#contact" class="nav_link" data-i18n="nav-contact">CONTACT</a>
         </nav>
     </header>
+    <!-- ===== END NAVBAR ===== -->
 
-    <!-- ========================================= -->
-    <!-- HERO -->
-    <!-- ========================================= -->
+    
+    
+    
+    <!-- ===== HERO / LANDING ===== -->
     <main id="home" class="hero_section">
         <div class="hero_scene"></div>
         <div class="hero_overlay"></div>
@@ -182,7 +187,7 @@
                 <a href="#work" class="descend_btn" data-i18n="home-btn">EXPLORE MY WORK</a>
             </div>
         </div>
-        <!-- RIGHT COLUMN: Works Carousel + Skills -->
+        
         <div class="hero_showcase_container">
             <div class="works_carousel_section">
                 <h3 data-i18n="carousel-title">MY PROJECTS</h3>
@@ -199,10 +204,12 @@
             </div>
         </div>
     </main>
+    <!-- ===== END HERO / LANDING ===== -->
 
-    <!-- ========================================= -->
-    <!-- ARCHIVES (PROJECTS) - 3D PORTAL CAROUSEL -->
-    <!-- ========================================= -->
+    
+    
+    
+    <!-- ===== ARCHIVES / WORK PORTFOLIO ===== -->
     <section id="work" class="archives_section">
         <div class="portal-room-atmosphere">
             <div class="light-rays-container">
@@ -229,16 +236,17 @@
             </div>
         </div>
     </section>
+    <!-- ===== END ARCHIVES / WORK ===== -->
 
-    <!-- ========================================= -->
-    <!-- ABOUT (LEXICON) -->
-    <!-- ========================================= -->
+    
+    
+    
+    <!-- ===== ABOUT ===== -->
     <section id="about" class="lexicon_section">
         <h1 class="section_title" data-i18n="about-title">ABOUT ME</h1>
         <div class="expedition_container">
             <div class="about_profile_box">
-                <!-- Sized variants only: the 4045x6068 original (~524 KB) is never
-                     needed for a ~300px render, so mobile downloads 41 KB instead. -->
+                
                 <img src="assets/Picture/Assets_Profile-600.jpg" alt="David Zahn Profile" class="profile_image"
                     srcset="assets/Picture/Assets_Profile-600.jpg 600w, assets/Picture/Assets_Profile-1200.jpg 1200w"
                     sizes="(max-width: 768px) 90vw, 300px" loading="lazy" decoding="async">
@@ -267,10 +275,12 @@
             </div>
         </div>
     </section>
+    <!-- ===== END ABOUT ===== -->
 
-    <!-- ========================================= -->
-    <!-- JOURNEY (TIMELINE) -->
-    <!-- ========================================= -->
+    
+    
+    
+    <!-- ===== JOURNEY / EDUCATION ===== -->
     <section id="journey" class="journey_section">
         <h1 class="section_title" data-i18n="journey-title">EDUCATION</h1>
         <p class="section_subtitle" data-i18n="journey-subtitle">ACADEMIC BACKGROUND</p>
@@ -280,7 +290,7 @@
                 <div class="timeline_content">
                     <div class="timeline_year" data-i18n="timeline-1-year">SEPT 2025 - approx. 2028</div>
                     <div class="timeline_title" data-i18n="timeline-1-title">Games & Immersive Media (B.A.)</div>
-                    <div class="timeline_org" data-i18n="timeline-1-org">Hochschule Furtwangen</div>
+                    <div class="timeline_org" data-i18n="timeline-1-org">Hochschule Furtwangen, Germany</div>
                     <div class="timeline_icon">🎮</div>
                 </div>
             </div>
@@ -289,7 +299,7 @@
                 <div class="timeline_content">
                     <div class="timeline_year" data-i18n="timeline-2-year">MAR 2024 - JUL 2024</div>
                     <div class="timeline_title" data-i18n="timeline-2-title">Student Assistant</div>
-                    <div class="timeline_org" data-i18n="timeline-2-org">Hochschule Furtwangen (Development)</div>
+                    <div class="timeline_org" data-i18n="timeline-2-org">Hochschule Furtwangen (Development), Germany</div>
                 </div>
             </div>
 
@@ -297,7 +307,7 @@
                 <div class="timeline_content">
                     <div class="timeline_year" data-i18n="timeline-3-year">SEPT 2023 - SEPT 2025</div>
                     <div class="timeline_title" data-i18n="timeline-3-title">Media Conception (B.A.)</div>
-                    <div class="timeline_org" data-i18n="timeline-3-org">Hochschule Furtwangen</div>
+                    <div class="timeline_org" data-i18n="timeline-3-org">Hochschule Furtwangen, Germany</div>
                 </div>
             </div>
 
@@ -320,24 +330,26 @@
                 <div class="timeline_content">
                     <div class="timeline_year" data-i18n="timeline-5-year">AUG 2019 - JUL 2021</div>
                     <div class="timeline_title" data-i18n="timeline-5-title">Apprentice Office Clerk</div>
-                    <div class="timeline_org" data-i18n="timeline-5-org">Krieger Bau GmbH Schwenningen</div>
+                    <div class="timeline_org" data-i18n="timeline-5-org">Krieger Bau GmbH, Schwenningen, Germany</div>
                 </div>
             </div>
 
             <div class="timeline_item">
                 <div class="timeline_content">
                     <div class="timeline_year" data-i18n="timeline-6-year">AUG 2018 - JUL 2021</div>
-                    <div class="timeline_title" data-i18n="timeline-6-title">Vocational School Donaueschingen</div>
-                    <div class="timeline_org" data-i18n="timeline-6-org">Fachhochschulreife</div>
+                    <div class="timeline_title" data-i18n="timeline-6-title">Advanced Technical Certificate</div>
+                    <div class="timeline_org" data-i18n="timeline-6-org">Vocational School Donaueschingen, Germany</div>
                 </div>
             </div>
 
         </div>
     </section>
+    <!-- ===== END JOURNEY / EDUCATION ===== -->
 
-    <!-- ========================================= -->
-    <!-- CONTACT -->
-    <!-- ========================================= -->
+    
+    
+    
+    <!-- ===== CONTACT ===== -->
     <section id="contact" class="contact_section">
         <h1 class="section_title" data-i18n="contact-title">CONTACT</h1>
         <p class="section_subtitle" data-i18n="contact-subtitle">REACH OUT THROUGH ANY OF THESE CHANNELS</p>
@@ -356,10 +368,11 @@
             <span data-i18n="footer-back">BACK TO HOME</span>
         </a>
     </section>
+    <!-- ===== END CONTACT ===== -->
 
-    <!-- ========================================= -->
-    <!-- FOOTER -->
-    <!-- ========================================= -->
+    
+    
+    
 
 </body>
 

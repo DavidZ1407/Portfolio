@@ -1,10 +1,11 @@
-/**
- * File: projects.js
- * Description: Project data: bilingual titles/descriptions, categories, media lists, and project-skill relations.
- */
+/* ==========================================================================
+   FILE: js/constants/projects.js
+   DESCRIPTION: Project data: bilingual titles and descriptions, categories, media lists, and project-skill relations.
+   ========================================================================== */
+
 import { skills } from './skills.js?v=4';
 
-/* ---- Category labels ---- */
+
 const CATEGORY_LABELS = {
     gamedev: { en: 'Game Dev', de: 'Game Development' },
     '3d':    { en: '3D', de: '3D & Visual Art' },
@@ -14,8 +15,7 @@ const CATEGORY_LABELS = {
     other:   { en: 'Other Projects', de: 'Other Projects' }
 };
 
-/* ---- Bilingual helper: returns the value of an { en, de } field in the
-   requested language (fallback: 'en'). Scalars are passed through. ---- */
+
 function pickLang(value, lang) {
     if (value && typeof value === 'object') {
         return value[lang] !== undefined ? value[lang] : value.en;
@@ -23,7 +23,7 @@ function pickLang(value, lang) {
     return value !== undefined && value !== null ? value : '';
 }
 
-/* ---- Accessors used by the modal ---- */
+
 export { CATEGORY_LABELS };
 export function getProjectTitle(index, lang = 'en') {
     const p = projects[index];
@@ -66,18 +66,18 @@ export function getProjectTools(index, lang = 'en') {
     return p.tools.map(t => ({ name: pickLang(t.name, lang), icon: t.icon || '' }));
 }
 
-/* ---- Skill registry helpers (project <-> skill relation) ---- */
+
 const SKILL_BY_ID = {};
 skills.forEach(s => { SKILL_BY_ID[s.id] = s; });
 
-/** Ids of the skills the project actually used */
+
 export function getProjectSkillIds(index) {
     const p = projects[index];
     if (!p || !Array.isArray(p.skills)) return [];
     return p.skills;
 }
 
-/** Project skills resolved from the registry: [{ id, name, icon, logo }] */
+
 export function getProjectSkills(index) {
     return getProjectSkillIds(index)
         .map(id => SKILL_BY_ID[id])
@@ -85,8 +85,7 @@ export function getProjectSkills(index) {
         .map(s => ({ id: s.id, name: s.name, icon: s.icon || '', logo: s.logo || '' }));
 }
 
-/** (Lowercase) tool names already covered by the project's skills -
-    prevents showing skills + tools twice in the modal. */
+
 export function getProjectCoveredToolNames(index) {
     const covered = new Set();
     getProjectSkillIds(index).forEach(id => {
@@ -114,14 +113,14 @@ export function getProjectCountInCategory(category) {
     return indices.length;
 }
 
-/* ---- Category order (defines the shader color scheme) ---- */
-/* The order determines the category tabs, the portal, and the hero carousel. */
+
+
 const CATEGORY_ORDER = ['gamedev', 'coding', '3d', 'concept', 'sound', 'other'];
 export {
     CATEGORY_ORDER
 };
 
-/* ---- Mapping category -> indices in projects[] (multiple projects per category possible) ---- */
+
 const categoryProjects = {
     gamedev: [0, 6, 16, 17],
     '3d':    [2, 10, 11],
@@ -134,11 +133,11 @@ export {
     categoryProjects
 };
 
-/* ---- Project data ---- */
-/* Note: cover/image -> assets/Picture/ProjectX.png is the convention from STRUKTUR.md */
+
+
 const projects = [
 
-    /* Index 0 - Game Dev */ {
+     {
         category: 'gamedev',
         title: { en: 'Gothica Solaris', de: 'Gothica Solaris' },
         subtitle: { en: 'First-Person Roguelite Dungeon Crawler', de: 'First-Person-Roguelite-Dungeon-Crawler' },
@@ -153,9 +152,7 @@ const projects = [
         duration: { en: '6 weeks', de: '6 Wochen' },
         team: { en: '4 members', de: '4 Mitglieder' },
         cover: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_1.webp',
-        /* Show the full cover uncropped -> the gothica-solaris wordmark in the
-           original screenshot stays fully readable. The card's image layout
-           (91% x 72.5%, nearly landscape) matches the original. */
+        
         coverFit: 'contain',
         media: [
             { type: 'youtube', id: 'Ck4srNe2HZo', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_1.webp' },
@@ -225,7 +222,7 @@ const projects = [
         ]
     },
 
-    /* Index 1 - Concept */ {
+     {
         category: 'concept',
         title: { en: 'Digital Art', de: 'Digital Art' },
         subtitle: { en: 'Digital Illustrations & Artworks', de: 'Digitale Illustrationen & Artworks' },
@@ -262,13 +259,13 @@ const projects = [
         skills: ['krita']
     },
 
-    /* Index 2 - 3D (3D Modeling) */ {
+     {
         category: '3d',
         title: { en: '3D Modeling', de: '3D Modeling' },
         subtitle: { en: 'Comprehensive 3D Work in Blender', de: 'Umfassende 3D-Arbeiten in Blender' },
         description: { en: 'Comprehensive 3D work done in Blender, covering everything from high-to-low poly modeling and digital sculpting to detailed texturing and normal map workflows. Focused on creating clean, efficient assets.', de: 'Umfassende 3D-Arbeiten in Blender – von High- zu Low-Poly-Modellierung und digitalem Sculpting bis hin zu detaillierter Texturierung und Normal-Map-Workflows. Der Fokus liegt auf sauberen, effizienten Assets.' },
         cover: 'assets/3D/3D_IMG/3D_IMG_1.webp',
-        coverPosition: '50% 0%', // portrait cover in a near-square box: keep the head fully visible
+        coverPosition: '50% 0%', 
         media: [
             { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_1.webp', thumb: 'assets/3D/3D_IMG/3D_IMG_1.webp' },
             { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_2.webp', thumb: 'assets/3D/3D_IMG/3D_IMG_2.webp' },
@@ -301,7 +298,7 @@ const projects = [
         skills: ['blender']
     },
 
-    /* Index 3 - Coding (project 1 - Physics & Shader) */
+    
     {
         category: 'coding',
         title: { en: 'Coding: Physics & Shader', de: 'Coding: Physik & Shader' },
@@ -343,7 +340,7 @@ const projects = [
         skills: ['web', 'webgl']
     },
 
-    /* Index 4 - Sound (project 1 - Space_Balls) */
+    
     {
         category: 'sound',
         title: { en: 'Space Balls', de: 'Space Balls' },
@@ -380,7 +377,7 @@ const projects = [
         skills: ['godot', 'csharp', 'fmod']
     },
 
-    /* Index 5 - Other (project 1 - Other_PJ_1) */
+    
     {
         category: 'other',
         title: { en: 'Sea Team', de: 'Sea Team' },
@@ -430,7 +427,7 @@ const projects = [
         skills: ['blender', 'krita']
     },
 
-    /* Index 6 - Game Dev (second project) */ {
+     {
         category: 'gamedev',
         title: { en: 'Average Goblin Game', de: 'Average Goblin Game' },
         subtitle: { en: 'Third-Person Tower Defense Action (UE5)', de: 'Third-Person-Tower-Defense-Action (UE5)' },
@@ -480,7 +477,7 @@ const projects = [
         skills: ['unreal']
     },
 
-    /* Index 7 - Other (project 2 - Other_PJ_2) */
+    
     {
         category: 'other',
         title: { en: "Sir Aric's Souls", de: "Sir Aric's Souls" },
@@ -526,7 +523,7 @@ const projects = [
         skills: ['krita']
     },
 
-    /* Index 8 - Concept (2D_Draw) */
+    
     {
         category: 'concept',
         title: { en: 'Drawing', de: 'Drawing' },
@@ -561,11 +558,11 @@ const projects = [
             { name: { en: 'Character Design', de: 'Charakterdesign' }, icon: 'bx-user' },
             { name: { en: 'Anatomy Studies', de: 'Anatomiestudien' }, icon: 'bx-brush' }
         ],
-        /* No registry skill: traditional pencil sketches */
+        
         skills: []
     },
 
-    /* Index 9 - Concept (2D_VID) */
+    
     {
         category: 'concept',
         title: { en: '2D Animation', de: '2D Animation' },
@@ -601,14 +598,14 @@ const projects = [
         skills: ['blender']
     },
 
-    /* Index 10 - 3D (3D_VID) */
+    
     {
         category: '3d',
         title: { en: '3D Animation', de: '3D Animation' },
         subtitle: { en: 'In-engine 3D Animation & Mechanics', de: '3D-Animationen & Gameplay-Mechaniken' },
         description: { en: '3D animations developed in Blender and implemented within the Godot game engine to drive interactive gameplay mechanics, including character actions and facial animations.', de: 'In Blender entwickelte 3D-Animationen, die in der Godot-Spielengine umgesetzt wurden, um interaktive Gameplay-Mechaniken anzutreiben – einschließlich Charakteraktionen und Gesichtsanimationen.' },
         cover: 'assets/3D/3D_IMG/3D_IMG_1.webp',
-        coverPosition: '50% 0%', // portrait cover in a near-square box: keep the head fully visible
+        coverPosition: '50% 0%', 
         media: [
             { type: 'video', src: 'assets/3D/3D_VID/3D_VID_1.mp4', thumb: 'assets/3D/3D_IMG/3D_IMG_1.webp' },
             { type: 'video', src: 'assets/3D/3D_VID/3D_VID_2.mp4', thumb: 'assets/3D/3D_IMG/3D_IMG_1.webp' },
@@ -637,7 +634,7 @@ const projects = [
         skills: ['blender', 'godot']
     },
 
-    /* Index 11 - 3D (3D_Pj) */
+    
     {
         category: '3d',
         title: { en: 'Battle for the Stars', de: 'Battle for the Stars' },
@@ -680,7 +677,7 @@ const projects = [
         skills: ['blender']
     },
 
-    /* Index 12 - Sound (project 2 - Glow_Pods) */
+    
     {
         category: 'sound',
         title: { en: 'Glow Pods', de: 'Glow Pods' },
@@ -714,7 +711,7 @@ const projects = [
         skills: ['godot']
     },
 
-    /* Index 13 - Sound (project 3 - Lifted) */
+    
     {
         category: 'sound',
         title: { en: 'Lifted', de: 'Lifted' },
@@ -742,11 +739,11 @@ const projects = [
         tools: [
             { name: { en: 'DaVinci Resolve', de: 'DaVinci Resolve' }, icon: 'bx-video' }
         ],
-        /* No registry skill: pure video editing project */
+        
         skills: []
     },
 
-    /* Index 14 - Coding (project 2 - Website) */
+    
     {
         category: 'coding',
         title: { en: 'Coding: Website', de: 'Coding: Website' },
@@ -792,7 +789,7 @@ const projects = [
         skills: ['web', 'typescript']
     },
 
-    /* Index 15 - Coding (project 3 - Jump) */
+    
     {
         category: 'coding',
         title: { en: 'Coding: Jump', de: 'Coding: Jump' },
@@ -832,7 +829,7 @@ const projects = [
         skills: ['web']
     },
 
-    /* Index 16 - Game Dev (project 3 - Godot Island Generator) */
+    
     {
         category: 'gamedev',
         title: { en: 'Godot Island Generator', de: 'Godot Island Generator' },
@@ -900,7 +897,7 @@ const projects = [
         skills: ['godot']
     },
 
-    /* Index 17 - Game Dev (project 4 - Fartnite, 48h Game Jam) */
+    
     {
         category: 'gamedev',
         title: { en: 'Fartnite', de: 'Fartnite' },
@@ -954,42 +951,26 @@ const projects = [
         skills: ['godot', 'blender']
     }
 
-    /*
-     * Append further projects following this pattern.
-     * Then add the corresponding index to the category array in categoryProjects.
-     */
+    
 ];
 export {
     projects
 };
 
-/* ---- Helper functions (used by the modal + portal carousel) ---- */
 
-/**
- * Returns the cover/title image of a project (for the hero carousel + portal).
- */
+
+
 export function getProjectCover(index) {
     const p = projects[index];
     return (p && p.cover) ? p.cover : '';
 }
 
-/**
- * Returns the themed placeholder path of a category.
- * Used when a real cover/media item is missing so all bubbles/slides
- * on the main page and in the modal stay visible.
- *
- * Caution: intentionally returns ONE shared, neutral placeholder (the
- * site favicon) for ALL categories. This way all 6 cards in the hero
- * carousel and the portal appear consistently if a cover is missing.
- */
+
 export function getCategoryPlaceholder(category) {
     return 'assets/Picture/favicon.svg';
 }
 
-/**
- * Attaches an image fallback to an <img>: if loading fails
- * (e.g. missing file), the category placeholder image is set.
- */
+
 export function applyImageFallback(img, category) {
     if (!img) return;
     const placeholder = getCategoryPlaceholder(category);
@@ -1003,46 +984,31 @@ export function applyImageFallback(img, category) {
     };
 }
 
-/**
- * Returns the indices of all projects in a category (from categoryProjects).
- */
+
 export function getProjectIndicesByCategory(category) {
     return categoryProjects[category] || [];
 }
 
-/**
- * Returns the list of categories that contain at least one project.
- * (Order = canonical color scheme index from CATEGORY_ORDER)
- */
+
 export function getCategories() {
     return CATEGORY_ORDER.filter(cat => getProjectCountInCategory(cat) > 0);
 }
 
-/**
- * Returns the first project index of a category (or null).
- */
+
 export function getFirstProjectOfCategory(category) {
     const indices = categoryProjects[category];
     if (!indices || !indices.length) return null;
     return indices[0];
 }
 
-/**
- * Returns the project indices of all categories in CATEGORY_ORDER order,
- * only the FIRST project per category. Used by the portal and the hero
- * carousel so both show the same (one) card per area in identical order.
- */
+
 export function getOrderedProjectIndices() {
     return getCategories()
         .map(cat => getFirstProjectOfCategory(cat))
         .filter(idx => idx !== null && idx !== undefined);
 }
 
-/**
- * Switch between projects of the SAME category.
- * direction: 'prev' | 'next'  (wrap-around)
- * Returns null when the category has only one project.
- */
+
 export function getSiblingProjectIndex(currentIndex, direction) {
     const project = projects[currentIndex];
     if (!project) return null;
@@ -1055,11 +1021,7 @@ export function getSiblingProjectIndex(currentIndex, direction) {
     return indices[next];
 }
 
-/**
- * Switch between categories (wrap-around).
- * Moves to the first project of the adjacent category.
- * direction: 'prev' | 'next'
- */
+
 export function getAdjacentCategoryProject(currentIndex, direction) {
     const categories = getCategories();
     if (!categories.length) return null;
@@ -1074,10 +1036,7 @@ export function getAdjacentCategoryProject(currentIndex, direction) {
     return indices[0];
 }
 
-/**
- * Color scheme index of a category for the Voronoi shader.
- * Order matches CATEGORY_ORDER (0=gamedev, 1=coding, 2=3d, 3=concept, 4=sound, 5=other).
- */
+
 export function getCategorySchemeIndex(category) {
     return CATEGORY_ORDER.indexOf(category);
 }

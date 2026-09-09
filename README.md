@@ -61,6 +61,15 @@ Projects on the site are organized into six categories, with each project presen
 
 Each project modal includes descriptions, contributions, game concepts, duration and team details, a tools and skills breakdown, and a media gallery of images, videos, and YouTube embeds with links to live sites and repositories.
 
+## Tested On
+
+The portfolio has been tested and works on the following platforms:
+
+- **Desktop:** Google Chrome, Mozilla Firefox
+- **Mobile:** Chrome (Android), Firefox (Android)
+
+> **Note:** The site uses WebGL shader effects (water animations, parallax, particle systems). On browsers or devices without WebGL support, these effects automatically fall back to static displays — all content remains accessible.
+
 ## 📬 Contact
 
 - **Email:** [David-Zahn@hotmail.com](mailto:David-Zahn@hotmail.com)

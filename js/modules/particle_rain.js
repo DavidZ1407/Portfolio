@@ -1,7 +1,8 @@
-/**
- * File: particle_rain.js
- * Description: Canvas particle rain effect for the underwater depth experience.
- */
+/* ==========================================================================
+   FILE: js/modules/particle_rain.js
+   DESCRIPTION: Canvas particle rain effect for the underwater depth experience.
+   ========================================================================== */
+
 import { sizeCanvas, getCanvasQuality, debounce } from '../utils/helpers.js';
 import { registerAnimation } from '../utils/animation_manager.js';
 import { RESIZE_BOOT_DELAY_MS, DEBOUNCE_DELAY_MS } from '../constants/ui.js';
@@ -32,29 +33,23 @@ export function initContactRain() {
     let isAnimating = false;
     let time = 0;
     let unregisterAnim = null;
-    // ---- VIEWPORT DETECTION ----
+    
     const { isLarge, isXLarge, scale: SCALE } = getCanvasQuality();
 
-    /* 
-     * PERFORMANCE STRATEGY for 2056px-4000px:
-     * Instead of skipping frames (which causes 20fps stutter),
-     * we use a low-resolution internal buffer. On large viewports
-     * we render at 50% scale internally, then draw scaled-up.
-     * This cuts pixel fill rate by 4x = smooth 60fps.
-     */
+    
     const useBuffer = SCALE < 1.0;
 
-    // Adaptive quality
+    
     const SEGMENTS = isXLarge ? 6 : isLarge ? 8 : 20;
     const MAX_PARTICLES = isXLarge ? 12 : isLarge ? 18 : 35;
     const PARTICLE_SPAWN_INTERVAL = isLarge ? 0.1 : 0.05;
-    // Reduce ray count on large screens
+    
     const RAY_COUNT = isXLarge ? 3 : isLarge ? 4 : 6;
 
     let particles = [];
     let spawnTimer = 0;
 
-    // Buffered rendering
+    
     let buffer = null;
     let bCtx = null;
 
@@ -106,7 +101,7 @@ export function initContactRain() {
             const p = particles[i];
             p.age++;
 
-            // Past its lifetime: fade the particle out, then remove it
+            
             if (p.age > p.life) {
                 p.opacity -= 0.03;
                 if (p.opacity <= 0) { particles.splice(i, 1); continue; }
@@ -114,12 +109,10 @@ export function initContactRain() {
                 p.opacity = p.age < 30 ? p.maxOpacity * (p.age / 30) : p.maxOpacity;
             }
 
-            // LIFE: movement
             p.y += p.speedY;
             p.x += p.speedX;
             const swayX = Math.sin(time * p.floatSpeed + p.phase) * p.floatAmp;
 
-            // Wrap
             if (p.y > h + 10) { p.y = -10; p.x = w * (0.1 + Math.random() * 0.8); p.age = 0; p.life = 180 + Math.random() * 240; p.opacity = 0; }
             if (p.x < -20) p.x = w + 10;
             if (p.x > w + 20) p.x = -10;
@@ -132,27 +125,22 @@ export function initContactRain() {
             const [r, g, b] = p.isGold ? [201, 168, 97] : [73, 146, 154];
             const radius = p.size * s;
 
-            // Simple draw - no radial gradient, just 3 circles for glow
-            // Layer 1: outer glow (single circle with transparency)
             drawCtx.globalAlpha = alpha * 0.25;
             drawCtx.fillStyle = `rgb(${r}, ${g}, ${b})`;
             drawCtx.beginPath();
             drawCtx.arc(drawX, drawY, radius * 5, 0, Math.PI * 2);
             drawCtx.fill();
 
-            // Layer 2: mid glow
             drawCtx.globalAlpha = alpha * 0.5;
             drawCtx.beginPath();
             drawCtx.arc(drawX, drawY, radius * 2.5, 0, Math.PI * 2);
             drawCtx.fill();
 
-            // Layer 3: bright core
             drawCtx.globalAlpha = alpha;
             drawCtx.beginPath();
             drawCtx.arc(drawX, drawY, radius * 0.6, 0, Math.PI * 2);
             drawCtx.fill();
 
-            // White highlight
             if (radius > 0.8) {
                 drawCtx.globalAlpha = alpha * 0.35;
                 drawCtx.fillStyle = '#ffffff';
@@ -164,13 +152,11 @@ export function initContactRain() {
         drawCtx.globalAlpha = 1;
     }
 
-    // ---- LIGHT RAYS ----
     function drawRays(drawCtx, w, h) {
         const s = useBuffer ? SCALE : 1;
         const sw = w * s;
         const sh = h * s;
 
-        // Only render configured number of rays, pick the most visible ones
         const allRays = [
             { x: 0.15, width: 8, length: 0.60, speed: 0.25, color: [73, 146, 154], delay: 0, opacity: 0.25 },
             { x: 0.45, width: 6, length: 0.55, speed: 0.2, color: [201, 168, 97], delay: 1.5, opacity: isLarge ? 0.12 : 0.08 },
@@ -202,13 +188,12 @@ export function initContactRain() {
             const startY = -5 * s + Math.sin(time * ray.speed * 0.2 + ray.delay) * 15 * s;
             const endY = startY + currentLength;
 
-            // Simplified ray: just draw as a filled polygon with fewer segments
             const segH = currentLength / SEGMENTS;
             const rayWidth = ray.width * s;
             
             drawCtx.save();
 
-            // Build ray path
+            
             drawCtx.beginPath();
             for (let i = 0; i <= SEGMENTS; i++) {
                 const t = i / SEGMENTS;
@@ -232,7 +217,7 @@ export function initContactRain() {
             }
             drawCtx.closePath();
 
-            // Gradient fill
+            
             const grad = drawCtx.createLinearGradient(x, startY * s, x, endY);
             const a = Math.min(1, alpha);
             grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0)`);
@@ -245,7 +230,7 @@ export function initContactRain() {
             drawCtx.fillStyle = grad;
             drawCtx.fill();
 
-            // Core highlight (simplified - no second path, just brighter fill)
+            
             drawCtx.globalAlpha = 0.2;
             drawCtx.fillStyle = `rgba(255, 255, 255, ${a * 0.4})`;
             drawCtx.fill();
@@ -258,16 +243,16 @@ export function initContactRain() {
     function resize() {
         const w = section.offsetWidth;
         const h = section.offsetHeight;
-        // Cap backing store at 2560px to prevent explosion on large viewports
+        
         const result = sizeCanvas(canvas, w, h);
         canvas.style.width = w + 'px';
         canvas.style.height = h + 'px';
         ensureBuffer(canvas.width, canvas.height);
     }
 
-    // Debounce resize: mobile browsers fire rapid resize events when the
-    // URL bar shows/hides; each handler run reads offsetWidth/offsetHeight
-    // (forced layout) and would rebuild the render buffer per event.
+    
+    
+    
     const debouncedResize = debounce(resize, DEBOUNCE_DELAY_MS);
     window.addEventListener('resize', debouncedResize);
 
@@ -284,10 +269,10 @@ export function initContactRain() {
         spawnTimer = 0;
         time = 0;
         lastFrameTime = 0;
-        // Ensure buffer exists
+        
         ensureBuffer(canvas.width || section.offsetWidth, canvas.height || section.offsetHeight);
         
-        // Register with centralized animation manager
+        
         unregisterAnim = registerAnimation((now) => {
             if (!isVisible) {
                 isAnimating = false;
@@ -311,35 +296,30 @@ export function initContactRain() {
 
         if (!w || !h || !isFinite(w) || !isFinite(h)) return;
 
-        // Choose drawing context: buffer or direct
+        
         const drawCtx = useBuffer ? bCtx : ctx;
         const dw = useBuffer ? buffer.width : w;
         const dh = useBuffer ? buffer.height : h;
 
-        // Clear
         drawCtx.clearRect(0, 0, dw, dh);
 
-        // 1. Draw rays
         drawRays(drawCtx, w, h);
 
-        // 2. Spawn particles
         spawnTimer += dt;
         if (spawnTimer >= PARTICLE_SPAWN_INTERVAL) {
             spawnTimer = 0;
             spawnParticle();
         }
 
-        // 3. Draw particles (with lifecycle)
         updateAndDrawParticles(drawCtx, w, h);
 
-        // 4. If using buffer, blit to main canvas scaled up
         if (useBuffer && buffer) {
             ctx.clearRect(0, 0, w, h);
             ctx.drawImage(buffer, 0, 0, w, h);
         }
     }
 
-    // Initial setup
+    
     setTimeout(() => {
         resize();
         if (isVisible && !isAnimating) startAnimation();

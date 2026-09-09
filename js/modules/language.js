@@ -1,18 +1,15 @@
-/**
- * File: language.js
- * Description: Language switching (EN/DE): applies translations to data-i18n elements and re-renders dynamic content.
- */
+/* ==========================================================================
+   FILE: js/modules/language.js
+   DESCRIPTION: Language switching (EN/DE): applies translations to data-i18n elements, toggles the language button, and refreshes the CV link.
+   ========================================================================== */
+
 import { translations } from '../constants/translations.js?v=2';
 import { cleanupRegistry } from '../utils/helpers.js';
 
 const STORAGE_KEY = 'portfolio-lang';
 const DEFAULT_LANG = 'en';
 
-/**
- * CV file paths per language
- * en -> CV_David_Zahn_EN.pdf (English)
- * de -> CV_David_Zahn_DE.pdf (German)
- */
+
 const CV_PATHS = {
     en: { href: 'assets/CV/CV_David_Zahn_EN.pdf', download: 'CV_David_Zahn_EN.pdf', aria: 'Download CV' },
     de: { href: 'assets/CV/CV_David_Zahn_DE.pdf', download: 'CV_David_Zahn_DE.pdf', aria: 'Lebenslauf herunterladen' }
@@ -20,14 +17,9 @@ const CV_PATHS = {
 
 let currentLang = DEFAULT_LANG;
 
-/**
- * Initialize language system
- * - Detects saved language or browser language
- * - Sets up the toggle button
- * - Caches translations for faster switching
- */
+
 export function initLanguage() {
-    // Try to load saved language
+    
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved && translations[saved]) {
         currentLang = saved;
@@ -35,24 +27,35 @@ export function initLanguage() {
         currentLang = DEFAULT_LANG;
     }
 
-    // Apply translations
+    
     applyLanguage(currentLang);
 
-    // Setup toggle button
+    
     setupToggle();
 }
 
-/**
- * Get current language code
- */
+
 export function getCurrentLang() {
     return currentLang;
 }
 
-/**
- * Update CV download link based on language
- * Swaps href and download attribute to serve the correct CV file
- */
+
+function renderLangButton(langBtn, lang) {
+    const nextLang = lang === 'en' ? 'de' : 'en';
+    const enActive = lang === 'en';
+    const deActive = lang === 'de';
+
+    langBtn.innerHTML =
+        '<i class="bx bx-globe" aria-hidden="true"></i>' +
+        '<span class="lang-opt' + (enActive ? ' active' : '') + '" data-lang="en">EN</span>' +
+        '<span class="lang-sep" aria-hidden="true">|</span>' +
+        '<span class="lang-opt' + (deActive ? ' active' : '') + '" data-lang="de">DE</span>';
+
+    langBtn.dataset.nextLang = nextLang;
+    langBtn.setAttribute('aria-label', `Switch to ${nextLang === 'en' ? 'English' : 'Deutsch'}`);
+}
+
+
 function updateCVDownloadLink(lang) {
     const cvLink = document.getElementById('cv-download-link');
     if (!cvLink) return;
@@ -65,9 +68,7 @@ function updateCVDownloadLink(lang) {
     cvLink.setAttribute('aria-label', cv.aria);
 }
 
-/**
- * Apply language to all elements with data-i18n attributes
- */
+
 function applyLanguage(lang) {
     const texts = translations[lang];
     if (!texts) {
@@ -75,7 +76,7 @@ function applyLanguage(lang) {
         return;
     }
 
-    // 1. Update all elements with data-i18n attribute
+    
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.dataset.i18n;
         if (texts[key]) {
@@ -83,7 +84,7 @@ function applyLanguage(lang) {
         }
     });
 
-    // 2. Update elements with data-i18n-placeholder
+    
     document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
         const key = el.dataset.i18nPlaceholder;
         if (texts[key]) {
@@ -91,7 +92,7 @@ function applyLanguage(lang) {
         }
     });
 
-    // 3. Update elements with data-i18n-alt
+    
     document.querySelectorAll('[data-i18n-alt]').forEach(el => {
         const key = el.dataset.i18nAlt;
         if (texts[key]) {
@@ -99,77 +100,64 @@ function applyLanguage(lang) {
         }
     });
 
-    // 4. Update language toggle button state
+    
     const langBtn = document.getElementById('lang-toggle');
     if (langBtn) {
-        const nextLang = lang === 'en' ? 'de' : 'en';
-        langBtn.textContent = texts[`lang-${nextLang}`];
-        langBtn.dataset.nextLang = nextLang;
-        langBtn.setAttribute('aria-label', `Switch to ${nextLang === 'en' ? 'English' : 'Deutsch'}`);
+        renderLangButton(langBtn, lang);
     }
 
-    // 5. Update CV download link based on language
+    
     updateCVDownloadLink(lang);
 
     currentLang = lang;
 
-    // Dispatch custom event for other modules to react
+    
     document.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
 }
 
-/**
- * Toggle between EN and DE
- */
+
 function toggleLanguage() {
     const nextLang = currentLang === 'en' ? 'de' : 'en';
     currentLang = nextLang;
     try {
         localStorage.setItem(STORAGE_KEY, nextLang);
     } catch (e) {
-        // localStorage might be full/disabled
+        
     }
     applyLanguage(nextLang);
 }
 
-/**
- * Create and setup the toggle button in the navbar
- */
+
 function setupToggle() {
-    // Check if button already exists
+    
     let langBtn = document.getElementById('lang-toggle');
     if (!langBtn) {
-        // Create button
+        
         langBtn = document.createElement('button');
         langBtn.id = 'lang-toggle';
         langBtn.className = 'lang-toggle-btn';
         langBtn.setAttribute('aria-label', 'Switch language');
         
-        // Find navbar and append
+        
         const navbar = document.querySelector('.navbar');
         if (navbar) {
             navbar.appendChild(langBtn);
         } else {
-            // Fallback: append to header
+            
             const header = document.querySelector('.header');
             if (header) {
                 header.appendChild(langBtn);
             } else {
-                // Last fallback: append to body
+                
                 document.body.appendChild(langBtn);
             }
         }
     }
 
-    // Set initial text
-    const texts = translations[currentLang];
-    if (texts) {
-        const nextLang = currentLang === 'en' ? 'de' : 'en';
-        langBtn.textContent = texts[`lang-${nextLang}`];
-        langBtn.dataset.nextLang = nextLang;
-        langBtn.setAttribute('aria-label', `Switch to ${nextLang === 'en' ? 'English' : 'Deutsch'}`);
-    }
+    
+    renderLangButton(langBtn, currentLang);
 
-    // Remove old listener to prevent duplicates, add new one
+    
     langBtn.removeEventListener('click', toggleLanguage);
     langBtn.addEventListener('click', toggleLanguage);
 }

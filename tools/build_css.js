@@ -1,35 +1,14 @@
-/**
- * File: tools/build_css.js
- * Description: Production CSS bundler for the portfolio.
- *
- *   Source CSS files  ->  dist/style.min.css
- *
- * Usage:
- *   node tools/build_css.js
- *   or
- *   npm run build_css
- *
- * What it does:
- *   - Concatenates every source CSS file in the EXACT load order used by index.html
- *     (preserves the cascade: main -> components -> responsive).
- *   - Minifies with a conservative, behavior-preserving state machine:
- *       * removes /* comments * / (never inside quoted strings)
- *       * collapses whitespace runs to a single space (never inside quoted strings)
- *       * removes whitespace at structurally safe token boundaries only.
- *       * DOES NOT collapse spaces around `+`/`-` inside calc() or between
- *         selector/list tokens, so every media query, keyframe, gradient and
- *         calc() expression stays valid and behaves identically.
- *   - Performs a brace-balance sanity check before writing the file.
- *
- * The original source files are never modified - this script only READS them.
- */
+/* ==========================================================================
+   FILE: tools/build_css.js
+   DESCRIPTION: Production CSS bundler that concatenates and minifies all source CSS files into dist/style.min.css.
+   ========================================================================== */
 
 const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 
-/* ---- Source order = the order currently used in index.html <head> ---- */
+
 const SOURCES = [
     'css/main.css',
     'css/components/navbar.css',
@@ -46,7 +25,7 @@ const SOURCES = [
 
 const OUTPUT_REL = path.join('dist', 'style.min.css');
 
-/* ---- Conservative CSS minifier (state machine) ---- */
+
 function minifyCss(input) {
     let out = '';
     let i = 0;
@@ -58,7 +37,7 @@ function minifyCss(input) {
     while (i < n) {
         const c = input[i];
 
-        // Strip /* * / comments (only outside strings). Keep /*! important comments.
+        
         if (c === '/' && input[i + 1] === '*') {
             const isImportant = input[i + 2] === '!';
             const end = (function () {
@@ -73,7 +52,7 @@ function minifyCss(input) {
             continue;
         }
 
-        // Copy quoted strings verbatim (escape sequences included)
+        
         if (c === '"' || c === "'") {
             const quote = c;
             let j = i + 1;
@@ -90,7 +69,7 @@ function minifyCss(input) {
             continue;
         }
 
-        // Whitespace: collapse runs, drop at safe boundaries
+        
         if (/\s/.test(c)) {
             let j = i;
             while (j < n && /\s/.test(input[j])) j++;
@@ -106,11 +85,11 @@ function minifyCss(input) {
             continue;
         }
 
-        // Drop trailing space before boundary tokens (incl. ')')
+        
         if (BOUNDARY_BEFORE.has(c) && out[out.length - 1] === ' ') {
             out = out.slice(0, -1);
         }
-        // Drop space right after '(' (never semantically required)
+        
         if (c === '(' && out[out.length - 1] === ' ') {
             out = out.slice(0, -1);
         }
@@ -122,7 +101,7 @@ function minifyCss(input) {
     return out.trim();
 }
 
-/* ---- Brace balance sanity check ---- */
+
 function checkBalance(css) {
     let depth = 0;
     for (const ch of css) {
@@ -133,7 +112,7 @@ function checkBalance(css) {
     return depth === 0;
 }
 
-/* ---- Build ---- */
+
 function main() {
     let combined = '';
     for (const rel of SOURCES) {

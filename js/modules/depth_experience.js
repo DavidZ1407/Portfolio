@@ -1,21 +1,21 @@
-/**
- * File: depth_experience.js
- * Description: Depth experience controller: fog/vignette intensity based on scroll depth.
- */
+/* ==========================================================================
+   FILE: js/modules/depth_experience.js
+   DESCRIPTION: Depth experience controller that adjusts fog and vignette intensity based on scroll depth.
+   ========================================================================== */
+
 import { initUnifiedParticles } from './unified_particles.js?v=2';
 
 export function initDepthExperience() {
-    // ONE shared particle system (merges both old systems):
-    // back (z3: fish + parallax particles/bubbles) + front (z7: depth)
-    // particles/bubbles are drawn in ONE registerAnimation loop in
-    // unified-particles.js (Firefox performance, item 1).
+    
+    
+    
+    
     initUnifiedParticles();
     createFogOverlay();
     createVignette();
     initScrollHandlers();
 }
 
-/* FOG OVERLAY */
 function createFogOverlay() {
     const fog = document.createElement('div');
     fog.className = 'depth-fog-overlay';
@@ -31,14 +31,12 @@ function createFogOverlay() {
     document.body.appendChild(fog);
 }
 
-/* VIGNETTE */
 function createVignette() {
     const vignette = document.createElement('div');
     vignette.className = 'depth-vignette';
     document.body.appendChild(vignette);
 }
 
-/* SCROLL HANDLERS */
 function initScrollHandlers() {
     let lastScrollPercent = 0;
     let ticking = false;
@@ -46,14 +44,14 @@ function initScrollHandlers() {
     const fog = document.querySelector('.depth-fog-overlay');
     const vignette = document.querySelector('.depth-vignette');
 
-/* ---- Scroll strength (normalized 0..1) - thresholds & ramps ---- */
-    const FOG_ACTIVE_AT = 0.02;       // fog becomes visible from this progress on
-    const FOG_FULL_AT = 0.62;         // (0.02 + 0.6) fog is fully on from here
-    const VIGNETTE_ACTIVE_AT = 0.03;  // vignette becomes visible from this progress on
-    const VIGNETTE_FULL_AT = 0.35;    // (0.03 + 0.32) vignette is fully on from here
+
+    const FOG_ACTIVE_AT = 0.02;       
+    const FOG_FULL_AT = 0.62;         
+    const VIGNETTE_ACTIVE_AT = 0.03;  
+    const VIGNETTE_FULL_AT = 0.35;    
     const FOG_MAX_OPACITY = 0.7;
-    const BODY_BLUE_BASE = 9;         // blue base value of the background gradient
-    const BODY_BLUE_RANGE = 30;       // increase per 1.0 scroll progress
+    const BODY_BLUE_BASE = 9;         
+    const BODY_BLUE_RANGE = 30;       
 
     function onScroll() {
         if (!ticking) {

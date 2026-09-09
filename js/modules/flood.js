@@ -1,7 +1,8 @@
-/**
- * File: flood.js
- * Description: Canvas water flood effect with rising liquid fill and splash details.
- */
+/* ==========================================================================
+   FILE: js/modules/flood.js
+   DESCRIPTION: Canvas water flood effect with rising liquid fill and splash details.
+   ========================================================================== */
+
 import { registerAnimation } from '../utils/animation_manager.js';
 import { sizeCanvas, getCanvasQuality, debounce } from '../utils/helpers.js';
 import { MAX_FRAME_DELTA_SECONDS, INTERSECTION_THRESHOLD, TWO_PI, DEBOUNCE_DELAY_MS } from '../constants/ui.js';
@@ -35,21 +36,21 @@ export function initFlood() {
     let time = 0;
     let isAnimating = false;
 
-    /* ---- Large viewport low-res buffering (2056px+) ---- */
+    
     const { scale: SCALE } = getCanvasQuality();
 
     function resize() {
         const w = section.offsetWidth;
         const h = section.offsetHeight;
-        // Cap backing store at 2560px to prevent explosion on large viewports
+        
         const result = sizeCanvas(canvas, w, h);
         canvas.style.width = w + 'px';
         canvas.style.height = h + 'px';
     }
     resize();
-    // Debounce resize: mobile browsers fire rapid resize events when the
-    // URL bar shows/hides, and each handler run reads offsetWidth/offsetHeight
-    // (forced layout). Debouncing collapses that storm into one resize.
+    
+    
+    
     const debouncedResize = debounce(resize, DEBOUNCE_DELAY_MS);
     window.addEventListener('resize', debouncedResize);
 
@@ -67,7 +68,7 @@ export function initFlood() {
 
     function initParticles() {
         particles = [];
-        for (let i = 0; i < 30; i++) { // Reduced from 50
+        for (let i = 0; i < 30; i++) { 
             particles.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
@@ -92,7 +93,7 @@ export function initFlood() {
         const waterTop = h - waterH;
         if (waterH <= 2) return;
 
-        // Water gradient
+        
         const grad = ctx.createLinearGradient(0, waterTop, 0, h);
         grad.addColorStop(0, 'rgba(10, 22, 40, 0.15)');
         grad.addColorStop(0.2, 'rgba(10, 22, 40, 0.45)');
@@ -103,7 +104,7 @@ export function initFlood() {
         ctx.fillStyle = grad;
         ctx.fillRect(0, waterTop, w, waterH);
 
-        // Wave line
+        
         ctx.beginPath();
         ctx.moveTo(0, waterTop);
         for (let x = 0; x <= w; x += 4) {
@@ -116,7 +117,7 @@ export function initFlood() {
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        // Bubbles - larger and with glow
+        
         particles.forEach(p => {
             p.wobble += p.wobbleSpeed;
             p.y -= p.speed;
@@ -126,26 +127,26 @@ export function initFlood() {
             if (p.y >= waterTop && p.opacity > 0.05) {
                 const alpha = p.opacity * waterLevel;
 
-                // Glow halo (no shadowBlur - use a large semi-transparent circle instead)
+                
                 ctx.fillStyle = `rgba(73, 146, 154, ${alpha * 0.08})`;
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.r + p.glow, 0, TWO_PI);
                 ctx.fill();
 
-                // Outer rim
+                
                 ctx.fillStyle = `rgba(73, 146, 154, ${alpha * 0.15})`;
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.r, 0, TWO_PI);
                 ctx.fill();
 
-                // Bright outline
+                
                 ctx.strokeStyle = `rgba(150, 220, 220, ${alpha * 0.8})`;
                 ctx.lineWidth = 1.5;
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.r, 0, TWO_PI);
                 ctx.stroke();
 
-                // Highlight spot
+                
                 ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.5})`;
                 ctx.beginPath();
                 ctx.arc(p.x - p.r * 0.3, p.y - p.r * 0.3, p.r * 0.3, 0, TWO_PI);
@@ -168,7 +169,7 @@ export function initFlood() {
         
     }
 
-    // Only animate when section is visible
+    
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting && !isAnimating) {
@@ -186,9 +187,9 @@ export function initFlood() {
     }, { threshold: INTERSECTION_THRESHOLD });
     observer.observe(section);
 
-    // rAF-throttle the scroll handler: updateWater() calls
-    // getBoundingClientRect() which forces layout, so it must not run on
-    // every scroll event (mobile fires them at high frequency).
+    
+    
+    
     let scrollTicking = false;
     function onScroll() {
         if (scrollTicking) return;

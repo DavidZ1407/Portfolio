@@ -1,14 +1,15 @@
-/**
- * File: water_subtitle.js
- * Description: WebGL water-effect canvas rendering the cycling, localized subtitle text in the hero.
- */
+/* ==========================================================================
+   FILE: js/modules/water_subtitle.js
+   DESCRIPTION: WebGL water-effect canvas rendering the cycling, localized subtitle text in the hero.
+   ========================================================================== */
+
 import { translations } from '../constants/translations.js?v=2';
 import { getCurrentLang } from './language.js';
 import { cleanupRegistry, waitForFont } from '../utils/helpers.js';
 import { isModalResumeStagger } from '../utils/modal_resume.js?v=2';
 import { INTERSECTION_THRESHOLD } from '../constants/ui.js';
 
-/* Cycling terms displayed (EN/DE via translations.js). */
+
 const SUBTITLE_KEYS = [
     'home-subtitle-cycle-1',
     'home-subtitle-cycle-2',
@@ -17,13 +18,13 @@ const SUBTITLE_KEYS = [
     'home-subtitle-cycle-5',
 ];
 
-/* Canvas size of the cycling subtitle text (px). */
+
 const SUBTITLE_CANVAS_WIDTH = 520;
 const SUBTITLE_CANVAS_HEIGHT = 65;
 
-// Full CSS font shorthand used for the subtitle texture. Shared by the canvas
-// rasterizer and the font-loading wait, so the waiter always targets the exact
-// same face (and the sample text matches the uppercase cycling terms).
+
+
+
 const SUBTITLE_FONT = 'bold 48px Cinzel, serif';
 
 function getSubtitles(lang) {
@@ -31,7 +32,7 @@ function getSubtitles(lang) {
     return SUBTITLE_KEYS.map(key => texts[key] || translations.en[key]);
 }
 
-// Reuse the same shaders from water-logo (slightly adapted for smaller text)
+
 const vertSrc = `#version 300 es
 in vec2 aPosition;
 in vec2 aTexcoord;
@@ -52,13 +53,13 @@ out vec4 fragColor;
 void main() {
     vec2 uv = vTexcoord;
 
-    // Water base colors
+    
     vec3 deepBlue = vec3(0.0, 0.05, 0.2);
     vec3 midWater = vec3(0.0, 0.25, 0.45);
     vec3 shallowWater = vec3(0.05, 0.55, 0.65);
     vec3 foamColor = vec3(0.7, 0.9, 0.95);
 
-    // Water UV distortion
+    
     float wave1 = sin(uv.x * 40.0 + uTime * 1.8) * cos(uv.y * 35.0 + uTime * 1.2);
     float wave2 = sin(uv.x * 60.0 + uv.y * 50.0 + uTime * 2.5);
     float wave3 = cos(uv.x * 25.0 - uv.y * 30.0 + uTime * 1.0);
@@ -70,7 +71,7 @@ void main() {
         wave3 * distortStrength + wave4 * distortStrength * 0.5
     );
 
-    // Waves for water color
+    
     float dWave1 = sin(waterUV.x * 40.0 + uTime * 1.8) * cos(waterUV.y * 35.0 + uTime * 1.2);
     float dWave2 = sin(waterUV.x * 55.0 + waterUV.y * 45.0 + uTime * 2.5);
     float dWave3 = cos(waterUV.x * 20.0 - waterUV.y * 25.0 + uTime * 1.0);
@@ -79,26 +80,26 @@ void main() {
     float combinedWaves = dWave1 * 0.35 + dWave2 * 0.3 + dWave3 * 0.2 + dWave4 * 0.15;
     float waveHeight = combinedWaves * 0.5 + 0.5;
 
-    // Water color
+    
     vec3 waterColor = mix(deepBlue, midWater, waveHeight * 1.3);
     waterColor = mix(waterColor, shallowWater, max(0.0, waveHeight * 1.5 - 0.5));
 
-    // Foam
+    
     float foam = smoothstep(0.6, 0.95, waveHeight);
     foam += smoothstep(0.65, 1.0, abs(dWave1 * 0.5 + 0.5)) * 0.25;
     waterColor = mix(waterColor, foamColor, foam * 0.4);
 
-    // Specular shimmer
+    
     float shimmer = sin(waterUV.x * 100.0 + waterUV.y * 80.0 + uTime * 5.0) * 0.5 + 0.5;
     float spec = shimmer * 0.35;
     waterColor += spec * vec3(1.0, 0.95, 0.8) * 0.4;
 
-    // Caustics
+    
     float caustic1 = sin(waterUV.x * 25.0 + waterUV.y * 15.0 + uTime * 2.0);
     float caustic2 = sin(waterUV.x * 35.0 - waterUV.y * 20.0 + uTime * 1.5);
     float caustic = caustic1 * caustic2 * 0.5 + 0.5;
 
-    // Text texture - minimal distortion for readability
+    
     float textDistort = 0.003;
     vec2 textUV = uv + vec2(
         wave1 * textDistort + wave2 * textDistort * 0.3,
@@ -122,7 +123,7 @@ function createTextCanvas(text, w, h) {
     c.height = h;
     const ctx = c.getContext('2d');
     ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = '#c9a861'; // gold text, matching the site's accent color
+    ctx.fillStyle = '#c9a861'; 
     ctx.font = SUBTITLE_FONT;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -134,32 +135,32 @@ export function initWaterSubtitle() {
     const heroContent = document.querySelector('.hero_content');
     if (!heroContent) return;
 
-    // Translated cycling terms in the current language
-    const SUBTITLES = getSubtitles(getCurrentLang());
+    
+    let SUBTITLES = getSubtitles(getCurrentLang());
 
-    // Remove old h2 if it exists (AETHERTECH)
+    
     const oldH2 = heroContent.querySelector('h2');
     if (oldH2) {
         oldH2.style.display = 'none';
     }
 
-    // ==============================================
-    // 1. "I am" - BEFORE David Zahn
-    // ==============================================
+    
+    
+    
     const iAmText = document.createElement('p');
     iAmText.className = 'hero_i_am';
     iAmText.textContent = translations[getCurrentLang()]['home-i-am'] || 'I am';
 
-    // ==============================================
-    // 2. "studying Games & Immersive Media ..." - AFTER David Zahn
-    // ==============================================
+    
+    
+    
     const studyingText = document.createElement('p');
     studyingText.className = 'hero_studying';
     studyingText.textContent = translations[getCurrentLang()]['home-studying'] || 'studying Games & Immersive Media at HFU Furtwangen. My interest lies in:';
 
-    // ==============================================
-    // 3. CYCLING WATER TEXT
-    // ==============================================
+    
+    
+    
     const container = document.createElement('div');
     container.className = 'water-subtitle-container';
 
@@ -172,24 +173,24 @@ export function initWaterSubtitle() {
 
     container.appendChild(canvas);
 
-    // Insert into DOM in correct order:
-    // "I am" -> water-text-container (DAVID ZAHN) -> "studying..." -> cycling subtitle
+    
+    
     const waterContainer = heroContent.querySelector('.water-text-container');
     const insertAfter = waterContainer || heroContent.querySelector('h1');
 
     if (waterContainer) {
-        // Insert "I am" before waterContainer
+        
         heroContent.insertBefore(iAmText, waterContainer);
-        // Insert "studying..." after waterContainer
+        
         waterContainer.after(studyingText);
-        // Insert cycling subtitle after "studying..."
+        
         studyingText.after(container);
     } else if (insertAfter) {
-        // Insert "I am" before h1
+        
         heroContent.insertBefore(iAmText, insertAfter);
-        // Insert "studying..." after h1
+        
         insertAfter.after(studyingText);
-        // Insert cycling subtitle after "studying..."
+        
         studyingText.after(container);
     } else {
         heroContent.appendChild(iAmText);
@@ -197,9 +198,9 @@ export function initWaterSubtitle() {
         heroContent.appendChild(container);
     }
 
-    // ==============================================
-    // WebGL setup
-    // ==============================================
+    
+    
+    
     const gl = canvas.getContext('webgl2', { alpha: true, premultipliedAlpha: false });
     if (!gl) {
         console.warn('[water-subtitle] WebGL2 not supported');
@@ -209,9 +210,9 @@ export function initWaterSubtitle() {
         return;
     }
 
-    // Handle context loss: the browser may reclaim the WebGL context under
-    // memory pressure (especially on mobile). Prevent default to allow
-    // restoration, then fall back to the static text elements.
+    
+    
+    
     canvas.addEventListener('webglcontextlost', (event) => {
         event.preventDefault();
         console.warn('[water-subtitle] WebGL context lost - falling back to static text.');
@@ -260,7 +261,7 @@ export function initWaterSubtitle() {
     gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 16, 0);
     gl.vertexAttribPointer(aTex, 2, gl.FLOAT, false, 16, 8);
 
-    // Text texture - initial
+    
     let currentIndex = 0;
     const textCanvas = createTextCanvas(SUBTITLES[currentIndex], textWidth, textHeight);
     const tex = gl.createTexture();
@@ -271,10 +272,10 @@ export function initWaterSubtitle() {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 
-    // The Google Font arrives asynchronously - the initial texture may have
-    // been rasterized with the fallback serif face. Await it once and reuse the
-    // promise, so every later texture upload is redrawn with Cinzel exactly
-    // once (never repeatedly, once the face has arrived or failed permanently).
+    
+    
+    
+    
     const fontReadyPromise = waitForFont(SUBTITLE_FONT);
     let textureHasCinzel = false;
     function redrawTextureWithCinzel(text) {
@@ -284,9 +285,9 @@ export function initWaterSubtitle() {
             const freshCanvas = createTextCanvas(text, textWidth, textHeight);
             gl.bindTexture(gl.TEXTURE_2D, tex);
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, freshCanvas);
-            // Stop retrying once the face was applied (or is confirmed unusable).
+            
             textureHasCinzel = true;
-        }).catch(() => { textureHasCinzel = true; /* font permanently unavailable - keep fallback glyphs */ });
+        }).catch(() => { textureHasCinzel = true;  });
     }
 
     const uTime = gl.getUniformLocation(prog, 'uTime');
@@ -295,7 +296,7 @@ export function initWaterSubtitle() {
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
-    // Cycling logic
+    
     const CYCLE_INTERVAL = 3500;
     const FADE_DURATION = 600;
     let fadeState = 'show';
@@ -305,8 +306,8 @@ export function initWaterSubtitle() {
         const newCanvas = createTextCanvas(newText, textWidth, textHeight);
         gl.bindTexture(gl.TEXTURE_2D, tex);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, newCanvas);
-        // If the Cinzel face has not arrived yet, exchange the just-drawn
-        // fallback glyphs in-place once it does (only once per session).
+        
+        
         redrawTextureWithCinzel(newText);
     }
 
@@ -318,9 +319,9 @@ export function initWaterSubtitle() {
 
     function render() {
         if (!isActive) return;
-        // Item 4: skip WebGL render while the subtitle is off-screen
+        
         if (!isVisible) { animFrame = requestAnimationFrame(render); return; }
-        // Skip drawing while the project modal covers the hero (no visual benefit).
+        
         if (document.body.classList.contains('modal-open') || isModalResumeStagger(4)) { animFrame = requestAnimationFrame(render); return; }
         const t = (performance.now() - startTime) / 1000.0;
         const now = performance.now();
@@ -362,11 +363,25 @@ export function initWaterSubtitle() {
 
     animFrame = requestAnimationFrame(render);
 
-    // Redraw the initial texture once Cinzel becomes available (the first draw
-    // may have used the fallback serif, and canvas textures never re-render).
+    function updateLanguage() {
+        const lang = getCurrentLang();
+        SUBTITLES = getSubtitles(lang);
+        if (currentIndex >= SUBTITLES.length) currentIndex = 0;
+        if (iAmText) iAmText.textContent = translations[lang]['home-i-am'] || 'I am';
+        if (studyingText) studyingText.textContent = translations[lang]['home-studying'] || 'studying Games & Immersive Media at HFU Furtwangen. My interest lies in:';
+        updateTexture(SUBTITLES[currentIndex]);
+        fadeState = 'show';
+        fadeProgress = 1;
+        lastCycleTime = performance.now();
+    }
+
+    document.addEventListener('languageChanged', updateLanguage);
+
+    
+    
     redrawTextureWithCinzel(SUBTITLES[currentIndex]);
 
-    // Item 4: pause when not visible (like particle-rain.js)
+    
     const heroObserver = new IntersectionObserver((entries) => {
         isVisible = entries[0].isIntersecting;
     }, { threshold: INTERSECTION_THRESHOLD });
@@ -380,6 +395,7 @@ export function initWaterSubtitle() {
         iAmText.remove();
         studyingText.remove();
         if (oldH2) oldH2.style.display = '';
+        document.removeEventListener('languageChanged', updateLanguage);
         gl.deleteProgram(prog);
         gl.deleteShader(vs);
         gl.deleteShader(fs);

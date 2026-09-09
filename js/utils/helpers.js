@@ -1,21 +1,14 @@
-// File: helpers.js
-// Description: Shared utilities: debounce/throttle, canvas sizing/quality helpers, and a cleanup registry for animations.
-
+/* ==========================================================================
+   FILE: js/utils/helpers.js
+   DESCRIPTION: Shared utilities: debounce/throttle, canvas sizing and quality helpers, font loading, and a cleanup registry for animations.
+   ========================================================================== */
 
 import { CANVAS_BACKING_MAX_WIDTH, DEBOUNCE_DELAY_MS, THROTTLE_INTERVAL_MS, LARGE_BREAKPOINT_PX, XLARGE_BREAKPOINT_PX } from '../constants/ui.js';
 
-// SHARED UTILITY HELPERS
-// Minimum distance (px) for a horizontal gesture to count as a swipe
+
 const SWIPE_THRESHOLD_PX = 60;
 
-/**
- * Viewport-based quality tier for canvas effects.
- * On large viewports (2056px+) low-resolution buffering is used,
- * on extra-large ones (3000px+) reduced even further (performance).
- *
- * @returns {{ isLarge: boolean, isXLarge: boolean, scale: number }}
- *   scale = internal render scale (< 1 on large viewports, otherwise 1).
- */
+
 export function getCanvasQuality() {
     const vw = window.innerWidth;
     const isLarge = vw >= LARGE_BREAKPOINT_PX;
@@ -24,14 +17,7 @@ export function getCanvasQuality() {
     return { isLarge, isXLarge, scale };
 }
 
-/**
- *
- * @param {Element} el - 
- * @param {Function} onSwipeNext 
- * @param {Function} onSwipePrev 
- * @param {Function} [onSwipeDone] 
- * @returns {Function} 
- */
+
 export function bindHorizontalSwipe(el, onSwipeNext, onSwipePrev, onSwipeDone) {
     if (!el || typeof el.addEventListener !== 'function') return () => {};
     let startX = 0;
@@ -45,7 +31,7 @@ export function bindHorizontalSwipe(el, onSwipeNext, onSwipePrev, onSwipeDone) {
         swiping = true;
     };
 
-    // Horizontal swipe detection (vertical swipes are ignored)
+    
     const onTouchEnd = (e) => {
         if (!swiping) return;
         swiping = false;
@@ -69,12 +55,7 @@ export function bindHorizontalSwipe(el, onSwipeNext, onSwipePrev, onSwipeDone) {
     };
 }
 
-/**
- * Creates a debounced version of a function
- * @param {Function} fn - Function to debounce
- * @param {number} delay - Delay in ms
- * @returns {Function} Debounced function
- */
+
 export function debounce(fn, delay = DEBOUNCE_DELAY_MS) {
     let timer = null;
     return function (...args) {
@@ -86,12 +67,7 @@ export function debounce(fn, delay = DEBOUNCE_DELAY_MS) {
     };
 }
 
-/**
- * Throttle a function (runs at most once per interval)
- * @param {Function} fn - Function to throttle
- * @param {number} interval - Minimum interval in ms
- * @returns {Function} Throttled function
- */
+
 export function throttle(fn, interval = THROTTLE_INTERVAL_MS) {
     let lastCall = 0;
     return function (...args) {
@@ -103,15 +79,7 @@ export function throttle(fn, interval = THROTTLE_INTERVAL_MS) {
     };
 }
 
-/**
- * Optimized canvas sizing for performance
- * Caps backing store at maxWidth to prevent explosion on large viewports
- * @param {HTMLCanvasElement} canvas - Canvas element to size
- * @param {number} logicalWidth - Logical CSS width
- * @param {number} logicalHeight - Logical CSS height
- * @param {number} maxWidth - Maximum backing store width (default 2560)
- * @returns {{width: number, height: number}} Actual backing store dimensions
- */
+
 export function sizeCanvas(canvas, logicalWidth, logicalHeight, maxWidth = CANVAS_BACKING_MAX_WIDTH) {
     const scale = Math.min(1, maxWidth / Math.max(logicalWidth, 1));
     const width = Math.max(1, Math.ceil(logicalWidth * scale));
@@ -121,48 +89,36 @@ export function sizeCanvas(canvas, logicalWidth, logicalHeight, maxWidth = CANVA
     return { width, height, scale };
 }
 
-/**
- * Centralized cleanup registry
- * Allows modules to register cleanup callbacks that will be called on page unload
- */
+
 class CleanupRegistry {
     constructor() {
         this.cleanups = [];
         this._boundCleanup = null;
     }
 
-    /**
-     * Register a cleanup function
-     * @param {Function} fn - Cleanup function
-     */
+    
     register(fn) {
         if (typeof fn === 'function') {
             this.cleanups.push(fn);
         }
     }
 
-    /**
-     * Run all registered cleanup functions
-     */
+    
     runAll() {
         this.cleanups.forEach(fn => {
-            try { fn(); } catch (e) { /* ignore cleanup errors */ }
+            try { fn(); } catch (e) {  }
         });
         this.cleanups = [];
     }
 
-    /**
-     * Bind cleanup to beforeunload event
-     */
+    
     bind() {
         if (this._boundCleanup) return;
         this._boundCleanup = () => this.runAll();
         window.addEventListener('beforeunload', this._boundCleanup);
     }
 
-    /**
-     * Unbind cleanup from beforeunload
-     */
+    
     unbind() {
         if (this._boundCleanup) {
             window.removeEventListener('beforeunload', this._boundCleanup);
@@ -171,15 +127,10 @@ class CleanupRegistry {
     }
 }
 
-// Singleton instance
+
 export const cleanupRegistry = new CleanupRegistry();
 
-/**
- * Safely query a DOM element with error handling
- * @param {string} selector - CSS selector
- * @param {Element} [context=document] - Context element
- * @returns {Element|null} The element or null
- */
+
 export function safeQuerySelector(selector, context = document) {
     try {
         return context.querySelector(selector);
@@ -189,12 +140,7 @@ export function safeQuerySelector(selector, context = document) {
     }
 }
 
-/**
- * Safely query all DOM elements with error handling
- * @param {string} selector - CSS selector
- * @param {Element} [context=document] - Context element
- * @returns {NodeList|Array} The elements or empty array
- */
+
 export function safeQuerySelectorAll(selector, context = document) {
     try {
         return context.querySelectorAll(selector);
@@ -204,12 +150,7 @@ export function safeQuerySelectorAll(selector, context = document) {
     }
 }
 
-/**
- * Get element or throw with descriptive message (for critical elements)
- * @param {string} selector - CSS selector
- * @param {string} [name] - Element name for error message
- * @returns {Element}
- */
+
 export function requireElement(selector, name = selector) {
     const el = document.querySelector(selector);
     if (!el) {
@@ -218,42 +159,30 @@ export function requireElement(selector, name = selector) {
     return el;
 }
 
-/**
- * Resolves once the given CSS font (as used in canvas 2d fillText) is ready,
- * so text textures are never rasterized with the fallback typeface.
- *
- * The web fonts are loaded asynchronously via Google Fonts. Drawing canvas
- * text before the font arrived silently uses the fallback font and, once the
- * text is baked into a WebGL texture, keeps the wrong glyphs for the whole
- * session (no automatic redraw). This waits for the actual FontFaceSet load
- * instead of using a blind timeout.
- *
- * @param {string} [font] - Full CSS font shorthand as used by ctx.font (e.g. 'bold 48px Cinzel, serif')
- * @returns {Promise<void>} Resolves when the font is available or unusable.
- */
+
 export function waitForFont(font = '') {
-    // Fast path: canvas already (or not) loaded - resolve on the next task so
-    // callers behave consistently without blocking.
+    
+    
     const resolveSoon = () => Promise.resolve();
 
     if (typeof document === 'undefined' || !document.fonts) return resolveSoon();
     if (!document.fonts.load) return resolveSoon();
 
     try {
-        // Pull the first font-family token (the token right before ", serif",
-        // ", sans-serif" or the end) so we only wait for the actual face.
+        
+        
         const family = (font.split(',')[0] || '').trim().replace(/^['"]|['"]$/g, '');
         if (!family) return resolveSoon();
 
-        // If the face is already loaded (or blocked/unsupported), the load call
-        // resolves quickly - no artificial delay for something we already have.
-        return document.fonts.load(font, /* text */ 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789').then(() => {
-            // Everything is already current: nothing more to do.
+        
+        
+        return document.fonts.load(font,  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789').then(() => {
+            
             return undefined;
         }).catch(() => {
-            // FontFaceSet.load rejects on permanent failures (network blacklist,
-            // bad font file). Fall back to awaiting the global ready promise so
-            // we still line up with the browser's own font pipeline.
+            
+            
+            
             const ready = document.fonts.ready;
             if (ready && ready.then) return ready.then(() => undefined);
             return undefined;

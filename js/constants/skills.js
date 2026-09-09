@@ -1,7 +1,8 @@
-/**
- * File: skills.js
- * Description: Skill registry: skill definitions, inline SVG icons, and labels used across hero and modal.
- */
+/* ==========================================================================
+   FILE: js/constants/skills.js
+   DESCRIPTION: Skill definitions with inline SVG logos or Boxicons glyphs and i18n labels used across the hero and about grids.
+   ========================================================================== */
+
 export const skills = [
     {
         id: 'blender',
@@ -23,7 +24,7 @@ export const skills = [
         id: 'csharp',
         name: 'C#',
         i18n: 'skill-csharp',
-        /* Visual Studio logo - common symbol for C# */
+        
         icon: 'bxl-visual-studio',
         toolAliases: ['c#']
     },
@@ -39,7 +40,7 @@ export const skills = [
         id: 'web',
         name: 'HTML / CSS / JavaScript',
         i18n: 'skill-web',
-        /* JavaScript logo as a recognizable symbol for the web trio */
+        
         icon: 'bxl-javascript',
         toolAliases: ['html', 'css', 'javascript', 'html/css']
     },
@@ -70,17 +71,13 @@ export const skills = [
         id: 'fmod',
         name: 'FMOD',
         i18n: 'skill-fmod',
-        /* No brand logo available - fitting audio icon */
+        
         icon: 'bx-headphone',
         toolAliases: ['fmod']
     }
 ];
 
-/* ---- Icon renderer: brand SVG (logo) or Boxicons glyph (icon) ----
-   The <i> keeps all existing CSS rules (.skill_item i,
-   .skill_item_box i, .modal_skill_tag i incl. breakpoints); the SVG
-   scales at 1em along with the font-size and inherits its color via
-   currentColor. */
+
 export function skillIconHtml(skill) {
     if (skill.logo) {
         return `<i class='skill_icon_svg'><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="${skill.logo}"/></svg></i>`;

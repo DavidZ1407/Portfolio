@@ -1,7 +1,8 @@
-/**
- * File: parallax.js
- * Description: Scroll-driven parallax background: layer transforms, underwater transitions, and ambient elements.
- */
+/* ==========================================================================
+   FILE: js/modules/parallax.js
+   DESCRIPTION: Scroll-driven parallax background: layer transforms, underwater transitions, and ambient elements.
+   ========================================================================== */
+
 let parallaxRafId = null;
 let parallaxRunning = false;
 
@@ -17,10 +18,10 @@ export function initParallax() {
     const UNDERWATER_THRESHOLD = 0.3;
     const CASTLE_THRESHOLD = 0.5;
 
-    const WATER_SURFACE_WINDOW = 0.1;   // +0.1 above the threshold
-    const WATER_SURFACE_LEAD = 0.05;    // water surface appears slightly before the transition
-    const LERP_SMOOTHING = 0.08;        // easing factor of the scroll approach
-    const SNAP_EPSILON = 0.5;           // distance (px) at which the approach snaps
+    const WATER_SURFACE_WINDOW = 0.1;   
+    const WATER_SURFACE_LEAD = 0.05;    
+    const LERP_SMOOTHING = 0.08;        
+    const SNAP_EPSILON = 0.5;           
 
     let currentScroll = 0;
     let targetScroll = 0;
@@ -37,7 +38,7 @@ export function initParallax() {
 
     updateMaxScroll();
 
-    /* ---- LOOP: Parallax (scroll-only) ---- */
+    
     function updateParallax() {
         const diff = targetScroll - currentScroll;
 

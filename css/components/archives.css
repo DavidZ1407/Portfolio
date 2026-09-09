@@ -1,7 +1,8 @@
-/* ==========================================
- * File: archives.css
- * Description: Archives/projects section with 3D portal carousel, underwater atmosphere, light rays, caustics, bubbles, and skill-project highlighting.
- * ========================================== */
+/* ==========================================================================
+   FILE: css/components/archives.css
+   DESCRIPTION: Archives section with the 3D portal carousel, underwater atmosphere, and skill-project highlighting.
+   ========================================================================== */
+
 .archives_section {
     padding: 140px 5% 100px;
     background: 
@@ -26,7 +27,25 @@
     z-index: 5;
 }
 
-/* UNDERWATER ATMOSPHERE */
+
+.archives_section::after {
+    content: '';
+    position: absolute;
+    top: -180px;
+    left: 0;
+    width: 100%;
+    height: 300px;
+    background: linear-gradient(to bottom,
+        transparent 0%,
+        var(--abyss-deep) 40%,
+        var(--abyss-deep) 60%,
+        transparent 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+}
+
+
 .portal-room-atmosphere {
     position: absolute;
     inset: 0;
@@ -93,7 +112,6 @@
     height: 100%;
 }
 
-/* SECTION TITLE */
 .archives_section .section_title {
     position: relative;
     z-index: 3;
@@ -105,7 +123,7 @@
     margin-bottom: 30px;
 }
 
-/* MAIN-PAGE CATEGORY TABS (register above the portal) */
+
 .main-cat-tabs {
     display: flex;
     flex-wrap: wrap;
@@ -150,7 +168,7 @@
     -webkit-filter: url(#water_distort_hover);
 }
 
-/* 3D PORTAL CAROUSEL */
+
 .portal-carousel {
     position: relative;
     width: 100%;
@@ -168,7 +186,7 @@
     50% { transform: translateY(-8px); }
 }
 
-/* PORTAL SLIDE */
+
 .portal-slide {
     position: absolute;
     left: 50%;
@@ -177,12 +195,11 @@
     height: 400px;
     margin-left: -160px;
     margin-top: -200px;
-    /* No dark box background: only the circular water shape (vortex canvas)
-       and, if needed, the revealed image are visible */
+    
     overflow: hidden;
     cursor: pointer;
     transform-style: preserve-3d;
-    /* Only transition transform + opacity - box-shadow transitions cause jitter */
+    
     transition: transform 1.2s cubic-bezier(0.25, 0.1, 0.25, 1),
                 opacity 0.8s cubic-bezier(0.25, 0.1, 0.25, 1),
                 z-index 0s;
@@ -190,8 +207,7 @@
     will-change: transform, opacity;
 }
 
-/* Portal aura: one soft glow behind image + text so both zones read as a
-   single organic portal silhouette (fades out before any card edge) */
+
 .portal-slide::before {
     content: '';
     position: absolute;
@@ -204,17 +220,7 @@
     pointer-events: none;
 }
 
-/* Shared masked box: holds the <img> AND the vortex canvas (appended by
-   portal.js). Applying the mask here - once, to the shared parent - fades
-   both layers to transparent at the exact same edge, so no rectangular
-   canvas/image boundary is ever visible, whether the portal is open or
-   closed. Position/size = the former .portal-slide img geometry. The box is
-   sized slightly larger than the old image frame so more of the cover shows
-   inside the portal; the bottom reaches into the slide-overlay zone (its
-   scrim sits above the canvas there).
-   Ellipse = half the box and "transparent" stop < 100%: alpha must reach 0
-   AT the box mid-edges, otherwise the canvas is clipped mid-fade and a faint
-   rectangular edge stays visible. */
+
 .portal-visual {
     position: absolute;
     top: 2%;
@@ -238,13 +244,13 @@
     transition: filter 0.9s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* Show the full cover uncropped - e.g. the Gothica Solaris start screen with its logo */
+
 .portal-slide img.fit-contain {
     object-fit: contain;
     background: radial-gradient(circle at 50% 45%, rgba(10, 30, 45, 0.55) 0%, rgba(3, 8, 9, 0.9) 100%);
 }
 
-/* ---- CENTER POSITION ---- */
+
 .portal-slide.pos-center {
     transform: translateX(0) translateZ(100px) scale(1.12);
     z-index: 10;
@@ -254,9 +260,9 @@
     filter: grayscale(10%) brightness(0.9) saturate(1.1);
 }
 
-/* 3D MOUSE TILT EFFECT (on center slide) */
 
-/* Tilt container - allows child image to tilt independently */
+
+
 .portal-slide .tilt-inner {
     position: absolute;
     inset: 0;
@@ -265,14 +271,12 @@
     will-change: transform;
 }
 
-/* Smooth return when mouse leaves */
+
 .portal-slide .tilt-inner.tilt-snap-back {
     transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* Image inside tilt-inner for independent transforms
-   (same image area as .portal-slide img: breathing room from the frame,
-   bottom space for the text zone) */
+
 .portal-slide .tilt-inner img {
     position: absolute;
     inset: 0;
@@ -283,16 +287,13 @@
     transition: filter 0.3s ease;
 }
 
-/* Show the full cover uncropped - also inside the tilt wrapper.
-   Higher specificity than ".portal-slide .tilt-inner img", otherwise
-   object-fit: cover wins there and crops landscape covers
-   (e.g. Gothica Solaris) at the sides. */
+
 .portal-slide .tilt-inner img.fit-contain {
     object-fit: contain;
     background: radial-gradient(circle at 50% 45%, rgba(10, 30, 45, 0.55) 0%, rgba(3, 8, 9, 0.9) 100%);
 }
 
-/* Shine overlay that follows the mouse */
+
 .portal-slide .tilt-shine {
     position: absolute;
     inset: 0;
@@ -310,19 +311,16 @@
     opacity: 1;
 }
 
-/* Slightly brighten image on active tilt */
+
 .portal-slide.pos-center .tilt-inner.tilt-active img {
     filter: grayscale(5%) brightness(1.05) saturate(1.15);
 }
 
-/* Lift shadow when tilting */
 
-/* White specular sweep on hover removed: hovering now "energizes" the
-   portal with a short color flash in the project's category color
-   (uFlash uniform in the vortex shader, js/modules/portal.js) -
-   no generic white glow anymore. */
 
-/* ---- LEFT POSITION ---- */
+
+
+
 .portal-slide.pos-left {
     transform: translateX(-520px) translateZ(-80px) rotateY(25deg) scale(0.78);
     z-index: 2;
@@ -343,7 +341,7 @@
     filter: grayscale(20%) brightness(0.85) saturate(1.2);
 }
 
-/* ---- RIGHT POSITION ---- */
+
 .portal-slide.pos-right {
     transform: translateX(520px) translateZ(-80px) rotateY(-25deg) scale(0.78);
     z-index: 2;
@@ -364,25 +362,20 @@
     filter: grayscale(20%) brightness(0.85) saturate(1.2);
 }
 
-/* ---- HIDDEN (for items beyond visible range) ---- */
+
 .portal-slide.pos-hidden {
     transform: translateX(0) translateZ(-300px) scale(0.5);
     opacity: 0;
-    /* Fully closed: nothing may paint or react. Visibility flips
-       discretely at transition end, so the fade-out stays smooth. */
+    
     visibility: hidden;
     pointer-events: none;
     z-index: 0;
 }
 
-/* SLIDE ELEMENTS */
 
-/* Slide overlay text - part of the portal, not a separate panel: the dark
-   scrim lives on ::before with a fully feathered elliptical mask (no
-   rectangular edges) and reaches up into the water fade-out zone. */
-/* min-height instead of height: bottom-anchored zone keeps its size for
-   short text but grows upward into the portal when titles/subtitles wrap,
-   so longer text is never clipped by the card bounds. */
+
+
+
 .slide-overlay {
     position: absolute;
     bottom: 0;
@@ -401,19 +394,19 @@
     pointer-events: none;
 }
 
-/* Feathered scrim behind the text (text itself stays unmasked + readable) */
+
 .slide-overlay::before {
     content: '';
     position: absolute;
-    /* Reaches up into the vortex fade-out zone below the image */
+    
     inset: -36% -12% -8%;
     background:
-        /* Faint portal light reflecting on the mist above the text */
+        
         radial-gradient(ellipse 72% 42% at 50% 6%,
             rgba(73, 146, 154, 0.18) 0%,
             rgba(73, 146, 154, 0.06) 48%,
             transparent 78%),
-        /* Dark atmospheric scrim, darkest behind the text */
+        
         radial-gradient(ellipse 60% 60% at 50% 44%,
             rgba(3, 8, 9, 0.90) 0%,
             rgba(3, 8, 9, 0.68) 42%,
@@ -421,8 +414,7 @@
             transparent 94%);
     mask-image: radial-gradient(ellipse 55% 56% at 50% 46%, #000 40%, transparent 96%);
     -webkit-mask-image: radial-gradient(ellipse 55% 56% at 50% 46%, #000 40%, transparent 96%);
-    /* Behind the text, still above the vortex canvas (overlay is a stacking
-       context via z-index) */
+    
     z-index: -1;
     pointer-events: none;
 }
@@ -446,7 +438,7 @@
     letter-spacing: 1px;
     text-transform: uppercase;
     opacity: 0.85;
-    /* Dark contrast shadow: keeps the text readable on light water/mist */
+    
     text-shadow:
         0 1px 2px rgba(0, 0, 0, 0.95),
         0 0 8px rgba(0, 0, 0, 0.85);
@@ -469,20 +461,17 @@
 
 .portal-slide.pos-center .slide-overlay {
     padding: 4px 18px 10px;
-    /* Open card: raise the text zone above the vortex canvas (z-index 8)
-       so scrim + text sit on the water ring instead of underneath. */
+    
     z-index: 9;
 }
 
-/* Closed portals: text belongs to the open state - fades out with the water.
-   visibility flips discretely at transition end -> smooth both ways. */
+
 .portal-slide:not(.pos-center) .slide-overlay {
     opacity: 0;
     visibility: hidden;
 }
 
-/* Fix: overlay titles wrap cleanly instead of clipping hard at the edge
-   (e.g. the scaled "GOTHIC SOLARIS" on the center card). No design tokens changed. */
+
 .slide-overlay {
     left: 0;
     right: 0;
@@ -499,7 +488,7 @@
     text-wrap: balance;
 }
 
-/* CAROUSEL NAVIGATION - Energy Pearl Arrow */
+
 .carousel-arrow {
     z-index: 20;
     width: 38px;
@@ -515,19 +504,19 @@
     border-radius: 60% 40% 55% 45% / 45% 55% 40% 60%;
     animation: pearl-morph 10s ease-in-out infinite;
 
-    /* Volumetric glow layers */
+    
 
-    /* Translucent sphere surface */
+    
     background:
-        /* animated noise surface layer 1 */
+        
         radial-gradient(ellipse 120% 80% at 30% 25%,
             rgba(255, 255, 255, 0.04) 0%,
             transparent 60%),
-        /* animated noise surface layer 2 */
+        
         radial-gradient(ellipse 80% 120% at 70% 75%,
             rgba(201, 168, 97, 0.04) 0%,
             transparent 50%),
-        /* core energy */
+        
         radial-gradient(circle at 40% 35%,
             rgba(201, 168, 97, 0.12) 0%,
             rgba(201, 168, 97, 0.04) 35%,
@@ -535,14 +524,14 @@
             transparent 80%);
 }
 
-/* Translucent noise surface */
+
 .carousel-arrow::before {
     content: '';
     position: absolute;
     inset: 2px;
     border-radius: inherit;
     background:
-        /* flowing noise pattern 1 */
+        
         conic-gradient(
             from 0deg at 50% 50%,
             rgba(201, 168, 97, 0.06),
@@ -551,7 +540,7 @@
             transparent 70%,
             rgba(201, 168, 97, 0.06)
         ),
-        /* flowing noise pattern 2 */
+        
         radial-gradient(ellipse at 30% 40%,
             rgba(255, 255, 255, 0.03) 0%,
             transparent 50%),
@@ -562,7 +551,7 @@
     pointer-events: none;
 }
 
-/* Light arrow symbol inside the orb */
+
 .carousel-arrow::after {
     content: '';
     position: absolute;
@@ -573,7 +562,7 @@
     pointer-events: none;
     transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 
-    /* Arrow formed by light - left arrow */
+    
     border-top: 1.5px solid rgba(201, 168, 97, 0.35);
     border-left: 1.5px solid rgba(201, 168, 97, 0.35);
     filter: drop-shadow(0 0 3px rgba(201, 168, 97, 0.2));
@@ -587,13 +576,13 @@
     transform: translate(-50%, -50%) rotate(135deg);
 }
 
-/* Pearl surface noise rotation */
+
 @keyframes pearl-surface {
     0% { filter: hue-rotate(0deg); }
     100% { filter: hue-rotate(360deg); }
 }
 
-/* Organic morph animation */
+
 @keyframes pearl-morph {
     0%, 100% { border-radius: 60% 40% 55% 45% / 45% 55% 40% 60%; }
     20% { border-radius: 50% 50% 45% 55% / 55% 45% 55% 45%; }
@@ -602,7 +591,7 @@
     80% { border-radius: 40% 60% 55% 45% / 45% 55% 60% 40%; }
 }
 
-/* ---- HOVER: Energized State ---- */
+
 .carousel-arrow:hover {
 
     background:
@@ -649,7 +638,7 @@
             drop-shadow(0 0 10px rgba(150, 230, 240, 0.2));
 }
 
-/* ---- ACTIVE: Press State ---- */
+
 .carousel-arrow:active {
     transform: scale(0.9);
     box-shadow:
@@ -660,22 +649,21 @@
         0 0 35px rgba(73, 146, 154, 0.08);
 }
 
-/* CAROUSEL CONTROLS (Arrows + Dots) */
+
 .carousel-controls {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 20px;
     position: absolute;
-    /* Moved further down: more breathing room between the card bottom edge
-       and the arrows/dots row */
+    
     bottom: -78px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 20;
 }
 
-/* Dots */
+
 .carousel-dots {
     display: flex;
     justify-content: center;
@@ -743,7 +731,7 @@
     box-shadow: 0 0 6px rgba(73, 146, 154, 0.3);
 }
 
-/* AMBIENT PARTICLES (CSS only) */
+
 .archives_section::before {
     content: '';
     position: absolute;
@@ -768,7 +756,7 @@
     50% { transform: translateY(-12px); opacity: 0.8; }
 }
 
-/* WATER BUBBLES - Different colors */
+
 .water-bubble {
     position: absolute;
     border-radius: 50%;
@@ -779,28 +767,28 @@
     animation-delay: var(--bubble-delay, 0s);
 }
 
-/* Cyan bubbles */
+
 .water-bubble.cyan {
     background: radial-gradient(circle at 30% 30%, rgba(73, 146, 154, 0.3) 0%, rgba(73, 146, 154, 0.1) 50%, transparent 70%);
     border: 1px solid rgba(73, 146, 154, 0.15);
     box-shadow: 0 0 8px rgba(73, 146, 154, 0.1);
 }
 
-/* Gold bubbles */
+
 .water-bubble.gold {
     background: radial-gradient(circle at 30% 30%, rgba(201, 168, 97, 0.3) 0%, rgba(201, 168, 97, 0.1) 50%, transparent 70%);
     border: 1px solid rgba(201, 168, 97, 0.15);
     box-shadow: 0 0 8px rgba(201, 168, 97, 0.1);
 }
 
-/* Teal bubbles */
+
 .water-bubble.teal {
     background: radial-gradient(circle at 30% 30%, rgba(100, 200, 215, 0.25) 0%, rgba(73, 146, 154, 0.08) 50%, transparent 70%);
     border: 1px solid rgba(100, 200, 215, 0.12);
     box-shadow: 0 0 6px rgba(100, 200, 215, 0.08);
 }
 
-/* White/silver bubbles */
+
 .water-bubble.silver {
     background: radial-gradient(circle at 30% 30%, rgba(200, 220, 230, 0.25) 0%, rgba(200, 220, 230, 0.08) 50%, transparent 70%);
     border: 1px solid rgba(200, 220, 230, 0.1);
@@ -828,7 +816,7 @@
     }
 }
 
-/* Wobble animation for bubbles */
+
 .water-bubble.wobble {
     animation: water-bubble-rise var(--bubble-duration, 8s) ease-in-out infinite,
                water-bubble-wobble 3s ease-in-out infinite;
@@ -841,23 +829,23 @@
     75% { transform: translateX(-5px); }
 }
 
-/* UNDERWATER FLOATING ANIMATIONS - PROJECTS */
 
-/* Section title floats */
+
+
 .archives_section .section_title {
     animation: projects-float 7s ease-in-out infinite;
     animation-delay: 0.2s;
 }
 
-/* Section subtitle floats */
+
 .archives_section .section_subtitle {
     animation: projects-float 8s ease-in-out infinite;
     animation-delay: 0.6s;
 }
 
-/* Portal slides: No float animation - they use 3D transforms from JS */
 
-/* Carousel arrows float */
+
+
 .carousel-arrow {
     transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
     animation: projects-float 6s ease-in-out infinite, pearl-morph 10s ease-in-out infinite;
@@ -866,7 +854,7 @@
 .carousel-prev { animation-delay: 0s; }
 .carousel-next { animation-delay: 0.5s; }
 
-/* Carousel dots float with staggered timing */
+
 .c-dot:nth-child(1) { animation: projects-float 5s ease-in-out infinite; animation-delay: 0s; }
 .c-dot:nth-child(2) { animation: projects-float 5.5s ease-in-out infinite; animation-delay: 0.3s; }
 .c-dot:nth-child(3) { animation: projects-float 6s ease-in-out infinite; animation-delay: 0.6s; }
@@ -877,7 +865,7 @@
     50% { transform: translateY(-5px); }
 }
 
-/* Reduce floating animation intensity at very large viewports for better performance */
+
 @media (min-width: 2560px) {
     .archives_section .section_title,
     .archives_section .section_subtitle,
@@ -889,9 +877,7 @@
 }
 
 
-/* Skill <-> project highlight (hero arsenal hover, driven by skill_link.js):
-   matching portal cards get a golden glow, a brighter and more saturated
-   look; non-matching cards are subtly dimmed. */
+
 
 .portal-slide.skill-highlight {
     filter: brightness(1.08) saturate(1.15) drop-shadow(0 0 16px rgba(201, 168, 97, 0.4));
@@ -901,8 +887,7 @@
     filter: brightness(0.55) saturate(0.7);
 }
 
-/* Fade filters in/out smoothly (existing transform/opacity
-   transitions of the portal stay unchanged) */
+
 .portal-slide.skill-highlight,
 .portal-slide.skill-dim {
     transition: transform 1.2s cubic-bezier(0.25, 0.1, 0.25, 1),

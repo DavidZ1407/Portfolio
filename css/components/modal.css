@@ -1,14 +1,15 @@
-/* ==========================================
- * File: modal.css
- * Description: Project modal overlay, underwater background effects, media viewer, lightbox, and modal-specific animations.
- * ========================================== */
+/* ==========================================================================
+   FILE: css/components/modal.css
+   DESCRIPTION: Project modal overlay, underwater background effects, media viewer, lightbox, and modal animations.
+   ========================================================================== */
+
 :root {
-    /* Keep these durations in sync with WATER_ANIMATION_MS (1s) and PROJECT_GLOW_MS (0.42s) in modal.js */
+    
     --water-close-duration: 1s;
     --media-nav-glow-duration: 0.42s;
 }
 
-/* Modal Overlay - Dark transparent background */
+
 .project_modal_overlay {
     position: fixed;
     top: 0;
@@ -20,7 +21,7 @@
     display: none;
 }
 
-/* Modal Container - The popup window */
+
 .project_modal {
     position: fixed;
     z-index: 1001;
@@ -41,7 +42,7 @@
     50% { transform: translateY(-5px); }
 }
 
-/* Voronoi Shader Canvas - animated background */
+
 .modal_shader_canvas {
     position: absolute;
     top: 0;
@@ -53,8 +54,7 @@
     border-radius: inherit;
 }
 
-/* Water caustics overlay - animated, on top of shader.
-   Toned down significantly: adds only a subtle blue reflection. */
+
 .project_modal::before {
     content: '';
     position: absolute;
@@ -70,10 +70,7 @@
     animation: water-caustics 6s ease-in-out infinite;
 }
 
-/* Dark, semi-transparent content overlay.
-   Layering: water/shader (z1) + caustics (z2) -> this dark veil (::after, z2)
-   -> then the content (z3, .modal_content). Makes the animated water a much subtler
-   background without hiding it completely. No filter/blur - RGBA only, performant. */
+
 .project_modal::after {
     content: '';
     position: absolute;
@@ -95,16 +92,14 @@
     }
 }
 
-/* Water Emergence Animation - full modal with distortion */
+
 .project_modal.water_emerge {
     animation: modal_emerge_water 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     filter: url(#water_emerge);
     -webkit-filter: url(#water_emerge);
 }
 
-/* Water close animation - reverse of emerge, with a strong distortion filter.
-   Applies to modal AND lightbox (same keyframe + filter;
-   no separate .modal_lightbox.water_close rule needed). */
+
 .project_modal.water_close,
 .modal_lightbox.water_close {
     animation: modal_close_water var(--water-close-duration) cubic-bezier(0.4, 0, 0.2, 1) forwards;
@@ -113,15 +108,12 @@
     overflow: hidden;
 }
 
-/* Hide scroll overflow on content during close to prevent text from peeking through */
+
 .project_modal.water_close .modal_content {
     overflow: hidden;
 }
 
-/* Close performance: drop the media stage (loaded video/image) out of the
-   filtered subtree while water_distort_close runs - an SVG filter over a
-   playing video froze the animation for seconds. Class-based, so it is
-   automatically restored when .water_close is removed. */
+
 .project_modal.water_close .modal_media_stage,
 .modal_lightbox.water_close .modal_lightbox_image,
 .modal_lightbox.water_close .modal_lightbox_video,
@@ -164,8 +156,7 @@
 }
 
 @keyframes modal_close_water {
-    /* NOTE: no box-shadow here - animating it repaints the whole modal each
-       frame and froze the close. Only compositor-friendly props remain. */
+    
     0% {
         transform: scale(1);
         opacity: 1;
@@ -215,7 +206,7 @@
     }
 }
 
-/* Modal Content */
+
 .modal_content {
     padding: 30px;
     overflow-y: auto;
@@ -224,7 +215,7 @@
     z-index: 3;
 }
 
-/* Gentle floating animation for buttons */
+
 @keyframes modal_btn_float {
     0%, 100% {
         transform: translateY(0);
@@ -243,7 +234,7 @@
     }
 }
 
-/* Pulsing glow animation to indicate clickability */
+
 @keyframes modal_btn_glow {
     0%, 100% {
         box-shadow: 
@@ -266,7 +257,7 @@
     }
 }
 
-/* Navigation Arrows - Large Prominent Buttons */
+
 .modal_prev_btn,
 .modal_next_btn {
     position: absolute;
@@ -378,7 +369,7 @@
         inset 0 2px 6px rgba(0, 0, 0, 0.5);
 }
 
-/* Close Button - Ancient Brass Relic matching the arrows */
+
 .modal_close_btn {
     position: absolute;
     top: 18px;
@@ -473,7 +464,7 @@
         inset 0 2px 6px rgba(0, 0, 0, 0.5);
 }
 
-/* Close button water effect when clicked */
+
 .modal_close_btn.water_effect {
     filter: url(#water_distort_hover);
     -webkit-filter: url(#water_distort_hover);
@@ -489,9 +480,8 @@
     }
 }
 
-/* After water_emerge class is removed, the SVG filter stays at scale=0
-   (animated via the <animate> element in the SVG), so no visible distortion. */
-/* Project Header */
+
+
 .modal_project_header {
     margin-bottom: 25px;
     padding-bottom: 15px;
@@ -503,8 +493,7 @@
 .modal_project_title {
     font-family: 'Cinzel', serif;
     font-size: 1.5rem;
-    /* Main title: warm, almost white ivory for maximum contrast.
-       Gold stays an accent color for labels, not for the main title. */
+    
     color: #f3ebd9;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
     margin-bottom: 8px;
@@ -518,7 +507,7 @@
     text-transform: uppercase;
 }
 
-/* Category tabs at the top of the modal - clearly show the current category */
+
 .modal_cat_tabs {
     display: flex;
     flex-wrap: wrap;
@@ -534,9 +523,7 @@
     padding: 6px 12px;
     border: 1px solid rgba(73, 146, 154, 0.4);
     border-radius: 20px;
-    /* Dark, slightly transparent background chip for better readability
-       on the moving water shader background (inactive tabs only).
-       The active tab overrides this via .modal_cat_tab.active. */
+    
     background: rgba(6, 20, 31, 0.9);
     color: rgba(139, 224, 232, 0.75);
     font-size: 0.68rem;
@@ -552,7 +539,7 @@
     text-shadow: 0 0 20px rgba(73, 146, 154, 0.6), 0 0 40px rgba(73, 146, 154, 0.3);
 }
 
-/* Active tab = current category (highlighted in gold) */
+
 .modal_cat_tab.active {
     border-color: var(--gold-accent, #c9a861);
     color: var(--gold-accent, #c9a861);
@@ -567,10 +554,7 @@
     color: var(--cyan-glow);
     text-shadow: 0 0 20px rgba(73, 146, 154, 0.6), 0 0 40px rgba(73, 146, 154, 0.3);
 }
-/* PROJECT SELECTION BAR (level 2): projects within the current category.
-   Visually distinct from the category tabs (level 1) and the thumbnails
-   (level 3): rectangular cards on a dark blue panel with teal borders,
-   active with a golden border + glow. */
+
 .modal_project_bar {
     display: flex;
     gap: 10px;
@@ -624,8 +608,7 @@
     letter-spacing: 1px;
     text-transform: uppercase;
     line-height: 1.3;
-    /* Project name on inactive cards: bright & readable (warm off-white).
-       The active (golden) state stays unchanged as the accent. */
+    
     color: rgba(238, 231, 215, 0.92);
     text-align: center;
     white-space: nowrap;
@@ -641,7 +624,7 @@
     -webkit-filter: url(#water_distort_hover);
 }
 
-/* Active project in the selection bar: golden border + glow (no water filter) */
+
 .modal_project_item.active {
     border-color: var(--gold-accent, #c9a861);
     box-shadow:
@@ -650,7 +633,7 @@
         inset 0 0 8px rgba(201, 168, 97, 0.3);
 }
 
-/* Active project on hover: cyan, matching the navigation hover effects */
+
 .modal_project_item.active:hover {
     border-color: rgba(73, 146, 154, 0.7);
     box-shadow:
@@ -673,9 +656,9 @@
     text-shadow: 0 0 10px rgba(139, 224, 232, 0.6);
 }
 
-/* Project switcher: only visible when the category has multiple projects */
+
 .modal_project_switch {
-    display: none; /* set to 'flex' via JS */
+    display: none; 
     align-items: center;
     justify-content: center;
     gap: 10px;
@@ -723,7 +706,7 @@
     transform: scale(1.06);
 }
 
-/* Disabled when the category contains only ONE project */
+
 .modal_project_prev:disabled,
 .modal_project_next:disabled,
 .modal_project_prev.disabled,
@@ -735,9 +718,7 @@
     background: rgba(201, 168, 97, 0.05);
 }
 
-/* CATEGORY arrows (between areas, e.g. Game Dev -> Sound).
-   Clearly distinguishable from the project arrows: cyan/teal instead of gold,
-   double chevron, positioned slightly further out at the edge. */
+
 .modal_cat_prev,
 .modal_cat_next {
     width: 32px;
@@ -778,7 +759,7 @@
     background: rgba(73, 146, 154, 0.04);
 }
 
-/* Project Image */
+
 .modal_project_image {
     width: 100%;
     height: 300px;
@@ -790,7 +771,7 @@
     z-index: 3;
 }
 
-/* Project Description */
+
 .modal_project_description {
     font-size: 0.95rem;
     line-height: 1.7;
@@ -799,11 +780,11 @@
     max-width: 65ch;
     position: relative;
     z-index: 3;
-    /* Preserve paragraph breaks in the description text (multi-line descriptions) */
+    
     white-space: pre-line;
 }
 
-/* Skills Section */
+
 .modal_skills_section {
     margin-bottom: 20px;
     position: relative;
@@ -819,7 +800,7 @@
     text-transform: uppercase;
 }
 
-/* LABEL ABOVE THE PROJECT SELECTION BAR (visible only when projects exist) */
+
 .modal_project_bar_label {
     font-family: 'Cinzel', serif;
     font-size: 1rem;
@@ -892,7 +873,7 @@
     color: #8be0e8;
 }
 
-/* Scrollbar - Underwater Brass Style */
+
 .modal_content::-webkit-scrollbar {
     width: 8px;
 }
@@ -925,13 +906,13 @@
     border-color: rgba(201, 168, 97, 0.6);
 }
 
-/* Firefox scrollbar */
+
 .modal_content {
     scrollbar-width: thin;
     scrollbar-color: var(--gold-accent) rgba(10, 22, 40, 0.8);
 }
 
-/* WATER THEMED BACKGROUNDS PER PROJECT */
+
 
 .modal_bg_abyss {
     background: linear-gradient(to bottom,
@@ -981,7 +962,7 @@
     );
 }
 
-/* VIEWPORT-RESPONSIVE SIZING (inline in JS) */
+
 
 @media (min-width: 2056px) {
     .modal_project_title { font-size: 2rem; letter-spacing: 3px; }
@@ -1030,12 +1011,12 @@
     .modal_prev_btn { left: -46px; }
     .modal_next_btn { right: -46px; }
 }
-/* ========================================= */
-/* NEW MODAL CONTENT - MEDIA GALLERY          */
-/* (same color palette / gold accents)        */
-/* ========================================= */
 
-/* Category pill in the header */
+
+
+
+
+
 .modal_project_category {
     display: inline-block;
     margin-bottom: 10px;
@@ -1051,7 +1032,7 @@
     z-index: 3;
 }
 
-/* MAIN MEDIA VIEWER */
+
 .modal_media_viewer {
     position: relative;
     margin-bottom: 18px;
@@ -1073,7 +1054,7 @@
         radial-gradient(circle at 50% 50%, rgba(10, 30, 45, 0.6) 0%, transparent 70%),
         #030a10;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    /* Allow vertical scrolling while a horizontal swipe/drag gesture is in progress */
+    
     touch-action: pan-y;
 }
 
@@ -1096,7 +1077,7 @@
     background: #030a10;
 }
 
-/* YouTube embed in the media viewer */
+
 .modal_media_youtube {
     position: absolute;
     inset: 0;
@@ -1114,8 +1095,7 @@
     display: block;
 }
 
-/* YouTube facade: lightweight thumbnail + play button;
-   the actual iframe player is only loaded on click */
+
 .modal_youtube_facade {
     position: absolute;
     inset: 0;
@@ -1166,7 +1146,7 @@
     box-shadow: 0 0 35px rgba(201, 168, 97, 0.55);
 }
 
-/* Centered play button overlay */
+
 .modal_media_play {
     position: absolute;
     top: 50%;
@@ -1182,7 +1162,7 @@
     color: #c9a861;
     font-size: 1.6rem;
     font-family: 'Cinzel', serif;
-    display: none; /* only visible for videos via JS */
+    display: none; 
     align-items: center;
     justify-content: center;
     cursor: pointer;
@@ -1200,7 +1180,7 @@
     border-color: rgba(139, 224, 232, 0.7);
 }
 
-/* Round arrow buttons in the viewer (previous/next) */
+
 .modal_media_prev,
 .modal_media_next {
     position: absolute;
@@ -1240,7 +1220,7 @@
     transform: translateY(-50%) scale(1.1);
 }
 
-/* Shared arrow sizing across viewports (project + media arrows) */
+
 @media (min-width: 2056px) {
     .modal_project_prev,
     .modal_project_next,
@@ -1302,7 +1282,7 @@
     }
 }
 
-/* THUMBNAIL BAR */
+
 .modal_thumb_bar {
     display: flex;
     flex-wrap: wrap;
@@ -1340,7 +1320,7 @@
     -webkit-filter: url(#water_distort_hover);
 }
 
-/* Active media item: golden border + glow */
+
 .modal_thumb.active {
     border-color: var(--gold-accent, #c9a861);
     box-shadow:
@@ -1348,7 +1328,7 @@
         inset 0 0 6px rgba(201, 168, 97, 0.3);
 }
 
-/* Play badge on video thumbnails */
+
 .modal_thumb_badge {
     position: absolute;
     right: 3px;
@@ -1366,7 +1346,7 @@
     padding-left: 1px;
 }
 
-/* TWO-COLUMN SECTION */
+
 .modal_info_grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1381,7 +1361,7 @@
     max-width: none;
 }
 
-/* Game concept + project details - readable, matching the other headings */
+
 .modal_game_concept,
 .modal_project_details {
     margin-top: 22px;
@@ -1404,7 +1384,7 @@
     line-height: 1.7;
     color: var(--text-light, #b8d0d8);
     max-width: 65ch;
-    /* Preserve paragraph breaks (like .modal_project_description) */
+    
     white-space: pre-line;
 }
 
@@ -1438,7 +1418,7 @@
     color: #eef7f8;
 }
 
-/* Links & Demos */
+
 .modal_project_links {
     margin-top: 22px;
     padding-top: 18px;
@@ -1523,7 +1503,7 @@
     box-shadow: 0 0 6px rgba(201, 168, 97, 0.5);
 }
 
-/* Contribution: intro + category groups (reuses the same design tokens) */
+
 .modal_contribution_intro {
     margin: 0 0 14px;
     color: var(--text-light, #b8d0d8);
@@ -1544,9 +1524,9 @@
     margin-bottom: 4px;
 }
 
-/* TOOLS & SKILLS - uniform tags without a highlighted main tool */
 
-/* Responsive: zwei Spalten stapeln */
+
+
 @media (max-width: 720px) {
     .modal_info_grid {
         grid-template-columns: 1fr;
@@ -1557,15 +1537,15 @@
     .modal_project_item { width: 100px; }
     .modal_project_item img,
     .modal_project_item video { height: 56px; }
-    /* Lightbox size (control positioning: see the lightbox section) */
+    
     .modal_lightbox { max-width: 95vw; max-height: 80vh; }
 }
 
-/* ========================================= */
-/* LIGHTBOX FOR THE MEDIA VIEWER (FULLSCREEN)   */
-/* Dark, slightly transparent overlay with      */
-/* golden border/arrow styles (like the modal)  */
-/* ========================================= */
+
+
+
+
+
 
 .modal_lightbox_overlay {
     position: fixed;
@@ -1587,8 +1567,7 @@
 
 .modal_lightbox {
     position: relative;
-    /* Fixed, comfortable image area - large enough even for small
-       placeholder/real images. The media scales via object-fit into this area. */
+    
     width: min(86vw, 1040px);
     height: min(78vh, 760px);
     background: #02080c;
@@ -1623,10 +1602,10 @@
     border-radius: 4px;
 }
 
-/* YouTube embed in the lightbox */
+
 .modal_lightbox_youtube {
     display: none;
-    position: relative; /* Containment for the YouTube facade (absolute fill) */
+    position: relative; 
     align-items: center;
     justify-content: center;
     width: 100%;
@@ -1644,10 +1623,9 @@
     border-radius: 6px;
 }
 
-/* Close button top right - reuses the same modal_close_btn class
-   as the main modal for visual consistency */
 
-/* Round arrow buttons in the lightbox (same style as the media viewer) */
+
+
 .modal_lightbox_prev,
 .modal_lightbox_next {
     position: absolute;
@@ -1677,15 +1655,11 @@
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Arrows centered ON the golden edge of the lightbox box (not inside over
-   the image). Half of each button extends past the edge - matches the
-   media viewer edge design. */
+
 .modal_lightbox_prev { left: -23px; }
 .modal_lightbox_next { right: -23px; }
 
-/* Close button (lightbox): centered on the top right edge of the box.
-   Own size so the edge centering (half the button on the border)
-   stays consistent across all breakpoints. */
+
 .modal_lightbox_overlay .modal_close_btn {
     width: 36px;
     height: 36px;
@@ -1701,7 +1675,7 @@
     transform: translateY(-50%) scale(1.1);
 }
 
-/* Larger arrows on high resolutions */
+
 @media (min-width: 1756px) {
     .modal_lightbox_prev,
     .modal_lightbox_next {
@@ -1713,7 +1687,7 @@
     .modal_lightbox_next { right: -27px; }
 }
 
-/* Lightbox controls at the edge - tablet (breakpoints 768-1200px) */
+
 @media (max-width: 1200px) {
     .modal_lightbox_prev,
     .modal_lightbox_next {
@@ -1732,8 +1706,7 @@
     }
 }
 
-/* Mobile performance: disable expensive SVG filters that cause jank
-   especially on Firefox mobile. CSS animations/filters are used instead. */
+
 @media (max-width: 768px) {
     .project_modal.water_emerge,
     .project_modal.water_close,
@@ -1748,7 +1721,7 @@
     }
 }
 
-/* Lightbox controls at the edge - mobile */
+
 @media (max-width: 768px) {
     .modal_lightbox_prev,
     .modal_lightbox_next {
@@ -1767,22 +1740,13 @@
     }
 }
 
-/* =========================================================
-   NAVIGATION FEEDBACK  (approach A - performant)
-   Short, performant "water" glow + fade on every switch:
-     - image (media viewer + lightbox): .media_nav_glow
-     - project (selection bar): .project_nav_glow
-   Toggled via JS class; uses @keyframes (one-shot)
-   or the existing 0.3s transition of .modal_project_item.
-   NO new feTurbulence/feDisplacementMap filters,
-   NO JS animation loops - in the interest of Firefox performance.
-   ========================================================= */
 
-/* Media viewer / lightbox image: gentle fade-in from the "water" + blue halo */
+
+
 .modal_media_image.media_nav_glow,
 .modal_lightbox_image.media_nav_glow {
     animation: navMediaGlow var(--media-nav-glow-duration) ease-out forwards;
-    /* Water distortion effect on image change (removed via JS class) */
+    
     filter: url(#water_distort_hover);
     -webkit-filter: url(#water_distort_hover);
 }
@@ -1792,7 +1756,7 @@
     100% { opacity: 1;   box-shadow: 0 0 0 0 rgba(0, 0, 0, 0), 0 0 0 rgba(0, 0, 0, 0); }
 }
 
-/* Project card: short pale cyan glow - the existing transition handles the fade-out */
+
 .modal_project_item.project_nav_glow {
     border-color: rgba(139, 224, 232, 0.9);
     box-shadow:
@@ -1802,28 +1766,21 @@
     transform: scale(1.05);
 }
 
-/* =========================================================
-   MOBILE MODAL LAYOUT + GALLERY GESTURES
-   (mobile UX: sidebar clearance, on-screen arrows, swipe/drag support)
-   ========================================================= */
 
-/* On screens < 768px the fixed right-side social sidebar floats above the
-   modal (z-index 1100). The modal itself is additionally inset from the right
-   edge by JS (MODAL_SIDEBAR_RESERVE_PX). These rules pull the viewer arrows
-   inside the frame so they never sit under the sidebar or off-screen. */
+
+
 @media (max-width: 768px) {
     .modal_media_prev { left: 6px; }
     .modal_media_next { right: 6px; }
 }
 
-/* Gesture support: native vertical scrolling inside the modal stays untouched
-   (pan-y), horizontal swipes/drags are handled by JS. */
+
 .modal_media_stage,
 .modal_lightbox {
     touch-action: pan-y;
 }
 
-/* Subtle, responsive drag feedback - the active media follows the pointer */
+
 .modal_media_stage.is_dragging,
 .modal_lightbox.is_dragging {
     cursor: grabbing;
