@@ -18,11 +18,11 @@ import { initFishSwarm } from './modules/fish_swarm.js';
 import { initBioluminescentSwarm } from './modules/bioluminescent_swarm.js';
 import { initHeroShader } from './modules/ocean_shader.js?v=3';
 import { initWaterLogo } from './modules/water_logo.js?v=3';
-import { initWaterSubtitle } from './modules/water_subtitle.js?v=4';
-import { initLanguage, getCurrentLang } from './modules/language.js?v=1';
+import { initWaterSubtitle } from './modules/water_subtitle.js?v=5';
+import { initLanguage, getCurrentLang } from './modules/language.js';
 import { projects } from './constants/projects.js?v=11';
 import { skills, skillIconHtml } from './constants/skills.js?v=4';
-import { translations } from './constants/translations.js?v=2';
+import { translations } from './constants/translations.js?v=3';
 
 
 

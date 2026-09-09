@@ -3,7 +3,7 @@
    DESCRIPTION: WebGL water-effect canvas rendering the cycling, localized subtitle text in the hero.
    ========================================================================== */
 
-import { translations } from '../constants/translations.js?v=2';
+import { translations } from '../constants/translations.js?v=3';
 import { getCurrentLang } from './language.js';
 import { cleanupRegistry, waitForFont } from '../utils/helpers.js';
 import { isModalResumeStagger } from '../utils/modal_resume.js?v=2';
