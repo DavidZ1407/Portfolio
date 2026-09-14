@@ -2896,6 +2896,36 @@ html {
         transition-delay: 0.20s;
     }
 
+    body.nav-open .lang-toggle-btn {
+        font-size: 1.2rem;
+        padding: 10px 24px;
+        gap: 10px;
+        letter-spacing: 1.5px;
+        border-color: rgba(201, 168, 97, 0.6);
+        background: rgba(73, 146, 154, 0.08);
+    }
+
+    body.nav-open .lang-toggle-btn i {
+        font-size: 1.4em;
+    }
+
+    body.nav-open .lang-opt {
+        font-size: 1.3em;
+        opacity: 0.7;
+    }
+
+    body.nav-open .lang-opt.active {
+        opacity: 1;
+        font-weight: 700;
+        color: var(--gold-accent);
+        text-shadow: 0 0 10px rgba(201, 168, 97, 0.7);
+    }
+
+    body.nav-open .lang-sep {
+        opacity: 0.6;
+        font-size: 1.2em;
+    }
+
     body.modal-open .header {
         z-index: 10030 !important;
     }
