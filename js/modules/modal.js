@@ -58,11 +58,8 @@ const MODAL_SIZE_PRESETS = [
 const MODAL_DEFAULT_SIZE = { minWidth: 0, width: 900, height: 800 };
 const MODAL_VIEWPORT_MARGIN_X = 60;
 const MODAL_VIEWPORT_MARGIN_Y = 80;
-
-
-
-
-const MODAL_SIDEBAR_RESERVE_PX = 56;
+const MODAL_MOBILE_SIDEBAR_RESERVE_PX = 0;
+const MODAL_MOBILE_VIEWPORT_MARGIN_X = 24;
 const MOBILE_MODAL_BREAKPOINT_PX = MOBILE_BREAKPOINT;
 
 
@@ -457,8 +454,10 @@ export function showPopupAtCard(project, card) {
     const sizePreset = MODAL_SIZE_PRESETS.find(p => vw >= p.minWidth) || MODAL_DEFAULT_SIZE;
     const maxModalW = sizePreset.width;
     const maxModalH = sizePreset.height;
-    const sidebarReserve = vw <= MOBILE_MODAL_BREAKPOINT_PX ? MODAL_SIDEBAR_RESERVE_PX : 0;
-    const modalWidth = Math.min(maxModalW, vw - MODAL_VIEWPORT_MARGIN_X - sidebarReserve);
+    const isMobileModal = vw <= MOBILE_MODAL_BREAKPOINT_PX;
+    const sidebarReserve = isMobileModal ? MODAL_MOBILE_SIDEBAR_RESERVE_PX : 0;
+    const viewportMarginX = isMobileModal ? MODAL_MOBILE_VIEWPORT_MARGIN_X : MODAL_VIEWPORT_MARGIN_X;
+    const modalWidth = Math.min(maxModalW, vw - viewportMarginX - sidebarReserve);
     const modalHeight = Math.min(maxModalH, window.innerHeight - MODAL_VIEWPORT_MARGIN_Y);
     const left = Math.max((vw - modalWidth) / 2, 12);
 
@@ -1583,7 +1582,6 @@ function closeLightbox() {
         lightboxVideo.pause();
     }
 
-    // Position/Play-State zurueck ins Modal-Video uebertragen (Fullscreen-Switch)
     if (lightboxVideo) {
         const lbSrc = lightboxVideo.getAttribute('src') || lightboxVideo.currentSrc || '';
         const modalVideo = modalContainer ? modalContainer.querySelector('.modal_media_video') : null;
@@ -1638,7 +1636,6 @@ function syncLightbox() {
 
     lightboxVideo.pause();
 
-    // Video-UI-State zuruecksetzen, damit die Controls nie ueber Bildern/YouTube erscheinen
     if (lightboxContainer) lightboxContainer.classList.remove('video_hovering', 'video_playing');
 
     renderMediaItem(lightboxImage, lightboxVideo, item, { showControls: false, attachControls: true, fullscreenContext: 'lightbox', playBtn: null }, getProjectTitle(currentProjectIndex, getCurrentLang()), project.category);

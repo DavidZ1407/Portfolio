@@ -2101,6 +2101,38 @@ section {
     }
 }
 
+@media (max-width: 480px) {
+
+    .modal_project_bar {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 10px 12px;
+        box-sizing: border-box;
+    }
+
+    .modal_project_bar .modal_project_item,
+    .modal_project_item {
+        flex: 0 0 auto !important;
+        width: 100px !important;
+        max-width: 100px !important;
+        box-sizing: border-box;
+    }
+
+    .modal_project_item img,
+    .modal_project_item video {
+        width: 100%;
+        height: 56px;
+        object-fit: cover;
+    }
+
+    .modal_project_item_label {
+        font-size: 0.66rem;
+        padding: 6px 8px;
+    }
+}
+
 @media (max-width: 425px) {
 
     .header {
