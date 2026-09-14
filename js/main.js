@@ -17,7 +17,7 @@ import { initDepthExperience } from './modules/depth_experience.js?v=2';
 import { initFishSwarm } from './modules/fish_swarm.js';
 import { initBioluminescentSwarm } from './modules/bioluminescent_swarm.js';
 import { initHeroShader } from './modules/ocean_shader.js?v=3';
-import { initWaterLogo } from './modules/water_logo.js?v=3';
+import { initWaterLogo } from './modules/water_logo.js?v=4';
 import { initWaterSubtitle } from './modules/water_subtitle.js?v=5';
 import { initLanguage, getCurrentLang } from './modules/language.js';
 import { projects } from './constants/projects.js?v=11';

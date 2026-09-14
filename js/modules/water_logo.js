@@ -139,6 +139,7 @@ export function initWaterLogo() {
 
 
     h1.style.opacity = '0';
+    h1.style.display = 'none'; 
     h1.style.position = 'relative';
 
     const container = document.createElement('div');
@@ -183,6 +184,7 @@ export function initWaterLogo() {
         console.warn('[water-logo] WebGL2 not supported');
         container.remove();
         h1.style.opacity = '1';
+        h1.style.display = ''; 
         return;
     }
 
@@ -196,6 +198,7 @@ export function initWaterLogo() {
         if (animFrame) cancelAnimationFrame(animFrame);
         container.remove();
         h1.style.opacity = '1';
+        h1.style.display = ''; 
     }, { once: true });
 
 
@@ -212,97 +215,102 @@ export function initWaterLogo() {
 
     const vs = compile(gl.VERTEX_SHADER, vertSrc);
     const fs = compile(gl.FRAGMENT_SHADER, fragSrc);
-    if (!vs || !fs) { container.remove(); h1.style.opacity = '1'; return; }
+    if (!vs || !fs) {
+        container.remove(); h1.style.opacity = '1';
+        h1.style.display = ''; 
 
-    const prog = gl.createProgram();
-    gl.attachShader(prog, vs);
-    gl.attachShader(prog, fs);
-    gl.linkProgram(prog);
-    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
-        console.error('[water-logo] Link error:', gl.getProgramInfoLog(prog));
-        container.remove();
-        h1.style.opacity = '1';
-        return;
-    }
-    gl.useProgram(prog);
-
-
-    const verts = new Float32Array([-1, -1, 0, 1, 1, -1, 1, 1, -1, 1, 0, 0, 1, 1, 1, 0]);
-    const buf = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-    gl.bufferData(gl.ARRAY_BUFFER, verts, gl.STATIC_DRAW);
-
-    const aPos = gl.getAttribLocation(prog, 'aPosition');
-    const aTex = gl.getAttribLocation(prog, 'aTexcoord');
-    gl.enableVertexAttribArray(aPos);
-    gl.enableVertexAttribArray(aTex);
-    gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 16, 0);
-    gl.vertexAttribPointer(aTex, 2, gl.FLOAT, false, 16, 8);
+        const prog = gl.createProgram();
+        gl.attachShader(prog, vs);
+        gl.attachShader(prog, fs);
+        gl.linkProgram(prog);
+        if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+            console.error('[water-logo] Link error:', gl.getProgramInfoLog(prog));
+            container.remove();
+            h1.style.opacity = '1';
+            h1.style.display = ''; 
+            return;
+        }
+        gl.useProgram(prog);
 
 
-    const textCanvas = createTextCanvas('DAVID ZAHN', textWidth, textHeight);
-    const tex = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, tex);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, textCanvas);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        const verts = new Float32Array([-1, -1, 0, 1, 1, -1, 1, 1, -1, 1, 0, 0, 1, 1, 1, 0]);
+        const buf = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+        gl.bufferData(gl.ARRAY_BUFFER, verts, gl.STATIC_DRAW);
 
-    const uTime = gl.getUniformLocation(prog, 'uTime');
-    gl.viewport(0, 0, textWidth, textHeight);
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+        const aPos = gl.getAttribLocation(prog, 'aPosition');
+        const aTex = gl.getAttribLocation(prog, 'aTexcoord');
+        gl.enableVertexAttribArray(aPos);
+        gl.enableVertexAttribArray(aTex);
+        gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 16, 0);
+        gl.vertexAttribPointer(aTex, 2, gl.FLOAT, false, 16, 8);
 
 
-    let animFrame = null;
-    let isActive = true;
-    let isVisible = true;
-    let startTime = performance.now();
-
-    function render() {
-        if (!isActive) return;
-
-        if (!isVisible) { animFrame = requestAnimationFrame(render); return; }
-
-        if (document.body.classList.contains('modal-open') || isModalResumeStagger(3)) { animFrame = requestAnimationFrame(render); return; }
-        const t = (performance.now() - startTime) / 1000.0;
-        gl.uniform1f(uTime, t);
-        gl.clearColor(0, 0, 0, 0);
-        gl.clear(gl.COLOR_BUFFER_BIT);
-        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-        animFrame = requestAnimationFrame(render);
-    }
-
-    animFrame = requestAnimationFrame(render);
-
-
-
-
-
-    waitForFont(getLogoFont(textHeight)).then(() => {
-        if (!isActive) return;
-        const freshCanvas = createTextCanvas('DAVID ZAHN', textWidth, textHeight);
+        const textCanvas = createTextCanvas('DAVID ZAHN', textWidth, textHeight);
+        const tex = gl.createTexture();
         gl.bindTexture(gl.TEXTURE_2D, tex);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, freshCanvas);
-    }).catch(() => { });
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, textCanvas);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+        const uTime = gl.getUniformLocation(prog, 'uTime');
+        gl.viewport(0, 0, textWidth, textHeight);
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
 
-    const heroObserver = new IntersectionObserver((entries) => {
-        isVisible = entries[0].isIntersecting;
-    }, { threshold: INTERSECTION_THRESHOLD });
-    heroObserver.observe(container);
+        let animFrame = null;
+        let isActive = true;
+        let isVisible = true;
+        let startTime = performance.now();
 
-    cleanupRegistry.register(() => {
-        heroObserver.disconnect();
-        isActive = false;
-        if (animFrame) cancelAnimationFrame(animFrame);
-        container.remove();
-        h1.style.opacity = '1';
-        gl.deleteProgram(prog);
-        gl.deleteShader(vs);
-        gl.deleteShader(fs);
-        gl.deleteTexture(tex);
-        gl.deleteBuffer(buf);
-    });
+        function render() {
+            if (!isActive) return;
+
+            if (!isVisible) { animFrame = requestAnimationFrame(render); return; }
+
+            if (document.body.classList.contains('modal-open') || isModalResumeStagger(3)) { animFrame = requestAnimationFrame(render); return; }
+            const t = (performance.now() - startTime) / 1000.0;
+            gl.uniform1f(uTime, t);
+            gl.clearColor(0, 0, 0, 0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+            animFrame = requestAnimationFrame(render);
+        }
+
+        animFrame = requestAnimationFrame(render);
+
+
+
+
+
+        waitForFont(getLogoFont(textHeight)).then(() => {
+            if (!isActive) return;
+            const freshCanvas = createTextCanvas('DAVID ZAHN', textWidth, textHeight);
+            gl.bindTexture(gl.TEXTURE_2D, tex);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, freshCanvas);
+        }).catch(() => { });
+
+
+        const heroObserver = new IntersectionObserver((entries) => {
+            isVisible = entries[0].isIntersecting;
+        }, { threshold: INTERSECTION_THRESHOLD });
+        heroObserver.observe(container);
+
+        cleanupRegistry.register(() => {
+            heroObserver.disconnect();
+            isActive = false;
+            if (animFrame) cancelAnimationFrame(animFrame);
+            container.remove();
+            h1.style.opacity = '1';
+            h1.style.display = ''; 
+            gl.deleteProgram(prog);
+            gl.deleteShader(vs);
+            gl.deleteShader(fs);
+            gl.deleteTexture(tex);
+            gl.deleteBuffer(buf);
+        });
+    }
 }
