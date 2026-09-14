@@ -18,10 +18,10 @@ export function initParallax() {
     const UNDERWATER_THRESHOLD = 0.3;
     const CASTLE_THRESHOLD = 0.5;
 
-    const WATER_SURFACE_WINDOW = 0.1;   
-    const WATER_SURFACE_LEAD = 0.05;    
-    const LERP_SMOOTHING = 0.08;        
-    const SNAP_EPSILON = 0.5;           
+    const WATER_SURFACE_WINDOW = 0.1;
+    const WATER_SURFACE_LEAD = 0.05;
+    const LERP_SMOOTHING = 0.08;
+    const SNAP_EPSILON = 0.5;
 
     let currentScroll = 0;
     let targetScroll = 0;
@@ -38,7 +38,7 @@ export function initParallax() {
 
     updateMaxScroll();
 
-    
+
     function updateParallax() {
         const diff = targetScroll - currentScroll;
 

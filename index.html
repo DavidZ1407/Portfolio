@@ -2,6 +2,7 @@
 <html lang="en">
 
 <!-- ===== HEAD ===== -->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,31 +10,31 @@
         content="Portfolio von David Zahn - Games & Immersive Media Creator. Fokus auf Atmosphäre, Narrative und Gameplay.">
     <title>David Zahn | Portfolio</title>
 
-    
+
     <link rel="icon" type="image/svg+xml" href="assets/Picture/favicon.svg?v=3">
 
-    
-    <link rel="preload" href="css/main.css?v=12" as="style">
-    <link rel="preload" href="css/components/landing.css?v=11" as="style">
 
-    
-    <link rel="stylesheet" href="css/main.css?v=12">
+    <link rel="preload" href="css/main.css?v=13" as="style">
+    <link rel="preload" href="css/components/landing.css?v=12" as="style">
 
-    
+
+    <link rel="stylesheet" href="css/main.css?v=13">
+
+
     <link rel="stylesheet" href="css/components/navbar.css?v=11">
-    <link rel="stylesheet" href="css/components/landing.css?v=11">
+    <link rel="stylesheet" href="css/components/landing.css?v=12">
     <link rel="stylesheet" href="css/components/archives.css?v=16">
     <link rel="stylesheet" href="css/components/about.css?v=10">
     <link rel="stylesheet" href="css/components/journey.css?v=12">
     <link rel="stylesheet" href="css/components/contact.css?v=13">
     <link rel="stylesheet" href="css/components/parallax.css?v=10">
-    <link rel="stylesheet" href="css/components/modal.css?v=14">
+    <link rel="stylesheet" href="css/components/modal.css?v=16">
     <link rel="stylesheet" href="css/components/depth-experience.css?v=10">
 
-    
-    <link rel="stylesheet" href="css/responsive.css?v=13">
 
-    
+    <link rel="stylesheet" href="css/responsive.css?v=19">
+
+
     <!-- ===== SVG FILTERS / DEFINITIONS ===== -->
     <svg style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
         <filter id="water_distort_hover" x="-5%" y="-5%" width="110%" height="110%">
@@ -44,7 +45,7 @@
             <feDisplacementMap in="SourceGraphic" in2="noise" scale="7" xChannelSelector="R" yChannelSelector="G" />
             <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#49929a" flood-opacity="0.5" />
         </filter>
-        
+
         <filter id="water_distort_modal_hover" x="-5%" y="-5%" width="110%" height="110%">
             <feTurbulence type="fractalNoise" baseFrequency="0.02 0.04" numOctaves="2" result="noise" seed="5">
                 <animate attributeName="baseFrequency" values="0.02 0.04;0.04 0.08;0.02 0.04" dur="3s"
@@ -54,7 +55,7 @@
             <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#8be0e8" flood-opacity="0.6" />
         </filter>
         <filter id="water_distort_close" x="-5%" y="-5%" width="110%" height="110%">
-            
+
             <feTurbulence type="fractalNoise" baseFrequency="0.04 0.08" numOctaves="2" result="noise" seed="8" />
             <feDisplacementMap in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G">
                 <animate attributeName="scale" values="0;8;4;0" dur="1s" fill="freeze" calcMode="spline"
@@ -77,19 +78,20 @@
         </filter>
     </svg>
 
-    
+
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
 
-    
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous"></script>
 
-    
-    <script defer type="module" src="js/main.js?v=22"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+        crossorigin="anonymous"></script>
+
+
+    <script defer type="module" src="js/main.js?v=27"></script>
 
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet' crossorigin="anonymous">
 
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -99,9 +101,9 @@
 
 <body>
 
-    
-    
-    
+
+
+
     <!-- ===== PARALLAX BACKGROUND LAYERS ===== -->
     <div class="parallax-container">
         <div class="parallax-layer parallax-bg">
@@ -123,9 +125,9 @@
     </div>
     <!-- ===== END PARALLAX ===== -->
 
-    
-    
-    
+
+
+
     <!-- ===== SIDEBAR SOCIAL LINKS ===== -->
     <div class="sidebar_socials">
         <a href="mailto:David-Zahn@hotmail.com">
@@ -136,7 +138,8 @@
             <i class='bx bxl-github'></i>
             <span data-i18n="sidebar-github">GITHUB</span>
         </a>
-        <a href="https://www.linkedin.com/public-profile/settings/?trk=d_flagship3_profile_self_view_public_profile&lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base%3B1Mah7vJrQUGDuEXsw134kA%3D%3D" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">
+        <a href="https://www.linkedin.com/public-profile/settings/?trk=d_flagship3_profile_self_view_public_profile&lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base%3B1Mah7vJrQUGDuEXsw134kA%3D%3D"
+            target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">
             <i class='bx bxl-linkedin'></i>
             <span data-i18n="sidebar-linkedin">LINKEDIN</span>
         </a>
@@ -147,27 +150,33 @@
     </div>
     <!-- ===== END SIDEBAR SOCIALS ===== -->
 
-    
-    
-    
+
+
+
     <!-- ===== NAVBAR ===== -->
     <header class="header">
         <a href="#" class="logo">
             DAVID <span>ZAHN</span>
         </a>
-        <nav class="navbar">
+        <nav class="navbar" id="site_nav">
             <a href="#home" class="nav_link active" data-i18n="nav-home">HOMEPAGE</a>
             <a href="#work" class="nav_link" data-i18n="nav-archives">ARCHIVES</a>
             <a href="#about" class="nav_link" data-i18n="nav-about">ABOUT ME</a>
             <a href="#journey" class="nav_link" data-i18n="nav-journey">JOURNEY</a>
             <a href="#contact" class="nav_link" data-i18n="nav-contact">CONTACT</a>
         </nav>
+        <button class="mobile_nav_toggle" type="button" aria-label="Open menu" aria-expanded="false"
+            aria-controls="site_nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </header>
     <!-- ===== END NAVBAR ===== -->
 
-    
-    
-    
+
+
+
     <!-- ===== HERO / LANDING ===== -->
     <main id="home" class="hero_section">
         <div class="hero_scene"></div>
@@ -187,7 +196,7 @@
                 <a href="#work" class="descend_btn" data-i18n="home-btn">EXPLORE MY WORK</a>
             </div>
         </div>
-        
+
         <div class="hero_showcase_container">
             <div class="works_carousel_section">
                 <h3 data-i18n="carousel-title">MY PROJECTS</h3>
@@ -206,9 +215,9 @@
     </main>
     <!-- ===== END HERO / LANDING ===== -->
 
-    
-    
-    
+
+
+
     <!-- ===== ARCHIVES / WORK PORTFOLIO ===== -->
     <section id="work" class="archives_section">
         <div class="portal-room-atmosphere">
@@ -238,15 +247,15 @@
     </section>
     <!-- ===== END ARCHIVES / WORK ===== -->
 
-    
-    
-    
+
+
+
     <!-- ===== ABOUT ===== -->
     <section id="about" class="lexicon_section">
         <h1 class="section_title" data-i18n="about-title">ABOUT ME</h1>
         <div class="expedition_container">
             <div class="about_profile_box">
-                
+
                 <img src="assets/Picture/Assets_Profile-600.jpg" alt="David Zahn Profile" class="profile_image"
                     srcset="assets/Picture/Assets_Profile-600.jpg 600w, assets/Picture/Assets_Profile-1200.jpg 1200w"
                     sizes="(max-width: 768px) 90vw, 300px" loading="lazy" decoding="async">
@@ -277,9 +286,9 @@
     </section>
     <!-- ===== END ABOUT ===== -->
 
-    
-    
-    
+
+
+
     <!-- ===== JOURNEY / EDUCATION ===== -->
     <section id="journey" class="journey_section">
         <h1 class="section_title" data-i18n="journey-title">EDUCATION</h1>
@@ -299,7 +308,8 @@
                 <div class="timeline_content">
                     <div class="timeline_year" data-i18n="timeline-2-year">MAR 2024 - JUL 2024</div>
                     <div class="timeline_title" data-i18n="timeline-2-title">Student Assistant</div>
-                    <div class="timeline_org" data-i18n="timeline-2-org">Hochschule Furtwangen (Development), Germany</div>
+                    <div class="timeline_org" data-i18n="timeline-2-org">Hochschule Furtwangen (Development), Germany
+                    </div>
                 </div>
             </div>
 
@@ -346,9 +356,9 @@
     </section>
     <!-- ===== END JOURNEY / EDUCATION ===== -->
 
-    
-    
-    
+
+
+
     <!-- ===== CONTACT ===== -->
     <section id="contact" class="contact_section">
         <h1 class="section_title" data-i18n="contact-title">CONTACT</h1>
@@ -356,7 +366,8 @@
         <div class="contact_icons">
             <a href="mailto:David-Zahn@hotmail.com" class="contact_icon_link" title="Email"><i
                     class='bx bx-envelope'></i><span data-i18n="sidebar-email">EMAIL</span></a>
-            <a href="https://www.linkedin.com/in/david-zahn-3829a1364/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" class="contact_icon_link" title="LinkedIn"><i
+            <a href="https://www.linkedin.com/in/david-zahn-3829a1364/" target="_blank" rel="noopener noreferrer"
+                aria-label="LinkedIn Profile" class="contact_icon_link" title="LinkedIn"><i
                     class='bx bxl-linkedin'></i><span data-i18n="sidebar-linkedin">LINKEDIN</span></a>
             <a href="https://github.com/DavidZ1407" target="_blank" class="contact_icon_link" title="GitHub"><i
                     class='bx bxl-github'></i><span data-i18n="sidebar-github">GITHUB</span></a>
@@ -370,9 +381,9 @@
     </section>
     <!-- ===== END CONTACT ===== -->
 
-    
-    
-    
+
+
+
 
 </body>
 

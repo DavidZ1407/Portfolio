@@ -36,21 +36,21 @@ export function initFlood() {
     let time = 0;
     let isAnimating = false;
 
-    
+
     const { scale: SCALE } = getCanvasQuality();
 
     function resize() {
         const w = section.offsetWidth;
         const h = section.offsetHeight;
-        
+
         const result = sizeCanvas(canvas, w, h);
         canvas.style.width = w + 'px';
         canvas.style.height = h + 'px';
     }
     resize();
-    
-    
-    
+
+
+
     const debouncedResize = debounce(resize, DEBOUNCE_DELAY_MS);
     window.addEventListener('resize', debouncedResize);
 
@@ -68,7 +68,7 @@ export function initFlood() {
 
     function initParticles() {
         particles = [];
-        for (let i = 0; i < 30; i++) { 
+        for (let i = 0; i < 30; i++) {
             particles.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
@@ -93,7 +93,7 @@ export function initFlood() {
         const waterTop = h - waterH;
         if (waterH <= 2) return;
 
-        
+
         const grad = ctx.createLinearGradient(0, waterTop, 0, h);
         grad.addColorStop(0, 'rgba(10, 22, 40, 0.15)');
         grad.addColorStop(0.2, 'rgba(10, 22, 40, 0.45)');
@@ -104,7 +104,7 @@ export function initFlood() {
         ctx.fillStyle = grad;
         ctx.fillRect(0, waterTop, w, waterH);
 
-        
+
         ctx.beginPath();
         ctx.moveTo(0, waterTop);
         for (let x = 0; x <= w; x += 4) {
@@ -117,7 +117,7 @@ export function initFlood() {
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        
+
         particles.forEach(p => {
             p.wobble += p.wobbleSpeed;
             p.y -= p.speed;
@@ -127,26 +127,26 @@ export function initFlood() {
             if (p.y >= waterTop && p.opacity > 0.05) {
                 const alpha = p.opacity * waterLevel;
 
-                
+
                 ctx.fillStyle = `rgba(73, 146, 154, ${alpha * 0.08})`;
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.r + p.glow, 0, TWO_PI);
                 ctx.fill();
 
-                
+
                 ctx.fillStyle = `rgba(73, 146, 154, ${alpha * 0.15})`;
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.r, 0, TWO_PI);
                 ctx.fill();
 
-                
+
                 ctx.strokeStyle = `rgba(150, 220, 220, ${alpha * 0.8})`;
                 ctx.lineWidth = 1.5;
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.r, 0, TWO_PI);
                 ctx.stroke();
 
-                
+
                 ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.5})`;
                 ctx.beginPath();
                 ctx.arc(p.x - p.r * 0.3, p.y - p.r * 0.3, p.r * 0.3, 0, TWO_PI);
@@ -166,10 +166,10 @@ export function initFlood() {
         waterLevel += (targetLevel - waterLevel) * 0.12;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         if (waterLevel > 0.005) draw();
-        
+
     }
 
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting && !isAnimating) {
@@ -187,9 +187,9 @@ export function initFlood() {
     }, { threshold: INTERSECTION_THRESHOLD });
     observer.observe(section);
 
-    
-    
-    
+
+
+
     let scrollTicking = false;
     function onScroll() {
         if (scrollTicking) return;

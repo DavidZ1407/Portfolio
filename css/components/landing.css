@@ -79,6 +79,7 @@
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -227,7 +228,7 @@
 
 .carousel_container {
     position: relative;
-    
+
     margin: 0 auto;
     overflow: hidden;
     border: 1.5px solid rgba(201, 168, 97, 0.3);
@@ -246,12 +247,29 @@
 }
 
 @keyframes carouselAutoPlay {
-    0% { transform: translateX(0); }
-    33.33% { transform: translateX(0); }
-    40% { transform: translateX(-100%); }
-    73.33% { transform: translateX(-100%); }
-    80% { transform: translateX(-200%); }
-    100% { transform: translateX(-200%); }
+    0% {
+        transform: translateX(0);
+    }
+
+    33.33% {
+        transform: translateX(0);
+    }
+
+    40% {
+        transform: translateX(-100%);
+    }
+
+    73.33% {
+        transform: translateX(-100%);
+    }
+
+    80% {
+        transform: translateX(-200%);
+    }
+
+    100% {
+        transform: translateX(-200%);
+    }
 }
 
 .carousel_slide {
@@ -259,7 +277,7 @@
     position: relative;
     overflow: hidden;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     min-width: 100%;
 }
 
@@ -267,10 +285,10 @@
     flex: 1 1 0;
     min-height: 0;
     width: 100%;
-    
+
     object-fit: contain;
     object-position: center;
-    padding: 8px 8px 0; 
+    padding: 8px 8px 0;
     background: radial-gradient(circle at 50% 45%, rgba(10, 30, 45, 0.55) 0%, rgba(3, 8, 9, 0.9) 100%);
     filter: grayscale(60%) brightness(0.8);
     transition: filter 0.6s ease, transform 0.6s ease;
@@ -288,19 +306,17 @@
     inset: 0;
     z-index: 5;
     pointer-events: none;
-    background: linear-gradient(
-        105deg,
-        transparent 0%,
-        transparent 30%,
-        rgba(255, 255, 255, 0.08) 45%,
-        rgba(255, 255, 255, 0.2) 50%,
-        rgba(255, 255, 255, 0.08) 55%,
-        transparent 70%,
-        transparent 100%
-    );
+    background: linear-gradient(105deg,
+            transparent 0%,
+            transparent 30%,
+            rgba(255, 255, 255, 0.08) 45%,
+            rgba(255, 255, 255, 0.2) 50%,
+            rgba(255, 255, 255, 0.08) 55%,
+            transparent 70%,
+            transparent 100%);
     opacity: 0;
     transition: opacity 0.4s ease;
-    
+
 }
 
 .carousel_slide:hover::after {
@@ -313,13 +329,16 @@
         transform: translateX(-100%) translateY(-100%) skewX(-15deg);
         opacity: 0;
     }
+
     20% {
         opacity: 1;
     }
+
     60% {
         transform: translateX(0%) translateY(10%) skewX(-15deg);
         opacity: 0.6;
     }
+
     100% {
         transform: translateX(100%) translateY(100%) skewX(-15deg);
         opacity: 0;
@@ -327,7 +346,7 @@
 }
 
 .carousel_info {
-    position: relative; 
+    position: relative;
     flex: 0 0 auto;
     text-align: center;
     padding: 7px 14px 9px;
@@ -373,10 +392,23 @@
 }
 
 @keyframes indicator-morph {
-    0%, 100% { border-radius: 60% 40% 55% 45% / 45% 55% 40% 60%; }
-    25% { border-radius: 45% 55% 40% 60% / 60% 40% 55% 45%; }
-    50% { border-radius: 55% 45% 60% 40% / 40% 60% 45% 55%; }
-    75% { border-radius: 40% 60% 45% 55% / 55% 45% 60% 40%; }
+
+    0%,
+    100% {
+        border-radius: 60% 40% 55% 45% / 45% 55% 40% 60%;
+    }
+
+    25% {
+        border-radius: 45% 55% 40% 60% / 60% 40% 55% 45%;
+    }
+
+    50% {
+        border-radius: 55% 45% 60% 40% / 40% 60% 45% 55%;
+    }
+
+    75% {
+        border-radius: 40% 60% 45% 55% / 55% 45% 60% 40%;
+    }
 }
 
 .indicator.active {
@@ -384,11 +416,10 @@
     height: 14px;
     border: 2px solid rgba(201, 168, 97, 0.7);
     background: radial-gradient(ellipse at 40% 35%,
-        rgba(255, 215, 140, 0.5) 0%,
-        rgba(201, 168, 97, 0.2) 50%,
-        transparent 100%
-    );
-    box-shadow: 
+            rgba(255, 215, 140, 0.5) 0%,
+            rgba(201, 168, 97, 0.2) 50%,
+            transparent 100%);
+    box-shadow:
         0 0 8px rgba(201, 168, 97, 0.5),
         0 0 20px rgba(201, 168, 97, 0.3),
         0 0 40px rgba(201, 168, 97, 0.15);
@@ -396,14 +427,17 @@
 }
 
 @keyframes indicator-breathe {
-    0%, 100% {
-        box-shadow: 
+
+    0%,
+    100% {
+        box-shadow:
             0 0 8px rgba(201, 168, 97, 0.5),
             0 0 20px rgba(201, 168, 97, 0.3),
             0 0 40px rgba(201, 168, 97, 0.15);
     }
+
     50% {
-        box-shadow: 
+        box-shadow:
             0 0 12px rgba(255, 215, 140, 0.6),
             0 0 28px rgba(201, 168, 97, 0.35),
             0 0 50px rgba(201, 168, 97, 0.2);
@@ -413,9 +447,8 @@
 .indicator:hover {
     border-color: rgba(73, 146, 154, 0.7);
     background: radial-gradient(ellipse at 40% 35%,
-        rgba(100, 200, 215, 0.2) 0%,
-        transparent 100%
-    );
+            rgba(100, 200, 215, 0.2) 0%,
+            transparent 100%);
     box-shadow: 0 0 6px rgba(73, 146, 154, 0.3);
 }
 
@@ -471,7 +504,7 @@
 
 .skill_item:hover {
     border-color: var(--cyan-glow);
-    box-shadow: 
+    box-shadow:
         0 0 30px rgba(139, 224, 232, 0.5),
         0 0 60px rgba(73, 146, 154, 0.3),
         0 0 100px rgba(73, 146, 154, 0.2),
@@ -498,7 +531,7 @@
 
 .skill_item.skill-active {
     border-color: rgba(139, 224, 232, 0.7);
-    box-shadow: 
+    box-shadow:
         0 0 25px rgba(139, 224, 232, 0.4),
         0 0 50px rgba(73, 146, 154, 0.25),
         inset 0 0 15px rgba(139, 224, 232, 0.1);
@@ -526,8 +559,15 @@
 
 
 @keyframes hero-float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
 }
 
 .hero_content h1 {
@@ -559,19 +599,65 @@
     animation-delay: 0.4s;
 }
 
-.indicator:nth-child(1) { animation: hero-float 5s ease-in-out infinite; animation-delay: 0s; }
-.indicator:nth-child(2) { animation: hero-float 5.5s ease-in-out infinite; animation-delay: 0.3s; }
-.indicator:nth-child(3) { animation: hero-float 6s ease-in-out infinite; animation-delay: 0.6s; }
-.indicator:nth-child(4) { animation: hero-float 5.25s ease-in-out infinite; animation-delay: 0.15s; }
-.indicator:nth-child(5) { animation: hero-float 6.25s ease-in-out infinite; animation-delay: 0.45s; }
-.indicator:nth-child(6) { animation: hero-float 6.75s ease-in-out infinite; animation-delay: 0.75s; }
+.indicator:nth-child(1) {
+    animation: hero-float 5s ease-in-out infinite;
+    animation-delay: 0s;
+}
 
-.skill_item:nth-child(1) { animation: hero-float 6s ease-in-out infinite; animation-delay: 0s; }
-.skill_item:nth-child(2) { animation: hero-float 7s ease-in-out infinite; animation-delay: 0.4s; }
-.skill_item:nth-child(3) { animation: hero-float 6.5s ease-in-out infinite; animation-delay: 0.8s; }
-.skill_item:nth-child(4) { animation: hero-float 7.5s ease-in-out infinite; animation-delay: 0.2s; }
-.skill_item:nth-child(5) { animation: hero-float 6s ease-in-out infinite; animation-delay: 0.6s; }
-.skill_item:nth-child(6) { animation: hero-float 8s ease-in-out infinite; animation-delay: 1s; }
+.indicator:nth-child(2) {
+    animation: hero-float 5.5s ease-in-out infinite;
+    animation-delay: 0.3s;
+}
+
+.indicator:nth-child(3) {
+    animation: hero-float 6s ease-in-out infinite;
+    animation-delay: 0.6s;
+}
+
+.indicator:nth-child(4) {
+    animation: hero-float 5.25s ease-in-out infinite;
+    animation-delay: 0.15s;
+}
+
+.indicator:nth-child(5) {
+    animation: hero-float 6.25s ease-in-out infinite;
+    animation-delay: 0.45s;
+}
+
+.indicator:nth-child(6) {
+    animation: hero-float 6.75s ease-in-out infinite;
+    animation-delay: 0.75s;
+}
+
+.skill_item:nth-child(1) {
+    animation: hero-float 6s ease-in-out infinite;
+    animation-delay: 0s;
+}
+
+.skill_item:nth-child(2) {
+    animation: hero-float 7s ease-in-out infinite;
+    animation-delay: 0.4s;
+}
+
+.skill_item:nth-child(3) {
+    animation: hero-float 6.5s ease-in-out infinite;
+    animation-delay: 0.8s;
+}
+
+.skill_item:nth-child(4) {
+    animation: hero-float 7.5s ease-in-out infinite;
+    animation-delay: 0.2s;
+}
+
+.skill_item:nth-child(5) {
+    animation: hero-float 6s ease-in-out infinite;
+    animation-delay: 0.6s;
+}
+
+.skill_item:nth-child(6) {
+    animation: hero-float 8s ease-in-out infinite;
+    animation-delay: 1s;
+}
 
 .arsenal_section h3,
 .works_carousel_section h3 {
@@ -629,6 +715,7 @@
 
 
 @media (min-width: 2560px) {
+
     .hero_content h1,
     .hero_content h2,
     .hero_description,
@@ -667,7 +754,8 @@
 .water-subtitle-canvas {
     width: 100%;
     max-width: 520px;
-    height: 65px;
+    height: auto;
+    aspect-ratio: 520 / 65;
 }
 
 @media (min-width: 2056px) {

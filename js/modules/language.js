@@ -19,7 +19,7 @@ let currentLang = DEFAULT_LANG;
 
 
 export function initLanguage() {
-    
+
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved && translations[saved]) {
         currentLang = saved;
@@ -27,10 +27,10 @@ export function initLanguage() {
         currentLang = DEFAULT_LANG;
     }
 
-    
+
     applyLanguage(currentLang);
 
-    
+
     setupToggle();
 }
 
@@ -76,7 +76,7 @@ function applyLanguage(lang) {
         return;
     }
 
-    
+
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.dataset.i18n;
         if (texts[key]) {
@@ -84,7 +84,7 @@ function applyLanguage(lang) {
         }
     });
 
-    
+
     document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
         const key = el.dataset.i18nPlaceholder;
         if (texts[key]) {
@@ -92,7 +92,7 @@ function applyLanguage(lang) {
         }
     });
 
-    
+
     document.querySelectorAll('[data-i18n-alt]').forEach(el => {
         const key = el.dataset.i18nAlt;
         if (texts[key]) {
@@ -100,18 +100,18 @@ function applyLanguage(lang) {
         }
     });
 
-    
+
     const langBtn = document.getElementById('lang-toggle');
     if (langBtn) {
         renderLangButton(langBtn, lang);
     }
 
-    
+
     updateCVDownloadLink(lang);
 
     currentLang = lang;
 
-    
+
     document.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
 }
 
@@ -122,42 +122,42 @@ function toggleLanguage() {
     try {
         localStorage.setItem(STORAGE_KEY, nextLang);
     } catch (e) {
-        
+
     }
     applyLanguage(nextLang);
 }
 
 
 function setupToggle() {
-    
+
     let langBtn = document.getElementById('lang-toggle');
     if (!langBtn) {
-        
+
         langBtn = document.createElement('button');
         langBtn.id = 'lang-toggle';
         langBtn.className = 'lang-toggle-btn';
         langBtn.setAttribute('aria-label', 'Switch language');
-        
-        
+
+
         const navbar = document.querySelector('.navbar');
         if (navbar) {
             navbar.appendChild(langBtn);
         } else {
-            
+
             const header = document.querySelector('.header');
             if (header) {
                 header.appendChild(langBtn);
             } else {
-                
+
                 document.body.appendChild(langBtn);
             }
         }
     }
 
-    
+
     renderLangButton(langBtn, currentLang);
 
-    
+
     langBtn.removeEventListener('click', toggleLanguage);
     langBtn.addEventListener('click', toggleLanguage);
 }

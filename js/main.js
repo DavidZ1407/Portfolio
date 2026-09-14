@@ -3,11 +3,11 @@
    DESCRIPTION: Application entry point that imports all constants and modules and initializes every site animation and interaction.
    ========================================================================== */
 
-import { initNavigation } from './modules/navigation.js';
+import { initNavigation } from './modules/navigation.js?v=5';
 import { initCarousel } from './modules/hero_carousel.js';
 import { generateCarouselDots } from './modules/carousel_dots.js';
 import { initParallax, updateParallaxHeight } from './modules/parallax.js';
-import { initModal, showPopupAtCard } from './modules/modal.js?v=18';
+import { initModal, showPopupAtCard } from './modules/modal.js?v=21';
 import { initSkillProjectLink } from './modules/skill_link.js';
 import { initPortal } from './modules/portal.js?v=13';
 import { initUnderwater } from './modules/underwater.js';
@@ -36,28 +36,28 @@ function safeInit(label, init) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    
-    
-    
+
+
+
     initLanguage();
 
-    
+
     safeInit('carousel-dots', generateCarouselDots);
 
-    
+
     safeInit('navigation', initNavigation);
     safeInit('hero-carousel', initCarousel);
     safeInit('parallax', initParallax);
     safeInit('parallax-height', updateParallaxHeight);
 
-    
+
     safeInit('ocean-shader', initHeroShader);
 
-    
+
     safeInit('water-logo', initWaterLogo);
     safeInit('water-subtitle', initWaterSubtitle);
 
-    
+
     safeInit('modal', () => initModal(projects));
     safeInit('portal', () => initPortal((card) => {
         const projectIndex = parseInt(card.dataset.project);
@@ -66,28 +66,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }));
 
-    
+
     safeInit('hero-skills', renderHeroSkills);
     safeInit('about-skills', renderAboutSkills);
 
-    
-    
-    
+
+
+
     safeInit('skill-link', initSkillProjectLink);
 
-    
+
     safeInit('underwater', initUnderwater);
     safeInit('flood', initFlood);
     safeInit('contact-rain', initContactRain);
     safeInit('depth-experience', initDepthExperience);
 
-    
+
     safeInit('fish-swarm', initFishSwarm);
 
-    
+
     safeInit('bio-swarm', initBioluminescentSwarm);
 
-    
+
     safeInit('timeline', initTimelineAnimation);
 
 });
@@ -104,8 +104,8 @@ function renderHeroSkills() {
     skills.forEach((skill) => {
         const div = document.createElement('div');
         div.className = 'skill_item';
-        
-        
+
+
         div.setAttribute('data-skill', skill.id);
         const skillKey = skill.i18n || `skill-${skill.name.toLowerCase().replace(/[\s&]+/g, '')}`;
         const displayName = texts[skillKey] || skill.name;
@@ -115,7 +115,7 @@ function renderHeroSkills() {
     arsenalGrid.innerHTML = '';
     arsenalGrid.appendChild(fragment);
 
-    
+
     setTimeout(() => {
         const activeSlide = document.querySelector('.carousel_indicators .indicator.active');
         if (activeSlide) {

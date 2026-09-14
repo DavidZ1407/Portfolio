@@ -6,10 +6,10 @@
 import { initUnifiedParticles } from './unified_particles.js?v=2';
 
 export function initDepthExperience() {
-    
-    
-    
-    
+
+
+
+
     initUnifiedParticles();
     createFogOverlay();
     createVignette();
@@ -45,13 +45,13 @@ function initScrollHandlers() {
     const vignette = document.querySelector('.depth-vignette');
 
 
-    const FOG_ACTIVE_AT = 0.02;       
-    const FOG_FULL_AT = 0.62;         
-    const VIGNETTE_ACTIVE_AT = 0.03;  
-    const VIGNETTE_FULL_AT = 0.35;    
+    const FOG_ACTIVE_AT = 0.02;
+    const FOG_FULL_AT = 0.62;
+    const VIGNETTE_ACTIVE_AT = 0.03;
+    const VIGNETTE_FULL_AT = 0.35;
     const FOG_MAX_OPACITY = 0.7;
-    const BODY_BLUE_BASE = 9;         
-    const BODY_BLUE_RANGE = 30;       
+    const BODY_BLUE_BASE = 9;
+    const BODY_BLUE_RANGE = 30;
 
     function onScroll() {
         if (!ticking) {

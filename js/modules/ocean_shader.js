@@ -144,9 +144,9 @@ export function initHeroShader() {
     const oldCanvas = heroSection.querySelector('.hero-shader-canvas');
     if (oldCanvas) oldCanvas.remove();
 
-    
-    
-    
+
+
+
     if (!isWebGLAvailable()) {
         console.warn('[hero-shader] WebGL unavailable - hero keeps static background.');
         return;
@@ -164,12 +164,12 @@ export function initHeroShader() {
             powerPreference: 'high-performance'
         });
     } catch (e) {
-        
+
         console.warn('[hero-shader] WebGL context creation failed - hero keeps static background.', e);
         return;
     }
     renderer.setSize(heroSection.clientWidth, heroSection.clientHeight);
-    
+
     const pixelRatio = Math.min(window.devicePixelRatio, SHADER_MAX_PIXEL_RATIO);
     renderer.setPixelRatio(pixelRatio);
     renderer.setClearColor(0x000000, 0);
@@ -190,9 +190,9 @@ export function initHeroShader() {
         heroSection.prepend(renderer.domElement);
     }
 
-    
-    
-    
+
+
+
     renderer.domElement.addEventListener('webglcontextlost', (event) => {
         event.preventDefault();
         console.warn('[hero-shader] WebGL context lost - keeping static CSS background.');
@@ -222,10 +222,10 @@ export function initHeroShader() {
 
     function animate() {
         if (!isActive) { animFrame = requestAnimationFrame(animate); return; }
-        
-        
+
+
         if (document.body.classList.contains('modal-open') || isModalResumeStagger(5)) { animFrame = requestAnimationFrame(animate); return; }
-        
+
         if (!isVisible) { animFrame = requestAnimationFrame(animate); return; }
         material.uniforms.uTime.value += FRAME_TIMESTEP;
         renderer.render(scene, camera);
@@ -234,7 +234,7 @@ export function initHeroShader() {
 
     animFrame = requestAnimationFrame(animate);
 
-    
+
     const heroObserver = new IntersectionObserver((entries) => {
         isVisible = entries[0].isIntersecting;
     }, { threshold: INTERSECTION_THRESHOLD });

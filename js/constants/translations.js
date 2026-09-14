@@ -5,19 +5,19 @@
 
 export const translations = {
     en: {
-        
+
         'sidebar-email': 'EMAIL',
         'sidebar-github': 'GITHUB',
         'sidebar-linkedin': 'LINKEDIN',
 
-        
+
         'nav-home': 'HOME',
         'nav-archives': 'WORK',
         'nav-about': 'ABOUT ME',
         'nav-journey': 'EDUCATION',
         'nav-contact': 'CONTACT',
 
-        
+
         'home-subtitle': 'GAMES & IMMERSIVE MEDIA CREATOR',
         'home-name': 'DAVID ZAHN',
         'home-role': 'AETHERTECH',
@@ -31,13 +31,13 @@ export const translations = {
         'home-desc': 'Passionate about gameplay systems and core mechanics. I love building and refining systems that turn ideas into smooth, engaging experiences.',
         'home-btn': 'EXPLORE MY WORK',
 
-        
+
         'carousel-title': 'MY PROJECTS',
 
-        
+
         'arsenal-title': 'SKILLS & TOOLS',
 
-        
+
         'skill-blender': 'BLENDER',
         'skill-godot': 'GODOT',
         'skill-csharp': 'C#',
@@ -48,11 +48,11 @@ export const translations = {
         'skill-krita': 'KRITA',
         'skill-fmod': 'FMOD',
 
-        
+
         'archives-title': 'WORK',
         'archives-subtitle': 'A SELECTION OF PROJECTS, PROTOTYPES AND DESIGNS',
 
-        
+
         'about-title': 'ABOUT ME',
         'about-text-1': "I've always been fascinated by how games work under the hood—how gameplay systems, mechanics, and storytelling weave together to create truly immersive experiences. While I deeply appreciate great atmosphere and narrative depth, I am fundamentally a gameplay guy who loves building the core interactions that bring a world to life.",
         'about-text-2': "When I'm not deep into developing systems or playing games to analyze what makes them tick, you'll often find me drawing inspiration from other games, movies, and books to see what makes an experience memorable.",
@@ -61,11 +61,11 @@ export const translations = {
         'about-skills-subtitle': 'Skills and tools I work with.',
         'about-cv': 'DOWNLOAD CV',
 
-        
+
         'journey-title': 'EDUCATION',
         'journey-subtitle': 'ACADEMIC BACKGROUND',
 
-        
+
         'timeline-1-year': 'SEPT 2025 - approx. 2028',
         'timeline-1-title': 'Games & Immersive Media (B.A.)',
         'timeline-1-org': 'Hochschule Furtwangen, Germany',
@@ -89,34 +89,34 @@ export const translations = {
         'timeline-6-title': 'Advanced Technical Certificate',
         'timeline-6-org': 'Vocational School Donaueschingen, Germany',
 
-        
+
         'contact-title': 'CONTACT',
         'contact-subtitle': 'REACH OUT THROUGH ANY OF THESE CHANNELS',
 
-        
+
         'footer-text': '© 2025 DAVID ZAHN — ALL RIGHTS RESERVED',
         'footer-subtext': 'FORGED IN THE DEPTHS',
         'footer-back': 'BACK TO HOME',
 
-        
+
         'lang-en': 'EN',
         'lang-de': 'DE',
     },
 
     de: {
-        
+
         'sidebar-email': 'EMAIL',
         'sidebar-github': 'GITHUB',
         'sidebar-linkedin': 'LINKEDIN',
 
-        
+
         'nav-home': 'STARTSEITE',
         'nav-archives': 'ARCHIVE',
         'nav-about': 'ÜBER MICH',
         'nav-journey': 'WERDEGANG',
         'nav-contact': 'KONTAKT',
 
-        
+
         'home-subtitle': 'CREATOR FÜR SPIELE & IMMERSIVE MEDIEN',
         'home-name': 'DAVID ZAHN',
         'home-role': 'AETHERTECH',
@@ -130,13 +130,13 @@ export const translations = {
         'home-desc': 'Leidenschaft für Gameplay-Systeme und Kernmechaniken. Ich liebe es, Systeme zu entwickeln und zu verfeinern, die Ideen in flüssige, fesselnde Erlebnisse verwandeln.',
         'home-btn': 'MEINE ARBEIT ENTDECKEN',
 
-        
+
         'carousel-title': 'MEINE PROJEKTE',
 
-        
+
         'arsenal-title': 'FÄHIGKEITEN & WERKZEUGE',
 
-        
+
         'skill-blender': 'BLENDER',
         'skill-godot': 'GODOT',
         'skill-csharp': 'C#',
@@ -147,11 +147,11 @@ export const translations = {
         'skill-krita': 'KRITA',
         'skill-fmod': 'FMOD',
 
-        
+
         'archives-title': 'WORK',
         'archives-subtitle': 'Eine Auswahl von Projekten, Prototypen und Designs.',
 
-        
+
         'about-title': 'ÜBER MICH',
         'about-text-1': "Mich hat schon immer fasziniert, wie Spiele unter der Haube funktionieren – wie Gameplay-Systeme, Mechaniken und Storytelling zusammenwirken, um wahrhaft immersive Erlebnisse zu schaffen. Obwohl ich große Atmosphäre und erzählerische Tiefe sehr schätze, bin ich im Kern ein Gameplay-Typ, der es liebt, die zentralen Interaktionen zu entwickeln, die eine Welt zum Leben erwecken.",
         'about-text-2': "Wenn ich nicht gerade tief in der Entwicklung von Systemen stecke oder Spiele spiele, um zu analysieren, was sie zum Funktionieren bringt, lasse ich mich oft von anderen Spielen, Filmen und Büchern inspirieren, um zu sehen, was eine Erfahrung unvergesslich macht.",
@@ -160,11 +160,11 @@ export const translations = {
         'about-skills-subtitle': 'Fähigkeiten und Werkzeuge, mit denen ich arbeite.',
         'about-cv': 'LEBENSLAUF HERUNTERLADEN',
 
-        
+
         'journey-title': 'BILDUNG',
         'journey-subtitle': 'AKADEMISCHER HINTERGRUND',
 
-        
+
         'timeline-1-year': 'SEPT 2025 - ca. 2028',
         'timeline-1-title': 'Games & Immersive Media (B.A.)',
         'timeline-1-org': 'Hochschule Furtwangen, Deutschland',
@@ -188,14 +188,14 @@ export const translations = {
         'timeline-6-title': 'Fachhochschulreife',
         'timeline-6-org': 'Berufsschule Donaueschingen, Deutschland',
 
-        
+
         'contact-title': 'KONTAKT',
         'contact-subtitle': 'KONTAKTIERE MICH ÜBER EINES DIESER KANÄLE',
 
-        
+
         'footer-back': 'ZURÜCK ZUR STARTSEITE',
 
-        
+
         'lang-en': 'EN',
         'lang-de': 'DE',
     }

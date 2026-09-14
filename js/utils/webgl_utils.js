@@ -7,8 +7,8 @@ let cachedSupport = null;
 
 
 export function isWebGLAvailable(contextIds = ['webgl2', 'webgl']) {
-    
-    
+
+
     if (cachedSupport !== null) return cachedSupport;
     try {
         const probe = document.createElement('canvas');
@@ -16,13 +16,13 @@ export function isWebGLAvailable(contextIds = ['webgl2', 'webgl']) {
             try {
                 const ctx = probe.getContext(id);
                 if (!ctx) return false;
-                
-                
+
+
                 const lose = ctx.getExtension('WEBGL_lose_context');
                 if (lose) lose.loseContext();
                 return true;
             } catch (e) {
-                
+
                 return false;
             }
         });

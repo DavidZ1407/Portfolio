@@ -123,7 +123,7 @@ function createTextCanvas(text, w, h) {
     c.height = h;
     const ctx = c.getContext('2d');
     ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = '#c9a861'; 
+    ctx.fillStyle = '#c9a861';
     ctx.font = SUBTITLE_FONT;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -135,32 +135,32 @@ export function initWaterSubtitle() {
     const heroContent = document.querySelector('.hero_content');
     if (!heroContent) return;
 
-    
+
     let SUBTITLES = getSubtitles(getCurrentLang());
 
-    
+
     const oldH2 = heroContent.querySelector('h2');
     if (oldH2) {
         oldH2.style.display = 'none';
     }
 
-    
-    
-    
+
+
+
     const iAmText = document.createElement('p');
     iAmText.className = 'hero_i_am';
     iAmText.textContent = translations[getCurrentLang()]['home-i-am'] || 'I am';
 
-    
-    
-    
+
+
+
     const studyingText = document.createElement('p');
     studyingText.className = 'hero_studying';
     studyingText.textContent = translations[getCurrentLang()]['home-studying'] || 'studying Games & Immersive Media at HFU Furtwangen. My interest lies in:';
 
-    
-    
-    
+
+
+
     const container = document.createElement('div');
     container.className = 'water-subtitle-container';
 
@@ -173,24 +173,24 @@ export function initWaterSubtitle() {
 
     container.appendChild(canvas);
 
-    
-    
+
+
     const waterContainer = heroContent.querySelector('.water-text-container');
     const insertAfter = waterContainer || heroContent.querySelector('h1');
 
     if (waterContainer) {
-        
+
         heroContent.insertBefore(iAmText, waterContainer);
-        
+
         waterContainer.after(studyingText);
-        
+
         studyingText.after(container);
     } else if (insertAfter) {
-        
+
         heroContent.insertBefore(iAmText, insertAfter);
-        
+
         insertAfter.after(studyingText);
-        
+
         studyingText.after(container);
     } else {
         heroContent.appendChild(iAmText);
@@ -198,9 +198,9 @@ export function initWaterSubtitle() {
         heroContent.appendChild(container);
     }
 
-    
-    
-    
+
+
+
     const gl = canvas.getContext('webgl2', { alpha: true, premultipliedAlpha: false });
     if (!gl) {
         console.warn('[water-subtitle] WebGL2 not supported');
@@ -210,9 +210,9 @@ export function initWaterSubtitle() {
         return;
     }
 
-    
-    
-    
+
+
+
     canvas.addEventListener('webglcontextlost', (event) => {
         event.preventDefault();
         console.warn('[water-subtitle] WebGL context lost - falling back to static text.');
@@ -249,7 +249,7 @@ export function initWaterSubtitle() {
     }
     gl.useProgram(prog);
 
-    const verts = new Float32Array([-1,-1, 0,1, 1,-1, 1,1, -1,1, 0,0, 1,1, 1,0]);
+    const verts = new Float32Array([-1, -1, 0, 1, 1, -1, 1, 1, -1, 1, 0, 0, 1, 1, 1, 0]);
     const buf = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buf);
     gl.bufferData(gl.ARRAY_BUFFER, verts, gl.STATIC_DRAW);
@@ -261,7 +261,7 @@ export function initWaterSubtitle() {
     gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 16, 0);
     gl.vertexAttribPointer(aTex, 2, gl.FLOAT, false, 16, 8);
 
-    
+
     let currentIndex = 0;
     const textCanvas = createTextCanvas(SUBTITLES[currentIndex], textWidth, textHeight);
     const tex = gl.createTexture();
@@ -272,10 +272,10 @@ export function initWaterSubtitle() {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 
-    
-    
-    
-    
+
+
+
+
     const fontReadyPromise = waitForFont(SUBTITLE_FONT);
     let textureHasCinzel = false;
     function redrawTextureWithCinzel(text) {
@@ -285,9 +285,9 @@ export function initWaterSubtitle() {
             const freshCanvas = createTextCanvas(text, textWidth, textHeight);
             gl.bindTexture(gl.TEXTURE_2D, tex);
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, freshCanvas);
-            
+
             textureHasCinzel = true;
-        }).catch(() => { textureHasCinzel = true;  });
+        }).catch(() => { textureHasCinzel = true; });
     }
 
     const uTime = gl.getUniformLocation(prog, 'uTime');
@@ -296,7 +296,7 @@ export function initWaterSubtitle() {
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
-    
+
     const CYCLE_INTERVAL = 3500;
     const FADE_DURATION = 600;
     let fadeState = 'show';
@@ -306,8 +306,8 @@ export function initWaterSubtitle() {
         const newCanvas = createTextCanvas(newText, textWidth, textHeight);
         gl.bindTexture(gl.TEXTURE_2D, tex);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, newCanvas);
-        
-        
+
+
         redrawTextureWithCinzel(newText);
     }
 
@@ -319,14 +319,14 @@ export function initWaterSubtitle() {
 
     function render() {
         if (!isActive) return;
-        
+
         if (!isVisible) { animFrame = requestAnimationFrame(render); return; }
-        
+
         if (document.body.classList.contains('modal-open') || isModalResumeStagger(4)) { animFrame = requestAnimationFrame(render); return; }
         const t = (performance.now() - startTime) / 1000.0;
         const now = performance.now();
         const elapsed = now - lastCycleTime;
-        
+
         switch (fadeState) {
             case 'show':
                 fadeProgress = 1;
@@ -377,11 +377,11 @@ export function initWaterSubtitle() {
 
     document.addEventListener('languageChanged', updateLanguage);
 
-    
-    
+
+
     redrawTextureWithCinzel(SUBTITLES[currentIndex]);
 
-    
+
     const heroObserver = new IntersectionObserver((entries) => {
         isVisible = entries[0].isIntersecting;
     }, { threshold: INTERSECTION_THRESHOLD });

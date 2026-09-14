@@ -22,12 +22,10 @@
     inset: 0;
     pointer-events: none;
     z-index: 6;
-    background: radial-gradient(
-        ellipse at center,
-        transparent 25%,
-        rgba(3, 8, 9, 0.5) 60%,
-        rgba(3, 8, 9, 0.9) 100%
-    );
+    background: radial-gradient(ellipse at center,
+            transparent 25%,
+            rgba(3, 8, 9, 0.5) 60%,
+            rgba(3, 8, 9, 0.9) 100%);
     opacity: 0;
     transition: opacity 0.5s ease;
 }
@@ -43,7 +41,7 @@
     .scroll-ripple {
         display: none;
     }
-    
+
     .unified-particles-canvas-back,
     .unified-particles-canvas-front {
         display: none;

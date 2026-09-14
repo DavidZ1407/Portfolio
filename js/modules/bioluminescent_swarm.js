@@ -17,7 +17,7 @@ const CREATURE_TYPES = {
             ctx.save();
             ctx.translate(x, y);
 
-            
+
             ctx.beginPath();
             ctx.moveTo(-size * 0.5, 0);
             ctx.quadraticCurveTo(-size * 0.5, -size * 0.6, 0, -size * 0.7);
@@ -26,7 +26,7 @@ const CREATURE_TYPES = {
             ctx.fillStyle = `rgba(5, 15, 30, ${0.5 + glow * 0.2})`;
             ctx.fill();
 
-            
+
             for (let i = 0; i < 5; i++) {
                 const tx = -size * 0.3 + (i / 4) * size * 0.6;
                 const tentSeed = seed ? seed.tentLens[i] : 0.5;
@@ -53,7 +53,7 @@ const CREATURE_TYPES = {
                 const sr = size * 0.05 + Math.sin(glow * 2 + i) * size * 0.015;
                 const alpha = 0.6 + Math.sin(glow * 1.5 + i * 1.3) * 0.3;
 
-                
+
                 const grad = ctx.createRadialGradient(sx, sy, 0, sx, sy, sr * 8);
                 grad.addColorStop(0, `rgba(150, 220, 220, ${alpha * 0.6})`);
                 grad.addColorStop(0.3, `rgba(73, 146, 154, ${alpha * 0.3})`);
@@ -64,7 +64,7 @@ const CREATURE_TYPES = {
                 ctx.arc(sx, sy, sr * 8, 0, Math.PI * 2);
                 ctx.fill();
 
-                
+
                 ctx.fillStyle = `rgba(150, 220, 220, ${alpha})`;
                 ctx.beginPath();
                 ctx.arc(sx, sy, sr, 0, Math.PI * 2);
@@ -73,7 +73,7 @@ const CREATURE_TYPES = {
 
             ctx.restore();
         },
-        w: 0.8, 
+        w: 0.8,
         h: 1.2,
     },
 
@@ -82,7 +82,7 @@ const CREATURE_TYPES = {
             ctx.save();
             ctx.translate(x, y);
 
-            
+
             ctx.beginPath();
             ctx.moveTo(0, -size * 0.8);
             ctx.quadraticCurveTo(size * 0.3, -size * 0.5, size * 0.25, 0);
@@ -92,7 +92,7 @@ const CREATURE_TYPES = {
             ctx.fillStyle = `rgba(3, 8, 15, ${0.35 + glow * 0.15})`;
             ctx.fill();
 
-            
+
             for (let i = 0; i < 6; i++) {
                 const tx = -size * 0.2 + (i / 5) * size * 0.4;
                 const tentSeed = seed ? seed.tentLens[i] : 0.5;
@@ -216,7 +216,7 @@ export function initBioluminescentSwarm() {
     const section = document.querySelector('.journey_section');
     if (!section) return;
 
-    
+
     const oldCanvas = section.querySelector('.swarm-canvas');
     if (oldCanvas) oldCanvas.remove();
 
@@ -243,21 +243,21 @@ export function initBioluminescentSwarm() {
     let creatures = [];
     let unregisterAnim = null;
 
-    
+
     function getCreatureCount() {
         if (window.innerWidth <= MOBILE_SMALL_BREAKPOINT_PX) return 4;
         if (window.innerWidth <= MOBILE_BREAKPOINT) return 6;
         if (window.innerWidth <= TABLET_DESKTOP_BREAKPOINT_PX) return 9;
         return 12;
     }
-    
+
     const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
     const CREATURE_COUNT = getCreatureCount();
 
-    
+
     const { scale: SCALE } = getCanvasQuality();
 
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -267,8 +267,8 @@ export function initBioluminescentSwarm() {
                     resize();
                     spawnCreatures();
                     lastFrameTime = 0;
-                    
-                    
+
+
                     unregisterAnim = registerAnimation((now) => {
                         if (!isActive) return;
                         animate(now);
@@ -292,7 +292,7 @@ export function initBioluminescentSwarm() {
     function resize() {
         const w = section.offsetWidth;
         const h = section.offsetHeight;
-        
+
         const result = sizeCanvas(canvas, w, h);
         canvas.style.width = w + 'px';
         canvas.style.height = h + 'px';
@@ -302,7 +302,7 @@ export function initBioluminescentSwarm() {
     window.addEventListener('resize', debouncedResize);
     setTimeout(resize, BOOT_DELAY_MS);
 
-    
+
     function spawnCreatures() {
         creatures = [];
         const types = Object.keys(CREATURE_TYPES);
@@ -314,7 +314,7 @@ export function initBioluminescentSwarm() {
             const type = CREATURE_TYPES[typeKey];
             const size = (isMobile ? 40 : 60) + Math.random() * 40;
 
-            
+
             const tentLens = [];
             for (let t = 0; t < 6; t++) {
                 tentLens.push(Math.random());
@@ -344,7 +344,7 @@ export function initBioluminescentSwarm() {
 
     let lastFrameTime = 0;
 
-    
+
     function animate(now) {
         if (!isActive) return;
         if (!lastFrameTime) lastFrameTime = now;
@@ -360,28 +360,28 @@ export function initBioluminescentSwarm() {
         creatures.forEach(c => {
             const type = CREATURE_TYPES[c.type];
 
-            
+
             const floatX = Math.sin(time * c.floatSpeedX + c.phase) * c.floatAmpX;
             const floatY = Math.sin(time * c.floatSpeedY + c.phase * 1.3) * c.floatAmpY;
 
             let drawX = c.x + floatX;
             let drawY = c.y + floatY;
 
-            
+
             const margin = c.size * 2;
             if (drawX < -margin) c.x += w + margin * 2;
             if (drawX > w + margin) c.x -= w + margin * 2;
             if (drawY < -margin) c.y += h + margin * 2;
             if (drawY > h + margin) c.y -= h + margin * 2;
 
-            
+
             c.x += c.speedX;
             c.y += c.speedY;
 
-            
+
             c.opacity += (c.targetOpacity - c.opacity) * 0.01;
 
-            
+
             const depthMod = 0.5 + c.depth * 0.5;
             const finalOpacity = c.opacity * depthMod;
 
@@ -393,12 +393,12 @@ export function initBioluminescentSwarm() {
 
         ctx.globalAlpha = 1;
 
-        
+
         drawAmbientParticles();
-        
+
     }
 
-    
+
     let ambientParticles = null;
 
     function initAmbientParticles() {
@@ -433,13 +433,13 @@ export function initBioluminescentSwarm() {
 
             const color = '73, 146, 154';
 
-            
+
             ctx.fillStyle = `rgba(${color}, ${alpha * 0.15})`;
             ctx.beginPath();
             ctx.arc(p.x, floatY, p.r + 5, 0, Math.PI * 2);
             ctx.fill();
 
-            
+
             ctx.fillStyle = `rgba(${color}, ${alpha})`;
             ctx.beginPath();
             ctx.arc(p.x, floatY, p.r, 0, Math.PI * 2);
@@ -447,7 +447,7 @@ export function initBioluminescentSwarm() {
         });
     }
 
-    
+
     cleanupRegistry.register(() => {
         isActive = false;
         if (animFrame) {

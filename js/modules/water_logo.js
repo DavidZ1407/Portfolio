@@ -8,14 +8,14 @@ import { isModalResumeStagger } from '../utils/modal_resume.js?v=2';
 import { MOBILE_BREAKPOINT, LARGE_BREAKPOINT_PX, MOBILE_SMALL_BREAKPOINT_PX, INTERSECTION_THRESHOLD } from '../constants/ui.js';
 
 
-const LOGO_TEXT_WIDTH_DEFAULT = 600;   
-const LOGO_TEXT_HEIGHT_DEFAULT = 120;  
-const LOGO_TEXT_HEIGHT_RATIO = 0.2;    
-const LOGO_TEXT_WIDTH_MIN = 180;       
-const LOGO_TEXT_VIEWPORT_FRACTION = 0.85;     
-const LOGO_TEXT_VIEWPORT_FRACTION_TABLET = 0.7; 
-const LOGO_TEXT_WIDTH_LARGE = 1200;    
-const LOGO_TEXT_HEIGHT_LARGE = 240;    
+const LOGO_TEXT_WIDTH_DEFAULT = 600;
+const LOGO_TEXT_HEIGHT_DEFAULT = 120;
+const LOGO_TEXT_HEIGHT_RATIO = 0.2;
+const LOGO_TEXT_WIDTH_MIN = 180;
+const LOGO_TEXT_VIEWPORT_FRACTION = 0.85;
+const LOGO_TEXT_VIEWPORT_FRACTION_TABLET = 0.7;
+const LOGO_TEXT_WIDTH_LARGE = 1200;
+const LOGO_TEXT_HEIGHT_LARGE = 240;
 
 const vertSrc = `#version 300 es
 in vec2 aPosition;
@@ -122,7 +122,7 @@ function createTextCanvas(text, w, h) {
     const ctx = c.getContext('2d');
     ctx.clearRect(0, 0, w, h);
     ctx.fillStyle = '#ffffff';
-    
+
     ctx.font = getLogoFont(h);
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -137,7 +137,7 @@ export function initWaterLogo() {
     const h1 = heroContent.querySelector('h1');
     if (!h1) return;
 
-    
+
     h1.style.opacity = '0';
     h1.style.position = 'relative';
 
@@ -152,7 +152,7 @@ export function initWaterLogo() {
 
     const canvas = document.createElement('canvas');
     canvas.className = 'water-text-canvas';
-    
+
     const vw = window.innerWidth;
     let textWidth = LOGO_TEXT_WIDTH_DEFAULT;
     let textHeight = LOGO_TEXT_HEIGHT_DEFAULT;
@@ -177,7 +177,7 @@ export function initWaterLogo() {
     container.appendChild(canvas);
     heroContent.insertBefore(container, h1);
 
-    
+
     const gl = canvas.getContext('webgl2', { alpha: true, premultipliedAlpha: false });
     if (!gl) {
         console.warn('[water-logo] WebGL2 not supported');
@@ -186,9 +186,9 @@ export function initWaterLogo() {
         return;
     }
 
-    
-    
-    
+
+
+
     canvas.addEventListener('webglcontextlost', (event) => {
         event.preventDefault();
         console.warn('[water-logo] WebGL context lost - falling back to static text.');
@@ -198,7 +198,7 @@ export function initWaterLogo() {
         h1.style.opacity = '1';
     }, { once: true });
 
-    
+
     function compile(type, src) {
         const s = gl.createShader(type);
         gl.shaderSource(s, src);
@@ -226,8 +226,8 @@ export function initWaterLogo() {
     }
     gl.useProgram(prog);
 
-    
-    const verts = new Float32Array([-1,-1, 0,1, 1,-1, 1,1, -1,1, 0,0, 1,1, 1,0]);
+
+    const verts = new Float32Array([-1, -1, 0, 1, 1, -1, 1, 1, -1, 1, 0, 0, 1, 1, 1, 0]);
     const buf = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buf);
     gl.bufferData(gl.ARRAY_BUFFER, verts, gl.STATIC_DRAW);
@@ -239,7 +239,7 @@ export function initWaterLogo() {
     gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 16, 0);
     gl.vertexAttribPointer(aTex, 2, gl.FLOAT, false, 16, 8);
 
-    
+
     const textCanvas = createTextCanvas('DAVID ZAHN', textWidth, textHeight);
     const tex = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, tex);
@@ -254,7 +254,7 @@ export function initWaterLogo() {
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
-    
+
     let animFrame = null;
     let isActive = true;
     let isVisible = true;
@@ -262,9 +262,9 @@ export function initWaterLogo() {
 
     function render() {
         if (!isActive) return;
-        
+
         if (!isVisible) { animFrame = requestAnimationFrame(render); return; }
-        
+
         if (document.body.classList.contains('modal-open') || isModalResumeStagger(3)) { animFrame = requestAnimationFrame(render); return; }
         const t = (performance.now() - startTime) / 1000.0;
         gl.uniform1f(uTime, t);
@@ -276,18 +276,18 @@ export function initWaterLogo() {
 
     animFrame = requestAnimationFrame(render);
 
-    
-    
-    
-    
+
+
+
+
     waitForFont(getLogoFont(textHeight)).then(() => {
         if (!isActive) return;
         const freshCanvas = createTextCanvas('DAVID ZAHN', textWidth, textHeight);
         gl.bindTexture(gl.TEXTURE_2D, tex);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, freshCanvas);
-    }).catch(() => {  });
+    }).catch(() => { });
 
-    
+
     const heroObserver = new IntersectionObserver((entries) => {
         isVisible = entries[0].isIntersecting;
     }, { threshold: INTERSECTION_THRESHOLD });

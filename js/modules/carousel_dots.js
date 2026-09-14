@@ -6,19 +6,19 @@
 import { getOrderedProjectIndices } from '../constants/projects.js?v=11';
 
 export function generateCarouselDots() {
-    
+
     const projectCount = getOrderedProjectIndices().length;
 
-    
+
     generateHeroIndicators(projectCount);
 
-    
+
     generatePortalDots(projectCount);
 }
 
 function generateHeroIndicators(count) {
     const indicatorsContainer = document.querySelector('.carousel_indicators');
-    
+
     if (!indicatorsContainer) return;
 
     indicatorsContainer.innerHTML = '';
@@ -36,7 +36,7 @@ function generateHeroIndicators(count) {
 
 function generatePortalDots(count) {
     const dotsContainer = document.querySelector('.carousel-dots');
-    
+
     if (!dotsContainer) return;
 
     dotsContainer.innerHTML = '';

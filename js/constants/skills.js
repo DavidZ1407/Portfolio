@@ -24,7 +24,7 @@ export const skills = [
         id: 'csharp',
         name: 'C#',
         i18n: 'skill-csharp',
-        
+
         icon: 'bxl-visual-studio',
         toolAliases: ['c#']
     },
@@ -40,7 +40,7 @@ export const skills = [
         id: 'web',
         name: 'HTML / CSS / JavaScript',
         i18n: 'skill-web',
-        
+
         icon: 'bxl-javascript',
         toolAliases: ['html', 'css', 'javascript', 'html/css']
     },
@@ -71,7 +71,7 @@ export const skills = [
         id: 'fmod',
         name: 'FMOD',
         i18n: 'skill-fmod',
-        
+
         icon: 'bx-headphone',
         toolAliases: ['fmod']
     }

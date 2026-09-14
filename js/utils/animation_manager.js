@@ -17,13 +17,13 @@ class AnimationManager {
         this._started = false;
     }
 
-    
+
     register(fn) {
         if (typeof fn !== 'function') return -1;
         const id = ++this.callbackId;
         this.callbacks.set(id, fn);
 
-        
+
         if (!this._started) {
             this._started = true;
             document.addEventListener('visibilitychange', this._boundVisibility);
@@ -65,13 +65,13 @@ class AnimationManager {
             cancelAnimationFrame(this.animFrameId);
             this.animFrameId = null;
         }
-        this.lastFrameTime = 0; 
+        this.lastFrameTime = 0;
     }
 
     resume() {
         if (this.isRunning) return;
         this.isRunning = true;
-        this.lastFrameTime = 0; 
+        this.lastFrameTime = 0;
         this.animFrameId = requestAnimationFrame(this._boundAnimate);
     }
 
@@ -79,7 +79,7 @@ class AnimationManager {
     _animate(now) {
         if (!this.isRunning) return;
 
-        
+
         if (!this.lastFrameTime) this.lastFrameTime = now;
         const dt = Math.min((now - this.lastFrameTime) / 1000, MAX_FRAME_DELTA_SECONDS);
         this.lastFrameTime = now;

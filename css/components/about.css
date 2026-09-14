@@ -11,7 +11,10 @@
     padding: 0 50px;
 }
 
-#about .section_title { text-align: center; }
+#about .section_title {
+    text-align: center;
+}
+
 .about_profile_box {
     background: rgba(5, 13, 14, 0.85);
     border: 1px solid var(--stone-border);
@@ -28,7 +31,7 @@
 
 .about_profile_box:hover {
     border-color: var(--gold-accent);
-    box-shadow: 
+    box-shadow:
         0 0 30px rgba(201, 168, 97, 0.3),
         0 0 60px rgba(73, 146, 154, 0.1);
     transform: scale(1.02);
@@ -45,7 +48,7 @@
 
 .about_profile_box:hover .profile_image {
     transform: scale(1.04);
-    box-shadow: 
+    box-shadow:
         0 0 40px rgba(201, 168, 97, 0.3),
         0 0 80px rgba(73, 146, 154, 0.15);
 }
@@ -62,7 +65,7 @@
     line-height: 1.8;
     letter-spacing: 0.5px;
     text-transform: none;
-    max-width: 65ch; 
+    max-width: 65ch;
     margin-bottom: 1rem;
 }
 
@@ -119,7 +122,7 @@
     border-color: var(--cyan-glow);
     background: rgba(20, 47, 51, 0.4);
     transform: translateY(-3px);
-    box-shadow: 
+    box-shadow:
         0 0 25px rgba(73, 146, 154, 0.2),
         0 0 50px rgba(73, 146, 154, 0.1),
         inset 0 0 20px rgba(73, 146, 154, 0.05);
@@ -198,26 +201,80 @@
 }
 
 
-.about_profile_box { animation: about-float 8s ease-in-out infinite; }
-.about_content_box { animation: about-float 9s ease-in-out infinite; animation-delay: 0.5s; }
-.skills_title { animation: about-float 7s ease-in-out infinite; animation-delay: 0.3s; }
-.skill_item_box:nth-child(1) { animation: about-float 6s ease-in-out infinite; animation-delay: 0s; }
-.skill_item_box:nth-child(2) { animation: about-float 7s ease-in-out infinite; animation-delay: 0.4s; }
-.skill_item_box:nth-child(3) { animation: about-float 6.5s ease-in-out infinite; animation-delay: 0.8s; }
-.skill_item_box:nth-child(4) { animation: about-float 7.5s ease-in-out infinite; animation-delay: 0.2s; }
-.skill_item_box:nth-child(5) { animation: about-float 6s ease-in-out infinite; animation-delay: 0.6s; }
-.skill_item_box:nth-child(6) { animation: about-float 8s ease-in-out infinite; animation-delay: 1s; }
-.skill_item_box:nth-child(7) { animation: about-float 6.5s ease-in-out infinite; animation-delay: 0.3s; }
-.skill_item_box:nth-child(8) { animation: about-float 7s ease-in-out infinite; animation-delay: 0.7s; }
-.skill_item_box:nth-child(9) { animation: about-float 8s ease-in-out infinite; animation-delay: 1.1s; }
+.about_profile_box {
+    animation: about-float 8s ease-in-out infinite;
+}
+
+.about_content_box {
+    animation: about-float 9s ease-in-out infinite;
+    animation-delay: 0.5s;
+}
+
+.skills_title {
+    animation: about-float 7s ease-in-out infinite;
+    animation-delay: 0.3s;
+}
+
+.skill_item_box:nth-child(1) {
+    animation: about-float 6s ease-in-out infinite;
+    animation-delay: 0s;
+}
+
+.skill_item_box:nth-child(2) {
+    animation: about-float 7s ease-in-out infinite;
+    animation-delay: 0.4s;
+}
+
+.skill_item_box:nth-child(3) {
+    animation: about-float 6.5s ease-in-out infinite;
+    animation-delay: 0.8s;
+}
+
+.skill_item_box:nth-child(4) {
+    animation: about-float 7.5s ease-in-out infinite;
+    animation-delay: 0.2s;
+}
+
+.skill_item_box:nth-child(5) {
+    animation: about-float 6s ease-in-out infinite;
+    animation-delay: 0.6s;
+}
+
+.skill_item_box:nth-child(6) {
+    animation: about-float 8s ease-in-out infinite;
+    animation-delay: 1s;
+}
+
+.skill_item_box:nth-child(7) {
+    animation: about-float 6.5s ease-in-out infinite;
+    animation-delay: 0.3s;
+}
+
+.skill_item_box:nth-child(8) {
+    animation: about-float 7s ease-in-out infinite;
+    animation-delay: 0.7s;
+}
+
+.skill_item_box:nth-child(9) {
+    animation: about-float 8s ease-in-out infinite;
+    animation-delay: 1.1s;
+}
 
 @keyframes about-float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
 }
 
 
 @media (min-width: 2560px) {
+
     .about_profile_box,
     .about_content_box,
     .skills_title,

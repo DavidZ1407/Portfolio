@@ -8,11 +8,11 @@ import { skills } from './skills.js?v=4';
 
 const CATEGORY_LABELS = {
     gamedev: { en: 'Game Dev', de: 'Game Development' },
-    '3d':    { en: '3D', de: '3D & Visual Art' },
+    '3d': { en: '3D', de: '3D & Visual Art' },
     concept: { en: '2D & Concept Art', de: '2D & Concept Art' },
-    coding:  { en: 'Coding', de: 'Coding & Web' },
-    sound:   { en: 'Sound', de: 'Audio & Sound Design' },
-    other:   { en: 'Other Projects', de: 'Other Projects' }
+    coding: { en: 'Coding', de: 'Coding & Web' },
+    sound: { en: 'Sound', de: 'Audio & Sound Design' },
+    other: { en: 'Other Projects', de: 'Other Projects' }
 };
 
 
@@ -123,11 +123,11 @@ export {
 
 const categoryProjects = {
     gamedev: [0, 6, 16, 17],
-    '3d':    [2, 10, 11],
+    '3d': [2, 10, 11],
     concept: [1, 8, 9],
-    coding:  [3, 14, 15],
-    sound:   [4, 12, 13],
-    other:   [5, 7]
+    coding: [3, 14, 15],
+    sound: [4, 12, 13],
+    other: [5, 7]
 };
 export {
     categoryProjects
@@ -137,7 +137,7 @@ export {
 
 const projects = [
 
-     {
+    {
         category: 'gamedev',
         title: { en: 'Gothica Solaris', de: 'Gothica Solaris' },
         subtitle: { en: 'First-Person Roguelite Dungeon Crawler', de: 'First-Person-Roguelite-Dungeon-Crawler' },
@@ -152,7 +152,7 @@ const projects = [
         duration: { en: '6 weeks', de: '6 Wochen' },
         team: { en: '4 members', de: '4 Mitglieder' },
         cover: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_1.webp',
-        
+
         coverFit: 'contain',
         media: [
             { type: 'youtube', id: 'Ck4srNe2HZo', thumb: 'assets/Game_Dev/Gothica_Solaris/G_D_GS_1.webp' },
@@ -169,44 +169,60 @@ const projects = [
         ],
         contribution: {
             en: [
-                { group: 'Gameplay & Systems', items: [
-                    'Component-based gameplay systems',
-                    'Inventory, Loot, Insanity and Currency systems',
-                    'AI and combat implementation'
-                ] },
-                { group: 'Level Design', items: [
-                    'Dungeon layout, exploration paths and secret areas',
-                    'Gameplay triggers and environment integration'
-                ] },
-                { group: '3D Art', items: [
-                    'Weapons, enemies and environmental props',
-                    'Textures, materials, rigging and animation'
-                ] },
-                { group: 'Game Design & Documentation', items: [
-                    'Core gameplay loop and Insanity System',
-                    'Story, world and enemy concepts',
-                    'GDD and development documentation'
-                ] }
+                {
+                    group: 'Gameplay & Systems', items: [
+                        'Component-based gameplay systems',
+                        'Inventory, Loot, Insanity and Currency systems',
+                        'AI and combat implementation'
+                    ]
+                },
+                {
+                    group: 'Level Design', items: [
+                        'Dungeon layout, exploration paths and secret areas',
+                        'Gameplay triggers and environment integration'
+                    ]
+                },
+                {
+                    group: '3D Art', items: [
+                        'Weapons, enemies and environmental props',
+                        'Textures, materials, rigging and animation'
+                    ]
+                },
+                {
+                    group: 'Game Design & Documentation', items: [
+                        'Core gameplay loop and Insanity System',
+                        'Story, world and enemy concepts',
+                        'GDD and development documentation'
+                    ]
+                }
             ],
             de: [
-                { group: 'Gameplay & Systeme', items: [
-                    'Komponentenbasierte Gameplay-Systeme',
-                    'Inventar-, Loot-, Insanity- und Währungssystem',
-                    'KI- und Kampf-Implementierung'
-                ] },
-                { group: 'Level Design', items: [
-                    'Dungeon-Layout, Erkundungspfade und Geheimbereiche',
-                    'Gameplay-Trigger und Umgebungsintegration'
-                ] },
-                { group: '3D Art', items: [
-                    'Waffen, Gegner und Umgebungsprops',
-                    'Texturen, Materialien, Rigging und Animation'
-                ] },
-                { group: 'Game Design & Dokumentation', items: [
-                    'Kern-Gameplay-Loop und Insanity-System',
-                    'Story-, Welt- und Gegnerkonzepte',
-                    'GDD und Entwicklerdokumentation'
-                ] }
+                {
+                    group: 'Gameplay & Systeme', items: [
+                        'Komponentenbasierte Gameplay-Systeme',
+                        'Inventar-, Loot-, Insanity- und Währungssystem',
+                        'KI- und Kampf-Implementierung'
+                    ]
+                },
+                {
+                    group: 'Level Design', items: [
+                        'Dungeon-Layout, Erkundungspfade und Geheimbereiche',
+                        'Gameplay-Trigger und Umgebungsintegration'
+                    ]
+                },
+                {
+                    group: '3D Art', items: [
+                        'Waffen, Gegner und Umgebungsprops',
+                        'Texturen, Materialien, Rigging und Animation'
+                    ]
+                },
+                {
+                    group: 'Game Design & Dokumentation', items: [
+                        'Kern-Gameplay-Loop und Insanity-System',
+                        'Story-, Welt- und Gegnerkonzepte',
+                        'GDD und Entwicklerdokumentation'
+                    ]
+                }
             ]
         },
         tools: [
@@ -222,7 +238,7 @@ const projects = [
         ]
     },
 
-     {
+    {
         category: 'concept',
         title: { en: 'Digital Art', de: 'Digital Art' },
         subtitle: { en: 'Digital Illustrations & Artworks', de: 'Digitale Illustrationen & Artworks' },
@@ -259,13 +275,13 @@ const projects = [
         skills: ['krita']
     },
 
-     {
+    {
         category: '3d',
         title: { en: '3D Modeling', de: '3D Modeling' },
         subtitle: { en: 'Comprehensive 3D Work in Blender', de: 'Umfassende 3D-Arbeiten in Blender' },
         description: { en: 'Comprehensive 3D work done in Blender, covering everything from high-to-low poly modeling and digital sculpting to detailed texturing and normal map workflows. Focused on creating clean, efficient assets.', de: 'Umfassende 3D-Arbeiten in Blender – von High- zu Low-Poly-Modellierung und digitalem Sculpting bis hin zu detaillierter Texturierung und Normal-Map-Workflows. Der Fokus liegt auf sauberen, effizienten Assets.' },
         cover: 'assets/3D/3D_IMG/3D_IMG_1.webp',
-        coverPosition: '50% 0%', 
+        coverPosition: '50% 0%',
         media: [
             { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_1.webp', thumb: 'assets/3D/3D_IMG/3D_IMG_1.webp' },
             { type: 'image', src: 'assets/3D/3D_IMG/3D_IMG_2.webp', thumb: 'assets/3D/3D_IMG/3D_IMG_2.webp' },
@@ -298,7 +314,7 @@ const projects = [
         skills: ['blender']
     },
 
-    
+
     {
         category: 'coding',
         title: { en: 'Coding: Physics & Shader', de: 'Coding: Physik & Shader' },
@@ -340,12 +356,12 @@ const projects = [
         skills: ['web', 'webgl']
     },
 
-    
+
     {
         category: 'sound',
         title: { en: 'Space Balls', de: 'Space Balls' },
         subtitle: { en: 'Sci-Fi Rhythm Game – Sound Design & Audio Integration', de: 'Sci-Fi-Rhythmusspiel – Sounddesign & Audio-Integration' },
-        description: { en: 'An exciting sci-fi rhythm game developed in the Godot Engine (C#). The project focused entirely on sound design: all sound effects were created from scratch in Ableton Live — from futuristic sci-fi weapons, drives and UI elements to crisp rhythm cues — and independently integrated into Godot via C#, perfectly synchronized with the gameplay and the rhythm of the game. Final video editing & sync realized with DaVinci Resolve.', de: 'Ein aufregendes Sci-Fi-Rhythmusspiel, entwickelt in der Godot Engine (C#). Das Projekt legte den Fokus komplett auf Sounddesign: Alle Soundeffekte entstanden von Grund auf in Ableton Live – von futuristischen Sci-Fi-Waffen, Antrieben und UI-Elementen bis hin zu knackigen Rhythmus-Cues – und wurden eigenständig per C# in Godot integriert, perfekt synchron zu Gameplay und Rhythmus des Spiels. Videoschnitt & Sync final umgesetzt mit DaVinci Resolve.' },
+        description: { en: 'An exciting sci-fi rhythm game developed in the Godot Engine (C#). The project focused entirely on sound design: all sound effects were created from scratch in Ableton Live — from futuristic sci-fi weapons, drives and UI elements to crisp rhythm cues — and independently integrated into Godot via C#, perfectly synchronized with the gameplay and the rhythm of the game.', de: 'Ein aufregendes Sci-Fi-Rhythmusspiel, entwickelt in der Godot Engine (C#). Das Projekt legte den Fokus komplett auf Sounddesign: Alle Soundeffekte entstanden von Grund auf in Ableton Live – von futuristischen Sci-Fi-Waffen, Antrieben und UI-Elementen bis hin zu knackigen Rhythmus-Cues – und wurden eigenständig per C# in Godot integriert, perfekt synchron zu Gameplay und Rhythmus des Spiels.' },
         gameConcept: { en: 'Two players each control a ball ("Odd Balls"), charging a power meter to the beat by rhythmically shaking their controller. Once the meter is full, players can shoot and destroy UFOs.', de: 'Zwei Spieler steuern jeweils einen Ball ("Odd Balls") und laden einen Energie-Balken im Takt auf, indem sie ihren Controller rhythmisch schütteln. Ist der Balken voll, können die Spieler UFOs abschießen und zerstören.' },
         duration: { en: '2 weeks', de: '2 Wochen' },
         cover: 'assets/Sound/Space_Balls/Sound_2.webp',
@@ -358,14 +374,12 @@ const projects = [
             en: [
                 'Complete sound design & creation of all audio assets from scratch in Ableton Live',
                 'Programming & integration of sounds in Godot via C#',
-                'Rhythm & timing coordination for the special two-player gameplay',
-                'Video editing & sync (realized with DaVinci Resolve)'
+                'Rhythm & timing coordination for the special two-player gameplay'
             ],
             de: [
                 'Komplettes Sounddesign & Erstellung aller Audio-Assets von Grund auf in Ableton Live',
                 'Programmierung & Integration der Sounds in Godot per C#',
-                'Rhythmus- & Timing-Koordination für das besondere Zwei-Spieler-Gameplay',
-                'Videoschnitt & Sync (umgesetzt mit DaVinci Resolve)'
+                'Rhythmus- & Timing-Koordination für das besondere Zwei-Spieler-Gameplay'
             ]
         },
         tools: [
@@ -377,7 +391,7 @@ const projects = [
         skills: ['godot', 'csharp', 'fmod']
     },
 
-    
+
     {
         category: 'other',
         title: { en: 'Sea Team', de: 'Sea Team' },
@@ -427,7 +441,7 @@ const projects = [
         skills: ['blender', 'krita']
     },
 
-     {
+    {
         category: 'gamedev',
         title: { en: 'Average Goblin Game', de: 'Average Goblin Game' },
         subtitle: { en: 'Third-Person Tower Defense Action (UE5)', de: 'Third-Person-Tower-Defense-Action (UE5)' },
@@ -477,7 +491,7 @@ const projects = [
         skills: ['unreal']
     },
 
-    
+
     {
         category: 'other',
         title: { en: "Sir Aric's Souls", de: "Sir Aric's Souls" },
@@ -523,7 +537,7 @@ const projects = [
         skills: ['krita']
     },
 
-    
+
     {
         category: 'concept',
         title: { en: 'Drawing', de: 'Drawing' },
@@ -558,11 +572,11 @@ const projects = [
             { name: { en: 'Character Design', de: 'Charakterdesign' }, icon: 'bx-user' },
             { name: { en: 'Anatomy Studies', de: 'Anatomiestudien' }, icon: 'bx-brush' }
         ],
-        
+
         skills: []
     },
 
-    
+
     {
         category: 'concept',
         title: { en: '2D Animation', de: '2D Animation' },
@@ -598,14 +612,14 @@ const projects = [
         skills: ['blender']
     },
 
-    
+
     {
         category: '3d',
         title: { en: '3D Animation', de: '3D Animation' },
         subtitle: { en: 'In-engine 3D Animation & Mechanics', de: '3D-Animationen & Gameplay-Mechaniken' },
         description: { en: '3D animations developed in Blender and implemented within the Godot game engine to drive interactive gameplay mechanics, including character actions and facial animations.', de: 'In Blender entwickelte 3D-Animationen, die in der Godot-Spielengine umgesetzt wurden, um interaktive Gameplay-Mechaniken anzutreiben – einschließlich Charakteraktionen und Gesichtsanimationen.' },
         cover: 'assets/3D/3D_IMG/3D_IMG_1.webp',
-        coverPosition: '50% 0%', 
+        coverPosition: '50% 0%',
         media: [
             { type: 'video', src: 'assets/3D/3D_VID/3D_VID_1.mp4', thumb: 'assets/3D/3D_IMG/3D_IMG_1.webp' },
             { type: 'video', src: 'assets/3D/3D_VID/3D_VID_2.mp4', thumb: 'assets/3D/3D_IMG/3D_IMG_1.webp' },
@@ -634,7 +648,7 @@ const projects = [
         skills: ['blender', 'godot']
     },
 
-    
+
     {
         category: '3d',
         title: { en: 'Battle for the Stars', de: 'Battle for the Stars' },
@@ -677,13 +691,13 @@ const projects = [
         skills: ['blender']
     },
 
-    
+
     {
         category: 'sound',
         title: { en: 'Glow Pods', de: 'Glow Pods' },
         subtitle: { en: 'Atmospheric 3D Game – Environmental Audio & Immersion', de: 'Atmosphärisches 3D-Spiel – Umgebungsaudio & Immersion' },
         description: { en: 'An atmospheric 3D game set in a dark, icy world where players must collect glowing pods to illuminate and navigate their path. The goal was to give this small 3D world a distinct, immersive acoustic identity using Godot and Ableton Live: dynamic ambient soundscapes and realistic environmental audio tailored to each environment, organic effects, foley and echoing orb interactions that reinforce distance, scale and mystery.', de: 'Ein atmosphärisches 3D-Spiel in einer dunklen, eisigen Welt, in der Spieler leuchtende Pods einsammeln müssen, um ihren Weg zu beleuchten und zu finden. Das Ziel war es, dieser kleinen 3D-Welt mit Godot und Ableton Live eine eigenständige, immersive akustische Identität zu geben: dynamische Ambient-Klanglandschaften und realistisches Umgebungsaudio, zugeschnitten auf jede Umgebung, dazu organische Effekte, Foley und hallende Orb-Interaktionen, die Distanz, Größe und Geheimnis verstärken.' },
-        gameConcept: { en: 'The world is divided into two contrasting environments: The Snow Field — vast, cold and isolated, shaped by ice crackling, wind and wide reverb — and The Cave — dark, enigmatic and enclosed, defined by water drips, abstract tones and deep hall reverb.', de: 'Die Welt ist in zwei kontrastierende Umgebungen geteilt: Das Schneefeld – weit, kalt und isoliert, geprägt von knisterndem Eis, Wind und weitem Hall – und Die Höhle – dunkel, rätselhaft und eng, definiert durch Wassertropfen, abstrakte Töne und tiefen Hallenklang.' },
+        gameConcept: { en: 'The world is divided into two contrasting environments: an open, isolated Snow Field, and a dark, enclosed Cave. Players explore both spaces by following the glow of collectible pods, gradually revealing the path and uncovering more of the world as they progress.', de: 'Die Welt ist in zwei kontrastierende Umgebungen geteilt: ein weites, isoliertes Schneefeld und eine dunkle, enge Höhle. Spieler erkunden beide Bereiche, indem sie dem Leuchten der einsammelbaren Pods folgen, die nach und nach den Weg erhellen und mehr von der Welt sichtbar machen.' },
         duration: { en: '2 weeks', de: '2 Wochen' },
         cover: 'assets/Sound/Glow_Pods/Sound_5.webp',
         media: [
@@ -711,7 +725,7 @@ const projects = [
         skills: ['godot']
     },
 
-    
+
     {
         category: 'sound',
         title: { en: 'Lifted', de: 'Lifted' },
@@ -739,11 +753,11 @@ const projects = [
         tools: [
             { name: { en: 'DaVinci Resolve', de: 'DaVinci Resolve' }, icon: 'bx-video' }
         ],
-        
+
         skills: []
     },
 
-    
+
     {
         category: 'coding',
         title: { en: 'Coding: Website', de: 'Coding: Website' },
@@ -789,7 +803,7 @@ const projects = [
         skills: ['web', 'typescript']
     },
 
-    
+
     {
         category: 'coding',
         title: { en: 'Coding: Jump', de: 'Coding: Jump' },
@@ -829,7 +843,7 @@ const projects = [
         skills: ['web']
     },
 
-    
+
     {
         category: 'gamedev',
         title: { en: 'Godot Island Generator', de: 'Godot Island Generator' },
@@ -857,36 +871,44 @@ const projects = [
         ],
         contribution: {
             en: [
-                { group: 'Procedural Generation', items: [
-                    'Procedural island mesh generation',
-                    'Noise-based terrain shaping',
-                    'Automatic biome mapping based on height and slope',
-                    'Configurable terrain generation parameters'
-                ] },
-                { group: 'Shaders & Visuals', items: [
-                    'Custom terrain shader',
-                    'Biome-based terrain texturing',
-                    'Dynamic water shader',
-                    'Animated waves and depth-based water coloring',
-                    'Fresnel reflections',
-                    'Stylized toon shading and outlines'
-                ] }
+                {
+                    group: 'Procedural Generation', items: [
+                        'Procedural island mesh generation',
+                        'Noise-based terrain shaping',
+                        'Automatic biome mapping based on height and slope',
+                        'Configurable terrain generation parameters'
+                    ]
+                },
+                {
+                    group: 'Shaders & Visuals', items: [
+                        'Custom terrain shader',
+                        'Biome-based terrain texturing',
+                        'Dynamic water shader',
+                        'Animated waves and depth-based water coloring',
+                        'Fresnel reflections',
+                        'Stylized toon shading and outlines'
+                    ]
+                }
             ],
             de: [
-                { group: 'Prozedurale Generierung', items: [
-                    'Prozedurale Insel-Mesh-Generierung',
-                    'Noise-basierte Terrain-Formung',
-                    'Automatisches Biome-Mapping nach Höhe und Neigung',
-                    'Konfigurierbare Generierungsparameter'
-                ] },
-                { group: 'Shaders & Visuals', items: [
-                    'Eigener Terrain-Shader',
-                    'Biome-basiertes Terrain-Texturing',
-                    'Dynamischer Water-Shader',
-                    'Animierte Wellen und tiefenbasierte Wasserfärbung',
-                    'Fresnel-Reflexionen',
-                    'Stilisiertes Toon-Shading und Outlines'
-                ] }
+                {
+                    group: 'Prozedurale Generierung', items: [
+                        'Prozedurale Insel-Mesh-Generierung',
+                        'Noise-basierte Terrain-Formung',
+                        'Automatisches Biome-Mapping nach Höhe und Neigung',
+                        'Konfigurierbare Generierungsparameter'
+                    ]
+                },
+                {
+                    group: 'Shaders & Visuals', items: [
+                        'Eigener Terrain-Shader',
+                        'Biome-basiertes Terrain-Texturing',
+                        'Dynamischer Water-Shader',
+                        'Animierte Wellen und tiefenbasierte Wasserfärbung',
+                        'Fresnel-Reflexionen',
+                        'Stilisiertes Toon-Shading und Outlines'
+                    ]
+                }
             ]
         },
         tools: [
@@ -897,7 +919,7 @@ const projects = [
         skills: ['godot']
     },
 
-    
+
     {
         category: 'gamedev',
         title: { en: 'Fartnite', de: 'Fartnite' },
@@ -923,24 +945,32 @@ const projects = [
         ],
         contribution: {
             en: [
-                { group: '3D Art & Animation', items: [
-                    'Creation of 3D assets and environment props for the level in Blender',
-                    'Character and creature modeling, rigging, and custom animations'
-                ] },
-                { group: 'Game Integration', items: [
-                    'Importing and setting up all 3D assets and animations within the Godot Engine',
-                    'Assembling and polishing the compact game level'
-                ] }
+                {
+                    group: '3D Art & Animation', items: [
+                        'Creation of 3D assets and environment props for the level in Blender',
+                        'Character and creature modeling, rigging, and custom animations'
+                    ]
+                },
+                {
+                    group: 'Game Integration', items: [
+                        'Importing and setting up all 3D assets and animations within the Godot Engine',
+                        'Assembling and polishing the compact game level'
+                    ]
+                }
             ],
             de: [
-                { group: '3D-Art & Animation', items: [
-                    'Erstellung von 3D-Assets und Umgebungsprops für das Level in Blender',
-                    'Charakter- und Kreatur-Modeling, Rigging und eigene Animationen'
-                ] },
-                { group: 'Game-Integration', items: [
-                    'Import und Setup aller 3D-Assets und Animationen in der Godot Engine',
-                    'Zusammenbau und Feinschliff des kompakten Levels'
-                ] }
+                {
+                    group: '3D-Art & Animation', items: [
+                        'Erstellung von 3D-Assets und Umgebungsprops für das Level in Blender',
+                        'Charakter- und Kreatur-Modeling, Rigging und eigene Animationen'
+                    ]
+                },
+                {
+                    group: 'Game-Integration', items: [
+                        'Import und Setup aller 3D-Assets und Animationen in der Godot Engine',
+                        'Zusammenbau und Feinschliff des kompakten Levels'
+                    ]
+                }
             ]
         },
         tools: [
@@ -951,7 +981,7 @@ const projects = [
         skills: ['godot', 'blender']
     }
 
-    
+
 ];
 export {
     projects

@@ -17,16 +17,15 @@
     position: relative;
     margin-bottom: 0;
     border-bottom: none;
-    
+
     box-shadow: inset 0 80px 60px -40px var(--abyss-deep);
-    background: 
-        linear-gradient(to bottom, 
+    background:
+        linear-gradient(to bottom,
             transparent 0%,
             rgba(10, 22, 40, 0.4) 25%,
             rgba(10, 22, 40, 0.5) 50%,
             rgba(10, 22, 40, 0.5) 75%,
-            rgba(10, 22, 40, 0.4) 100%
-        );
+            rgba(10, 22, 40, 0.4) 100%);
 }
 
 
@@ -38,11 +37,10 @@
     width: 100%;
     height: 300px;
     background: linear-gradient(to bottom,
-        transparent 0%,
-        var(--abyss-deep) 40%,
-        var(--abyss-deep) 60%,
-        transparent 100%
-    );
+            transparent 0%,
+            var(--abyss-deep) 40%,
+            var(--abyss-deep) 60%,
+            transparent 100%);
     z-index: 1;
     pointer-events: none;
 }
@@ -89,7 +87,7 @@
     transform: translateX(-80px) translateY(40px) scale(0.9);
     opacity: 0;
     transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1),
-                transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+        transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .timeline_item.show {
@@ -108,9 +106,11 @@
         opacity: 0;
         filter: blur(12px) brightness(0.5);
     }
+
     50% {
         filter: blur(6px) brightness(0.8);
     }
+
     100% {
         opacity: 1;
         filter: blur(0) brightness(1);
@@ -124,25 +124,44 @@
 
 
 @keyframes relic-morph {
-    0%, 100% { border-radius: 60% 40% 55% 45% / 45% 55% 40% 60%; }
-    20% { border-radius: 50% 50% 40% 60% / 55% 45% 55% 45%; }
-    40% { border-radius: 45% 55% 60% 40% / 40% 60% 45% 55%; }
-    60% { border-radius: 55% 45% 45% 55% / 60% 40% 50% 50%; }
-    80% { border-radius: 40% 60% 50% 50% / 45% 55% 60% 40%; }
+
+    0%,
+    100% {
+        border-radius: 60% 40% 55% 45% / 45% 55% 40% 60%;
+    }
+
+    20% {
+        border-radius: 50% 50% 40% 60% / 55% 45% 55% 45%;
+    }
+
+    40% {
+        border-radius: 45% 55% 60% 40% / 40% 60% 45% 55%;
+    }
+
+    60% {
+        border-radius: 55% 45% 45% 55% / 60% 40% 50% 50%;
+    }
+
+    80% {
+        border-radius: 40% 60% 50% 50% / 45% 55% 60% 40%;
+    }
 }
 
 
 @keyframes relic-breathe-subtle {
-    0%, 100% {
-        box-shadow: 
+
+    0%,
+    100% {
+        box-shadow:
             0 0 2px rgba(150, 225, 235, 0.5),
             0 0 6px rgba(100, 200, 215, 0.3),
             0 0 14px rgba(73, 146, 154, 0.2),
             0 0 28px rgba(73, 146, 154, 0.08);
         transform: translate(-50%, -50%) scale(1);
     }
+
     50% {
-        box-shadow: 
+        box-shadow:
             0 0 3px rgba(180, 240, 250, 0.6),
             0 0 8px rgba(120, 210, 220, 0.35),
             0 0 18px rgba(73, 146, 154, 0.25),
@@ -165,16 +184,19 @@
 
 
 @keyframes relic-breathe {
-    0%, 100% {
-        box-shadow: 
+
+    0%,
+    100% {
+        box-shadow:
             0 0 4px rgba(180, 230, 240, 0.8),
             0 0 12px rgba(100, 200, 215, 0.5),
             0 0 25px rgba(73, 146, 154, 0.3),
             0 0 45px rgba(73, 146, 154, 0.12);
         transform: translate(-50%, -50%) scale(1);
     }
+
     33% {
-        box-shadow: 
+        box-shadow:
             0 0 6px rgba(200, 245, 255, 0.95),
             0 0 18px rgba(120, 215, 225, 0.7),
             0 0 35px rgba(73, 146, 154, 0.4),
@@ -182,8 +204,9 @@
             0 0 85px rgba(100, 200, 215, 0.06);
         transform: translate(-50%, -50%) scale(1.08);
     }
+
     66% {
-        box-shadow: 
+        box-shadow:
             0 0 5px rgba(190, 235, 245, 0.85),
             0 0 15px rgba(110, 210, 220, 0.6),
             0 0 30px rgba(73, 146, 154, 0.35),
@@ -195,59 +218,63 @@
 
 @keyframes relic-orbit-particles {
     0% {
-        box-shadow: 
+        box-shadow:
             0 0 4px rgba(180, 230, 240, 0.8),
             0 0 12px rgba(100, 200, 215, 0.5),
             0 0 25px rgba(73, 146, 154, 0.3),
             0 0 45px rgba(73, 146, 154, 0.12),
-            
+
             8px -12px 1.5px 0px rgba(120, 210, 225, 0.45),
             -10px -6px 1px 0px rgba(150, 225, 235, 0.35),
             12px 4px 0.8px 0px rgba(180, 240, 250, 0.3),
             -5px 10px 1px 0px rgba(100, 200, 215, 0.3),
             4px -15px 0.8px 0px rgba(130, 215, 230, 0.25);
     }
+
     25% {
-        box-shadow: 
+        box-shadow:
             0 0 5px rgba(195, 240, 250, 0.9),
             0 0 16px rgba(115, 212, 222, 0.65),
             0 0 32px rgba(73, 146, 154, 0.38),
             0 0 55px rgba(73, 146, 154, 0.16),
-            
+
             -6px -14px 1.5px 0px rgba(150, 225, 235, 0.4),
             12px -3px 1px 0px rgba(120, 210, 225, 0.45),
             -8px 8px 0.8px 0px rgba(180, 240, 250, 0.25),
             15px 1px 1px 0px rgba(130, 215, 230, 0.3),
             -2px -17px 0.8px 0px rgba(100, 200, 215, 0.3);
     }
+
     50% {
-        box-shadow: 
+        box-shadow:
             0 0 6px rgba(200, 245, 255, 0.95),
             0 0 18px rgba(120, 215, 225, 0.7),
             0 0 35px rgba(73, 146, 154, 0.4),
             0 0 60px rgba(73, 146, 154, 0.18),
-            
+
             -12px -5px 1.5px 0px rgba(120, 210, 225, 0.45),
             5px -12px 1px 0px rgba(150, 225, 235, 0.35),
             -13px 5px 0.8px 0px rgba(180, 240, 250, 0.3),
             2px 13px 1px 0px rgba(100, 200, 215, 0.3),
             -8px -10px 0.8px 0px rgba(130, 215, 230, 0.25);
     }
+
     75% {
-        box-shadow: 
+        box-shadow:
             0 0 5px rgba(195, 240, 250, 0.9),
             0 0 16px rgba(115, 212, 222, 0.65),
             0 0 32px rgba(73, 146, 154, 0.38),
             0 0 55px rgba(73, 146, 154, 0.16),
-            
+
             6px 10px 1.5px 0px rgba(150, 225, 235, 0.4),
             -14px 2px 1px 0px rgba(120, 210, 225, 0.45),
             10px -8px 0.8px 0px rgba(180, 240, 250, 0.25),
             -3px -13px 1px 0px rgba(130, 215, 230, 0.3),
             12px 6px 0.8px 0px rgba(100, 200, 215, 0.3);
     }
+
     100% {
-        box-shadow: 
+        box-shadow:
             0 0 4px rgba(180, 230, 240, 0.8),
             0 0 12px rgba(100, 200, 215, 0.5),
             0 0 25px rgba(73, 146, 154, 0.3),
@@ -262,24 +289,28 @@
 
 
 @keyframes relic-ring-spin {
-    0%   { transform: translateY(-50%) rotate(0deg); }
-    100% { transform: translateY(-50%) rotate(360deg); }
+    0% {
+        transform: translateY(-50%) rotate(0deg);
+    }
+
+    100% {
+        transform: translateY(-50%) rotate(360deg);
+    }
 }
 
 
 .timeline_item.sphere-near::before {
-    background: 
-        radial-gradient(ellipse at 40% 35%, 
+    background:
+        radial-gradient(ellipse at 40% 35%,
             rgba(200, 248, 255, 0.55) 0%,
             rgba(140, 220, 230, 0.35) 20%,
             rgba(100, 200, 215, 0.2) 45%,
-            rgba(73, 146, 154, 0.08) 70%, 
-            transparent 100%
-        );
+            rgba(73, 146, 154, 0.08) 70%,
+            transparent 100%);
     width: 20px;
     height: 20px;
     border-radius: 55% 45% 50% 50% / 45% 55% 45% 55%;
-    box-shadow: 
+    box-shadow:
         0 0 4px rgba(180, 240, 250, 0.6),
         0 0 12px rgba(120, 210, 220, 0.4),
         0 0 25px rgba(73, 146, 154, 0.3),
@@ -289,8 +320,10 @@
 }
 
 @keyframes relic-node-illuminate {
-    0%, 100% {
-        box-shadow: 
+
+    0%,
+    100% {
+        box-shadow:
             0 0 4px rgba(180, 240, 250, 0.6),
             0 0 12px rgba(120, 210, 220, 0.4),
             0 0 25px rgba(73, 146, 154, 0.3),
@@ -298,8 +331,9 @@
             0 0 70px rgba(100, 200, 215, 0.08);
         transform: translate(-50%, -50%) scale(1);
     }
+
     50% {
-        box-shadow: 
+        box-shadow:
             0 0 6px rgba(200, 245, 255, 0.7),
             0 0 16px rgba(140, 220, 230, 0.45),
             0 0 32px rgba(73, 146, 154, 0.35),
@@ -319,12 +353,10 @@
     top: 50%;
     width: 60px;
     height: 1px;
-    background: linear-gradient(
-        90deg,
-        rgba(73, 146, 154, 0.35),
-        rgba(73, 146, 154, 0.15),
-        transparent
-    );
+    background: linear-gradient(90deg,
+            rgba(73, 146, 154, 0.35),
+            rgba(73, 146, 154, 0.15),
+            transparent);
     z-index: 0;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     animation: line-glow-pulse 5s ease-in-out infinite;
@@ -334,31 +366,30 @@
 
 
 @keyframes line-glow-pulse {
-    0%, 70%, 100% {
-        background: linear-gradient(
-            90deg,
-            rgba(73, 146, 154, 0.35),
-            rgba(73, 146, 154, 0.15),
-            transparent
-        );
+
+    0%,
+    70%,
+    100% {
+        background: linear-gradient(90deg,
+                rgba(73, 146, 154, 0.35),
+                rgba(73, 146, 154, 0.15),
+                transparent);
         box-shadow: none;
     }
+
     80% {
-        background: linear-gradient(
-            90deg,
-            rgba(100, 200, 215, 0.5),
-            rgba(73, 146, 154, 0.25),
-            transparent
-        );
+        background: linear-gradient(90deg,
+                rgba(100, 200, 215, 0.5),
+                rgba(73, 146, 154, 0.25),
+                transparent);
         box-shadow: 0 0 4px rgba(100, 200, 215, 0.2);
     }
+
     90% {
-        background: linear-gradient(
-            90deg,
-            rgba(73, 146, 154, 0.35),
-            rgba(73, 146, 154, 0.15),
-            transparent
-        );
+        background: linear-gradient(90deg,
+                rgba(73, 146, 154, 0.35),
+                rgba(73, 146, 154, 0.15),
+                transparent);
         box-shadow: none;
     }
 }
@@ -366,12 +397,10 @@
 
 .timeline_item:hover::after {
     height: 2px;
-    background: linear-gradient(
-        90deg,
-        rgba(100, 200, 215, 0.5),
-        rgba(73, 146, 154, 0.2),
-        transparent
-    );
+    background: linear-gradient(90deg,
+            rgba(100, 200, 215, 0.5),
+            rgba(73, 146, 154, 0.2),
+            transparent);
     box-shadow: 0 0 4px rgba(100, 200, 215, 0.25);
 }
 
@@ -483,10 +512,13 @@
 }
 
 @keyframes relic-ring-float {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateX(-50%) scale(1);
         opacity: 0.25;
     }
+
     50% {
         transform: translateX(-50%) scale(1.4);
         opacity: 0;
@@ -496,16 +528,46 @@
 
 
 
-.timeline_item:nth-child(1) { animation: journey-float 7s ease-in-out infinite; animation-delay: 0s; }
-.timeline_item:nth-child(2) { animation: journey-float 8s ease-in-out infinite; animation-delay: 0.5s; }
-.timeline_item:nth-child(3) { animation: journey-float 7.5s ease-in-out infinite; animation-delay: 1s; }
-.timeline_item:nth-child(4) { animation: journey-float 8.5s ease-in-out infinite; animation-delay: 0.3s; }
-.timeline_item:nth-child(5) { animation: journey-float 7s ease-in-out infinite; animation-delay: 0.8s; }
-.timeline_item:nth-child(6) { animation: journey-float 9s ease-in-out infinite; animation-delay: 1.2s; }
+.timeline_item:nth-child(1) {
+    animation: journey-float 7s ease-in-out infinite;
+    animation-delay: 0s;
+}
+
+.timeline_item:nth-child(2) {
+    animation: journey-float 8s ease-in-out infinite;
+    animation-delay: 0.5s;
+}
+
+.timeline_item:nth-child(3) {
+    animation: journey-float 7.5s ease-in-out infinite;
+    animation-delay: 1s;
+}
+
+.timeline_item:nth-child(4) {
+    animation: journey-float 8.5s ease-in-out infinite;
+    animation-delay: 0.3s;
+}
+
+.timeline_item:nth-child(5) {
+    animation: journey-float 7s ease-in-out infinite;
+    animation-delay: 0.8s;
+}
+
+.timeline_item:nth-child(6) {
+    animation: journey-float 9s ease-in-out infinite;
+    animation-delay: 1.2s;
+}
 
 @keyframes journey-float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
 }
 
 
@@ -515,4 +577,3 @@
         animation-iteration-count: infinite !important;
     }
 }
-

@@ -10,7 +10,7 @@ import { cleanupRegistry, bindHorizontalSwipe } from '../utils/helpers.js';
 let currentProjectIndex = 0;
 let cleanupFunctions = [];
 let autoPlayInterval = null;
-const AUTO_PLAY_DELAY = 5000; 
+const AUTO_PLAY_DELAY = 5000;
 
 
 function buildCarouselSlides() {
@@ -27,23 +27,23 @@ function buildCarouselSlides() {
 
         const slide = document.createElement('div');
         slide.className = 'carousel_slide';
-        
+
         slide.setAttribute('data-index', slideIndex);
         slide.setAttribute('data-project', projectIdx);
 
         const img = document.createElement('img');
         img.src = getProjectCover(projectIdx) || '';
         img.alt = getProjectTitle(projectIdx, lang) || '';
-        
-        
-        
+
+
+
         img.loading = slideIndex === 0 ? 'eager' : 'lazy';
-        
+
         if (slideIndex === 0) img.fetchPriority = 'high';
         img.decoding = 'async';
-        
+
         if (project.coverFit === 'contain') img.classList.add('fit-contain');
-        
+
         applyImageFallback(img, project.category);
         slide.appendChild(img);
 
@@ -77,17 +77,17 @@ function renderCarouselLabels() {
 
 
 export function initCarousel() {
-    
+
     buildCarouselSlides();
 
     const indicators = document.querySelectorAll('.indicator');
     const slides = document.querySelectorAll('.carousel_slide');
 
-    
+
     const onLangChanged = renderCarouselLabels;
     document.addEventListener('languageChanged', onLangChanged);
 
-    
+
     const track = document.querySelector('.carousel_track');
     if (track) {
         const cleanupSwipe = bindHorizontalSwipe(
@@ -97,11 +97,11 @@ export function initCarousel() {
         );
         cleanupFunctions.push(cleanupSwipe);
     }
-    
-    
+
+
     indicators.forEach((indicator, i) => {
         indicator.setAttribute('aria-label', `Go to project ${i + 1}`);
-        
+
         const onClick = () => {
             const slideIndex = parseInt(indicator.getAttribute('data-slide'));
             goToSlide(slideIndex);
@@ -114,7 +114,7 @@ export function initCarousel() {
         cleanupFunctions.push(() => indicator.removeEventListener('click', onClick));
     });
 
-    
+
     slides.forEach((slide, i) => {
         slide.setAttribute('role', 'button');
         slide.setAttribute('tabindex', '0');
@@ -131,12 +131,12 @@ export function initCarousel() {
         cleanupFunctions.push(() => slide.removeEventListener('click', onSlideClick));
     });
 
-    
+
     startAutoPlay();
 
-    
-    
-    
+
+
+
     const heroSection = document.querySelector('.hero_section');
     if (heroSection && 'IntersectionObserver' in window) {
         const heroObserver = new IntersectionObserver((entries) => {
@@ -147,9 +147,9 @@ export function initCarousel() {
         cleanupFunctions.push(() => heroObserver.disconnect());
     }
 
-    
+
     cleanupRegistry.register(() => {
-        cleanupFunctions.forEach(fn => { try { fn(); } catch(e) {} });
+        cleanupFunctions.forEach(fn => { try { fn(); } catch (e) { } });
         cleanupFunctions = [];
         stopAutoPlay();
         document.removeEventListener('languageChanged', onLangChanged);
@@ -163,7 +163,7 @@ function navigateToWorkSection(projectIndex) {
 
     workSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-    
+
     if (window.goToPortalSlide) {
         window.goToPortalSlide(projectIndex);
     }
@@ -195,12 +195,12 @@ function goToSlide(index) {
     const track = document.querySelector('.carousel_track');
     const indicators = document.querySelectorAll('.indicator');
     const slides = document.querySelectorAll('.carousel_slide');
-    
+
     if (!track) return;
-    
+
     currentProjectIndex = index;
     track.style.transform = `translateX(-${index * 100}%)`;
-    
+
     indicators.forEach((indicator, i) => {
         indicator.classList.toggle('active', i === index);
         if (i === index) {
@@ -209,15 +209,15 @@ function goToSlide(index) {
             indicator.removeAttribute('aria-current');
         }
     });
-    
-    
+
+
     const projectIdx = slides[index] ? parseInt(slides[index].dataset.project) : index;
     highlightHeroSkills(projectIdx);
 }
 
 export function highlightHeroSkills(projectIndex) {
-    
-    
+
+
     const projectSkillIds = getProjectSkillIds(projectIndex);
 
     const skillItems = document.querySelectorAll('.arsenal_grid .skill_item');

@@ -137,15 +137,15 @@ export function initModalShader(container) {
     const oldCanvas = container.querySelector('.modal_shader_canvas');
     if (oldCanvas) oldCanvas.remove();
 
-    
-    
+
+
     if (!isWebGLAvailable()) {
         console.warn('[modal_shader] WebGL unavailable - modal keeps static background.');
         return null;
     }
 
-    
-    
+
+
     const isFirefoxMobile = /Firefox/i.test(navigator.userAgent) && /Mobile|Android/i.test(navigator.userAgent);
 
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
@@ -158,7 +158,7 @@ export function initModalShader(container) {
             alpha: true,
             powerPreference: 'high-performance'
         };
-        
+
         if (isFirefoxMobile) {
             rendererOptions.antialias = false;
         } else {
@@ -166,13 +166,13 @@ export function initModalShader(container) {
         }
         renderer = new THREE.WebGLRenderer(rendererOptions);
     } catch (e) {
-        
+
         console.warn('[modal_shader] WebGL context creation failed - modal keeps static background.', e);
         return null;
     }
     renderer.setSize(container.clientWidth, container.clientHeight);
-    
-    
+
+
     const maxPixelRatio = isFirefoxMobile ? 1.0 : SHADER_MAX_PIXEL_RATIO;
     const pixelRatio = Math.min(window.devicePixelRatio, maxPixelRatio);
     renderer.setPixelRatio(pixelRatio);
@@ -190,9 +190,9 @@ export function initModalShader(container) {
 
     container.prepend(renderer.domElement);
 
-    
-    
-    
+
+
+
     renderer.domElement.addEventListener('webglcontextlost', (event) => {
         event.preventDefault();
         console.warn('[modal_shader] WebGL context lost - keeping static CSS background.');
@@ -253,7 +253,7 @@ export function initModalShader(container) {
     }
 
     function start(scheme) {
-        
+
         if (scheme !== undefined) setColorScheme(scheme);
         if (isActive) return;
         isActive = true;

@@ -18,30 +18,30 @@ let isAutoCycling = false;
 let isPaused = false;
 let activeMainCategory = null;
 let TOTAL_SLIDES = 0;
-const AUTO_INTERVAL = 9000;         
-const AUTO_RESUME_DELAY_MS = 8000;  
-const BUBBLE_COUNT = 30;            
+const AUTO_INTERVAL = 9000;
+const AUTO_RESUME_DELAY_MS = 8000;
+const BUBBLE_COUNT = 30;
 const PARTICLE_COUNT = 40;
-const PORTAL_VORTEX_STEP_MS = 33;   
+const PORTAL_VORTEX_STEP_MS = 33;
 
 
-const SLIDE_OFFSET_X_PX = 520;      
-const SLIDE_OFFSET_Z_PX = -80;      
-const SLIDE_ROTATE_Y_DEG = 25;      
-const SLIDE_SCALE_SIDE = 0.78;      
-const SLIDE_SCALE_CENTER_Z_PX = 100;  
-const SLIDE_SCALE_CENTER = 1.12;      
-const SLIDE_HIDDEN_Z_PX = -200;       
-const SLIDE_SCALE_HIDDEN = 0.65;      
+const SLIDE_OFFSET_X_PX = 520;
+const SLIDE_OFFSET_Z_PX = -80;
+const SLIDE_ROTATE_Y_DEG = 25;
+const SLIDE_SCALE_SIDE = 0.78;
+const SLIDE_SCALE_CENTER_Z_PX = 100;
+const SLIDE_SCALE_CENTER = 1.12;
+const SLIDE_HIDDEN_Z_PX = -200;
+const SLIDE_SCALE_HIDDEN = 0.65;
 
 
 const CATEGORY_TINTS = {
-    gamedev:  [0.550, 0.750, 1.000], 
-    coding:   [0.400, 0.850, 0.800], 
-    "3d":     [0.700, 0.550, 0.900], 
-    concept:  [0.450, 0.800, 0.550], 
-    sound:    [1.000, 0.780, 0.400], 
-    other:    [0.950, 0.400, 0.600]  
+    gamedev: [0.550, 0.750, 1.000],
+    coding: [0.400, 0.850, 0.800],
+    "3d": [0.700, 0.550, 0.900],
+    concept: [0.450, 0.800, 0.550],
+    sound: [1.000, 0.780, 0.400],
+    other: [0.950, 0.400, 0.600]
 };
 
 
@@ -50,22 +50,22 @@ let tiltSlide = null;
 let tiltInner = null;
 let tiltShine = null;
 let tiltAnimFrame = null;
-const TILT_MAX_ANGLE = 14; 
+const TILT_MAX_ANGLE = 14;
 
 
 function buildPortalSlides() {
     const carousel = document.querySelector('.portal-carousel');
     if (!carousel) return;
 
-    
+
     carousel.querySelectorAll(':scope > .portal-slide').forEach(s => s.remove());
 
     const controls = carousel.querySelector('.carousel-controls');
     const lang = getCurrentLang();
 
-    
-    
-    
+
+
+
     const orderedProjectIndices = getOrderedProjectIndices();
 
     orderedProjectIndices.forEach((projectIdx, slideIndex) => {
@@ -74,7 +74,7 @@ function buildPortalSlides() {
 
         const slide = document.createElement('div');
         slide.className = 'portal-slide';
-        
+
         slide.dataset.index = String(slideIndex);
         slide.dataset.project = String(projectIdx);
 
@@ -83,17 +83,17 @@ function buildPortalSlides() {
         img.alt = getProjectTitle(projectIdx, lang) || '';
         img.loading = 'lazy';
         img.decoding = 'async';
-        
+
         if (project.coverFit === 'contain') img.classList.add('fit-contain');
-        
+
         if (project.coverPosition) img.style.objectPosition = project.coverPosition;
-        
+
         applyImageFallback(img, project.category);
 
-        
-        
-        
-        
+
+
+
+
         const visual = document.createElement('div');
         visual.className = 'portal-visual';
         visual.appendChild(img);
@@ -131,24 +131,24 @@ function renderPortalLabels() {
 export function initPortal(onOpenModal) {
     modalOpenCallback = onOpenModal;
 
-    
+
     buildPortalSlides();
 
-    
+
     buildMainCategoryTabs();
 
     initBubbles();
     initCarousel();
     setupTiltStructure();
-    
-    
+
+
     initVortexShader();
     vortexSyncOpen();
 
-    
+
     syncMainCategoryTab();
 
-    
+
     const catContainer = document.querySelector('.main-cat-tabs');
     if (catContainer) {
         catContainer.addEventListener('click', (e) => {
@@ -159,7 +159,7 @@ export function initPortal(onOpenModal) {
         });
     }
 
-    
+
     document.addEventListener('languageChanged', renderPortalLabels);
     document.addEventListener('languageChanged', () => {
         buildMainCategoryTabs();
@@ -200,8 +200,8 @@ function navigateToMainCategory(category) {
     const idx = getFirstProjectOfCategory(category);
     if (idx === null || idx === undefined) return;
     goToPortalSlide(idx);
-    
-    
+
+
     setActiveMainCategory(category);
 }
 
@@ -227,11 +227,11 @@ function syncMainCategoryTab() {
 export function goToPortalSlide(projectIndex) {
     const pos = findSlidePositionByProject(projectIndex);
     if (pos < 0 || pos >= TOTAL_SLIDES) return;
-    
+
     const slides = document.querySelectorAll('.portal-slide');
     const dots = document.querySelectorAll('.c-dot');
     if (slides.length === 0 || dots.length === 0) return;
-    
+
     pauseAuto();
     detachTilt();
     currentCenter = pos;
@@ -246,22 +246,22 @@ window.goToPortalSlide = goToPortalSlide;
 function setupTiltStructure() {
     const slides = document.querySelectorAll('.portal-slide');
     slides.forEach(slide => {
-        
+
         if (slide.querySelector('.tilt-inner')) return;
 
-        
+
         const img = slide.querySelector('img');
         if (!img) return;
 
-        
+
         const tiltInner = document.createElement('div');
         tiltInner.className = 'tilt-inner';
 
-        
+
         img.parentNode.insertBefore(tiltInner, img);
         tiltInner.appendChild(img);
 
-        
+
         const shine = document.createElement('div');
         shine.className = 'tilt-shine';
         tiltInner.appendChild(shine);
@@ -270,7 +270,7 @@ function setupTiltStructure() {
 
 
 function attachTilt() {
-    detachTilt(); 
+    detachTilt();
 
     const centerSlide = document.querySelector('.portal-slide.pos-center');
     if (!centerSlide) return;
@@ -281,7 +281,7 @@ function attachTilt() {
 
     if (!tiltInner || !tiltShine) return;
 
-tiltSlide.addEventListener('focusin', onPortalFocusIn, { passive: true });
+    tiltSlide.addEventListener('focusin', onPortalFocusIn, { passive: true });
     tiltSlide.addEventListener('focusout', onPortalFocusOut, { passive: true });
     tiltSlide.addEventListener('mousemove', onTiltMove, { passive: true });
     tiltSlide.addEventListener('mouseleave', onTiltLeave, { passive: true });
@@ -294,11 +294,11 @@ function detachTilt() {
         tiltSlide.removeEventListener('mousemove', onTiltMove);
         tiltSlide.removeEventListener('mouseleave', onTiltLeave);
         tiltSlide.removeEventListener('mouseenter', onTiltEnter);
-tiltSlide.removeEventListener('focusin', onPortalFocusIn);
+        tiltSlide.removeEventListener('focusin', onPortalFocusIn);
         tiltSlide.removeEventListener('focusout', onPortalFocusOut);
     }
 
-    
+
     if (tiltInner) {
         tiltInner.style.transform = '';
         tiltInner.classList.remove('tilt-active', 'tilt-snap-back');
@@ -347,7 +347,7 @@ function onTiltEnter() {
 function onTiltMove(e) {
     if (!tiltActive || !tiltSlide || !tiltInner || !tiltShine) return;
 
-    
+
     if (tiltAnimFrame) cancelAnimationFrame(tiltAnimFrame);
     tiltAnimFrame = requestAnimationFrame(() => {
         updateTilt(e);
@@ -361,24 +361,24 @@ function updateTilt(e) {
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
 
-    
+
     let normX = (e.clientX - centerX) / (rect.width / 2);
     let normY = (e.clientY - centerY) / (rect.height / 2);
 
-    
+
     normX = Math.max(-1, Math.min(1, normX));
     normY = Math.max(-1, Math.min(1, normY));
 
-    
+
     const rotY = normX * TILT_MAX_ANGLE;
     const rotX = -normY * TILT_MAX_ANGLE;
 
-    
+
     tiltInner.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
 
-    
-    const px = ((normX + 1) / 2) * 100; 
-    const py = ((normY + 1) / 2) * 100; 
+
+    const px = ((normX + 1) / 2) * 100;
+    const py = ((normY + 1) / 2) * 100;
     tiltShine.style.background = `radial-gradient(
         circle 150px at ${px}% ${py}%,
         rgba(201, 168, 97, 0.18) 0%,
@@ -571,10 +571,10 @@ function createVortexInstance(slide) {
     const THREE = window.THREE;
     if (!THREE || !slide) return null;
 
-    
-    
-    
-    
+
+
+
+
     if (!isWebGLAvailable()) return null;
 
     let renderer;
@@ -583,7 +583,7 @@ function createVortexInstance(slide) {
             alpha: true, antialias: true, powerPreference: 'high-performance'
         });
     } catch (e) {
-        
+
         console.warn('[portal-vortex] WebGL context creation failed, slide stays image-visible.', e);
         return null;
     }
@@ -593,13 +593,13 @@ function createVortexInstance(slide) {
 
     const canvas = renderer.domElement;
     canvas.className = 'portal-vortex-canvas';
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
     canvas.style.cssText = [
         'position:absolute;top:0;left:0;width:100%;height:100%;',
         'z-index:8;pointer-events:none;'
@@ -616,7 +616,7 @@ function createVortexInstance(slide) {
         uFlash: { value: 0 }
     };
     const _pIdx = parseInt(slide.dataset.project);
-    const _cat  = (projects[_pIdx] && projects[_pIdx].category) || "other";
+    const _cat = (projects[_pIdx] && projects[_pIdx].category) || "other";
     uniforms.uCategoryTint = { value: CATEGORY_TINTS[_cat] || CATEGORY_TINTS.other || [1, 1, 1] };
 
     const material = new THREE.ShaderMaterial({
@@ -628,8 +628,8 @@ function createVortexInstance(slide) {
     });
     scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material));
 
-    
-    
+
+
     const visual = slide.querySelector('.portal-visual') || slide;
     visual.appendChild(canvas);
 
@@ -651,7 +651,7 @@ function createVortexInstance(slide) {
         flashV: 0
     };
 
-    
+
     slide.addEventListener('mouseenter', () => { inst.flashV = 1; }, { passive: true });
 
     vortexInstances.push(inst);
@@ -670,13 +670,13 @@ function initVortexShader() {
     let reduced = false;
     try {
         reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    } catch (e) {  }
-    if (reduced) return; 
+    } catch (e) { }
+    if (reduced) return;
 
-    
-    
-    
-    
+
+
+
+
     const section = document.querySelector('.archives_section');
     if (section && typeof IntersectionObserver !== 'undefined') {
         const lazyObserver = new IntersectionObserver((entries) => {
@@ -689,13 +689,13 @@ function initVortexShader() {
         return;
     }
 
-    
+
     createPortalVortices();
 }
 
 
 function createPortalVortices() {
-    if (vortexInstances.length) return; 
+    if (vortexInstances.length) return;
 
     document.querySelectorAll('.portal-slide').forEach(createVortexInstance);
     if (!vortexInstances.length) return;
@@ -704,22 +704,22 @@ function createPortalVortices() {
         const delta = dt || 1 / 60;
         vortexInstances.forEach((inst, idx) => {
             if (!vortexSectionVisible) return;
-            
-            
+
+
             if (document.body.classList.contains('modal-open')) return;
-            
-            
-            
-            
+
+
+
+
             const resumeElapsed = getModalResumeElapsed();
             if (resumeElapsed >= 0 && resumeElapsed < idx * PORTAL_VORTEX_STEP_MS) return;
             if (!inst.canvas.isConnected) return;
-            
+
             if (inst.slide.classList.contains('pos-hidden')) return;
             inst.uniforms.uTime.value += delta;
             const ease = 1 - Math.exp(-delta * 3.5);
             inst.uniforms.uOpen.value += (inst.openTarget - inst.uniforms.uOpen.value) * ease;
-            
+
             if (inst.flashV > 0.002) {
                 inst.flashV *= Math.exp(-delta * 3.4);
             } else {
@@ -770,16 +770,16 @@ function initCarousel() {
 
     if (slides.length === 0) return;
 
-    
+
     if (prevBtn) prevBtn.setAttribute('aria-label', 'Previous slide');
     if (nextBtn) nextBtn.setAttribute('aria-label', 'Next slide');
 
-    
+
     TOTAL_SLIDES = slides.length;
 
     let cleanupListeners = [];
 
-    
+
     const carouselEl = document.querySelector('.portal-carousel');
     if (carouselEl && slides.length > 0) {
         const cleanupSwipe = bindHorizontalSwipe(
@@ -802,17 +802,17 @@ function initCarousel() {
         cleanupListeners.push(cleanupSwipe);
     }
 
-    
+
     slides.forEach((slide, i) => {
         slide.setAttribute('role', 'button');
         slide.setAttribute('tabindex', '0');
         slide.setAttribute('aria-label', `Project ${i + 1} of ${TOTAL_SLIDES}`);
     });
 
-    
+
     updatePositions(slides, dots);
 
-    
+
     if (prevBtn) {
         const onPrev = () => {
             pauseAuto();
@@ -837,7 +837,7 @@ function initCarousel() {
         cleanupListeners.push(() => nextBtn.removeEventListener('click', onNext));
     }
 
-    
+
     dots.forEach((dot, i) => {
         const onDotClick = () => {
             pauseAuto();
@@ -850,25 +850,25 @@ function initCarousel() {
         cleanupListeners.push(() => dot.removeEventListener('click', onDotClick));
     });
 
-    
+
     slides.forEach((slide) => {
         const onSlideClick = (e) => {
             const idx = parseInt(slide.dataset.index);
 
             if (idx === currentCenter) {
-                
+
                 e.preventDefault();
                 e.stopPropagation();
                 pauseAuto();
                 if (modalOpenCallback) {
                     modalOpenCallback(slide);
                 } else {
-                    
+
                 }
                 return;
             }
 
-            
+
             e.preventDefault();
             e.stopPropagation();
             pauseAuto();
@@ -881,7 +881,7 @@ function initCarousel() {
         cleanupListeners.push(() => slide.removeEventListener('click', onSlideClick));
     });
 
-    
+
     slides.forEach((slide) => {
         const onKeydown = (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -893,7 +893,7 @@ function initCarousel() {
         cleanupListeners.push(() => slide.removeEventListener('keydown', onKeydown));
     });
 
-    
+
     let sectionObserver = null;
     if (section) {
         sectionObserver = new IntersectionObserver((entries) => {
@@ -908,7 +908,7 @@ function initCarousel() {
         sectionObserver.observe(section);
     }
 
-    
+
     function onModalClose() {
         setTimeout(() => {
             isPaused = false;
@@ -916,14 +916,14 @@ function initCarousel() {
         }, 200);
     }
 
-    
+
     const onEscKey = (e) => {
         if (e.key === 'Escape') onModalClose();
     };
     document.addEventListener('keydown', onEscKey);
     cleanupListeners.push(() => document.removeEventListener('keydown', onEscKey));
 
-    
+
     const overlay = document.querySelector('.project_modal_overlay');
     if (overlay) {
         const onOverlayClick = (e) => {
@@ -933,7 +933,7 @@ function initCarousel() {
         cleanupListeners.push(() => overlay.removeEventListener('click', onOverlayClick));
     }
 
-    
+
     const closeBtn = document.querySelector('.modal_close_btn');
     if (closeBtn) {
         const onCloseClick = () => onModalClose();
@@ -941,7 +941,7 @@ function initCarousel() {
         cleanupListeners.push(() => closeBtn.removeEventListener('click', onCloseClick));
     }
 
-    
+
     let mutObs = null;
     if (overlay) {
         mutObs = new MutationObserver((mutations) => {
@@ -954,11 +954,11 @@ function initCarousel() {
         mutObs.observe(overlay, { attributes: true, attributeFilter: ['style'] });
     }
 
-    
+
     cleanupRegistry.register(() => {
         stopAuto();
         detachTilt();
-        cleanupListeners.forEach(fn => { try { fn(); } catch(e) {} });
+        cleanupListeners.forEach(fn => { try { fn(); } catch (e) { } });
         cleanupListeners = [];
         if (sectionObserver) sectionObserver.disconnect();
         if (mutObs) mutObs.disconnect();
@@ -966,42 +966,42 @@ function initCarousel() {
 }
 
 function updatePositions(slides, dots) {
-    
-    
+
+
     slides.forEach((slide) => {
         slide.classList.remove('pos-center', 'pos-left', 'pos-right', 'pos-hidden');
     });
 
-    
+
     void document.body.offsetHeight;
 
     slides.forEach((slide, i) => {
-        
+
         let rel = i - currentCenter;
         if (rel < -1) rel += TOTAL_SLIDES;
         if (rel > 1) rel -= TOTAL_SLIDES;
 
-        
-        
+
+
         if (rel === 0) {
-            
+
             slide.classList.add("pos-center");
             slide.setAttribute("aria-current", "true");
             slide.style.transform = `translateX(0) translateZ(${SLIDE_SCALE_CENTER_Z_PX}px) scale(${SLIDE_SCALE_CENTER})`;
             slide.style.opacity = '1';
-            
+
             slide.style.pointerEvents = '';
         } else if (rel === -1 || rel === 1) {
-            
+
             slide.classList.add("pos-" + (rel === -1 ? "left" : "right"));
             slide.setAttribute("aria-current", "false");
             slide.style.transform = `translateX(${rel === -1 ? -SLIDE_OFFSET_X_PX : SLIDE_OFFSET_X_PX}px) translateZ(${SLIDE_OFFSET_Z_PX}px) rotateY(${rel === -1 ? SLIDE_ROTATE_Y_DEG : -SLIDE_ROTATE_Y_DEG}deg) scale(${SLIDE_SCALE_SIDE})`;
             slide.style.opacity = '0.7';
-            
+
             slide.style.pointerEvents = '';
         } else {
-            
-            
+
+
             slide.classList.add("pos-hidden");
             slide.style.opacity = '0';
             slide.style.pointerEvents = 'none';
@@ -1009,7 +1009,7 @@ function updatePositions(slides, dots) {
         }
     });
 
-    
+
     dots.forEach((dot, i) => {
         dot.classList.toggle('active', i === currentCenter);
         dot.setAttribute('aria-label', `Go to project ${i + 1}`);
@@ -1020,15 +1020,15 @@ function updatePositions(slides, dots) {
         }
     });
 
-    
+
     syncMainCategoryTab();
-    
+
     requestAnimationFrame(() => {
         requestAnimationFrame(() => {
             attachTilt();
         });
     });
-    
+
     vortexSyncOpen();
 }
 
@@ -1065,7 +1065,7 @@ function pauseAuto() {
 }
 
 function resumeAutoAfterDelay() {
-    
+
     isPaused = false;
     stopAuto();
     setTimeout(() => {
@@ -1085,8 +1085,8 @@ function initBubbles() {
 
     const ctx = canvas.getContext('2d');
     const section = document.querySelector('.archives_section');
-    
-    
+
+
     if (!section) return;
     let bubbles = [];
     let particles = [];
@@ -1100,8 +1100,8 @@ function initBubbles() {
                     isActive = true;
                     resize();
                     initParticles();
-                    
-                    
+
+
                     unregisterAnim = registerAnimation(() => {
                         if (!isActive) return;
                         if (document.body.classList.contains('modal-open') || isModalResumeStagger(1)) return;
@@ -1121,13 +1121,13 @@ function initBubbles() {
     observer.observe(section);
 
     function resize() {
-        
-        
-        
+
+
+
         const w = section.offsetWidth;
         const h = section.offsetHeight;
-        if (w === 0 || h === 0) return; 
-        
+        if (w === 0 || h === 0) return;
+
         sizeCanvas(canvas, w, h);
         canvas.style.width = w + 'px';
         canvas.style.height = h + 'px';
@@ -1198,21 +1198,21 @@ function initBubbles() {
             p.opacity = Math.min(p.maxOpacity, p.opacity + 0.008);
             const floatY = p.y + Math.sin(time * p.floatSpeed + p.phase) * p.floatAmp;
             const alpha = p.opacity * (0.5 + 0.5 * Math.sin(time * 0.3 + p.phase));
-            
+
             ctx.fillStyle = `rgba(${p.color}, ${alpha * 0.1})`;
             ctx.beginPath();
             ctx.arc(p.x, floatY, p.r + 5, 0, TWO_PI);
             ctx.fill();
-            
+
             ctx.fillStyle = `rgba(${p.color}, ${alpha})`;
             ctx.beginPath();
             ctx.arc(p.x, floatY, p.r, 0, TWO_PI);
             ctx.fill();
         });
-        
+
     }
 
-    
+
     cleanupRegistry.register(() => {
         isActive = false;
         if (unregisterAnim) {

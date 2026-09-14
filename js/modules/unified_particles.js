@@ -9,7 +9,7 @@ import { sizeCanvas, cleanupRegistry } from '../utils/helpers.js';
 import { TWO_PI, MAX_FRAME_DELTA_SECONDS } from '../constants/ui.js';
 
 export function initUnifiedParticles() {
-    
+
     const canvasBack = document.createElement('canvas');
     canvasBack.className = 'unified-particles-canvas-back';
     canvasBack.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:3;';
@@ -27,22 +27,22 @@ export function initUnifiedParticles() {
     let time = 0;
     let lastTime = 0;
 
-    
+
     const backParticles = [];
     const backBubbles = [];
     const fishes = [];
-    
+
     const frontParticles = [];
     const frontBubbles = [];
 
     const COLORS = [
         '73, 146, 154', '201, 168, 97', '73, 146, 154',
-        '201, 168, 97', '120, 50, 50',  '73, 146, 154',
+        '201, 168, 97', '120, 50, 50', '73, 146, 154',
     ];
     const COLORS_GOLD = [201, 168, 97];
     const COLORS_CYAN = [73, 146, 154];
 
-    
+
     const BACK_PARTICLE_COUNT = 12;
     const BACK_BUBBLE_COUNT = 5;
     const FRONT_PARTICLE_COUNT = 18;
@@ -134,7 +134,7 @@ export function initUnifiedParticles() {
         }
     }
 
-    
+
     function resize() {
         const logicalW = window.innerWidth;
         const logicalH = window.innerHeight;
@@ -157,7 +157,7 @@ export function initUnifiedParticles() {
         resize();
     }
 
-    
+
     function drawBackParticles() {
         for (let i = 0; i < backParticles.length; i++) {
             const p = backParticles[i];
@@ -261,7 +261,7 @@ export function initUnifiedParticles() {
         }
     }
 
-    
+
     function drawFrontParticles() {
         for (let i = 0; i < frontParticles.length; i++) {
             const p = frontParticles[i];
@@ -310,11 +310,11 @@ export function initUnifiedParticles() {
         }
     }
 
-    
+
     function frame(now) {
-        
-        
-        
+
+
+
         if (document.body.classList.contains('modal-open') || isModalResumeStagger(2)) return;
         if (!lastTime) lastTime = now;
         const dt = Math.min((now - lastTime) / 1000, MAX_FRAME_DELTA_SECONDS);
@@ -331,7 +331,7 @@ export function initUnifiedParticles() {
         drawFrontBubbles();
     }
 
-    
+
     resize();
     window.addEventListener('resize', onResize, { passive: true });
 

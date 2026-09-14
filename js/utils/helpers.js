@@ -19,7 +19,7 @@ export function getCanvasQuality() {
 
 
 export function bindHorizontalSwipe(el, onSwipeNext, onSwipePrev, onSwipeDone) {
-    if (!el || typeof el.addEventListener !== 'function') return () => {};
+    if (!el || typeof el.addEventListener !== 'function') return () => { };
     let startX = 0;
     let startY = 0;
     let swiping = false;
@@ -31,7 +31,7 @@ export function bindHorizontalSwipe(el, onSwipeNext, onSwipePrev, onSwipeDone) {
         swiping = true;
     };
 
-    
+
     const onTouchEnd = (e) => {
         if (!swiping) return;
         swiping = false;
@@ -96,29 +96,29 @@ class CleanupRegistry {
         this._boundCleanup = null;
     }
 
-    
+
     register(fn) {
         if (typeof fn === 'function') {
             this.cleanups.push(fn);
         }
     }
 
-    
+
     runAll() {
         this.cleanups.forEach(fn => {
-            try { fn(); } catch (e) {  }
+            try { fn(); } catch (e) { }
         });
         this.cleanups = [];
     }
 
-    
+
     bind() {
         if (this._boundCleanup) return;
         this._boundCleanup = () => this.runAll();
         window.addEventListener('beforeunload', this._boundCleanup);
     }
 
-    
+
     unbind() {
         if (this._boundCleanup) {
             window.removeEventListener('beforeunload', this._boundCleanup);
@@ -161,28 +161,28 @@ export function requireElement(selector, name = selector) {
 
 
 export function waitForFont(font = '') {
-    
-    
+
+
     const resolveSoon = () => Promise.resolve();
 
     if (typeof document === 'undefined' || !document.fonts) return resolveSoon();
     if (!document.fonts.load) return resolveSoon();
 
     try {
-        
-        
+
+
         const family = (font.split(',')[0] || '').trim().replace(/^['"]|['"]$/g, '');
         if (!family) return resolveSoon();
 
-        
-        
-        return document.fonts.load(font,  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789').then(() => {
-            
+
+
+        return document.fonts.load(font, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789').then(() => {
+
             return undefined;
         }).catch(() => {
-            
-            
-            
+
+
+
             const ready = document.fonts.ready;
             if (ready && ready.then) return ready.then(() => undefined);
             return undefined;

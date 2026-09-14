@@ -33,23 +33,23 @@ export function initContactRain() {
     let isAnimating = false;
     let time = 0;
     let unregisterAnim = null;
-    
+
     const { isLarge, isXLarge, scale: SCALE } = getCanvasQuality();
 
-    
+
     const useBuffer = SCALE < 1.0;
 
-    
+
     const SEGMENTS = isXLarge ? 6 : isLarge ? 8 : 20;
     const MAX_PARTICLES = isXLarge ? 12 : isLarge ? 18 : 35;
     const PARTICLE_SPAWN_INTERVAL = isLarge ? 0.1 : 0.05;
-    
+
     const RAY_COUNT = isXLarge ? 3 : isLarge ? 4 : 6;
 
     let particles = [];
     let spawnTimer = 0;
 
-    
+
     let buffer = null;
     let bCtx = null;
 
@@ -101,7 +101,7 @@ export function initContactRain() {
             const p = particles[i];
             p.age++;
 
-            
+
             if (p.age > p.life) {
                 p.opacity -= 0.03;
                 if (p.opacity <= 0) { particles.splice(i, 1); continue; }
@@ -171,9 +171,9 @@ export function initContactRain() {
         rays.forEach(ray => {
             const baseX = sw * ray.x;
             const length = sh * ray.length;
-            
+
             const swayX = Math.sin(time * ray.speed * 0.3 + ray.delay) * 80 * s
-                        + Math.sin(time * ray.speed * 0.1 + ray.delay * 1.5) * 40 * s;
+                + Math.sin(time * ray.speed * 0.1 + ray.delay * 1.5) * 40 * s;
             const x = baseX + swayX;
 
             const lengthPulse = 0.85 + 0.15 * Math.sin(time * ray.speed * 0.3 + ray.delay);
@@ -190,17 +190,17 @@ export function initContactRain() {
 
             const segH = currentLength / SEGMENTS;
             const rayWidth = ray.width * s;
-            
+
             drawCtx.save();
 
-            
+
             drawCtx.beginPath();
             for (let i = 0; i <= SEGMENTS; i++) {
                 const t = i / SEGMENTS;
                 const y = startY + i * segH;
                 const waveX = Math.sin(time * ray.speed + t * 3 + ray.delay) * 3 * s;
                 const widthAt = rayWidth * (1 - t * 0.7);
-                
+
                 if (i === 0) {
                     drawCtx.moveTo(x + waveX - widthAt / 2, y);
                     drawCtx.lineTo(x + waveX + widthAt / 2, y);
@@ -217,7 +217,7 @@ export function initContactRain() {
             }
             drawCtx.closePath();
 
-            
+
             const grad = drawCtx.createLinearGradient(x, startY * s, x, endY);
             const a = Math.min(1, alpha);
             grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0)`);
@@ -230,7 +230,7 @@ export function initContactRain() {
             drawCtx.fillStyle = grad;
             drawCtx.fill();
 
-            
+
             drawCtx.globalAlpha = 0.2;
             drawCtx.fillStyle = `rgba(255, 255, 255, ${a * 0.4})`;
             drawCtx.fill();
@@ -243,16 +243,16 @@ export function initContactRain() {
     function resize() {
         const w = section.offsetWidth;
         const h = section.offsetHeight;
-        
+
         const result = sizeCanvas(canvas, w, h);
         canvas.style.width = w + 'px';
         canvas.style.height = h + 'px';
         ensureBuffer(canvas.width, canvas.height);
     }
 
-    
-    
-    
+
+
+
     const debouncedResize = debounce(resize, DEBOUNCE_DELAY_MS);
     window.addEventListener('resize', debouncedResize);
 
@@ -269,10 +269,10 @@ export function initContactRain() {
         spawnTimer = 0;
         time = 0;
         lastFrameTime = 0;
-        
+
         ensureBuffer(canvas.width || section.offsetWidth, canvas.height || section.offsetHeight);
-        
-        
+
+
         unregisterAnim = registerAnimation((now) => {
             if (!isVisible) {
                 isAnimating = false;
@@ -296,7 +296,7 @@ export function initContactRain() {
 
         if (!w || !h || !isFinite(w) || !isFinite(h)) return;
 
-        
+
         const drawCtx = useBuffer ? bCtx : ctx;
         const dw = useBuffer ? buffer.width : w;
         const dh = useBuffer ? buffer.height : h;
@@ -319,7 +319,7 @@ export function initContactRain() {
         }
     }
 
-    
+
     setTimeout(() => {
         resize();
         if (isVisible && !isAnimating) startAnimation();

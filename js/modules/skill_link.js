@@ -23,9 +23,9 @@ function applySkillHighlight(skillId) {
         card.classList.toggle('skill-dim', !isMatch);
     });
 
-    
-    
-    
+
+
+
     if (!anyMatch) clearSkillHighlight();
 }
 
