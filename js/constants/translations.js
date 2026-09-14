@@ -9,6 +9,7 @@ export const translations = {
         'sidebar-email': 'EMAIL',
         'sidebar-github': 'GITHUB',
         'sidebar-linkedin': 'LINKEDIN',
+        'sidebar-cv': 'DOWNLOAD CV',
 
 
         'nav-home': 'HOME',
@@ -108,6 +109,7 @@ export const translations = {
         'sidebar-email': 'EMAIL',
         'sidebar-github': 'GITHUB',
         'sidebar-linkedin': 'LINKEDIN',
+        'sidebar-cv': 'LEBENSLAUF',
 
 
         'nav-home': 'STARTSEITE',

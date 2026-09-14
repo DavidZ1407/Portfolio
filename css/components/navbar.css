@@ -54,11 +54,31 @@
 }
 
 .sidebar_socials a:nth-child(5) {
-    animation-delay: 0.6s;
+    animation-delay: 1.6s;
 }
 
 .sidebar_socials a:nth-child(6) {
     animation-delay: 1s;
+}
+
+.sidebar_socials a.sidebar_cv_btn {
+    margin-top: 14px;
+}
+
+.sidebar_socials a.sidebar_cv_btn span {
+    color: var(--gold-accent);
+    letter-spacing: 1.2px;
+}
+
+.sidebar_socials a.sidebar_cv_btn:hover,
+.sidebar_socials a.sidebar_cv_btn:hover i,
+.sidebar_socials a.sidebar_cv_btn:hover span {
+    color: var(--cyan-glow);
+}
+
+.sidebar_socials a.sidebar_cv_btn:hover i {
+    transform: translateY(2px);
+    text-shadow: 0 0 12px rgba(73, 146, 154, 0.7);
 }
 
 @keyframes sidebar-float {

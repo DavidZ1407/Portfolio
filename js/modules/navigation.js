@@ -80,7 +80,7 @@ export function initNavigation() {
 
 
     document.addEventListener('click', (e) => {
-        const link = e.target.closest('.nav_link, .logo');
+        const link = e.target.closest('.nav_link, .logo, .sidebar_socials a[href^="#"], .navbar_socials a[href^="#"]');
         if (!link) return;
         setMobileNavOpen(false);
         if (isProjectModalOpen()) {

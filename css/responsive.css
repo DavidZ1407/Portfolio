@@ -2674,6 +2674,10 @@ html {
     display: none;
 }
 
+.navbar_socials {
+    display: none;
+}
+
 @media (max-width: 768px) {
     .header {
         justify-content: space-between;
@@ -2829,6 +2833,58 @@ html {
     body.nav-open .lang-sep {
         opacity: 0.6;
         font-size: 1.2em;
+    }
+
+    .navbar_socials {
+        order: 5;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 4px;
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    body.nav-open .navbar_socials {
+        opacity: 1;
+        transform: translateY(0);
+        transition-delay: 0.26s;
+    }
+
+    .navbar_socials a {
+        color: var(--gold-accent, #c9a861);
+        font-size: 1.8rem;
+        text-decoration: none;
+        transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .navbar_socials a:hover {
+        color: var(--cyan-glow, #49929a);
+        text-shadow: 0 0 12px rgba(73, 146, 154, 0.6);
+        transform: translateY(-2px);
+    }
+
+    /* Phone: icon with the number shown below it */
+    .navbar_socials a.navbar_socials_phone {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .navbar_socials a.navbar_socials_phone span {
+        font-family: monospace;
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+        color: var(--gold-accent, #c9a861);
+        transition: color 0.3s ease;
+    }
+
+    .navbar_socials a.navbar_socials_phone:hover span {
+        color: var(--cyan-glow, #49929a);
     }
 
     body.modal-open .header {

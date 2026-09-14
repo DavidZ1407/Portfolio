@@ -143,9 +143,14 @@
             <i class='bx bxl-linkedin'></i>
             <span data-i18n="sidebar-linkedin">LINKEDIN</span>
         </a>
-        <a href="tel:+4915780989121">
+        <a href="#contact" class="sidebar_phone_link" aria-label="Phone - jump to contact section">
             <i class='bx bx-phone'></i>
             <span>01578 0989121</span>
+        </a>
+        <a href="assets/CV/CV_David_Zahn_EN.pdf" download="CV_David_Zahn_EN.pdf" id="cv-download-sidebar"
+            class="sidebar_cv_btn" aria-label="Download CV">
+            <i class='bx bx-download'></i>
+            <span data-i18n="sidebar-cv">DOWNLOAD CV</span>
         </a>
     </div>
     <!-- ===== END SIDEBAR SOCIALS ===== -->
@@ -164,6 +169,14 @@
             <a href="#about" class="nav_link" data-i18n="nav-about">ABOUT ME</a>
             <a href="#journey" class="nav_link" data-i18n="nav-journey">JOURNEY</a>
             <a href="#contact" class="nav_link" data-i18n="nav-contact">CONTACT</a>
+            <!-- Mobile-only socials row (burger menu): hidden on desktop via CSS -->
+            <div class="navbar_socials">
+                <a href="mailto:David-Zahn@hotmail.com" aria-label="Email"><i class='bx bx-envelope'></i></a>
+                <a href="https://github.com/DavidZ1407" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class='bx bxl-github'></i></a>
+                <a href="https://www.linkedin.com/in/david-zahn-3829a1364/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class='bx bxl-linkedin'></i></a>
+                <a href="#contact" class="navbar_socials_phone" aria-label="Phone - jump to contact section"><i class='bx bx-phone'></i><span>01578 0989121</span></a>
+                <a href="assets/CV/CV_David_Zahn_EN.pdf" download="CV_David_Zahn_EN.pdf" id="cv-download-menu" aria-label="Download CV"><i class='bx bx-download'></i></a>
+            </div>
         </nav>
         <button class="mobile_nav_toggle" type="button" aria-label="Open menu" aria-expanded="false"
             aria-controls="site_nav">

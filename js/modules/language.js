@@ -57,15 +57,17 @@ function renderLangButton(langBtn, lang) {
 
 
 function updateCVDownloadLink(lang) {
-    const cvLink = document.getElementById('cv-download-link');
-    if (!cvLink) return;
+    const cvLinks = document.querySelectorAll('#cv-download-link, #cv-download-sidebar, #cv-download-menu');
+    if (!cvLinks.length) return;
 
     const cv = CV_PATHS[lang];
     if (!cv) return;
 
-    cvLink.href = cv.href;
-    cvLink.download = cv.download;
-    cvLink.setAttribute('aria-label', cv.aria);
+    cvLinks.forEach(cvLink => {
+        cvLink.href = cv.href;
+        cvLink.download = cv.download;
+        cvLink.setAttribute('aria-label', cv.aria);
+    });
 }
 
 
