@@ -47,7 +47,7 @@ export const translations = {
         'skill-typescript': 'TYPESCRIPT',
         'skill-webgl': 'WEBGL / OPENGL',
         'skill-krita': 'KRITA',
-        'skill-fmod': 'FMOD',
+        'skill-fmod': 'FMOD / ABLETON LIVE',
 
 
         'archives-title': 'WORK',
@@ -147,7 +147,7 @@ export const translations = {
         'skill-typescript': 'TYPESCRIPT',
         'skill-webgl': 'WEBGL / OPENGL',
         'skill-krita': 'KRITA',
-        'skill-fmod': 'FMOD',
+        'skill-fmod': 'FMOD / ABLETON LIVE',
 
 
         'archives-title': 'WORK',

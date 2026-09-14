@@ -69,11 +69,11 @@ export const skills = [
     },
     {
         id: 'fmod',
-        name: 'FMOD',
+        name: 'FMOD / Ableton Live',
         i18n: 'skill-fmod',
 
         icon: 'bx-headphone',
-        toolAliases: ['fmod']
+        toolAliases: ['fmod', 'ableton live', 'ableton']
     }
 ];
 
