@@ -457,7 +457,7 @@ const projects = [
         team: { en: '5 members', de: '5 Mitglieder' },
         cover: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_1.webp',
         media: [
-            { type: 'youtube', id: 'eomk8vSr40o', start: 95, thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_1.webp' },
+            { type: 'youtube', id: 'eomk8vSr40o', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_1.webp' },
             { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_1.webp', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_1.webp' },
             { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_2.webp', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_2.webp' },
             { type: 'image', src: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_3.webp', thumb: 'assets/Game_Dev/Another_Goblin_Game/G_D_AGG_3.webp' },

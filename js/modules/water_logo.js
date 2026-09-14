@@ -216,21 +216,64 @@ export function initWaterLogo() {
     const vs = compile(gl.VERTEX_SHADER, vertSrc);
     const fs = compile(gl.FRAGMENT_SHADER, fragSrc);
     if (!vs || !fs) {
-        container.remove(); h1.style.opacity = '1';
-        h1.style.display = ''; 
+        console.error('[water-logo] Shader compilation failed — falling back to static title.');
+        container.remove();
+        h1.style.opacity = '1';
+        h1.style.display = '';
+        return;
+    }
+    const prog = gl.createProgram();
+    gl.attachShader(prog, vs);
+    gl.attachShader(prog, fs);
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+        console.error('[water-logo] Program link error:', gl.getProgramInfoLog(prog));
+        container.remove();
+        h1.style.opacity = '1';
+        h1.style.display = '';
+        return;
+    }
+    gl.useProgram(prog);
 
-        const prog = gl.createProgram();
-        gl.attachShader(prog, vs);
-        gl.attachShader(prog, fs);
-        gl.linkProgram(prog);
-        if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
-            console.error('[water-logo] Link error:', gl.getProgramInfoLog(prog));
-            container.remove();
-            h1.style.opacity = '1';
-            h1.style.display = ''; 
+    // --- Frame validation & automatic fallback ----------------------
+    // Some mobile GPUs render the canvas blank or as solid white bars
+    // even though the context was created successfully.
+    // After a short warm-up we read back the framebuffer and decide
+    // whether to keep the water-canvas or fall back to the static <h1>.
+    const VALIDATION_FRAME = 20;
+    let framesDrawn = 0;
+    let outputValidated = false;
+
+    function fallbackToStaticTitle(reason) {
+        console.warn('[water-logo] Falling back to static title:', reason);
+        isActive = false;
+        if (animFrame) cancelAnimationFrame(animFrame);
+        container.remove();
+        h1.style.opacity = '1';
+        h1.style.display = '';
+    }
+
+    function validateCanvasOutput() {
+        const w = gl.drawingBufferWidth;
+        const h = gl.drawingBufferHeight;
+        if (!w || !h) { fallbackToStaticTitle('empty drawing buffer'); return; }
+        const px = new Uint8Array(w * h * 4);
+        gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, px);
+        let visible = 0;
+        const total = w * h;
+        for (let i = 3; i < px.length; i += 4) {
+            if (px[i] > 24) visible++;
+        }
+        const visibleRatio = visible / total;
+        if (visibleRatio < 0.005) {
+            fallbackToStaticTitle('canvas renders nothing (blank output)');
             return;
         }
-        gl.useProgram(prog);
+        if (visibleRatio > 0.85) {
+            fallbackToStaticTitle('canvas renders garbage (white bars)');
+            return;
+        }
+    }
 
 
         const verts = new Float32Array([-1, -1, 0, 1, 1, -1, 1, 1, -1, 1, 0, 0, 1, 1, 1, 0]);
@@ -261,56 +304,58 @@ export function initWaterLogo() {
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
 
-        let animFrame = null;
-        let isActive = true;
-        let isVisible = true;
-        let startTime = performance.now();
+    let animFrame = null;
+    let isActive = true;
+    let isVisible = true;
+    let startTime = performance.now();
 
-        function render() {
-            if (!isActive) return;
+    function render() {
+        if (!isActive) return;
 
-            if (!isVisible) { animFrame = requestAnimationFrame(render); return; }
+        if (!isVisible) { animFrame = requestAnimationFrame(render); return; }
 
-            if (document.body.classList.contains('modal-open') || isModalResumeStagger(3)) { animFrame = requestAnimationFrame(render); return; }
-            const t = (performance.now() - startTime) / 1000.0;
-            gl.uniform1f(uTime, t);
-            gl.clearColor(0, 0, 0, 0);
-            gl.clear(gl.COLOR_BUFFER_BIT);
-            gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-            animFrame = requestAnimationFrame(render);
+        if (document.body.classList.contains('modal-open') || isModalResumeStagger(3)) { animFrame = requestAnimationFrame(render); return; }
+        const t = (performance.now() - startTime) / 1000.0;
+        gl.uniform1f(uTime, t);
+        gl.clearColor(0, 0, 0, 0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        if (!outputValidated && ++framesDrawn >= VALIDATION_FRAME) {
+            outputValidated = true;
+            validateCanvasOutput();
         }
-
         animFrame = requestAnimationFrame(render);
-
-
-
-
-
-        waitForFont(getLogoFont(textHeight)).then(() => {
-            if (!isActive) return;
-            const freshCanvas = createTextCanvas('DAVID ZAHN', textWidth, textHeight);
-            gl.bindTexture(gl.TEXTURE_2D, tex);
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, freshCanvas);
-        }).catch(() => { });
-
-
-        const heroObserver = new IntersectionObserver((entries) => {
-            isVisible = entries[0].isIntersecting;
-        }, { threshold: INTERSECTION_THRESHOLD });
-        heroObserver.observe(container);
-
-        cleanupRegistry.register(() => {
-            heroObserver.disconnect();
-            isActive = false;
-            if (animFrame) cancelAnimationFrame(animFrame);
-            container.remove();
-            h1.style.opacity = '1';
-            h1.style.display = ''; 
-            gl.deleteProgram(prog);
-            gl.deleteShader(vs);
-            gl.deleteShader(fs);
-            gl.deleteTexture(tex);
-            gl.deleteBuffer(buf);
-        });
     }
+
+    animFrame = requestAnimationFrame(render);
+
+
+
+
+
+    waitForFont(getLogoFont(textHeight)).then(() => {
+        if (!isActive) return;
+        const freshCanvas = createTextCanvas('DAVID ZAHN', textWidth, textHeight);
+        gl.bindTexture(gl.TEXTURE_2D, tex);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, freshCanvas);
+    }).catch(() => { });
+
+    const heroObserver = new IntersectionObserver((entries) => {
+        isVisible = entries[0].isIntersecting;
+    }, { threshold: INTERSECTION_THRESHOLD });
+    heroObserver.observe(container);
+
+    cleanupRegistry.register(() => {
+        heroObserver.disconnect();
+        isActive = false;
+        if (animFrame) cancelAnimationFrame(animFrame);
+        container.remove();
+        h1.style.opacity = '1';
+        h1.style.display = '';
+        gl.deleteProgram(prog);
+        gl.deleteShader(vs);
+        gl.deleteShader(fs);
+        gl.deleteTexture(tex);
+        gl.deleteBuffer(buf);
+    });
 }
