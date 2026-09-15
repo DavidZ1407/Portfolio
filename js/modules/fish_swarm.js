@@ -115,8 +115,6 @@ function drawBubble(ctx, x, y, r, opacity) {
 
 
 export function initFishSwarm() {
-    const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
-    const SWARM_SIZE = isMobile ? 25 : 45;
     const COOLDOWN = 3000;
 
     const canvas = document.createElement('canvas');
@@ -226,6 +224,7 @@ export function initFishSwarm() {
 
         clearTimeout(swarmHideTimer);
         if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+
         if (unregisterAnim) { unregisterAnim(); unregisterAnim = null; }
 
         spawnCreatures();
@@ -242,12 +241,14 @@ export function initFishSwarm() {
 
 
     function getSwarmSize() {
-        if (window.innerWidth <= MOBILE_SMALL_BREAKPOINT_PX) return 8;
-        if (window.innerWidth <= MOBILE_BREAKPOINT) return 12;
-        if (window.innerWidth <= TABLET_DESKTOP_BREAKPOINT_PX) return 18;
-        if (window.innerWidth <= CANVAS_BACKING_MAX_WIDTH) return 25;
-        if (window.innerWidth <= FOUR_K_BREAKPOINT_PX) return 20;
-        return 15;
+        const vw = window.innerWidth;
+        let base;
+        if (vw <= MOBILE_SMALL_BREAKPOINT_PX) base = 8;
+        else if (vw <= MOBILE_BREAKPOINT) base = 12;
+        else if (vw <= TABLET_DESKTOP_BREAKPOINT_PX) base = 16;
+        else if (vw <= CANVAS_BACKING_MAX_WIDTH) base = 21;
+        else base = 22;
+        return Math.max(6, base + Math.floor(Math.random() * 3) - 1);
     }
 
 
@@ -261,7 +262,13 @@ export function initFishSwarm() {
             const type = TYPES[Math.floor(Math.random() * TYPES.length)];
             const size = type === 'smallFish' ? 5 + Math.random() * 8 : 12 + Math.random() * 18;
             const col = Math.floor(i / 5), row = i % 5;
-            const sx = w * 0.03 + (col / Math.max(cols - 1, 1)) * w * 0.94 + (Math.random() - 0.5) * w * 0.1;
+            const vw = window.innerWidth;
+            const spreadPct = vw <= MOBILE_SMALL_BREAKPOINT_PX ? 0.18
+                : vw <= MOBILE_BREAKPOINT ? 0.25
+                    : vw <= TABLET_DESKTOP_BREAKPOINT_PX ? 0.32
+                        : 0.40;
+            const colNorm = col / Math.max(cols - 1, 1) - 0.5;
+            const sx = w * 0.5 + colNorm * w * spreadPct + (Math.random() - 0.5) * w * spreadPct * 0.5;
             const sy = h + size * 3 + Math.random() * 100 + row * 40;
             const angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.2;
             creatures.push({
