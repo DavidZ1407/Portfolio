@@ -2931,3 +2931,73 @@ html {
         overflow: hidden;
     }
 }
+
+.carousel_indicators .indicator {
+    width: 13px;
+    height: 13px;
+}
+
+.carousel_indicators .indicator.active {
+    width: 20px;
+    height: 20px;
+}
+
+@media (min-width: 2056px) {
+    .carousel_indicators .indicator {
+        width: 15px;
+        height: 15px;
+    }
+
+    .carousel_indicators .indicator.active {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+@media (min-width: 2560px) {
+    .carousel_indicators .indicator {
+        width: 18px;
+        height: 18px;
+    }
+
+    .carousel_indicators .indicator.active {
+        width: 26px;
+        height: 26px;
+    }
+}
+
+@media (min-width: 3840px) {
+    .carousel_indicators .indicator {
+        width: 20px;
+        height: 20px;
+    }
+
+    .carousel_indicators .indicator.active {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .carousel_indicators .indicator {
+        width: 12px !important;
+        height: 12px !important;
+    }
+
+    .carousel_indicators .indicator.active {
+        width: 17px !important;
+        height: 17px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel_indicators .indicator {
+        width: 10px !important;
+        height: 10px !important;
+    }
+
+    .carousel_indicators .indicator.active {
+        width: 14px !important;
+        height: 14px !important;
+    }
+}
