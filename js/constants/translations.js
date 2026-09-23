@@ -67,13 +67,13 @@ export const translations = {
         'journey-subtitle': 'ACADEMIC BACKGROUND',
 
 
-        'timeline-1-year': 'SEPT 2025 - approx. 2028',
+        'timeline-1-year': 'MAR 2025 - approx. 2028',
         'timeline-1-title': 'Games & Immersive Media (B.A.)',
         'timeline-1-org': 'Hochschule Furtwangen, Germany',
         'timeline-2-year': 'MAR 2024 - JUL 2024',
         'timeline-2-title': 'Student Assistant',
         'timeline-2-org': 'Hochschule Furtwangen (Web Development), Germany',
-        'timeline-3-year': 'SEPT 2023 - SEPT 2025',
+        'timeline-3-year': 'SEPT 2023 - Feb 2025',
         'timeline-3-title': 'Media Conception (B.A.)',
         'timeline-3-org': 'Hochschule Furtwangen, Germany',
         'timeline-4-year': '2021 - 2022',
@@ -167,13 +167,13 @@ export const translations = {
         'journey-subtitle': 'AKADEMISCHER HINTERGRUND',
 
 
-        'timeline-1-year': 'SEPT 2025 - ca. 2028',
+        'timeline-1-year': 'MÄRZ 2025 - ca. 2028',
         'timeline-1-title': 'Games & Immersive Media (B.A.)',
         'timeline-1-org': 'Hochschule Furtwangen, Deutschland',
-        'timeline-2-year': 'MÄR 2024 - JUL 2024',
+        'timeline-2-year': 'MÄRZ 2024 - JUL 2024',
         'timeline-2-title': 'Studentischer Mitarbeiter',
         'timeline-2-org': 'Hochschule Furtwangen (Webentwicklung), Deutschland',
-        'timeline-3-year': 'SEPT 2023 - SEPT 2025',
+        'timeline-3-year': 'SEPT 2023 - Feb 2025',
         'timeline-3-title': 'Medienkonzeption (B.A.)',
         'timeline-3-org': 'Hochschule Furtwangen, Deutschland',
         'timeline-4-year': '2021 - 2022',
