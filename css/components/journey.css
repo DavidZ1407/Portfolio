@@ -459,6 +459,16 @@
     margin-bottom: 6px;
 }
 
+.timeline_content.center-text {
+    text-align: center;
+}
+
+
+.timeline_content.center-text .timeline_title {
+    white-space: pre-line;
+}
+
+
 .timeline_org {
     color: rgba(201, 168, 97, 0.6);
     font-size: 1.05rem;

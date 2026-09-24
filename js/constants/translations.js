@@ -84,11 +84,11 @@ export const translations = {
         'timeline-4-desc-3': 'Purchasing & inventory management',
         'timeline-4-desc-4': 'Mail and document processing',
         'timeline-5-year': 'AUG 2019 - JUL 2021',
-        'timeline-5-title': 'Apprentice Office Clerk',
-        'timeline-5-org': 'Krieger Bau GmbH, Schwenningen, Germany',
+        'timeline-5-title': 'Entrance Qualification for\nUniversities of Applied Sciences',
+        'timeline-5-org': 'Gewerbliche Schulen, Donaueschingen, Germany',
         'timeline-6-year': 'AUG 2018 - JUL 2021',
-        'timeline-6-title': 'Advanced Technical Certificate',
-        'timeline-6-org': 'Vocational School Donaueschingen, Germany',
+        'timeline-6-title': 'Apprentice Office Clerk',
+        'timeline-6-org': 'Krieger Bau GmbH, Schwenningen, Germany',
 
 
         'contact-title': 'CONTACT',
@@ -184,11 +184,11 @@ export const translations = {
         'timeline-4-desc-3': 'Einkauf & Bestandsverwaltung',
         'timeline-4-desc-4': 'Post- & Dokumentenverarbeitung',
         'timeline-5-year': 'AUG 2019 - JUL 2021',
-        'timeline-5-title': 'Ausbildung Bürokaufmann',
-        'timeline-5-org': 'Krieger Bau GmbH, Schwenningen, Deutschland',
+        'timeline-5-title': 'Fachhochschulreife',
+        'timeline-5-org': 'Gewerbliche Schulen, Donaueschingen, Deutschland',
         'timeline-6-year': 'AUG 2018 - JUL 2021',
-        'timeline-6-title': 'Fachhochschulreife',
-        'timeline-6-org': 'Berufsschule Donaueschingen, Deutschland',
+        'timeline-6-title': 'Ausbildung Bürokaufmann',
+        'timeline-6-org': 'Krieger Bau GmbH, Schwenningen, Deutschland',
 
 
         'contact-title': 'KONTAKT',

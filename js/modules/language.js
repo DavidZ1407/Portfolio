@@ -3,7 +3,7 @@
    DESCRIPTION: Language switching (EN/DE): applies translations to data-i18n elements, toggles the language button, and refreshes the CV link.
    ========================================================================== */
 
-import { translations } from '../constants/translations.js?v=3';
+import { translations } from '../constants/translations.js?v=6';
 import { cleanupRegistry } from '../utils/helpers.js';
 
 const STORAGE_KEY = 'portfolio-lang';
