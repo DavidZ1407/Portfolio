@@ -2,7 +2,7 @@
 
 Welcome to my personal portfolio. This project presents my work as a **Games & Immersive Media** creator, showcasing projects and experiments across **gameplay programming, systems design, game development, 3D art, web development, and interactive experiences**.
 
-The site is built as a single-page, visually immersive experience with a Gothic/underwater aesthetic — combining web technologies, WebGL shader effects, and interactive project galleries to present both my technical work and creative direction.
+The site is built as an immersive single-page experience with an underwater visual style — combining web technologies, WebGL shader effects, and interactive project galleries to present both my technical work and creative direction.
 
 ##  Live Website
 
